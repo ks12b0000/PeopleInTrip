@@ -68,9 +68,14 @@ public class BoardControllerImpl implements BoardController {
 	}
 	
 	
+<<<<<<< HEAD
 	//글쓰기
 	@GetMapping("/board/community_writeInfo.do")
 	public String addnewboard() {
+=======
+	@RequestMapping(value = "board/community_writeInfo")
+	public String writeInfo() {
+>>>>>>> 09a95fba8bc3fc5e1e4bac191be24ad33ecbc270
 		return "board/community_writeInfo";
 	}
 	
@@ -209,12 +214,27 @@ public class BoardControllerImpl implements BoardController {
 		return "board/community-info";
 	}
 	
+	
 	/*
 	 * @RequestMapping(value = "board/community-acco") public String acco() { return
 	 * "board/community-acco"; }
 	 */
 	
+<<<<<<< HEAD
 	@RequestMapping(value = "/board/community-acco", method = {RequestMethod.GET,RequestMethod.POST})
+=======
+	@RequestMapping(value = "/board/community-info", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView infolistArticles(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
+		List<BoardDTO> boardsList = boardService.listArticles();
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("boardsList", boardsList);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/board/community-acco", method = {RequestMethod.GET, RequestMethod.POST})
+>>>>>>> 09a95fba8bc3fc5e1e4bac191be24ad33ecbc270
 	public ModelAndView listArticles(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		

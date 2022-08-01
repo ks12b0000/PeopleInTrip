@@ -12,7 +12,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="#" method="get">
+<form action="${contextPath}/mainpage/main" method="get">
 	<header>
 		<jsp:include page="/header_lhj/header.jsp" flush="false" />
 	</header>
@@ -87,7 +87,7 @@
 
             <img src="${contextPath}/resources/images/main/Loudspeaker.png" width="30" height="30" align="left" style="padding-bottom: 5px;"/>
             <span class="main3">여행 정보 공유해요~</span>
-            <span class="sub1"><a href="community-info.html">더보기 +</a></span>
+            <span class="sub1"><a href="${contextPath}/board/community-info">더보기 +</a></span>
             <div>
                 <table class="tableboard">
                     <thead>
@@ -97,22 +97,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>경복궁 야간개장 시간~~</td>
-                            <td class="viewcnt">5</td>
-                        </tr>
-						<tr>
-                            <td>서귀포 비와요 ㅜ</td>
-                            <td class="viewcnt">15</td>
-                        </tr>
-						<tr>
-                            <td>데스노트 존잼</td>
-                            <td class="viewcnt">30</td>
-                        </tr>
-                        <tr>
-                            <td>남산타워맛집</td>
-                            <td class="viewcnt">13</td>
-                        </tr>
+	                    <c:forEach var="main" items="${mainsList}" begin="0" end="3">
+	                    	<tr>
+		                    	<td>${main.post_title}</td>
+		                    	<td>${main.visitcount }</td>
+	                    	</tr>
+	                    </c:forEach>
                     </tbody>
                 </table>
             </div>
@@ -120,7 +110,11 @@
 
         <div class="titlefont board">
             <img src="${contextPath}/resources/images/main/people.png" width="30" height="30" align="left" style="padding-bottom: 5px;"/>
+<<<<<<< HEAD
             <span class="main4">동행구해요!</span>
+=======
+            <span class="main4" >동행구해요!</span>
+>>>>>>> 09a95fba8bc3fc5e1e4bac191be24ad33ecbc270
             <span class="sub2"><a href="${contextPath}/board/community-acco">더보기 +</a></span>
             <div>
                 <table class="tableboard" style="margin-left: 5px;">
@@ -131,22 +125,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>덕수궁 야간개장 가실분~~</td>
-                            <td class="viewcnt">3</td>
-                        </tr>
-						<tr>
-                            <td>흠뻑쇼(1 /5)</td>
-                            <td class="viewcnt">27</td>
-                        </tr>
-						<tr>
-                            <td>번개 구해요</td>
-                            <td class="viewcnt">13</td>
-                        </tr>
-                        <tr>
-                            <td>제주도 게하파티</td>
-                            <td class="viewcnt">5</td>
-                        </tr>
+                    <c:forEach var="main" items="${mainsList}" begin="0" end="3">
+                    	<tr>
+	                    	<td>${main.post_title}</td>
+	                    	<td>${main.visitcount }</td>
+                    	</tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
