@@ -1,6 +1,8 @@
 package kr.co.intrip.tourist.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.login_signup.service.MemberService;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.service.TouristService;
@@ -40,15 +43,28 @@ public class TouristController {
 	}
 	   
 //	// 관광지 api db에 저장용
-//	@GetMapping("tourist/tourist_PageList")
+//	@GetMapping("tourist/tourist_PageList12")
 //	public String testList(Model model) throws Exception {
 //			
 //		String schAirportCode = "alltag";
 //			
 //		tourservice.parkApi(schAirportCode);
 //
-//		return "tourist/tourist_PageList";
+//		return "tourist/tourist_PageList12";
 //	}
+	
+	@GetMapping("tourist/tourist_PageList")
+	public ModelAndView jejutourist_List(ApiDTO apiDTO, HttpServletRequest request) throws Exception {
+		tourservice.jejutourist_list(apiDTO);
+				
+		
+		String viewName = (String) request.getAttribute("viewName");
+		List<ApiDTO> boardsList = tourservice.jejutourist_list(apiDTO);
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("boardsList", boardsList);
+		
+		return mav;
+	}
 	
 	//관광지 상세보기
 	@RequestMapping(value = "tourist/tourist_View")

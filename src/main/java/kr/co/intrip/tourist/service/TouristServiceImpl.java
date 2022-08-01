@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -106,6 +107,11 @@ public class TouristServiceImpl implements TouristService {
 			
 			
 			touristDAO.touristadd(list);
+	}
+
+	@Override
+	public List<ApiDTO> jejutourist_list(ApiDTO apiDTO) throws IOException {
+		return touristDAO.jejutourist(apiDTO);		
 	}
 
 }

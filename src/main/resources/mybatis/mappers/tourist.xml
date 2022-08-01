@@ -24,4 +24,11 @@
 			values (#{pvo.alltag, jdbcType=VARCHAR}, #{pvo.label, jdbcType=VARCHAR}, #{pvo.label2, jdbcType=VARCHAR}, #{pvo.title, jdbcType=VARCHAR}, #{pvo.address, jdbcType=VARCHAR}, #{pvo.tag, jdbcType=VARCHAR}, #{pvo.introduction, jdbcType=VARCHAR}, #{pvo.imgpath, jdbcType=VARCHAR})
 		</foreach>
 	</insert>
+	
+	<select id="jejutourist">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+		]]>
+	</select>
  </mapper>
