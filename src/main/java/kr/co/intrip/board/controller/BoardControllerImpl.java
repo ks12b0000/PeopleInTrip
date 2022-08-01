@@ -47,7 +47,7 @@ public class BoardControllerImpl implements BoardController {
 	private BoardService boardService;
 	@Autowired
 	private BoardDTO boardDTO;
-	private static String ARTICLE_IMAGE_REPO = "D:\\workspace-spring\\imageRepo";
+	private static String ARTICLE_IMAGE_REPO = "null";
 	
 	//상세보기
 	@Override
@@ -68,14 +68,10 @@ public class BoardControllerImpl implements BoardController {
 	}
 	
 	
-<<<<<<< HEAD
+
 	//글쓰기
 	@GetMapping("/board/community_writeInfo.do")
 	public String addnewboard() {
-=======
-	@RequestMapping(value = "board/community_writeInfo")
-	public String writeInfo() {
->>>>>>> 09a95fba8bc3fc5e1e4bac191be24ad33ecbc270
 		return "board/community_writeInfo";
 	}
 	
@@ -220,9 +216,8 @@ public class BoardControllerImpl implements BoardController {
 	 * "board/community-acco"; }
 	 */
 	
-<<<<<<< HEAD
-	@RequestMapping(value = "/board/community-acco", method = {RequestMethod.GET,RequestMethod.POST})
-=======
+
+
 	@RequestMapping(value = "/board/community-info", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView infolistArticles(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String) request.getAttribute("viewName");
@@ -234,7 +229,7 @@ public class BoardControllerImpl implements BoardController {
 	}
 	
 	@RequestMapping(value = "/board/community-acco", method = {RequestMethod.GET, RequestMethod.POST})
->>>>>>> 09a95fba8bc3fc5e1e4bac191be24ad33ecbc270
+
 	public ModelAndView listArticles(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		
