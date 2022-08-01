@@ -8,11 +8,19 @@
 		<result property="post_num" column="post_num"/>
 		<result property="id" column="id"/>
 		<result property="board_num" column="board_num"/>
+		<result property="post_cate" column="post_cate"/>
 		<result property="post_title" column="post_title"/>
 		<result property="post_content" column="post_content"/>
 		<result property="post_date" column="post_date"/>
 		<result property="visitcount" column="visitcount"/>
 		<result property="count_comment" column="count_comment"/>
+		</resultMap>
+		
+		<resultMap type="imageDTO" id="imgResult">
+		<result property="imageFileNO" column="imageFileNO" />
+		<result property="imageFileName" column="imageFileName" />
+		<result property="post_num" column="post_num" />
+	
 	</resultMap>
 	
 	<select id="selectAllBoardList" resultMap="boardResult">
@@ -23,6 +31,59 @@
 				   POST_DATE
 			FROM P_BOARD 
 			ORDER by POST_NUM desc		
+		]]>
+	</select>
+	
+
+	<!-- 상세보기 -->
+	<select id="selectBoard"  parameterType="java.lang.Integer" resultType="boardDTO">
+		<![CDATA[
+			SELECT * FROM P_BOARD
+			WHERE POST_NUM = #{post_num}	
+		]]>
+	</select>
+	
+	<!-- 게시물 등록 -->
+	<insert id="insertBoard" parameterType="java.util.Map" >
+	<![CDATA[
+		INSERT INTO EZEN.P_BOARD
+		(POST_NUM, ID, BOARD_NUM, POST_CATE, POST_TITLE, POST_CONTENT)
+		VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{board_num,jdbcType=VARCHAR}, #{post_cate,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR})
+	]]>
+	</insert>
+	
+	<select id="selectNewpost_num" resultType="int"> 	<!-- 추가하는 새글에 대한 글번호 가져옴 -->
+		<![CDATA[ 	
+			SELECT nvl(MAX(post_num),0) + 1 FROM P_BOARD
+		]]>
+	</select>
+	
+	<select id="selectNewImageFileNO" resultType="int">
+		<![CDATA[	
+			SELECT nvl(MAX(imageFileNO),0) FROM P_imageFile
+		]]>	
+	</select>
+	
+	<select id="selectImageFileList" resultMap="imgResult" parameterType="int">
+		<![CDATA[
+			SELECT * FROM P_imageFile
+			WHERE POST_NUM = #{post_num}
+			ORDER BY IMAGEFILENO		
+		]]>
+	</select>
+	
+	<insert id="insertNewImage" parameterType="java.util.Map">
+		<!-- 한꺼번에 여러 개의 레코드 추가 -->
+		<foreach collection="list" item="item" open="INSERT ALL" separator=" " close="SELECT * FROM DUAL">
+			INTO t_imageFile(imageFileNO, imageFileName, post_num, regDate)
+			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		</foreach>
+	</insert>
+	
+	<select id="selectpost_num" resultType="boardDTO" parameterType="int">
+		<![CDATA[
+			SELECT * FROM P_BOARD
+			WHERE POST_NUM = #{post_num}	
 		]]>
 	</select>
 </mapper>

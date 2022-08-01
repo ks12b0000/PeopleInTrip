@@ -42,6 +42,7 @@ public class TouristController {
 		return mav;
 	}
 	   
+<<<<<<< HEAD
 //	// 관광지 api db에 저장용
 //	@GetMapping("tourist/tourist_PageList12")
 //	public String testList(Model model) throws Exception {
@@ -52,6 +53,20 @@ public class TouristController {
 //
 //		return "tourist/tourist_PageList12";
 //	}
+=======
+	/*
+	 * // 관광지 api db에 저장용
+	 * 
+	 * @GetMapping("tourist/tourist_PageList") public String testList(Model model)
+	 * throws Exception {
+	 * 
+	 * String schAirportCode = "alltag";
+	 * 
+	 * tourservice.parkApi(schAirportCode);
+	 * 
+	 * return "tourist/tourist_PageList"; }
+	 */
+>>>>>>> 698cac95b15309a59eb244dec174c7c8b60d9010
 	
 	@GetMapping("tourist/tourist_PageList")
 	public ModelAndView jejutourist_List(ApiDTO apiDTO, HttpServletRequest request) throws Exception {

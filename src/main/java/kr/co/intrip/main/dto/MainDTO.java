@@ -1,14 +1,12 @@
-package kr.co.intrip.board.dto;
+package kr.co.intrip.main.dto;
 
 import java.sql.Date;
 
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
+@Component("mainDTO")
+public class MainDTO {
 
-@Component("boardDTO")
-public class BoardDTO {
-	
 	private int post_num;
 	private String id;
 	private int board_num;
@@ -17,27 +15,14 @@ public class BoardDTO {
 	private Date post_date;
 	private String visitcount;
 	private String count_comment;
-	private int post_cate;
 	
-	
-	public int getPost_cate() {
-		return post_cate;
-	}
-
-	public void setPost_cate(int post_cate) {
-		this.post_cate = post_cate;
-	}
-
-	public BoardDTO() {
+	public MainDTO() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public BoardDTO(int post_num, String id, String post_title, String post_content, int board_num) {
-		this.post_num = post_num;
-		this.id = id;
+	
+	public MainDTO(String post_title, String visitcount) {
 		this.post_title = post_title;
-		this.post_content= post_content;
-		this.board_num =board_num;
+		this.visitcount = visitcount;
 	}
 
 	public int getPost_num() {
@@ -103,7 +88,5 @@ public class BoardDTO {
 	public void setCount_comment(String count_comment) {
 		this.count_comment = count_comment;
 	}
-
-
-
+	
 }
