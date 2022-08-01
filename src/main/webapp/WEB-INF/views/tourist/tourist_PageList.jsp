@@ -47,12 +47,12 @@
 			<c:forEach var="plist" items="${plist}">
 				<table>
 					<tr>
-						<td class="tb_td1"><img alt="돈내코 유원지 사진" src="${imgpath }"/></td>
+						<td class="tb_td1"><img alt="돈내코 유원지 사진" src="${plist.imgpath }"/></td>
 						<td class="tb_td2">
 							<span>⭐⭐⭐⭐⚝ 4.5/5.0</span>  <br/>
-							<span class="tourpost_title">${title}</span> 🧡 0,000개 💬 0,000개 <br/>
-							<span class="tourpost_place">${address }</span>
-							<p class="tourpost_content">${introduction}</p>
+							<span class="tourpost_title">${plist.title}</span> 🧡 0,000개 💬 0,000개 <br/>
+							<span class="tourpost_place">${plist.address }</span>
+							
 						</td>
 					</tr>					
 				</table>

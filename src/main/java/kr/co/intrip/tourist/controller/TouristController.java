@@ -55,16 +55,14 @@ public class TouristController {
 
 	
 	@GetMapping("tourist/tourist_PageList")
-	public ModelAndView jejutourist_List(ApiDTO apiDTO, HttpServletRequest request) throws Exception {
-		tourservice.jejutourist_list(apiDTO);
-				
-		
-		String viewName = (String) request.getAttribute("viewName");
-		List<ApiDTO> boardsList = tourservice.jejutourist_list(apiDTO);
-		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("boardsList", boardsList);
-		
-		return mav;
+	public List<ApiDTO> jejutourist_List(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
+		String schAirportCode = "alltag";
+		String pname = "테스트";
+			
+		List<ApiDTO> plist = tourservice.jejutourist_list(apiDTO);
+		model.addAttribute("plist", plist);
+		model.addAttribute("pname", pname);
+		return plist;
 	}
 	
 	//관광지 상세보기
