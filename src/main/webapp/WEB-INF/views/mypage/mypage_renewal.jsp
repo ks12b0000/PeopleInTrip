@@ -104,16 +104,16 @@
     <div class="cls2">
         <table>
             <tr>
-                <td>닉네임: </td>
-                <td>사과조아</td>
+                <td>아이디: </td>
+                <td>${user.id }</td>
             </tr>
             <tr>
-                <td>이름: </td>
-                <td>이희중</td>
+                <td>닉네임: </td>
+                <td>${user.nick_nm }</td>
             </tr>
             <tr>
                 <td>이메일: </td>
-                <td>apple@gmail.com</td>
+                <td>${user.email }</td>
             </tr>
         </table>
         <div class="img_box">
