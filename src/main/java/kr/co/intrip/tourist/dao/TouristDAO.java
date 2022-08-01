@@ -23,7 +23,18 @@ public class TouristDAO {
 		
 	}
 
+	// 제주도 여행지 페이지 리스트
 	public List<ApiDTO> jejutourist(ApiDTO apiDTO) {
 		return sqlSession.selectList("mapper.tourist.jejutourist");	 		
+	}
+
+	// 제주도 축제 페이지 리스트
+	public List<ApiDTO> jejufestival(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.jejufestival");	
+	}
+
+	// 제주도 전시관 페이지 리스트
+	public List<ApiDTO> jejuexhibition(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.jejuexhibition");
 	}
 }

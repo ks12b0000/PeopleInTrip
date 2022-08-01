@@ -109,9 +109,22 @@ public class TouristServiceImpl implements TouristService {
 			touristDAO.touristadd(list);
 	}
 
+	// 제주도 여행지 페이지 리스트
 	@Override
 	public List<ApiDTO> jejutourist_list(ApiDTO apiDTO) throws IOException {
 		return touristDAO.jejutourist(apiDTO);		
+	}
+
+	// 제주도 축제 페이지 리스트
+	@Override
+	public List<ApiDTO> jejufestival_list(ApiDTO apiDTO) throws IOException {
+		return touristDAO.jejufestival(apiDTO);	
+	}
+
+	// 제주도 전시관 페이지 리스트
+	@Override
+	public List<ApiDTO> jejuexhibition_list(ApiDTO apiDTO) throws IOException {
+		return touristDAO.jejuexhibition(apiDTO);
 	}
 
 }
