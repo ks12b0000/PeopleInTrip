@@ -10,5 +10,6 @@
 		<typeAlias type="kr.co.intrip.tourist.dto.TouristDTO" alias="TouristDTO"/>
 		<typeAlias type="kr.co.intrip.board.dto.BoardDTO" alias="boardDTO"/>
 		<typeAlias type="kr.co.intrip.main.dto.MainDTO" alias="mainDTO"/>
+		<typeAlias type="kr.co.intrip.board.dto.ImageDTO" alias="imageDTO"/>
 	</typeAliases>
 </configuration>  

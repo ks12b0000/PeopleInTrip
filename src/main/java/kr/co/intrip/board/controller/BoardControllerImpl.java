@@ -47,7 +47,7 @@ public class BoardControllerImpl implements BoardController {
 	private BoardService boardService;
 	@Autowired
 	private BoardDTO boardDTO;
-	private static String ARTICLE_IMAGE_REPO = "null";
+	private static String ARTICLE_IMAGE_REPO = "D:\\workspace-spring\\imageRepo";
 	
 	//상세보기
 	@Override
