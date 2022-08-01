@@ -47,8 +47,8 @@
    <insert id="insertBoard" parameterType="java.util.Map" >
    <![CDATA[
       INSERT INTO P_BOARD
-      (POST_NUM, ID, BOARD_NUM, POST_CATE, POST_TITLE, POST_CONTENT)
-      VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{board_num,jdbcType=VARCHAR}, #{post_cate,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR})
+      (POST_NUM, ID, POST_TITLE, POST_CONTENT)
+      VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR})
    ]]>
    </insert>
    

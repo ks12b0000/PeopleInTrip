@@ -217,8 +217,8 @@ public class BoardControllerImpl implements BoardController {
 	 */
 	
 
-
-	@RequestMapping(value = "/board/community-info", method = {RequestMethod.GET, RequestMethod.POST})
+	
+	@RequestMapping(value = "/board/community-info", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/text; charset=utf8")
 	public ModelAndView infolistArticles(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String) request.getAttribute("viewName");
 		List<BoardDTO> boardsList = boardService.listArticles();

@@ -67,7 +67,7 @@
                         <option>질문</option>
                         <option>정보</option>
                     </select>
-			<form action="${contextPath}/board/community_writeInfo.do" name="wirte_info" method="post" enctype="multipart/form-data"  attribute>
+			<form action="${contextPath}/board/community_writeInfo.do" name="wirte_info" method="post" enctype="multipart/form-data"  >
                     <span class="small-title"><b>제목</b></span>
 					
                     <input class="text-box" type="text" placeholder="제목을 입력해 주세요!" required name="post_title"  />
