@@ -39,16 +39,18 @@ public class TouristController {
 		return mav;
 	}
 	   
-//	// 관광지 api db에 저장용
-//	@GetMapping("tourist/tourist_PageList")
-//	public String testList(Model model) throws Exception {
-//			
-//		String schAirportCode = "alltag";
-//			
-//		tourservice.parkApi(schAirportCode);
-//
-//		return "tourist/tourist_PageList";
-//	}
+	/*
+	 * // 관광지 api db에 저장용
+	 * 
+	 * @GetMapping("tourist/tourist_PageList") public String testList(Model model)
+	 * throws Exception {
+	 * 
+	 * String schAirportCode = "alltag";
+	 * 
+	 * tourservice.parkApi(schAirportCode);
+	 * 
+	 * return "tourist/tourist_PageList"; }
+	 */
 	
 	//관광지 상세보기
 	@RequestMapping(value = "tourist/tourist_View")

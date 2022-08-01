@@ -10,6 +10,11 @@ public interface BoardService {
 	public List<BoardDTO> listArticles() throws Exception;
 
 	public Map<String, Object> viewdetail(int post_num);
+
 	
+
+	public int insertBoard(Map boardMap) throws Exception;
+
+		
 	
 }

@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath }" />
+<%
+	request.setCharacterEncoding("UTF-8");
+%> 
+ <c:set var="board" value="${boardMap.board }" />   
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +27,9 @@
 				}
 			});
 		});
+    	
+    	
+    	
     </script>
 </head>
 <body>
@@ -38,6 +47,7 @@
                 <ul class="left-menu-ul">
                     <li class="menu-list"><a href=""><i class="fa-solid fa-bullhorn fa-lg"></i>정보게시판</a></li>
                     <li class="menu-list"><a href=""><i class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
+                   
                 </ul>
             </div>
 
@@ -57,21 +67,23 @@
                         <option>질문</option>
                         <option>정보</option>
                     </select>
-
+			<form action="${contextPath}/board/community_writeInfo.do" name="wirte_info" method="post" enctype="multipart/form-data"  attribute>
                     <span class="small-title"><b>제목</b></span>
+					
+                    <input class="text-box" type="text" placeholder="제목을 입력해 주세요!" required name="post_title"  />
 
-                    <input class="text-box" type="text" placeholder="제목을 입력해 주세요!" required />
-
-                    <textarea id="textarea-box" class="textarea-box" placeholder="내용을 입력해 주세요!" required></textarea>
+                    <textarea id="textarea-box" class="textarea-box" placeholder="내용을 입력해 주세요!" required name="post_content"></textarea>
 	                <div id="textarea-cnt">(0 / 200)</div>
 	
 	                <div class="bottom-btn">
                         <a href=""><input type="button" value="작성취소" /></a>
                         <input type="submit" value="작성완료" />
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+    
 </body>
 </html>

@@ -121,7 +121,7 @@
         <div class="titlefont board">
             <img src="${contextPath}/resources/images/main/people.png" width="30" height="30" align="left" style="padding-bottom: 5px;"/>
             <span class="main4">동행구해요!</span>
-            <span class="sub2"><a href="community-acco.html">더보기 +</a></span>
+            <span class="sub2"><a href="${contextPath}/board/community-acco">더보기 +</a></span>
             <div>
                 <table class="tableboard" style="margin-left: 5px;">
                     <thead>

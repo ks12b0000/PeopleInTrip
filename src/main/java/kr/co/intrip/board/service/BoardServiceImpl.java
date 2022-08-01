@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.intrip.board.dao.BoardDAO;
 import kr.co.intrip.board.dto.BoardDTO;
@@ -13,6 +15,7 @@ import kr.co.intrip.board.dto.BoardDTO;
 
 
 @Service("boardService")
+@Transactional(propagation = Propagation.REQUIRED)
 public class BoardServiceImpl implements BoardService {
 
 	@Autowired
@@ -34,6 +37,25 @@ public class BoardServiceImpl implements BoardService {
 		boardMap.put("board", boardDTO);
 		return boardMap;
 	}
+
+
+	
+
+
+	@Override
+	public int insertBoard(Map boardMap) throws Exception {
+		
+		int post_num = boardDAO.insertBoard(boardMap);		//글 정보를 저장한 후 글번호를 가져옴.
+		boardMap.put("post_num", post_num);						
+		
+		boardDAO.insertNewImage(boardMap);						//이미지 정보를 저장함
+		
+		return post_num;
+	
+	}
+
+
+	
 
 	
 

@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<%
+	request.setCharacterEncoding("UTF-8");
+%>
+<c:set var="board" value="${boardMap.board }" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +15,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="../resources/css/community/community_detail.css"/>
+    <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript">
+	function singo() {
+		alert("댓글이 신고되었습니다");
+	}
+	
+	function btnbtn() {
+		if ($("#comment_input").val() == "") {
+			alert("내용을 입력해 주세요");
+			$("#comment_input").focus();
+			return false;
+		}
+		else{
+			alert("댓글이 등록되었습니다");
+		}
+	}
+    </script>
 </head>
 <body>
     <!-- 헤더 -->
@@ -29,25 +52,21 @@
     <!-- 정보게시판 본문 -->
     <section class="content">
         <div>
-            <p class="write-detail">정보게시판 > 글쓰기</p>
+            <p class="write-detail">정보게시판 > 상세보기</p>
         </div>
         <div class="write-title">
         	<div class="write-titlemain">
-        		<input type="text"  value="${board.POST_TITLE }"  disabled />
-   			    <input type="hidden" name="articleNO" value="${board.POST_TITLE }"  />  --%>
+        		${board.post_title } 
         	</div>
         	<div class="write-titlesub">
-        		 <!-- | date | 추천 : 0 | 조회수 : 1 -->
-        		<input type="text" value="${board.post_num }" disabled />
-					<%-- 글수정시 글번호를 컨트롤러에게 전송하기 위해 글번호 저장함 --%>
-					<input type="hidden" name="post_num" value="${board.post_num }">
+        		${board.id } | <fmt:formatDate value="${board.post_date }"/>| 추천 : 0 | 조회수 : 1 
         	</div>
         </div>
         <div>
         	<p class="write-file">첨부파일 : XX.xxx</p>
         </div>
         <div>
-        	<p class="write-content">${board.POST_CONTENT }</p>>
+        	<p class="write-content">${board.post_content }</p>
         </div>
         <div>
         	<p class="write-comment1">작성된 댓글( X 개)</p>
@@ -61,17 +80,18 @@
         	<button class="write-comment3">등록</button>
         </div>
         <div>
+        
         	<p class="write-id">
-        		<span class="write-id2">test2</span>
-        		<span class="write-date">| 20XX XX.XX XX:XX</span>
+        		<span class="write-id2">${board.id }</span>
+        		<span class="write-date">| <fmt:formatDate value="${board.post_date }"/></span>
         		<button class="write-edit">수정</button>
         		<button class="write-delete">삭제</button>
         	</p>
         	<p class="write-comment4">테스트 댓글</p>
-        	<p class="write-declaration2"><button>신고</button></p>
+        	<p class="write-declaration2" onclick="singo()"><button>신고</button></p>
         </div>
         <div class="write-form">
-        	<button class="write-form-write">글쓰기</button>
+        	<button class="write-form-write" onclick="location.href='${contextPath}/board/community-acco'">목록보기</button>
         	<button class="write-form-edit">수정</button>
         	<button class="write-form-delete">삭제</button>
         </div>
