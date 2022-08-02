@@ -10,7 +10,7 @@ import kr.co.intrip.board.dto.ImageDTO;
 
 public interface BoardDAO {
 	public List<BoardDTO> selectAllBoardList() throws DataAccessException;
-
+	public List<BoardDTO> selectAllBoardList1()  throws DataAccessException;
 	public BoardDTO selectBoard(int post_num) throws DataAccessException;
 
 	
@@ -22,6 +22,10 @@ public interface BoardDAO {
 	public List<ImageDTO> selectImageFileList(int post_num) throws DataAccessException;
 
 	public BoardDTO selectpost_num(int post_num) throws DataAccessException;
+
+	public int insertBoard1(Map boardMap) throws DataAccessException;
+
+	
 
 	
 

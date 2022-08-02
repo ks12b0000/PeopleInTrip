@@ -75,6 +75,11 @@ public class BoardControllerImpl implements BoardController {
 		return "board/community_writeInfo";
 	}
 	
+	@GetMapping("board/community_writeWith.do")
+	public String addnewboard1() {
+		return "board/community_writeWith";
+	}
+	
 	
 	
 	//글쓰기
@@ -171,6 +176,98 @@ public class BoardControllerImpl implements BoardController {
 	
 	
 	
+	@Override
+	@RequestMapping(value = "board/community_writeWith.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity addNewArticle1(MultipartHttpServletRequest multipartRequest, 
+			HttpServletResponse response) throws Exception {
+		
+		multipartRequest.setCharacterEncoding("utf-8");
+		String imageFileName = null;
+		
+		//글정보 저장하기 위한 Map 생성
+		Map boardMap = new HashMap();
+		Enumeration enun = multipartRequest.getParameterNames();
+		//새글쓰기창에서 전송된 글 정보를 Map에 key/value로 저장함
+		while(enun.hasMoreElements()) {
+			String name = (String) enun.nextElement();
+			String value = multipartRequest.getParameter(name);
+			boardMap.put(name, value);
+		}
+		
+		//로그인 시 세션에 저장된 회원정보에서 아이디(글쓴이)를 Map에 저장
+		HttpSession session = multipartRequest.getSession();
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute("user");
+		String id = memberDTO.getId();
+		boardMap.put("id", id);
+		
+		//업로드한 이미지 파일 이름을 가져옴
+		List<String> fileList = upload(multipartRequest);
+		
+		List<ImageDTO> imageFileList = new ArrayList<>();
+		if (fileList != null && fileList.size() != 0) {
+			// 전송되는 이미지 정보를 ImageDTO 객체의 속성에 차례대로 저장한 후 imageFileList에 다시 저장함
+			for (String fileName : fileList) {				
+				ImageDTO imageDTO = new ImageDTO();
+				imageDTO.setImageFileName(fileName);
+				imageFileList.add(imageDTO);
+			}
+			// imageFileList를 다시 articleMap에 저장함
+			boardMap.put("imageFileList", imageFileList);
+		}
+		
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
+		String message;
+		ResponseEntity resEnt = null;
+		
+		try {
+			
+			int post_num = boardService.insertBoard1(boardMap);		
+			
+			if (imageFileList != null && imageFileList.size() != 0) {
+				//첨부한 이미지들을 for문을 이용해 업로드함
+				for (ImageDTO imageDTO : imageFileList) {
+					
+					imageFileName = imageDTO.getImageFileName();
+					File srcFile = new File(ARTICLE_IMAGE_REPO +"\\"+ "temp" +"\\"+ imageFileName);
+					File destFile = new File(ARTICLE_IMAGE_REPO +"\\"+ post_num);
+					FileUtils.moveFileToDirectory(srcFile, destFile, true);
+				}
+			}
+			
+			message = "<script>";
+			message += " alert('새글을 추가했습니다.');";
+			message += " location.href='"+multipartRequest.getContextPath()+"/board/community-info';";
+			message += "</script>";
+			
+			// 새 글을 추가한 후 메시지를 전달함
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			
+		} catch (Exception e) {
+			if (imageFileList != null && imageFileList.size() != 0) {
+				//오류 발생시 temp폴더의 이미지들 모두 삭제
+				for (ImageDTO imageDTO : imageFileList) {
+					imageFileName = imageDTO.getImageFileName();
+					File srcFile = new File(ARTICLE_IMAGE_REPO +"\\"+ "temp" +"\\"+ imageFileName);
+					srcFile.delete();
+				}
+			}
+			
+			message = "<script>";
+			message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
+			message += " location.href='"+multipartRequest.getContextPath()+"/board/community-info';";
+			message += "</script>";			
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			
+			e.printStackTrace();
+		}		
+			
+		return resEnt;
+	}
+	
+	
 	
 	private List<String> upload(MultipartHttpServletRequest multipartRequest) throws ServletException, IOException {
 		List<String> fileList = new ArrayList<>();
@@ -200,16 +297,6 @@ public class BoardControllerImpl implements BoardController {
 
 	
 	
-	@RequestMapping(value = "board/community_writeWith")
-	public String writeWith() {
-		return "board/community_writeWith";
-	}
-	
-	@RequestMapping(value = "board/community_info")
-	public String info() {
-		return "board/community-info";
-	}
-	
 	
 	/*
 	 * @RequestMapping(value = "board/community-acco") public String acco() { return
@@ -218,18 +305,9 @@ public class BoardControllerImpl implements BoardController {
 	
 
 	
-	@RequestMapping(value = "/board/community-info", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/text; charset=utf8")
-	public ModelAndView infolistArticles(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String) request.getAttribute("viewName");
-		List<BoardDTO> boardsList = boardService.listArticles();
-		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("boardsList", boardsList);
-		
-		return mav;
-	}
+	
 	
 	@RequestMapping(value = "/board/community-acco", method = {RequestMethod.GET, RequestMethod.POST})
-
 	public ModelAndView listArticles(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		
@@ -240,7 +318,18 @@ public class BoardControllerImpl implements BoardController {
 		
 		return mav;
 	}
-
+	
+	@RequestMapping(value = "/board/community-info", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView listArticles1(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		
+		String viewName = (String) request.getAttribute("viewName");
+		List<BoardDTO> boardsList = boardService.listArticles1();
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("boardsList", boardsList);
+		
+		return mav;
+	}
 	
 
 	

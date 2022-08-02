@@ -32,22 +32,12 @@
 	<div>	<br><br>
 			<tr>
 				<th><h4><strong>동행구해요</strong></h4></th>
-				<th><b class="text-muted">정보게시판</b></th>
+				
 				<th></th>
 				<th></th>
 				<th></th>
 				<th></th>
-				<th>
-					<div class="btn-group">
-  						<button type="button" class="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    						전체
-  						</button>
-  						<ul class="dropdown-menu">
-    						<li><a class="dropdown-item" href="#">자유</a></li>
-    						<li><a class="dropdown-item" href="#">질문</a></li>
-   						 	<li><a class="dropdown-item" href="#">정보</a></li>
-  						</ul>
-					</div>
+				<th>	
 				</th>
 			</tr>
 			<!-- 상단바 -->
@@ -96,7 +86,7 @@
 	</table>
 	<hr/>
 	<div class="text-lg-end text-end">
-		<button type="button" class="btn text-white" style="background-color: #9966ff;" onclick="location.href='${contextPath}/board/community_writeInfo.do'">글쓰기</button>
+		<button type="button" class="btn text-white" style="background-color: #9966ff;" onclick="location.href='${contextPath}/board/community_writeWith.do'">글쓰기</button>
 	</div>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-center">

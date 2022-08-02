@@ -53,15 +53,33 @@ public class TouristController {
 //		return "tourist/tourist_PageList12";
 //	}
 
-	
+	// 제주도 여행지 페이지 리스트
 	@GetMapping("tourist/tourist_PageList")
 	public List<ApiDTO> jejutourist_List(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
 		String schAirportCode = "alltag";
-		String pname = "테스트";
 			
 		List<ApiDTO> plist = tourservice.jejutourist_list(apiDTO);
 		model.addAttribute("plist", plist);
-		model.addAttribute("pname", pname);
+		return plist;
+	}
+	
+	// 제주도 축제 페이지 리스트
+	@GetMapping("tourist/festival_PageList")
+	public List<ApiDTO> jejufestival_List(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
+		String schAirportCode = "alltag";
+			
+		List<ApiDTO> plist = tourservice.jejufestival_list(apiDTO);
+		model.addAttribute("plist", plist);
+		return plist;
+	}
+	
+	// 제주도 전시관 페이지 리스트
+	@GetMapping("tourist/exhibition_PageList")
+	public List<ApiDTO> jejuexhibition_List(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
+		String schAirportCode = "alltag";
+				
+		List<ApiDTO> plist = tourservice.jejuexhibition_list(apiDTO);
+		model.addAttribute("plist", plist);
 		return plist;
 	}
 	

@@ -24,6 +24,12 @@ public class BoardDAOImpl implements BoardDAO {
 		return boardsList;
 	}
 	
+	@Override
+	public List<BoardDTO> selectAllBoardList1() throws DataAccessException {
+		List<BoardDTO> boardsList = sqlSession.selectList("mapper.board.selectAllBoardList1");
+		return boardsList;
+	}
+	
 	//상세보기
 	@Override
 	public BoardDTO selectBoard(int post_num) throws DataAccessException {
@@ -39,7 +45,16 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("mapper.board.insertBoard", boardMap);		
 		return post_num;
 	}
-
+	
+	
+	@Override
+	public int insertBoard1(Map boardMap) {
+		int post_num = selectNewpost_num();
+		boardMap.put("post_num", post_num);
+		
+		sqlSession.insert("mapper.board.insertBoard1", boardMap);		
+		return post_num;
+	}
 	
 
 	private int selectNewpost_num() {
@@ -87,6 +102,8 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return imageFileList;
 	}
+
+	
 
 	
 	
