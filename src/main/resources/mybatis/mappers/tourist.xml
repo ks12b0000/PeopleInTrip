@@ -25,10 +25,27 @@
 		</foreach>
 	</insert>
 	
+	<!-- 제주도 여행지 페이지 리스트  -->
 	<select id="jejutourist" resultType="kr.co.intrip.tourist.dto.ApiDTO">
 		<![CDATA[
 			SELECT * FROM P_TOURIST 
 			WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+		]]>
+	</select>
+	
+	<!-- 제주도 축제 페이지 리스트  -->
+	<select id="jejufestival" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE label LIKE '%축제%'
+		]]>
+	</select>
+	
+	<!-- 제주도 전시관 페이지 리스트  -->
+	<select id="jejuexhibition" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
 		]]>
 	</select>
  </mapper>
