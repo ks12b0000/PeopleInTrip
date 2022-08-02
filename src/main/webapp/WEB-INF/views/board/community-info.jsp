@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath }" />
+<%
+	request.setCharacterEncoding("UTF-8");
+%>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,7 +82,7 @@
 					<tbody>
 						<tr>
 							<td>${boards.post_num }</td>
-							<td><a href="/board/read?boardsList=${boardsList}">
+							<td><a href="${contextPath}/board/community_detail.do?post_num=${boards.post_num}">
 								<c:out value="${boards.post_title }"></c:out> 
 							</a></td>
 							<td>${boards.id }</td>
@@ -92,7 +96,7 @@
 	</table>
 	<hr/>
 	<div class="text-lg-end text-end">
-		<button type="button" class="btn text-white" style="background-color: #9966ff;">글쓰기</button>
+		<button type="button" class="btn text-white" style="background-color: #9966ff;" onclick="location.href='${contextPath}/board/community_writeWith.do'">글쓰기</button>
 	</div>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-center">

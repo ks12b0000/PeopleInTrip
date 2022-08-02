@@ -39,7 +39,7 @@
 		<jsp:include page="/header_lhj/header.jsp" flush="false" />
 	</header>
     </div>
-    
+    <form action="${contextPath}/board/community_writeInfo.do"  method="post" enctype="multipart/form-data"  >
     <div class="wrapper">
         <!-- 왼쪽 메뉴바 -->
         <div>
@@ -61,29 +61,29 @@
                 </div>
                 <!-- 정보게시판 제목입력, 내용입력 -->
                 <div class="dropdown-top">
-                    <select class="option-box" required>
+                    <select class="option-box">
                         <option selected disabled>선택</option>
                         <option>자유</option>
                         <option>질문</option>
                         <option>정보</option>
                     </select>
-			<form action="${contextPath}/board/community_writeInfo.do" name="wirte_info" method="post" enctype="multipart/form-data"  >
+			
                     <span class="small-title"><b>제목</b></span>
 					
-                    <input class="text-box" type="text" placeholder="제목을 입력해 주세요!" required name="post_title"  />
+                    <input class="text-box" type="text" placeholder="제목을 입력해 주세요!" name="post_title"  />
 
-                    <textarea id="textarea-box" class="textarea-box" placeholder="내용을 입력해 주세요!" required name="post_content"></textarea>
+                    <textarea id="textarea-box" class="textarea-box" placeholder="내용을 입력해 주세요!" name="post_content"></textarea>
 	                <div id="textarea-cnt">(0 / 200)</div>
 	
 	                <div class="bottom-btn">
                         <a href=""><input type="button" value="작성취소" /></a>
-                        <input type="submit" value="작성완료" />
+                        <input type="submit" value="작성완료" name="post_cate"/>
                     </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>
     </div>
-    
+    </form>
 </body>
 </html>

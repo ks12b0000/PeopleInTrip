@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath }" />
+<%
+	request.setCharacterEncoding("UTF-8");
+%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +35,7 @@
 		<jsp:include page="/header_lhj/header.jsp" flush="false" />
 	</header>
     </div>
-    
+    <form action="${contextPath}/board/community_writeWith.do"  method="post" enctype="multipart/form-data"  >
     <div class="wrapper">
         <!-- 왼쪽 메뉴바 -->
         <div>
@@ -51,7 +56,7 @@
                 </div>
                 <!-- 동행구해요 제목입력, 내용입력 -->
                 <div class="dropdown-top">
-                    <select class="option-box" required>
+                    <select class="option-box" >
                         <option selected disabled>선택</option>
                         <option>동행</option>
                         <option>카풀</option>
@@ -60,18 +65,19 @@
 
                     <span class="small-title"><b>제목</b></span>
 
-                    <input class="text-box" type="text" placeholder="제목을 입력해 주세요!" required />
+                    <input class="text-box" type="text" placeholder="제목을 입력해 주세요!" name="post_title"/>
 
-                    <textarea id="textarea-box" class="textarea-box" placeholder="내용을 입력해 주세요!" required></textarea>
+                    <textarea id="textarea-box" class="textarea-box" placeholder="내용을 입력해 주세요!" name="post_content"></textarea>
 					<div id="textarea-cnt">(0 / 200)</div>
 	
 	                <div class="bottom-btn">
                         <input type="button" value="작성취소" />
-                        <input type="submit" value="작성완료" />
+                        <input type="submit" value="작성완료" name="post_cate" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </form>
 </body>
 </html>

@@ -7,7 +7,7 @@
    <resultMap type="boardDTO" id="boardResult">
       <result property="post_num" column="post_num"/>
       <result property="id" column="id"/>
-      <result property="board_num" column="board_num"/>
+      
       <result property="post_cate" column="post_cate"/>
       <result property="post_title" column="post_title"/>
       <result property="post_content" column="post_content"/>
@@ -28,8 +28,23 @@
          SELECT POST_NUM      ,
                id          ,
                POST_TITLE    ,
-               POST_DATE
+               POST_DATE,
+               POST_CATE
          FROM P_BOARD 
+          WHERE POST_CATE ='1'
+         ORDER by POST_NUM desc      
+      ]]>
+   </select>
+   
+   <select id="selectAllBoardList1" resultMap="boardResult">
+      <![CDATA[
+         SELECT POST_NUM      ,
+               id          ,
+               POST_TITLE    ,
+               POST_DATE,
+               POST_CATE
+         FROM P_BOARD 
+          WHERE POST_CATE ='2'
          ORDER by POST_NUM desc      
       ]]>
    </select>
@@ -47,8 +62,16 @@
    <insert id="insertBoard" parameterType="java.util.Map" >
    <![CDATA[
       INSERT INTO P_BOARD
-      (POST_NUM, ID, POST_TITLE, POST_CONTENT)
-      VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR})
+      (POST_NUM, ID, POST_TITLE, POST_CONTENT,POST_CATE)
+      VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR},'1')
+   ]]>
+   </insert>
+   
+   <insert id="insertBoard1" parameterType="java.util.Map" >
+   <![CDATA[
+      INSERT INTO P_BOARD
+      (POST_NUM, ID, POST_TITLE, POST_CONTENT,POST_CATE)
+      VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR},'2')
    ]]>
    </insert>
    

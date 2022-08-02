@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public interface BoardController {
 
 	public ModelAndView listArticles(HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ModelAndView listArticles1(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 	public ModelAndView viewdetail(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
@@ -18,6 +19,9 @@ public interface BoardController {
 	
 
 	public ResponseEntity addNewArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+			throws Exception;
+
+	public ResponseEntity addNewArticle1(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
 
 	

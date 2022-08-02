@@ -11,7 +11,7 @@ public class BoardDTO {
 	
 	private int post_num;
 	private String id;
-	private int board_num;
+	
 	private String post_title;
 	private String post_content;
 	private Date post_date;
@@ -37,7 +37,7 @@ public class BoardDTO {
 		this.id = id;
 		this.post_title = post_title;
 		this.post_content= post_content;
-		this.board_num =board_num;
+		
 	}
 
 	public int getPost_num() {
@@ -56,13 +56,7 @@ public class BoardDTO {
 		this.id = id;
 	}
 
-	public int getBoard_num() {
-		return board_num;
-	}
-
-	public void setBoard_num(int board_num) {
-		this.board_num = board_num;
-	}
+	
 
 	public String getPost_title() {
 		return post_title;
