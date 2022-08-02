@@ -61,12 +61,7 @@
                 </div>
                 <!-- 정보게시판 제목입력, 내용입력 -->
                 <div class="dropdown-top">
-                    <select class="option-box">
-                        <option selected disabled>선택</option>
-                        <option>자유</option>
-                        <option>질문</option>
-                        <option>정보</option>
-                    </select>
+                   
 			
                     <span class="small-title"><b>제목</b></span>
 					

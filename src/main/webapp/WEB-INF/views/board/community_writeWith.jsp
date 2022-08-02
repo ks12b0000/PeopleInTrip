@@ -56,12 +56,7 @@
                 </div>
                 <!-- 동행구해요 제목입력, 내용입력 -->
                 <div class="dropdown-top">
-                    <select class="option-box" >
-                        <option selected disabled>선택</option>
-                        <option>동행</option>
-                        <option>카풀</option>
-                        <option>번개</option>
-                    </select>
+                    
 
                     <span class="small-title"><b>제목</b></span>
 

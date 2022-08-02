@@ -44,12 +44,7 @@
   						<button type="button" class="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
     						전체
   						</button>
-  						<ul class="dropdown-menu">
-    						<li><a class="dropdown-item" href="#">자유</a></li>
-    						<li><a class="dropdown-item" href="#">질문</a></li>
-   						 	<li><a class="dropdown-item" href="#">정보</a></li>
-  						</ul>
-					</div>
+  						
 				</th>
 			</tr>
 		</table>
@@ -96,7 +91,7 @@
 	</table>
 	<hr/>
 	<div class="text-lg-end text-end">
-		<button type="button" class="btn text-white" style="background-color: #9966ff;" onclick="location.href='${contextPath}/board/community_writeWith.do'">글쓰기</button>
+		<button type="button" class="btn text-white" style="background-color: #9966ff;" onclick="location.href='${contextPath}/board/community_writeInfo.do'">글쓰기</button>
 	</div>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-center">
