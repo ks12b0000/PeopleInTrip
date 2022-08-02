@@ -72,6 +72,10 @@ public class TouristServiceImpl implements TouristService {
 				if(!(itemArray.getJSONObject(i).isNull("alltag"))) {
 					pvo.setAlltag(iobj.getString("alltag"));
 				}	
+				
+				if(!(itemArray.getJSONObject(i).isNull("contentsid"))) {
+					pvo.setContentsid(iobj.getString("contentsid"));
+				}
 									
 				JSONObject itemArray2 = iobj.getJSONObject("contentscd");
 				pvo.setLabel(itemArray2.getString("label"));				
@@ -92,6 +96,10 @@ public class TouristServiceImpl implements TouristService {
 				
 				if(!(itemArray.getJSONObject(i).isNull("introduction"))) {
 					pvo.setIntroduction(iobj.getString("introduction"));
+				}
+				
+				if(!(itemArray.getJSONObject(i).isNull("phoneno"))) {
+					pvo.setPhoneno(iobj.getString("phoneno"));
 				}
 					
 				if(!(itemArray.getJSONObject(i).isNull("repPhoto"))) {
@@ -125,6 +133,11 @@ public class TouristServiceImpl implements TouristService {
 	@Override
 	public List<ApiDTO> jejuexhibition_list(ApiDTO apiDTO) throws IOException {
 		return touristDAO.jejuexhibition(apiDTO);
+	}
+
+	@Override
+	public ApiDTO jejutourist_detail(ApiDTO apiDTO) throws IOException {
+		return touristDAO.jejudetail(apiDTO);
 	}
 
 }

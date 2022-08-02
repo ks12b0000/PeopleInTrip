@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>제주도 메인페이지</title>
 	<link rel="stylesheet" href="${contextPath}/resources/css/tourist/travler.css">
 	<script type="text/javascript">
 	var slideIndex = 0; //slide index

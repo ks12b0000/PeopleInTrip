@@ -37,4 +37,9 @@ public class TouristDAO {
 	public List<ApiDTO> jejuexhibition(ApiDTO apiDTO) {
 		return sqlSession.selectList("mapper.tourist.jejuexhibition");
 	}
+
+	// 제주도 여행지 상세페이지
+	public ApiDTO jejudetail(ApiDTO apiDTO) {
+		return sqlSession.selectOne("mapper.tourist.jejudetail", apiDTO);
+	}
 }
