@@ -20,4 +20,7 @@ public interface TouristService {
 	// 제주도 전시관 페이지 리스트
 	public List<ApiDTO> jejuexhibition_list(ApiDTO apiDTO) throws IOException;
 
+	// 제주도 여행지 상세페이지
+	public ApiDTO jejutourist_detail(ApiDTO apiDTO) throws IOException;
+
 }

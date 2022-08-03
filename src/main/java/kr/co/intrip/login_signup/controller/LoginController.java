@@ -164,6 +164,7 @@ public class LoginController {
 			returnDTO = memberService.loginMemberByGoogle(memberDTO);
 			session.setAttribute("id", returnDTO.getId());         
 			rttr.addFlashAttribute("mmemberDTO", returnDTO);
+			session.setAttribute("user", returnDTO);
 			session.setAttribute("isLogIn", true);
 			log.info("구글 로그인 성공[DB존재X]");
 		}
@@ -172,6 +173,7 @@ public class LoginController {
 			memberService.loginMemberByGoogle(memberDTO);
 			session.setAttribute("id", returnDTO.getId());         
 			rttr.addFlashAttribute("mmemberDTO", returnDTO);
+			session.setAttribute("user", returnDTO);
 			session.setAttribute("isLogIn", true);
 			log.info("구글 로그인 성공[DB존재O]");
 		}   
@@ -186,7 +188,7 @@ public class LoginController {
 		MemberDTO userInfo = memberService.getUserInfo(access_Token);
 		log.info("카카오 로그인 성공");
 		log.info("kakao user : " + userInfo);
-      
+		session.setAttribute("user", userInfo);
 		session.setAttribute("email", userInfo.getEmail());
 		session.setAttribute("id", userInfo.getId());
 		session.setAttribute("isLogIn", true);
@@ -321,6 +323,7 @@ public class LoginController {
         	returnDTO = memberService.loginMemberByNaver(memberDTO);
         	session.setAttribute("id", returnDTO.getId());         
         	rttr.addFlashAttribute("mmemberDTO", returnDTO);
+        	session.setAttribute("user", returnDTO);
         	session.setAttribute("isLogIn", true);
         	log.info("네이버 로그인 성공[DB존재X]");
         }
@@ -329,6 +332,7 @@ public class LoginController {
         	memberService.loginMemberByNaver(memberDTO);
         	session.setAttribute("id", returnDTO.getId());         
         	rttr.addFlashAttribute("mmemberDTO", returnDTO);
+        	session.setAttribute("user", returnDTO);
         	session.setAttribute("isLogIn", true);
         	log.info("네이버 로그인 성공[DB존재O]");
         }   

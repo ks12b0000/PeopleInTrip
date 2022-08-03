@@ -20,8 +20,8 @@
   	<!-- 관광지 api db에 저장용 -->
   	<insert id="touristadd">
 		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo">		
-			insert into P_tourist (alltag, label, label2, title, address, tag, introduction, imgpath)
-			values (#{pvo.alltag, jdbcType=VARCHAR}, #{pvo.label, jdbcType=VARCHAR}, #{pvo.label2, jdbcType=VARCHAR}, #{pvo.title, jdbcType=VARCHAR}, #{pvo.address, jdbcType=VARCHAR}, #{pvo.tag, jdbcType=VARCHAR}, #{pvo.introduction, jdbcType=VARCHAR}, #{pvo.imgpath, jdbcType=VARCHAR})
+			insert into P_tourist (alltag, label, label2, title, address, tag, introduction, imgpath, contentsid, phoneno)
+			values (#{pvo.alltag, jdbcType=VARCHAR}, #{pvo.label, jdbcType=VARCHAR}, #{pvo.label2, jdbcType=VARCHAR}, #{pvo.title, jdbcType=VARCHAR}, #{pvo.address, jdbcType=VARCHAR}, #{pvo.tag, jdbcType=VARCHAR}, #{pvo.introduction, jdbcType=VARCHAR}, #{pvo.imgpath, jdbcType=VARCHAR}, #{pvo.contentsid, jdbcType=VARCHAR}, #{pvo.phoneno, jdbcType=VARCHAR})
 		</foreach>
 	</insert>
 	
@@ -46,6 +46,14 @@
 		<![CDATA[
 			SELECT * FROM P_TOURIST 
 			WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
+		]]>
+	</select>	
+	
+	<!-- 제주도 여행지 상세페이지  -->
+	<select id="jejudetail" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="String">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE contentsid = #{contentsid,jdbcType=VARCHAR}
 		]]>
 	</select>
  </mapper>
