@@ -98,7 +98,7 @@
         	<button class="write-form-write" onclick="location.href='${contextPath}/board/community-acco'">목록보기</button>
         	<c:if test="${user.id == board.id }">
         	<button type="button" class="write-form-edit" onclick="location.href='${contextPath}/board/modBoard.do?post_num=${board.post_num }'">수정</button>
-        	<button type="button" class="write-form-delete" onclick="location.href='${contextPath}/board/removeBoard.do?post_num=${board.post_num }'">삭제</button>
+        	<button type="button" class="write-form-delete" onclick="location.href='${contextPath}/board/removeBoard1.do?post_num=${board.post_num }'">삭제</button>
         	</c:if>
         </div>
     </section>

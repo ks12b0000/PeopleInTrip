@@ -34,16 +34,14 @@
 			<br><br>
 			<tr>
 				<th><h4><strong>정보게시판</strong></h4></th>
-				<th><b class="text-muted">동행구해요</b></th>
+				
 				<th></th>
 				<th></th>
 				<th></th>
 				<th></th>
 				<th>
 					<div class="btn-group">
-  						<button type="button" class="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    						전체
-  						</button>
+  	
   						
 				</th>
 			</tr>
@@ -77,7 +75,7 @@
 					<tbody>
 						<tr>
 							<td>${boards.post_num }</td>
-							<td><a href="${contextPath}/board/community_detail.do?post_num=${boards.post_num}">
+							<td><a href="${contextPath}/board/community_detail2.do?post_num=${boards.post_num}">
 								<c:out value="${boards.post_title }"></c:out> 
 							</a></td>
 							<td>${boards.id }</td>

@@ -2,28 +2,28 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="mapper.board">
-   <resultMap type="boardDTO" id="boardResult">
-      <result property="post_num" column="post_num"/>
-      <result property="id" column="id"/>
-      
-      <result property="post_cate" column="post_cate"/>
-      <result property="post_title" column="post_title"/>
-      <result property="post_content" column="post_content"/>
-      <result property="post_date" column="post_date"/>
-      <result property="visitcount" column="visitcount"/>
-      <result property="count_comment" column="count_comment"/>
-      </resultMap>
-      
-      <resultMap type="imageDTO" id="imgResult">
-      <result property="imageFileNO" column="imageFileNO" />
-      <result property="imageFileName" column="imageFileName" />
-      <result property="post_num" column="post_num" />
-   
-   </resultMap>
-   
-   <select id="selectAllBoardList" resultMap="boardResult">
+	<resultMap type="boardDTO" id="boardResult">
+		<result property="post_num" column="post_num" />
+		<result property="id" column="id" />
+
+		<result property="post_cate" column="post_cate" />
+		<result property="post_title" column="post_title" />
+		<result property="post_content" column="post_content" />
+		<result property="post_date" column="post_date" />
+		<result property="visitcount" column="visitcount" />
+		<result property="count_comment" column="count_comment" />
+	</resultMap>
+
+	<resultMap type="imageDTO" id="imgResult">
+		<result property="imageFileNO" column="imageFileNO" />
+		<result property="imageFileName" column="imageFileName" />
+		<result property="post_num" column="post_num" />
+
+	</resultMap>
+	<!-- 리스트 -->
+	<select id="selectAllBoardList" resultMap="boardResult">
       <![CDATA[
          SELECT POST_NUM      ,
                id          ,
@@ -34,9 +34,9 @@
           WHERE POST_CATE ='1'
          ORDER by POST_NUM desc      
       ]]>
-   </select>
-   
-   <select id="selectAllBoardList1" resultMap="boardResult">
+	</select>
+
+	<select id="selectAllBoardList1" resultMap="boardResult">
       <![CDATA[
          SELECT POST_NUM      ,
                id          ,
@@ -47,66 +47,122 @@
           WHERE POST_CATE ='2'
          ORDER by POST_NUM desc      
       ]]>
-   </select>
-   
+	</select>
 
-   <!-- 상세보기 -->
-   <select id="selectBoard"  parameterType="java.lang.Integer" resultType="boardDTO">
+
+	<!-- 상세보기 -->
+	<select id="selectBoard" parameterType="java.lang.Integer"
+		resultType="boardDTO">
       <![CDATA[
          SELECT * FROM P_BOARD
          WHERE POST_NUM = #{post_num}   
       ]]>
-   </select>
-   
-   <!-- 게시물 등록 -->
-   <insert id="insertBoard" parameterType="java.util.Map" >
+	</select>
+
+	<!-- 게시물 등록 -->
+	<insert id="insertBoard" parameterType="java.util.Map">
    <![CDATA[
       INSERT INTO P_BOARD
       (POST_NUM, ID, POST_TITLE, POST_CONTENT,POST_CATE)
       VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR},'1')
    ]]>
-   </insert>
-   
-   <insert id="insertBoard1" parameterType="java.util.Map" >
+	</insert>
+
+	<insert id="insertBoard1" parameterType="java.util.Map">
    <![CDATA[
       INSERT INTO P_BOARD
       (POST_NUM, ID, POST_TITLE, POST_CONTENT,POST_CATE)
       VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR},'2')
    ]]>
-   </insert>
-   
-   <select id="selectNewpost_num" resultType="int">    <!-- 추가하는 새글에 대한 글번호 가져옴 -->
+	</insert>
+
+	<select id="selectNewpost_num" resultType="int">    <!-- 추가하는 새글에 대한 글번호 가져옴 -->
       <![CDATA[    
          SELECT nvl(MAX(post_num),0) + 1 FROM P_BOARD
       ]]>
-   </select>
-   
-   <select id="selectNewImageFileNO" resultType="int">
+	</select>
+
+	<select id="selectNewImageFileNO" resultType="int">
       <![CDATA[   
          SELECT nvl(MAX(imageFileNO),0) FROM P_imageFile
-      ]]>   
-   </select>
-   
-   <select id="selectImageFileList" resultMap="imgResult" parameterType="int">
+      ]]>
+	</select>
+
+	<select id="selectImageFileList" resultMap="imgResult"
+		parameterType="int">
       <![CDATA[
          SELECT * FROM P_imageFile
          WHERE POST_NUM = #{post_num}
          ORDER BY IMAGEFILENO      
       ]]>
-   </select>
-   
-   <insert id="insertNewImage" parameterType="java.util.Map">
-      <!-- 한꺼번에 여러 개의 레코드 추가 -->
-      <foreach collection="list" item="item" open="INSERT ALL" separator=" " close="SELECT * FROM DUAL">
-         INTO t_imageFile(imageFileNO, imageFileName, post_num, regDate)
-         VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
-      </foreach>
-   </insert>
-   
-   <select id="selectpost_num" resultType="boardDTO" parameterType="int">
+	</select>
+
+	<insert id="insertNewImage" parameterType="java.util.Map">
+		<!-- 한꺼번에 여러 개의 레코드 추가 -->
+		<foreach collection="list" item="item" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO P_imageFile(imageFileNO, imageFileName, post_num, regDate)
+			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		</foreach>
+	</insert>
+
+	<select id="selectpost_num" resultType="boardDTO"
+		parameterType="int">
       <![CDATA[
          SELECT * FROM P_BOARD
          WHERE POST_NUM = #{post_num}   
       ]]>
-   </select>
+	</select>
+
+
+	<!-- 게시글 수정 -->
+	<update id="updateBoard" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE P_BOARD 
+				SET POST_TITLE = #{post_title}
+					,POST_CONTENT = #{post_content}
+				WHERE POST_NUM = #{post_num}		
+		]]>
+	</update>
+
+	<update id="updateImageFile" parameterType="java.util.List">
+		<foreach collection="list" item="item" separator=";"
+			open="DECLARE BEGIN" close="; END;">
+			<choose>
+				<when test="item.imageFileName != null">
+					UPDATE P_imageFile
+					SET IMAGEFILENAME = #{item.imageFileName}
+					WHERE
+					POST_NUM = #{item.post_num}
+					AND IMAGEFILENO = #{item.imageFileNO}
+				</when>
+				<otherwise></otherwise>
+			</choose>
+		</foreach>
+	</update>
+
+	<insert id="insertModNewImage" parameterType="java.util.Map">
+		<foreach collection="list" item="item" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO P_imageFile (imageFileNO, imageFileName,
+			post_num, regDate)
+			VALUES
+			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		</foreach>
+	</insert>
+	
+	<!-- 글삭제 -->
+	<delete id="deleteBoard" parameterType="int">
+		<![CDATA[
+			DELETE FROM P_BOARD
+			WHERE POST_NUM	= #{post_num}
+		]]>
+	</delete>
+	
+	<delete id="deleteModImage" parameterType="imageDTO">
+		DELETE FROM P_imageFile
+		WHERE ARTICLENO = #{articleNO}
+		AND IMAGEFILENO = #{imageFileNO}		
+	</delete>
+	
 </mapper>
