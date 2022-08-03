@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0a9924a1f6188f938003ae8f12bf5ea6"></script>
 	<link rel="stylesheet" href="${contextPath}/resources/css/tourist/tourist_View.css?ver=123"/>
 	<script type="text/javascript" src="${contextPath}/resources/js/tourist/tourist_View.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -47,7 +48,7 @@
     </div>
     
     <div class="title_heart">
-        <span>조회수 [조회수]&nbsp;&nbsp;</span>
+        <span>조회수 : [${plist.viewcount}]&nbsp;&nbsp;</span>
         <a> <img alt="찜" src="https://cdn-icons-png.flaticon.com/512/6704/6704230.png" width="20" height="auto"> </a>
     </div> 
     <div class="img_big">
@@ -80,9 +81,7 @@
             <p>${plist.introduction}</p>
         </div>
     </div>
-    <div class="map">
-        <img alt="지도" src="../resources/images/tourist/donnaeko_map.PNG">
-    </div>
+    <div id="map" style="width:100%; height:500px;"></div>
     
     <!-- 댓글창 -->
     <div id="outter">	 
@@ -105,4 +104,42 @@
     </div>
   </div>
 </body>
+<script type="text/javascript">
+//지도 설정
+var mapContainer = document.getElementById('map'),
+	mapOption = { 
+	    center: new kakao.maps.LatLng(${plist.latitude},${plist.longitude}),	// 지도의 중심 좌표(임의 설정)
+	    level: 9					// 지도의 확대 레벨(임의 설정)
+	};
+    
+//설정한 지도 생성
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+var position  = new kakao.maps.LatLng(${plist.latitude},${plist.longitude}); 
+
+//마커를 생성합니다
+var marker = new kakao.maps.Marker({
+    position: position
+});
+
+marker.setMap(map);
+
+var iwContent = '<div style="padding:20px; text-align: center; white-space: nowrap;">'+"<strong>${plist.title}</strong>"+'<br>'+'<strong>위치 : </strong>'+"<strong>${plist.address}</strong>"+'</div>';
+//인포윈도우를 생성합니다
+var infowindow = new kakao.maps.InfoWindow({
+    content : iwContent
+});
+
+//마커에 마우스오버 이벤트를 등록합니다
+kakao.maps.event.addListener(marker, 'mouseover', function() {
+  // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+    infowindow.open(map, marker);
+});
+
+// 마커에 마우스아웃 이벤트를 등록합니다
+kakao.maps.event.addListener(marker, 'mouseout', function() {
+    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+    infowindow.close();
+});
+</script>
 </html>

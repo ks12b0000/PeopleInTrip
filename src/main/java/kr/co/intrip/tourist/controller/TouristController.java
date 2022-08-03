@@ -83,30 +83,24 @@ public class TouristController {
 		return plist;
 	}
 	
-	/*
-	 * //관광지 상세보기
-	 * 
-	 * @RequestMapping(value = "tourist/tourist_View") public ModelAndView
-	 * tourist_View (HttpServletRequest request, HttpServletResponse response)
-	 * throws Exception { ModelAndView mav = new ModelAndView();
-	 * 
-	 * String viewName = (String) request.getAttribute("viewName");
-	 * System.out.println(viewName);
-	 * 
-	 * mav.setViewName("tourist/tourist_View");
-	 * 
-	 * return mav; }
-	 */
-	
 	// 제주도 여행지 상세페이지 
 	@GetMapping("tourist/tourist_View")
 	public ApiDTO jejutourist_detail(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
 		String schAirportCode = "alltag";
-					
-		ApiDTO plist = tourservice.jejutourist_detail(apiDTO);
+		tourservice.jejutourist_viewcount(apiDTO);		
+		ApiDTO plist = tourservice.jejutourist_detail(apiDTO);		
 		model.addAttribute("plist", plist);
 		return plist;
 	}
 	
+	// 제주도 여행지 조회순 페이지 리스트 
+	@GetMapping("tourist/jejutourist_Sort")
+	public List<ApiDTO> jejutourist_Sort(ApiDTO apiDTO,Model model) throws Exception {
+		String schAirportCode = "alltag";
+		
+		List<ApiDTO> plist = tourservice.jejutourist_Sort(apiDTO);
+		model.addAttribute("plist", plist);
+		return plist;
+	}
 	
 }

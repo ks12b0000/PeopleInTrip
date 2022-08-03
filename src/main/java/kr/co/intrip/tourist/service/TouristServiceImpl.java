@@ -98,6 +98,14 @@ public class TouristServiceImpl implements TouristService {
 					pvo.setIntroduction(iobj.getString("introduction"));
 				}
 				
+				if(!(itemArray.getJSONObject(i).isNull("latitude"))) {
+					pvo.setLatitude(iobj.getDouble("latitude"));
+				}
+				
+				if(!(itemArray.getJSONObject(i).isNull("longitude"))) {
+					pvo.setLongitude(iobj.getDouble("longitude"));
+				}
+				
 				if(!(itemArray.getJSONObject(i).isNull("phoneno"))) {
 					pvo.setPhoneno(iobj.getString("phoneno"));
 				}
@@ -135,9 +143,21 @@ public class TouristServiceImpl implements TouristService {
 		return touristDAO.jejuexhibition(apiDTO);
 	}
 
+	// 제주도 통합 상세페이지
 	@Override
 	public ApiDTO jejutourist_detail(ApiDTO apiDTO) throws IOException {
 		return touristDAO.jejudetail(apiDTO);
+	}
+
+	// 제주도 통합 상세페이지 조회수 증가
+	@Override
+	public int jejutourist_viewcount(ApiDTO apiDTO) throws IOException {
+		return touristDAO.viewcount(apiDTO);
+	}
+
+	@Override
+	public List<ApiDTO> jejutourist_Sort(ApiDTO apiDTO) throws IOException {
+		return touristDAO.lookupSort(apiDTO);
 	}
 
 }
