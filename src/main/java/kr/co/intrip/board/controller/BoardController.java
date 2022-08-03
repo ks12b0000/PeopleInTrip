@@ -23,6 +23,14 @@ public interface BoardController {
 
 	public ResponseEntity addNewArticle1(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
+	public ResponseEntity modBoard(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+			throws Exception;
+	public ModelAndView update(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public void removeMod(HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ResponseEntity removeBoard(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ResponseEntity removeBoard1(int post_num, HttpServletRequest request, HttpServletResponse response)
+			throws Exception;
+	public ModelAndView viewdetail1(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 	
 	
