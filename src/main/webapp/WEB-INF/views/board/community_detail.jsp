@@ -63,7 +63,7 @@
         		${board.post_title } 
         	</div>
         	<div class="write-titlesub">
-        		${board.id } | <fmt:formatDate value="${board.post_date }"/>| 추천 : 0 | 조회수 : 1 
+        		${board.id } | <fmt:formatDate value="${board.post_date }"/>| 추천 : 0 | 조회수 : ${board.visitcount} 
         	</div>
         </div>
         <div>

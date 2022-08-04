@@ -35,6 +35,7 @@ public interface BoardDAO {
 
 	public void deleteBoard(int post_num);
 
+	public void visitcount(int post_num);
 	
 
 }

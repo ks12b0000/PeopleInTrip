@@ -110,4 +110,10 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.deleteBoard(post_num);
 		
 	}
+	//조회수
+	@Override
+	public void visitcount(int post_num) throws Exception {
+		boardDAO.visitcount(post_num);
+		
+	}
 }

@@ -22,6 +22,17 @@
 		<result property="post_num" column="post_num" />
 
 	</resultMap>
+	
+	<!-- 조회수 -->
+	<update id="visitcount">
+	UPDATE
+		P_BOARD
+	SET
+		VISITCOUNT = visitcount + 1
+	WHERE
+		POST_NUM = #{post_num}
+	</update>
+	
 	<!-- 리스트 -->
 	<select id="selectAllBoardList" resultMap="boardResult">
       <![CDATA[
@@ -29,7 +40,8 @@
                id          ,
                POST_TITLE    ,
                POST_DATE,
-               POST_CATE
+               POST_CATE,
+               VISITCOUNT
          FROM P_BOARD 
           WHERE POST_CATE ='1'
          ORDER by POST_NUM desc      
@@ -42,7 +54,8 @@
                id          ,
                POST_TITLE    ,
                POST_DATE,
-               POST_CATE
+               POST_CATE,
+               VISITCOUNT
          FROM P_BOARD 
           WHERE POST_CATE ='2'
          ORDER by POST_NUM desc      

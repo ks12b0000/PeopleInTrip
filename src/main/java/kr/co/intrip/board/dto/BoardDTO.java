@@ -15,8 +15,8 @@ public class BoardDTO {
 	private String post_title;
 	private String post_content;
 	private Date post_date;
-	private String visitcount;
-	private String count_comment;
+	private int visitcount;
+	private int count_comment;
 	private int post_cate;
 	
 	
@@ -32,12 +32,12 @@ public class BoardDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BoardDTO(int post_num, String id, String post_title, String post_content, int board_num) {
+	public BoardDTO(int post_num, String id, String post_title, String post_content, int board_num,int visitcount) {
 		this.post_num = post_num;
 		this.id = id;
 		this.post_title = post_title;
 		this.post_content= post_content;
-		
+		this.visitcount = visitcount;
 	}
 
 	public int getPost_num() {
@@ -82,21 +82,25 @@ public class BoardDTO {
 		this.post_date = post_date;
 	}
 
-	public String getVisitcount() {
+	
+
+	public int getVisitcount() {
 		return visitcount;
 	}
 
-	public void setVisitcount(String visitcount) {
+	public void setVisitcount(int visitcount) {
 		this.visitcount = visitcount;
 	}
 
-	public String getCount_comment() {
+	public int getCount_comment() {
 		return count_comment;
 	}
 
-	public void setCount_comment(String count_comment) {
+	public void setCount_comment(int count_comment) {
 		this.count_comment = count_comment;
 	}
+
+	
 
 
 
