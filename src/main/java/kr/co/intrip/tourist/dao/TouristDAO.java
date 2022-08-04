@@ -38,8 +38,17 @@ public class TouristDAO {
 		return sqlSession.selectList("mapper.tourist.jejuexhibition");
 	}
 
-	// 제주도 여행지 상세페이지
+	// 제주도 통합 상세페이지
 	public ApiDTO jejudetail(ApiDTO apiDTO) {
 		return sqlSession.selectOne("mapper.tourist.jejudetail", apiDTO);
+	}
+	
+	// 제주도 통합 상세페이지 조회수 증가
+	public int viewcount(ApiDTO apiDTO) {
+		return sqlSession.update("mapper.tourist.viewcount", apiDTO);
+	}
+
+	public List<ApiDTO> lookupSort(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.lookupSort");
 	}
 }

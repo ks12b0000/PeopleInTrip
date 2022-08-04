@@ -111,8 +111,11 @@ a {
 }
 
 .tourpost_title {
-	font-size: 25px;
+	font-size: 27px;
 	font-weight: bolder;
+}
+.tourpost_title > a {
+	color: black;
 }
 .tourpost_place {
 	font-size: 18px;
