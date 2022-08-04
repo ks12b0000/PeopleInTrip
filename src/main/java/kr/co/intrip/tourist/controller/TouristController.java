@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,7 +56,7 @@ public class TouristController {
 
 	// 제주도 여행지 페이지 리스트
 	@GetMapping("tourist/tourist_PageList")
-	public List<ApiDTO> jejutourist_List(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
+	public List<ApiDTO> jejutourist_List(ApiDTO apiDTO, Model model) throws Exception {
 		String schAirportCode = "alltag";
 			
 		List<ApiDTO> plist = tourservice.jejutourist_list(apiDTO);
@@ -65,7 +66,7 @@ public class TouristController {
 	
 	// 제주도 축제 페이지 리스트
 	@GetMapping("tourist/festival_PageList")
-	public List<ApiDTO> jejufestival_List(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
+	public List<ApiDTO> jejufestival_List(ApiDTO apiDTO, Model model) throws Exception {
 		String schAirportCode = "alltag";
 			
 		List<ApiDTO> plist = tourservice.jejufestival_list(apiDTO);
@@ -75,7 +76,7 @@ public class TouristController {
 	
 	// 제주도 전시관 페이지 리스트
 	@GetMapping("tourist/exhibition_PageList")
-	public List<ApiDTO> jejuexhibition_List(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
+	public List<ApiDTO> jejuexhibition_List(ApiDTO apiDTO, Model model) throws Exception {
 		String schAirportCode = "alltag";
 				
 		List<ApiDTO> plist = tourservice.jejuexhibition_list(apiDTO);
@@ -85,7 +86,7 @@ public class TouristController {
 	
 	// 제주도 여행지 상세페이지 
 	@GetMapping("tourist/tourist_View")
-	public ApiDTO jejutourist_detail(ApiDTO apiDTO, HttpServletRequest request,Model model) throws Exception {
+	public ApiDTO jejutourist_detail(ApiDTO apiDTO, Model model) throws Exception {
 		String schAirportCode = "alltag";
 		tourservice.jejutourist_viewcount(apiDTO);		
 		ApiDTO plist = tourservice.jejutourist_detail(apiDTO);		
@@ -93,14 +94,35 @@ public class TouristController {
 		return plist;
 	}
 	
-	// 제주도 여행지 조회순 페이지 리스트 
-	@GetMapping("tourist/jejutourist_Sort")
-	public List<ApiDTO> jejutourist_Sort(ApiDTO apiDTO,Model model) throws Exception {
+	// 제주도 여행지 페이지 리스트 Sorting 기능
+	@PostMapping("tourist/tourist_PageList")
+	public List<ApiDTO> jejutourist_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws Exception {
 		String schAirportCode = "alltag";
 		
-		List<ApiDTO> plist = tourservice.jejutourist_Sort(apiDTO);
+		List<ApiDTO> plist = tourservice.jejutourist_Sort(apiDTO, model, request);
 		model.addAttribute("plist", plist);
-		return plist;
+		return plist;		
 	}
+	
+	// 제주도 축제 페이지 리스트 Sorting 기능
+	@PostMapping("tourist/festival_PageList")
+	public List<ApiDTO> jejufestival_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws Exception {
+		String schAirportCode = "alltag";
+			
+		List<ApiDTO> plist = tourservice.jejufestival_Sort(apiDTO, model, request);
+		model.addAttribute("plist", plist);
+		return plist;		
+	}
+	
+	// 제주도 전시관 페이지 리스트 Sorting 기능
+	@PostMapping("tourist/exhibition_PageList")
+	public List<ApiDTO> jejuexhibition_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws Exception {
+		String schAirportCode = "alltag";
+		
+		List<ApiDTO> plist = tourservice.jejuexhibition_Sort(apiDTO, model, request);
+		model.addAttribute("plist", plist);
+		return plist;		
+	}
+	
 	
 }

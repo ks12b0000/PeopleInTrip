@@ -4,18 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
  <mapper namespace="mapper.tourist">
-  	<resultMap type="touristDTO" id="touristResult">
- 		<result property="id" column="id" />
- 		<result property="tour_title" column="tour_title" /> 	
- 		<result property="tour_content" column="tour_content" /> 	
- 		<result property="tour_date" column="tour_date" /> 	
- 		<result property="visitcount" column="visitcount" /> 	
- 		<result property="count_star" column="count_star" /> 	
- 		<result property="count_commnet" column="count_commnet" /> 	
- 		<result property="count_heart" column="count_heart" /> 
- 		<result property="count_heart" column="ofile" /> 
- 		<result property="count_heart" column="sfile" /> 				
-  	</resultMap>
   	
   	<!-- 관광지 api db에 저장용 -->
   	<insert id="touristadd">
@@ -67,10 +55,28 @@
 	</update>
 	
 	<!-- 제주도 여행지 조회순 페이지 리스트  -->
-	<select id="lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+	<select id="jejutourist_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO">
 		<![CDATA[
 			SELECT * FROM P_TOURIST 
 			WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%' 
+			ORDER by viewcount desc
+		]]>
+	</select>	
+	
+	<!-- 제주도 축제 조회순 페이지 리스트  -->
+	<select id="jejufestival_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE label LIKE '%축제%' 
+			ORDER by viewcount desc
+		]]>
+	</select>	
+	
+	<!-- 제주도 전시관 조회순 페이지 리스트  -->
+	<select id="jejuexhibition_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE alltag LIKE '%전시%' AND label LIKE '관광지' 
 			ORDER by viewcount desc
 		]]>
 	</select>	

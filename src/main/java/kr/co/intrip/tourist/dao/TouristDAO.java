@@ -48,7 +48,18 @@ public class TouristDAO {
 		return sqlSession.update("mapper.tourist.viewcount", apiDTO);
 	}
 
-	public List<ApiDTO> lookupSort(ApiDTO apiDTO) {
-		return sqlSession.selectList("mapper.tourist.lookupSort");
+	// 제주도 여행지 페이지 조회수별 리스트 Sorting 기능
+	public List<ApiDTO> jejutourist_lookupSort(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.jejutourist_lookupSort");
+	}
+	
+	// 제주도 축제 페이지 조회수별 리스트 Sorting 기능
+	public List<ApiDTO> jejufestival_lookupSort(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.jejufestival_lookupSort");
+	}
+		
+	// 제주도 전시관 페이지 조회수별 리스트 Sorting 기능
+	public List<ApiDTO> jejuexhibition_lookupSort(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.jejuexhibition_lookupSort");
 	}
 }

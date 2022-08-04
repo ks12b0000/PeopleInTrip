@@ -34,17 +34,19 @@
 		</nav>
 	</header>
 		<div id="tourPage_div">		
-		<form action="${contextPath}/tourist/jejutourist_Sort">
-			<div name="tour_div1" id="tour_div1">
-				정렬 &nbsp; 
-				<select id="tour_allign" name="list_option" onchange="Change(1)">
-					<option value="1">찜순↓</option>
-					<option value="2">댓글순↓</option>
-					<option value="3">조회순↓</option>
-					<option value="4">추천순↓</option>
-				</select>
-			</div>
-		</form>		
+			<form action="${contextPath}/tourist/tourist_PageList" method="post">
+				<div name="tour_div1" id="tour_div1">
+				<Strong>정렬 </Strong> &nbsp;
+					<select id="tour_allign" name="value" onchange="Change(1)">
+						<option value="0" selected>기본순↓</option>
+						<option value="1" <c:if test="${value == 1}">selected="selected"</c:if>>조회순↓</option>
+						<option value="2" <c:if test="${value == 2}">selected="selected"</c:if>>댓글순↓</option>
+						<option value="3" <c:if test="${value == 3}">selected="selected"</c:if>>찜순↓</option>
+						<option value="4" <c:if test="${value == 4}">selected="selected"</c:if>>추천순↓</option>
+					</select>
+					<input type="submit" value="검색" style="background-color: #9966ff; border:1px solid #9966ff; width: 60px; height: 30px; font-size: 16px; cursor: pointer; color: white;  " />
+				</div>	
+			</form>
 			<div name="tour_div2" id="tour_div2">
 			<c:forEach var="plist" items="${plist}">
 				<table>

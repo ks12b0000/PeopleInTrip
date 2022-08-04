@@ -8,10 +8,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
@@ -155,9 +159,73 @@ public class TouristServiceImpl implements TouristService {
 		return touristDAO.viewcount(apiDTO);
 	}
 
+	// 제주도 여행지 페이지 리스트 Sorting 기능
 	@Override
-	public List<ApiDTO> jejutourist_Sort(ApiDTO apiDTO) throws IOException {
-		return touristDAO.lookupSort(apiDTO);
+	public List<ApiDTO> jejutourist_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws IOException {
+		int value = Integer.parseInt(request.getParameter("value"));
+		model.addAttribute("value", value);
+		System.out.println(value);
+		if (value == 0) {
+			return touristDAO.jejutourist(apiDTO);
+		}
+		else if (value == 1) {
+			return touristDAO.jejutourist_lookupSort(apiDTO);
+		}
+		else if (value == 2) {
+			return touristDAO.jejutourist_lookupSort(apiDTO);
+		}	
+		else if (value == 3) {
+			return touristDAO.jejutourist_lookupSort(apiDTO);
+		}
+		else {
+			return touristDAO.jejutourist_lookupSort(apiDTO);		
+		}
+	}
+	
+	// 제주도 축제 페이지 리스트 Sorting 기능
+	@Override
+	public List<ApiDTO> jejufestival_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws IOException {
+		int value = Integer.parseInt(request.getParameter("value"));
+		model.addAttribute("value", value);
+		System.out.println(value);
+		if (value == 0) {
+			return touristDAO.jejufestival(apiDTO);
+		}
+		else if (value == 1) {
+			return touristDAO.jejufestival_lookupSort(apiDTO);
+		}
+		else if (value == 2) {
+			return touristDAO.jejufestival_lookupSort(apiDTO);
+		}	
+		else if (value == 3) {
+			return touristDAO.jejufestival_lookupSort(apiDTO);
+		}
+		else {
+			return touristDAO.jejufestival_lookupSort(apiDTO);		
+		}
+	}
+		
+	// 제주도 전시관 페이지 리스트 Sorting 기능
+	@Override
+	public List<ApiDTO> jejuexhibition_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws IOException {
+		int value = Integer.parseInt(request.getParameter("value"));
+		model.addAttribute("value", value);
+		System.out.println(value);
+		if (value == 0) {
+			return touristDAO.jejuexhibition(apiDTO);
+		}
+		else if (value == 1) {
+			return touristDAO.jejuexhibition_lookupSort(apiDTO);
+		}
+		else if (value == 2) {
+			return touristDAO.jejuexhibition_lookupSort(apiDTO);
+		}	
+		else if (value == 3) {
+			return touristDAO.jejuexhibition_lookupSort(apiDTO);
+		}
+		else {
+			return touristDAO.jejuexhibition_lookupSort(apiDTO);		
+		}
 	}
 
 }
