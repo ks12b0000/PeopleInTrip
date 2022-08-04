@@ -20,8 +20,8 @@ public interface BoardService {
 	public int insertBoard1(Map boardMap) throws Exception;
 	public void modBoard(Map<String, Object> boardMap) throws Exception;
 	public void removeModImage(ImageDTO imageDTO);
-	void removeBoard(int post_num) throws Exception;
-	
+	public void removeBoard(int post_num) throws Exception;
+	public void visitcount(int post_num) throws Exception;
 
 		
 	

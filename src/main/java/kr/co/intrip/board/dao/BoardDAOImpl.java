@@ -17,6 +17,13 @@ public class BoardDAOImpl implements BoardDAO {
 	@Autowired
 	SqlSession sqlSession;
 	
+	//조회수
+	@Override
+	public void visitcount(int post_num) {
+		sqlSession.update("mapper.board.visitcount",post_num);
+		
+	}
+	
 	//리스트
 	@Override
 	public List<BoardDTO> selectAllBoardList() throws DataAccessException {
@@ -155,5 +162,6 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.delete("mapper.board.deleteBoard", post_num);
 		
 	}
+	
 
 }

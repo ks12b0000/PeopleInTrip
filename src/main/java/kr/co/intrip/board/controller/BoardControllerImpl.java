@@ -55,6 +55,8 @@ public class BoardControllerImpl implements BoardController {
 	public ModelAndView viewdetail(@RequestParam(value = "post_num") int post_num, // 조회할 글 번호를 가져옴
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		// 조회수 증가
+		boardService.visitcount(post_num);
 		String viewName = (String) request.getAttribute("viewName");
 
 		Map<String, Object> boardMap = boardService.viewdetail(post_num); // 조회할 글 정보,이미지파일 정보를 articleMap에 설정
@@ -71,6 +73,7 @@ public class BoardControllerImpl implements BoardController {
 	public ModelAndView viewdetail1(@RequestParam(value = "post_num") int post_num, // 조회할 글 번호를 가져옴
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		boardService.visitcount(post_num);
 		String viewName = (String) request.getAttribute("viewName");
 
 		Map<String, Object> boardMap = boardService.viewdetail(post_num); // 조회할 글 정보,이미지파일 정보를 articleMap에 설정
@@ -618,10 +621,10 @@ public class BoardControllerImpl implements BoardController {
 		
 		writer.print("success");
 		
-		
-		
-		
 	}
+	
+	
+	
 
 
 }
