@@ -13,4 +13,10 @@ public class ApiDTO {
 	private String tag;
 	private String introduction;
 	private String imgpath;
+	private String contentsid;
+	private String phoneno;
+	private double latitude;
+	private double longitude;
+	private int viewcount;
+	
 }

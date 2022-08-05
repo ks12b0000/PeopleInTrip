@@ -37,4 +37,29 @@ public class TouristDAO {
 	public List<ApiDTO> jejuexhibition(ApiDTO apiDTO) {
 		return sqlSession.selectList("mapper.tourist.jejuexhibition");
 	}
+
+	// 제주도 통합 상세페이지
+	public ApiDTO jejudetail(ApiDTO apiDTO) {
+		return sqlSession.selectOne("mapper.tourist.jejudetail", apiDTO);
+	}
+	
+	// 제주도 통합 상세페이지 조회수 증가
+	public int viewcount(ApiDTO apiDTO) {
+		return sqlSession.update("mapper.tourist.viewcount", apiDTO);
+	}
+
+	// 제주도 여행지 페이지 조회수별 리스트 Sorting 기능
+	public List<ApiDTO> jejutourist_lookupSort(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.jejutourist_lookupSort");
+	}
+	
+	// 제주도 축제 페이지 조회수별 리스트 Sorting 기능
+	public List<ApiDTO> jejufestival_lookupSort(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.jejufestival_lookupSort");
+	}
+		
+	// 제주도 전시관 페이지 조회수별 리스트 Sorting 기능
+	public List<ApiDTO> jejuexhibition_lookupSort(ApiDTO apiDTO) {
+		return sqlSession.selectList("mapper.tourist.jejuexhibition_lookupSort");
+	}
 }

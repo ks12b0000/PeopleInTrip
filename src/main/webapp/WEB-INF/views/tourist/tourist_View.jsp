@@ -1,16 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="plist" value="${plist}" />
 <!DOCTYPE html>
 <html>
 <head>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0a9924a1f6188f938003ae8f12bf5ea6"></script>
 	<link rel="stylesheet" href="${contextPath}/resources/css/tourist/tourist_View.css?ver=123"/>
 	<script type="text/javascript" src="${contextPath}/resources/js/tourist/tourist_View.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<meta charset="UTF-8">
-	<title>관광지 상세보기</title>
+	<title>${plist.title} 상세페이지</title>
 </head>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg tr {text-align: center; border-bottom: 1px solid #eaeaea; border-top: 1px solid #eaeaea;}
+.tg td{font-family:Arial, sans-serif;font-size:16px;
+  overflow:hidden;padding:17px;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;  background-color:#f8f8f8;
+  font-weight:normal;overflow:hidden;padding:17px 20px;word-break:normal; white-space: nowrap;}
+</style>
 <body>
 	<jsp:include page="/header_lhj/header.jsp" flush="false" />
 	
@@ -30,78 +41,53 @@
 		</nav>
 	</header>
 	<br/><br/><br/>
+
 	<!-- 상세보기 화면 -->
     <div class="title_text">
-        <span><strong>돈내코 유원지</strong></span>
+        <span><strong>${plist.title}</strong></span>
     </div>
     
     <div class="title_heart">
-        <span>조회수 [조회수]&nbsp;&nbsp;</span>
+        <span>조회수 : [${plist.viewcount}]&nbsp;&nbsp;</span>
         <a> <img alt="찜" src="https://cdn-icons-png.flaticon.com/512/6704/6704230.png" width="20" height="auto"> </a>
     </div> 
-    <div class="img_container">
-        <div class="img_big">
-            <img src="../resources/images/tourist/donnaeko2.jpg">
-        </div>
-        <div class="img_small">
-            <div><img src="../resources/images/tourist/donnaeko2.jpg"></div>
-            <div><img src="../resources/images/tourist/donnaeko2.jpg"></div>
-            <div><img src="../resources/images/tourist/donnaeko2.jpg"></div>
-        </div>
+    <div class="img_big">
+    	<img src="${plist.imgpath}">
     </div>
+    
+    <table class="tg">
+	  <tr>
+	    <th class="tg-13ci" colspan="2"><strong>카테고리</strong></th>
+	    <td class="tg-wo29" colspan="1">${plist.label}</td>
+	  </tr>	
+	  <tr>
+	    <th class="tg-13ci" colspan="2"><strong>주소</strong></th>
+	    <td class="tg-wo29" colspan="1">${plist.address}</td>
+	  </tr>
+	  <tr>
+	    <th class="tg-13ci" colspan="2"><strong>전화번호</strong></th>
+	    <td class="tg-wo29" colspan="1">${plist.phoneno}</td>
+	  </tr>
+	  <tr>
+	    <th class="tg-13ci" colspan="2"><strong>태그</strong></th>
+	    <td class="tg-wo29" colspan="1">${plist.tag}</td>
+	  </tr>
+	</table>
     <div>
         <div class="detaile_info">
             <span><strong>상세정보</strong></span>
         </div>
         <div class="detail_text">
-            <p> 계곡 양편이 난대 상록수림으로 울창하게 덮여 있고 높이 5m의 원앙폭포 (돈내코 입구에서 1.5㎞, 20분 소요)와 
-                작은 못이 있어 그 경치가 매우 수려하다. 한라산에서 내려오는 얼음같이 차고 맑은 물이 항상 흐르고, 주변경관 
-                또한 빼어나 물맞이를 비롯한 피서지로 유명한 곳이다. 백중날 (음력 7월 보름)에는 물을 맞으면 모든 신경통이 
-                사라진다는 얘기가 있어 사람들이 가장 많이 붐빈다. 돈내코 유원지 입구에서 계곡까지 약 700m 정도에 달하는 
-                숲길은 삼기를 나무가 빽빽이 들어서 있고 중간 중간에 나무 벤치가 있어 산림욕하기에 좋다. 특히 해발 400m 
-                일대에는 희귀식물인 한란과 겨울딸기가 자생하고 있는 것으로 유명하다. 계곡 입구 건너편 300m 떨어진 도로변에 
-                야영장과 주차장, 취사장, 체력단련 시설이 잘 갖추어져 있고 향토 음식점이 있어 토종닭 등 제주 특유의 별미를 
-                맛볼 수 있다.</p>
+            <p>${plist.introduction}</p>
         </div>
     </div>
-    <div class="map">
-        <img alt="지도" src="../resources/images/tourist/donnaeko_map.PNG">
-    </div>
-    <div class="another_info">
-        <ul>
-            <li>
-                <strong>
-                    주소
-                </strong>
-                <span>
-                    제주특별자치도 서귀포시 돈내코로 137
-                </span>
-            </li>
-            <li>
-                <strong>
-                    홈페이지
-                </strong>
-                <span>
-                    <a>http://www.jeju.go.kr/hallasan/</a><br/>
-                    비짓제주 <a>https://www.visitjeju.net/u/5eW</a>
-                </span>
-            </li>
-            <li>
-                <strong>
-                    문의 및 안내
-                </strong>
-                <span>
-                    064-710-6920
-                </span>
-            </li>
-        </ul>
-    </div>	
+    <div id="map" style="width:100%; height:500px;"></div>
     
     <!-- 댓글창 -->
     <div id="outter">	 
 		  <div id="form-commentInfo">
-		  <hr align="left" style="border: solid 1px; width: 100%;">
-	        <div id="comment-count">작성된 댓글 <span id="count">(1개)</span></div>
+		  
+	        <div id="comment-count"><strong>작성된 댓글<span id="count">(1개)</span></strong></div>
 	        <div id="css1">
 	        <hr align="left" style="border: solid 1px;  width: 100%;"></div>
 	        <input type="text" id="comment_input" placeholder="댓글을 입력해 주세요.">
@@ -118,4 +104,42 @@
     </div>
   </div>
 </body>
+<script type="text/javascript">
+//지도 설정
+var mapContainer = document.getElementById('map'),
+	mapOption = { 
+	    center: new kakao.maps.LatLng(${plist.latitude},${plist.longitude}),	// 지도의 중심 좌표(임의 설정)
+	    level: 9					// 지도의 확대 레벨(임의 설정)
+	};
+    
+//설정한 지도 생성
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+var position  = new kakao.maps.LatLng(${plist.latitude},${plist.longitude}); 
+
+//마커를 생성합니다
+var marker = new kakao.maps.Marker({
+    position: position
+});
+
+marker.setMap(map);
+
+var iwContent = '<div style="padding:20px; text-align: center; white-space: nowrap;">'+"<strong>${plist.title}</strong>"+'<br>'+'<strong>위치 : </strong>'+"<strong>${plist.address}</strong>"+'</div>';
+//인포윈도우를 생성합니다
+var infowindow = new kakao.maps.InfoWindow({
+    content : iwContent
+});
+
+//마커에 마우스오버 이벤트를 등록합니다
+kakao.maps.event.addListener(marker, 'mouseover', function() {
+  // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+    infowindow.open(map, marker);
+});
+
+// 마커에 마우스아웃 이벤트를 등록합니다
+kakao.maps.event.addListener(marker, 'mouseout', function() {
+    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+    infowindow.close();
+});
+</script>
 </html>

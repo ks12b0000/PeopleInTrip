@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>    
 <meta charset="UTF-8">
-<title>관광지 페이지리스트</title>
+<title>제주도 전시관 리스트</title>
 </head>
 <body>
 	<jsp:include page="/header_lhj/header.jsp" flush="false" />
@@ -33,26 +33,28 @@
 			</ul>
 		</nav>
 	</header>
-	
-	<form name="frm_tourPage" action="#" method="get">
 		<div id="tourPage_div">
-			<div name="tour_div1" id="tour_div1">
-				정렬 &nbsp; <select id="tour_allign">
-					<option>찜 순↓</option>
-					<option>별점 순↓</option>
-					<option>댓글 순↓</option>
-				</select>
-			</div>
+			<form action="${contextPath}/tourist/exhibition_PageList" method="post">
+				<div name="tour_div1" id="tour_div1">
+				<Strong>정렬 </Strong> &nbsp;
+					<select id="tour_allign" name="value" onchange="Change(1)">
+						<option value="0" selected>기본순↓</option>
+						<option value="1" <c:if test="${value == 1}">selected="selected"</c:if>>조회순↓</option>
+						<option value="2" <c:if test="${value == 2}">selected="selected"</c:if>>댓글순↓</option>
+						<option value="3" <c:if test="${value == 3}">selected="selected"</c:if>>찜순↓</option>
+						<option value="4" <c:if test="${value == 4}">selected="selected"</c:if>>추천순↓</option>
+					</select>
+					<input type="submit" value="검색" style="background-color: #9966ff; border:1px solid #9966ff; width: 60px; height: 30px; font-size: 16px; cursor: pointer; color: white;  " />
+				</div>	
+			</form>
 			<div name="tour_div2" id="tour_div2">
 			<c:forEach var="plist" items="${plist}">
 				<table>
 					<tr>
-						<td class="tb_td1"><img alt="돈내코 유원지 사진" src="${plist.imgpath }"/></td>
+						<td class="tb_td1"><a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}"><img src="${plist.imgpath }"/></a></td>
 						<td class="tb_td2">
-							<span>⭐⭐⭐⭐⚝ 4.5/5.0</span>  <br/>
-							<span class="tourpost_title">${plist.title}</span> 🧡 0,000개 💬 0,000개 <br/>
+							<span class="tourpost_title"><a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}">${plist.title}</a></span> <br> <strong>🧡 0,000개 💬 0,000개 👍️ 0,000개 👀 ${plist.viewcount}회</strong> <br/>
 							<span class="tourpost_place">${plist.address }</span>
-							<p class="tourpost_content">${plist.introduction}</p>
 						</td>
 					</tr>					
 				</table>
@@ -66,6 +68,5 @@
 				<a href="#">5</a>&nbsp;&nbsp;&nbsp;&nbsp;
 			</div>
 		</div>
-	</form>
 </body>
 </html>

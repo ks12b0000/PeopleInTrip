@@ -10,10 +10,10 @@ import kr.co.intrip.board.dto.ImageDTO;
 
 public interface BoardDAO {
 	public List<BoardDTO> selectAllBoardList() throws DataAccessException;
-	public List<BoardDTO> selectAllBoardList1()  throws DataAccessException;
-	public BoardDTO selectBoard(int post_num) throws DataAccessException;
 
-	
+	public List<BoardDTO> selectAllBoardList1() throws DataAccessException;
+
+	public BoardDTO selectBoard(int post_num) throws DataAccessException;
 
 	public int insertBoard(Map boardMap);
 
@@ -25,11 +25,17 @@ public interface BoardDAO {
 
 	public int insertBoard1(Map boardMap) throws DataAccessException;
 
+	public void updateImageFile(Map<String, Object> boardMap) throws DataAccessException;
+
+	public void insertModNewImage(Map<String, Object> boardMap) throws DataAccessException;
+
+	public void updateBoard(Map<String, Object> boardMap) throws DataAccessException;
+
+	public void deleteModImage(ImageDTO imageDTO);
+
+	public void deleteBoard(int post_num);
+
+	public void visitcount(int post_num);
 	
 
-	
-
-
-
-	
 }

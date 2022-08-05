@@ -4,24 +4,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
  <mapper namespace="mapper.tourist">
-  	<resultMap type="touristDTO" id="touristResult">
- 		<result property="id" column="id" />
- 		<result property="tour_title" column="tour_title" /> 	
- 		<result property="tour_content" column="tour_content" /> 	
- 		<result property="tour_date" column="tour_date" /> 	
- 		<result property="visitcount" column="visitcount" /> 	
- 		<result property="count_star" column="count_star" /> 	
- 		<result property="count_commnet" column="count_commnet" /> 	
- 		<result property="count_heart" column="count_heart" /> 
- 		<result property="count_heart" column="ofile" /> 
- 		<result property="count_heart" column="sfile" /> 				
-  	</resultMap>
   	
   	<!-- 관광지 api db에 저장용 -->
   	<insert id="touristadd">
 		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo">		
-			insert into P_tourist (alltag, label, label2, title, address, tag, introduction, imgpath)
-			values (#{pvo.alltag, jdbcType=VARCHAR}, #{pvo.label, jdbcType=VARCHAR}, #{pvo.label2, jdbcType=VARCHAR}, #{pvo.title, jdbcType=VARCHAR}, #{pvo.address, jdbcType=VARCHAR}, #{pvo.tag, jdbcType=VARCHAR}, #{pvo.introduction, jdbcType=VARCHAR}, #{pvo.imgpath, jdbcType=VARCHAR})
+			insert into P_tourist (alltag, label, label2, title, address, tag, introduction, imgpath, contentsid, phoneno, latitude, longitude)
+			values (#{pvo.alltag, jdbcType=VARCHAR}, #{pvo.label, jdbcType=VARCHAR}, #{pvo.label2, jdbcType=VARCHAR}, #{pvo.title, jdbcType=VARCHAR}, #{pvo.address, jdbcType=VARCHAR}, #{pvo.tag, jdbcType=VARCHAR}, #{pvo.introduction, jdbcType=VARCHAR}, #{pvo.imgpath, jdbcType=VARCHAR}, #{pvo.contentsid, jdbcType=VARCHAR}, #{pvo.phoneno, jdbcType=VARCHAR}, #{pvo.latitude, jdbcType=VARCHAR}, #{pvo.longitude, jdbcType=VARCHAR})
 		</foreach>
 	</insert>
 	
@@ -47,5 +35,49 @@
 			SELECT * FROM P_TOURIST 
 			WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
 		]]>
+	</select>	
+	
+	<!-- 제주도 통합 상세페이지  -->
+	<select id="jejudetail" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="String">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE contentsid = #{contentsid,jdbcType=VARCHAR}
+		]]>
 	</select>
+	
+	<!-- 제주도 통합 상세페이지 조회수 증가  -->
+	<update id="viewcount">
+		<![CDATA[
+			UPDATE P_TOURIST
+			SET viewcount = viewcount + 1 
+			WHERE contentsid = #{contentsid}
+		]]>
+	</update>
+	
+	<!-- 제주도 여행지 조회순 페이지 리스트  -->
+	<select id="jejutourist_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%' 
+			ORDER by viewcount desc
+		]]>
+	</select>	
+	
+	<!-- 제주도 축제 조회순 페이지 리스트  -->
+	<select id="jejufestival_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE label LIKE '%축제%' 
+			ORDER by viewcount desc
+		]]>
+	</select>	
+	
+	<!-- 제주도 전시관 조회순 페이지 리스트  -->
+	<select id="jejuexhibition_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			SELECT * FROM P_TOURIST 
+			WHERE alltag LIKE '%전시%' AND label LIKE '관광지' 
+			ORDER by viewcount desc
+		]]>
+	</select>	
  </mapper>

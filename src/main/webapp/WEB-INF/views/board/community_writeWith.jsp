@@ -35,7 +35,7 @@
 		<jsp:include page="/header_lhj/header.jsp" flush="false" />
 	</header>
     </div>
-    <form action="${contextPath}/board/community_writeWith.do"  method="post" enctype="multipart/form-data"  >
+    <form action="${contextPath}/board/community_writeInfo.do"  method="post" enctype="multipart/form-data"  >
     <div class="wrapper">
         <!-- 왼쪽 메뉴바 -->
         <div>
@@ -66,7 +66,7 @@
 					<div id="textarea-cnt">(0 / 200)</div>
 	
 	                <div class="bottom-btn">
-                        <input type="button" value="작성취소" />
+                        <input type="button" value="작성취소" onclick="location.href='${contextPath}/board/community-acco.do'" />
                         <input type="submit" value="작성완료" name="post_cate" />
                     </div>
                 </div>
