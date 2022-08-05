@@ -21,12 +21,26 @@ public class MyPageServiceImpl implements MyPageService {
 		return mypageDAO.MyPage(mypageDTO, session);
 	}
 
-//	@Override
-//	public List<MyPageDTO> listMember() throws Exception {
-//		List<MyPageDTO> memberList = mypageDAO.selectMemberMyPage();
-//		return memberList;
-//	}
-	
+	@Override
+	public void update_MyPage_Pw(MyPageDTO mypageDTO) throws Exception {
+		mypageDAO.update_MyPage_Pw(mypageDTO);
+		
+	}
+
+	@Override
+	public void update_MyPage_nick_nm(MyPageDTO mypageDTO) throws Exception {
+		mypageDAO.update_MyPage_nick_nm(mypageDTO);
+		
+	}
+
+	// 닉네임 검사
+	@Override
+	public int selectNickChk(MyPageDTO mypageDTO) throws Exception {
+		int result = mypageDAO.selectNickChk(mypageDTO);
+		return result;
+	}
+
+
 
 
 }

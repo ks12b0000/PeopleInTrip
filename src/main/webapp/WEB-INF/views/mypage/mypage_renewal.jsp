@@ -122,7 +122,7 @@
     </div>
     <div class="cls3">
         <div>
-            <a href="${contextPath}/mypage/modify_info">내 정보 수정</a>
+            <a href="${contextPath}/mypage/modify_info?id=${user.id}">내 정보 수정</a>
             <a href="#">회원 탈퇴</a>
         </div>
     </div>
