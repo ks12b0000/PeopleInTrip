@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.dao.DataAccessException;
 
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 
 public interface BoardDAO {
@@ -37,5 +38,6 @@ public interface BoardDAO {
 
 	public void visitcount(int post_num);
 	
-
+	public List<BoardDTO> list(Criteria cri) throws Exception;
+	public int listCount() throws Exception;
 }

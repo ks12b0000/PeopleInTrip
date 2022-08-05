@@ -33,6 +33,28 @@
 		POST_NUM = #{post_num}
 	</update>
 	
+	<!-- 페이징 -->
+	<select id="list" resultType="boardDTO"
+	parameterType="kr.co.intrip.board.dto.Criteria">
+	   select POST_NUM, POST_TITLE, ID, POST_DATE, VISITCOUNT
+    from (
+        select POST_NUM, POST_TITLE, ID, POST_DATE, VISITCOUNT,
+            row_number() over(order by POST_NUM desc) as rNum
+        from P_BOARD
+        ) mb
+   		 where rNum between #{rowStart} and #{rowEnd}
+        order by POST_NUM desc
+</select>
+
+	<!-- 게시물 갯수 -->
+	<select id="listCount" resultType="int">
+		<![CDATA[
+			select count(post_num)
+			from p_board
+			where post_num > 0
+		]]>
+	</select>
+	
 	<!-- 리스트 -->
 	<select id="selectAllBoardList" resultMap="boardResult">
       <![CDATA[

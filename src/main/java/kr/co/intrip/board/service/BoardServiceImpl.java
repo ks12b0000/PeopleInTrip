@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.intrip.board.dao.BoardDAO;
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 
 @Service("boardService")
@@ -20,7 +21,20 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	private BoardDAO boardDAO;
-
+	
+	//게시물 갯수
+	@Override
+	public int listCount() throws Exception {
+		return boardDAO.listCount();
+	}
+	
+	//페이징
+	@Override
+	public List<BoardDTO> list(Criteria cri) throws Exception {
+		List<BoardDTO> boardsList = boardDAO.list(cri);
+		return boardsList;
+	}
+	
 	// 리스트
 	@Override
 	public List<BoardDTO> listArticles() throws Exception {
@@ -116,4 +130,8 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.visitcount(post_num);
 		
 	}
+
+	
+
+	
 }

@@ -36,7 +36,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
+import kr.co.intrip.board.dto.PageMaker;
 import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.login_signup.dto.MemberDTO;
 
@@ -304,13 +306,19 @@ public class BoardControllerImpl implements BoardController {
 		return fileList;
 	}
 
-	/*
-	 * @RequestMapping(value = "board/community-acco") public String acco() { return
-	 * "board/community-acco"; }
-	 */
-
+	//페이징
+	@RequestMapping(value = "/board/community-acco", method = RequestMethod.GET)
+	public void list(Criteria cri,Model model) throws Exception{
+		List<BoardDTO> boardsList = boardService.list(cri);
+		model.addAttribute("boardsList", boardsList);
+		
+		 PageMaker pageMaker = new PageMaker();
+		 pageMaker.setCri(cri);
+		 pageMaker.setTotalCount(boardService.listCount());
+		 model.addAttribute("pageMaker", pageMaker);
+	}
 	//리스트 페이지
-	@RequestMapping(value = "/board/community-acco", method = { RequestMethod.GET, RequestMethod.POST })
+	//@RequestMapping(value = "/board/community-acco", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView listArticles(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		String viewName = (String) request.getAttribute("viewName");

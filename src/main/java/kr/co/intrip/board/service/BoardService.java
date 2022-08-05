@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 
 public interface BoardService {
@@ -23,6 +24,6 @@ public interface BoardService {
 	public void removeBoard(int post_num) throws Exception;
 	public void visitcount(int post_num) throws Exception;
 
-		
-	
+	public List<BoardDTO> list(Criteria cri) throws Exception;
+	public int listCount() throws Exception;
 }
