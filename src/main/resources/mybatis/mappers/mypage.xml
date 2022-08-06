@@ -25,4 +25,29 @@
 			WHERE id = #{id}
 		]]>
 	</select>
+	
+	<select id="update_MyPage_Pw">
+		<![CDATA[
+			UPDATE P_MEMBER
+			SET PWD = #{pwd}
+			WHERE ID = #{id}
+		]]>
+	</select>
+	
+	<select id="update_MyPage_nick_nm">
+		<![CDATA[
+			UPDATE P_MEMBER
+			SET NICK_NM = #{nick_nm}
+			WHERE ID = #{id}
+		]]>
+	</select>
+	
+	<!-- 닉네임 검사 -->
+	<select id="selectNickChk" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM P_MEMBER 
+			WHERE NICK_NM = #{nick_nm}
+		]]>
+	</select>	
 </mapper>
