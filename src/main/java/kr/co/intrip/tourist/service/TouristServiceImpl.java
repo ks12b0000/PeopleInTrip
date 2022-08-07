@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.PagingDTO;
 
 @Service
 public class TouristServiceImpl implements TouristService {
@@ -129,22 +130,37 @@ public class TouristServiceImpl implements TouristService {
 			touristDAO.touristadd(list);
 	}
 
+	// 제주도 여행지 총 개수
+	public int getTotalRowCount(PagingDTO pagingDTO) throws IOException {
+		return touristDAO.getTotalRowCount(pagingDTO);
+	}
+	
 	// 제주도 여행지 페이지 리스트
 	@Override
-	public List<ApiDTO> jejutourist_list(ApiDTO apiDTO) throws IOException {
-		return touristDAO.jejutourist(apiDTO);		
+	public List<ApiDTO> jejutourist_list(PagingDTO pagingDTO) throws IOException {
+		return touristDAO.jejutourist(pagingDTO);		
+	}
+	
+	// 제주도 축제 총 개수
+	public int getTotalRowCount2(PagingDTO pagingDTO) throws IOException {
+		return touristDAO.getTotalRowCount2(pagingDTO);
 	}
 
 	// 제주도 축제 페이지 리스트
 	@Override
-	public List<ApiDTO> jejufestival_list(ApiDTO apiDTO) throws IOException {
-		return touristDAO.jejufestival(apiDTO);	
+	public List<ApiDTO> jejufestival_list(PagingDTO pagingDTO) throws IOException {
+		return touristDAO.jejufestival(pagingDTO);	
+	}
+	
+	// 제주도 여행지 총 개수
+	public int getTotalRowCount3(PagingDTO pagingDTO) throws IOException {
+		return touristDAO.getTotalRowCount3(pagingDTO);
 	}
 
 	// 제주도 전시관 페이지 리스트
 	@Override
-	public List<ApiDTO> jejuexhibition_list(ApiDTO apiDTO) throws IOException {
-		return touristDAO.jejuexhibition(apiDTO);
+	public List<ApiDTO> jejuexhibition_list(PagingDTO pagingDTO) throws IOException {
+		return touristDAO.jejuexhibition(pagingDTO);
 	}
 
 	// 제주도 통합 상세페이지
@@ -161,70 +177,70 @@ public class TouristServiceImpl implements TouristService {
 
 	// 제주도 여행지 페이지 리스트 Sorting 기능
 	@Override
-	public List<ApiDTO> jejutourist_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws IOException {
+	public List<ApiDTO> jejutourist_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws IOException {
 		int value = Integer.parseInt(request.getParameter("value"));
 		model.addAttribute("value", value);
 		System.out.println(value);
 		if (value == 0) {
-			return touristDAO.jejutourist(apiDTO);
+			return touristDAO.jejutourist(pagingDTO);
 		}
 		else if (value == 1) {
-			return touristDAO.jejutourist_lookupSort(apiDTO);
+			return touristDAO.jejutourist_lookupSort(pagingDTO);
 		}
 		else if (value == 2) {
-			return touristDAO.jejutourist_lookupSort(apiDTO);
+			return touristDAO.jejutourist_lookupSort(pagingDTO);
 		}	
 		else if (value == 3) {
-			return touristDAO.jejutourist_lookupSort(apiDTO);
+			return touristDAO.jejutourist_lookupSort(pagingDTO);
 		}
 		else {
-			return touristDAO.jejutourist_lookupSort(apiDTO);		
+			return touristDAO.jejutourist_lookupSort(pagingDTO);		
 		}
 	}
 	
 	// 제주도 축제 페이지 리스트 Sorting 기능
 	@Override
-	public List<ApiDTO> jejufestival_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws IOException {
+	public List<ApiDTO> jejufestival_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws IOException {
 		int value = Integer.parseInt(request.getParameter("value"));
 		model.addAttribute("value", value);
 		System.out.println(value);
 		if (value == 0) {
-			return touristDAO.jejufestival(apiDTO);
+			return touristDAO.jejufestival(pagingDTO);
 		}
 		else if (value == 1) {
-			return touristDAO.jejufestival_lookupSort(apiDTO);
+			return touristDAO.jejufestival_lookupSort(pagingDTO);
 		}
 		else if (value == 2) {
-			return touristDAO.jejufestival_lookupSort(apiDTO);
+			return touristDAO.jejufestival_lookupSort(pagingDTO);
 		}	
 		else if (value == 3) {
-			return touristDAO.jejufestival_lookupSort(apiDTO);
+			return touristDAO.jejufestival_lookupSort(pagingDTO);
 		}
 		else {
-			return touristDAO.jejufestival_lookupSort(apiDTO);		
+			return touristDAO.jejufestival_lookupSort(pagingDTO);		
 		}
 	}
 		
 	// 제주도 전시관 페이지 리스트 Sorting 기능
 	@Override
-	public List<ApiDTO> jejuexhibition_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws IOException {
+	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws IOException {
 		int value = Integer.parseInt(request.getParameter("value"));
 		model.addAttribute("value", value);
 		System.out.println(value);
 		if (value == 0) {
-			return touristDAO.jejuexhibition(apiDTO);
+			return touristDAO.jejuexhibition(pagingDTO);
 		}
 		else if (value == 1) {
-			return touristDAO.jejuexhibition_lookupSort(apiDTO);
+			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
 		}
 		else if (value == 2) {
-			return touristDAO.jejuexhibition_lookupSort(apiDTO);
+			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
 		}	
 		else if (value == 3) {
-			return touristDAO.jejuexhibition_lookupSort(apiDTO);
+			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
 		}
 		else {
-			return touristDAO.jejuexhibition_lookupSort(apiDTO);		
+			return touristDAO.jejuexhibition_lookupSort(pagingDTO);		
 		}
 	}
 

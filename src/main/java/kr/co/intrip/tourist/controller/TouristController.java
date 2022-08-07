@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.login_signup.service.MemberService;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.service.TouristService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,30 +57,33 @@ public class TouristController {
 
 	// 제주도 여행지 페이지 리스트
 	@GetMapping("tourist/tourist_PageList")
-	public List<ApiDTO> jejutourist_List(ApiDTO apiDTO, Model model) throws Exception {
-		String schAirportCode = "alltag";
-			
-		List<ApiDTO> plist = tourservice.jejutourist_list(apiDTO);
+	public List<ApiDTO> jejutourist_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.getTotalRowCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<ApiDTO> plist = tourservice.jejutourist_list(pagingDTO);
 		model.addAttribute("plist", plist);
 		return plist;
 	}
 	
 	// 제주도 축제 페이지 리스트
 	@GetMapping("tourist/festival_PageList")
-	public List<ApiDTO> jejufestival_List(ApiDTO apiDTO, Model model) throws Exception {
-		String schAirportCode = "alltag";
-			
-		List<ApiDTO> plist = tourservice.jejufestival_list(apiDTO);
+	public List<ApiDTO> jejufestival_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.getTotalRowCount2(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<ApiDTO> plist = tourservice.jejufestival_list(pagingDTO);
 		model.addAttribute("plist", plist);
 		return plist;
 	}
 	
 	// 제주도 전시관 페이지 리스트
 	@GetMapping("tourist/exhibition_PageList")
-	public List<ApiDTO> jejuexhibition_List(ApiDTO apiDTO, Model model) throws Exception {
-		String schAirportCode = "alltag";
-				
-		List<ApiDTO> plist = tourservice.jejuexhibition_list(apiDTO);
+	public List<ApiDTO> jejuexhibition_List(Model model, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.getTotalRowCount3(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<ApiDTO> plist = tourservice.jejuexhibition_list(pagingDTO);
 		model.addAttribute("plist", plist);
 		return plist;
 	}
@@ -96,32 +100,35 @@ public class TouristController {
 	
 	// 제주도 여행지 페이지 리스트 Sorting 기능
 	@PostMapping("tourist/tourist_PageList")
-	public List<ApiDTO> jejutourist_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws Exception {
-		String schAirportCode = "alltag";
-		
-		List<ApiDTO> plist = tourservice.jejutourist_Sort(apiDTO, model, request);
+	public List<ApiDTO> jejutourist_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.getTotalRowCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<ApiDTO> plist = tourservice.jejutourist_Sort(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
 		return plist;		
 	}
 	
 	// 제주도 축제 페이지 리스트 Sorting 기능
 	@PostMapping("tourist/festival_PageList")
-	public List<ApiDTO> jejufestival_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws Exception {
-		String schAirportCode = "alltag";
-			
-		List<ApiDTO> plist = tourservice.jejufestival_Sort(apiDTO, model, request);
+	public List<ApiDTO> jejufestival_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.getTotalRowCount2(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<ApiDTO> plist = tourservice.jejufestival_Sort(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
-		return plist;		
+		return plist;			
 	}
 	
 	// 제주도 전시관 페이지 리스트 Sorting 기능
 	@PostMapping("tourist/exhibition_PageList")
-	public List<ApiDTO> jejuexhibition_Sort(ApiDTO apiDTO, Model model, HttpServletRequest request) throws Exception {
-		String schAirportCode = "alltag";
-		
-		List<ApiDTO> plist = tourservice.jejuexhibition_Sort(apiDTO, model, request);
+	public List<ApiDTO> jejuexhibition_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.getTotalRowCount3(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<ApiDTO> plist = tourservice.jejuexhibition_Sort(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
-		return plist;		
+		return plist;			
 	}
 	
 	
