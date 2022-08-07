@@ -42,6 +42,15 @@ public class MyPageDAOImpl implements MyPageDAO {
 		return result;
 	}
 
+	// 회원 탈퇴
+	@Override
+	public void deleteMember(MyPageDTO mypageDTO) throws DataAccessException {
+		sqlSession.delete("mapper.mypage.deleteMember", mypageDTO);
+		
+	}
+	
+	
+
 
 
 	

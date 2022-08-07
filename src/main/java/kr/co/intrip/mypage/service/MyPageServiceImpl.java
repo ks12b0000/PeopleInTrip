@@ -40,6 +40,13 @@ public class MyPageServiceImpl implements MyPageService {
 		return result;
 	}
 
+	// 회원 탈퇴
+	@Override
+	public void deleteMember(MyPageDTO myPageDTO) throws Exception {
+		mypageDAO.deleteMember(myPageDTO);
+		
+	}
+
 
 
 

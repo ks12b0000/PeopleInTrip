@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -90,6 +91,33 @@ public class MyPageController {
 		int result = mypageService.selectNickChk(mypageDTO);
 		System.out.println("확인 결과 : " + result);
 		return result;
+	}
+	
+	@GetMapping("mypage/member_delete.do")
+	public String showDeleteMember() {
+		return "mypage/member_delete";
+	}
+	
+	@RequestMapping(value = "mypage/member_delete_sc", method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView scMemberDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.setViewName(viewName);
+		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "mypage/delteMember", method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView deleteMember(@RequestParam(value = "id", required = false) String id) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		mypageDTO.setId(id);
+		System.out.println("들어온 ID : " + id);
+		
+		mypageService.deleteMember(mypageDTO);
+		
+		mav.setViewName("redirect:/mypage/member_delete_sc");
+		
+		return mav;
 	}
 	
 
