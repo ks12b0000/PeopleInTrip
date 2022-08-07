@@ -9,7 +9,11 @@ public class PageMaker {
 	 private int endPage;
 	 private boolean prev;
 	 private boolean next;
-
+	 
+		
+	
+	
+	 
 	 private int displayPageNum = 10;
 
 	 private Criteria cri;
@@ -74,4 +78,7 @@ public class PageMaker {
 	  prev = startPage == 1 ? false : true;
 	  next = endPage * cri.getPerPageNum() >= totalCount ? false : true;
 	 }
+	 
+	
+		
 }

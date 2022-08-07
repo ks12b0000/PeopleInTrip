@@ -45,6 +45,15 @@
    		 where rNum between #{rowStart} and #{rowEnd}
         order by POST_NUM desc
 </select>
+	
+	<!-- 검색기능 -->
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND POST_TITLE LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">AND POST_CONTENT LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">AND ID LIKE '%' || #{keyword} || '%'</if>	
+		</if>
+	</sql>
 
 	<!-- 게시물 갯수 -->
 	<select id="listCount" resultType="int">
