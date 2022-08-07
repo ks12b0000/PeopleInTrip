@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 
 @Repository("boardDAO")
@@ -22,6 +23,18 @@ public class BoardDAOImpl implements BoardDAO {
 	public void visitcount(int post_num) {
 		sqlSession.update("mapper.board.visitcount",post_num);
 		
+	}
+	//게시물 갯수
+	@Override
+	public int listCount() throws Exception {
+		return sqlSession.selectOne("mapper.board.listCount");
+	}
+	
+	//페이징
+	@Override
+	public List<BoardDTO> list(Criteria cri) throws Exception {
+		List<BoardDTO> boardsList =sqlSession.selectList("mapper.board.list",cri);
+		return boardsList;
 	}
 	
 	//리스트
@@ -162,6 +175,10 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.delete("mapper.board.deleteBoard", post_num);
 		
 	}
+
+	
+
+	
 	
 
 }

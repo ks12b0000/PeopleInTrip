@@ -109,6 +109,9 @@ a {
 	text-align: center;
 	font-size: 1.3em;
 }
+#tour_div3 > a {
+	color: black;
+}
 
 .tourpost_title {
 	font-size: 27px;

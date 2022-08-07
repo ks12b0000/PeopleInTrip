@@ -119,24 +119,33 @@ request.setCharacterEncoding("UTF-8");
 				style="background-color: #9966ff;"
 				onclick="location.href='${contextPath}/board/community_writeWith.do'">글쓰기</button>
 		</div>
-		<nav aria-label="Page navigation example">
-			<ul class="pagination justify-content-center">
-				<li class="page-item"><a class="page-link" href="#">이전</a></li>
-				<li class="page-item disabled"><a class="page-link" href="#"
-					tabindex="-1">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item"><a class="page-link" href="#">4</a></li>
-				<li class="page-item"><a class="page-link" href="#">5</a></li>
-				<li class="page-item"><a class="page-link" href="#">6</a></li>
-				<li class="page-item"><a class="page-link" href="#">7</a></li>
-				<li class="page-item"><a class="page-link" href="#">8</a></li>
-				<li class="page-item"><a class="page-link" href="#">9</a></li>
-				<li class="page-item"><a class="page-link" href="#">10</a></li>
-				<li class="page-item"><a class="page-link" href="#">다음</a></li>
-			</ul>
-		</nav>
-	</div>
+		<div>
+		
+ <ul>
+  <a href="${contextPath}/board/community-acco?page=1">&laquo;</a> 
+  <c:if test="${pageMaker.prev}">
+   <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a>
+  </c:if> 
+  
+  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+   <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(idx)}">${idx}</a>
+  </c:forEach>
+ 
+    
+  <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+   <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a>
+  </c:if>
+ <c:choose>
+   <c:when test= "${pageMaker.totalCount % 2 == 1 }">
+   <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(pageMaker.totalCount/10 + 1) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+	</c:when>
+	<c:when test= "${pageMaker.totalCount % 2 == 0 }">
+	 <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+	</c:when>
+	</c:choose>
+ </ul>
+</div>
+
 	<div class="search">
 		<select name="searchType">
 			<option value="n"
