@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.mypage.service.MyPageService;
@@ -98,26 +99,27 @@ public class MyPageController {
 		return "mypage/member_delete";
 	}
 	
-	@RequestMapping(value = "mypage/member_delete_sc", method = {RequestMethod.POST, RequestMethod.GET})
-	public ModelAndView scMemberDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String) request.getAttribute("viewName");
-		ModelAndView mav = new ModelAndView(viewName);
-		mav.setViewName(viewName);
-		return mav;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "mypage/delteMember", method = {RequestMethod.POST, RequestMethod.GET})
-	public ModelAndView deleteMember(@RequestParam(value = "id", required = false) String id) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		mypageDTO.setId(id);
-		System.out.println("들어온 ID : " + id);
+	// 회원 탈퇴
+	@RequestMapping(value = "mypage/delteMember", method = RequestMethod.POST)
+	public String deleteMember(MyPageDTO dto, HttpSession session, RedirectAttributes rttr) throws Exception {
 		
-		mypageService.deleteMember(mypageDTO);
+		// 세션에 있는 user를 가져와 user 변수에 넣어준다.
+		MyPageDTO user = (MyPageDTO) session.getAttribute("user");
 		
-		mav.setViewName("redirect:/mypage/member_delete_sc");
+		// 세션에 있는 비밀번호
+		String sessionPass = user.getPwd();
 		
-		return mav;
+		// dto로 들어오는 비밀번호
+		String dtoPass = dto.getPwd();
+		
+		if(!(sessionPass.equals(dtoPass))) {
+			rttr.addFlashAttribute("msg", false);
+			return "redirect:/mypage/member_delete.do";
+		}
+		mypageService.deleteMember(dto);
+		session.invalidate();
+		
+		return "redirect:/mainpage/main";
 	}
 	
 

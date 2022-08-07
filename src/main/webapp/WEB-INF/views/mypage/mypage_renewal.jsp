@@ -97,7 +97,7 @@
         
 
     </style>
-    <script type="text/javascript">
+<!--     <script type="text/javascript">
     	function delete_Btn() {
     		
     		let dmPopup = null;
@@ -108,7 +108,7 @@
 			
 			dmPopup = window.open(url, name, option);
 		}
-    </script>
+    </script> -->
 </head>
 <body>
     <p class="cls1">마이페이지</p>
@@ -136,7 +136,7 @@
     <div class="cls3">
         <div>
             <a href="${contextPath}/mypage/modify_info?id=${user.id}">내 정보 수정</a>
-            <a onclick="delete_Btn()">회원 탈퇴</a>
+            <a href="${contextPath}/mypage/member_delete.do?id=${user.id}">회원 탈퇴</a>
         </div>
     </div>
     <br/><br/>

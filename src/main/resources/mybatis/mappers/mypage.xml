@@ -59,7 +59,8 @@
 	<delete id="deleteMember">
 		<![CDATA[
 			DELETE FROM P_MEMBER 
-			WHERE ID = #{id}	
+			WHERE ID = #{id}
+			AND PWD = #{pwd}	
 		]]>
 	</delete>
 </mapper>

@@ -7,74 +7,41 @@
 <head>
 	<meta charset="UTF-8">
 	<title>회원 탈퇴 팝업 창</title>
-	<style type="text/css">
-	    body {
-	        width: 800px;
-	        max-width: 80%;
-	        height: 300px;
-	        margin: -8% auto;
-	    }
-	
-	    #certify_email_whole {
-	        margin-top: 100px;
-	        border: solid 3px #9966FF;
-	        padding: 10px 5%;
-	    }
-	    
-        #certi_email_head {
-	        font-family: Impact;
-	        color: #9966FF;
-	        font-size: 2em;
-	        font-weight: 700;
-	        text-align: left;
-	        border-bottom: solid 3px #9966FF;
-	        padding-bottom: 0 px;
-	        height: 50px;
-	        margin: auto 0;
-    	}
-    	
-   	    #show_message {
-	        background-color: #faf5f5;
-	        font-family: Arial;
-	        font-size: 1.3em;
-	        font-weight: normal;
-	        margin: 20px 0;
-	        padding-left: 20px;
-	        padding-top: 20px;
-	   }
-	   
-       #buttons {
-	        text-align: right;
-    	}
-	</style>
+	<link rel="stylesheet" href="../resources/css/mypage/delete_member.css" />
+	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script type="text/javascript">
 		function delete_Btn() {
-			let close = 0;
-			document.deleteMember.action="${contextPath}/mypage/delteMember?id=${user.id}";
-			document.deleteMember.method="post";
-			alert("회원 탈퇴가 완료되었습니다!");
-			document.deleteMember.submit(); 
+			let id = document.getElementById('delete_id').value;
+			let pass = document.getElementById('delete_pw').value;
+			if(id == "") {
+				alert("아이디를 입력해주세요");
+				document.deleteMember.pwd.focus();
+				return false;
+			} else if (pass == "") {
+				alert("비밀번호를 입력해주세요");
+				document.deleteMember.pwd.focus();
+				return false;
+			} else {
+				alert("그동안 이용해 주셔서 감사합니다!");
+			}
+			
 		}
 	</script>
 </head>
 <body>
-<form action="${contextPath}/mypage/delteMember" method="post" name="deleteMember"></form>
-    <div id="certify_email_whole">
-       <div id="certi_email_head">
-           회원 탈퇴
-       </div>
-       <div id="show_message">
-           탈퇴 시 계정 정보 및 개인정보가 파기되며 <br>
-           복구 하실 수 없습니다. <br>
-           탈퇴를 하실려면 확인을 누르시고 안하실거면 취소를 누르세요.
-       </div>
-       <div id="buttons">
-       		<input type="button" name="delBtn" id="delBtn" class="buttons" onclick="delete_Btn()" value="확인">
-       		<input type="hidden" name="id" value="${user.id}">
-           <!-- <button name="delBtn" class="buttons" onclick="delete_Btn()">확인</button> -->
-           <button class="buttons" onclick="window.close()">취소</button>
-       </div>
-   </div>
+	<div class="delete_form">
+		<h1>People in Trip</h1>
+		<form action="${contextPath}/mypage/delteMember" name="deleteMember" method="post">
+			<div>
+				<input type="text" placeholder="아이디" id="delete_id" name="id" onfocus="this.placeholder='';" onblur="this.placeholder='아이디'" /><br>
+				<input type="password" placeholder="비밀번호" id="delete_pw" name="pwd" onfocus="this.placeholder='';" onblur="this.placeholder='비밀번호'" /><br>
+				<button type="submit" id="delete_bt" onclick="delete_Btn()"><strong>회원탈퇴</strong></button>
+<%-- 				 <c:if test="${message == 'error'}">
+				 <div style="color:red;"> 아이디 또는 비밀번호가 일치하지 않습니다.</div>
+				</c:if> --%>
+			</div>
+		</form>
+	</div>
 </body>
 </html>

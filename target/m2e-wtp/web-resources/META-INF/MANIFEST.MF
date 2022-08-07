@@ -1,10 +1,5 @@
 Manifest-Version: 1.0
-<<<<<<< HEAD
 Built-By: minsu
 Build-Jdk: 11.0.16
-=======
-Built-By: Runner
-Build-Jdk: 11.0.14.1
->>>>>>> 13ab4986b1dbae836b89b2f7dbab7a74248761ad
 Created-By: Maven Integration for Eclipse
 
