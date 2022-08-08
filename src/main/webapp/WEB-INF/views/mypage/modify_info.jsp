@@ -15,11 +15,20 @@
     <script type="text/javascript">
     
     	function change_pwd() {
+    		let pass = document.getElementById('input_pass').value;
+    		let pass2 = document.getElementById('input_pass2').value;
 			if(document.modify_info._pwd.value == "") {
 				alert("비밀번호를 입력해주세요");
 				document.modify_info._pwd.focus();
 				return false;
 			}
+			
+			if(pass.length < 8 || pass.length>16) {
+				alert('비밀번호는 8글자 이상, 16글자 이하만 사용 가능합니다.');
+				document.modify_info._pwd.focus();
+				return false;
+			} 
+			
 			if(document.modify_info._pwd.value != document.modify_info.pwd.value) {
 				alert("비밀번호를 다시 확인해주세요");
 				document.modify_info.pwd.focus();
@@ -132,7 +141,7 @@
                 <tr>
                     <td class="table2_td1"><strong>이름</strong></td>
                     <td class="table2_td2">
-                    	<input type="text" id="input_name" name="username" value="${user.nick_nm}" />
+                    	<input type="text" id="input_name" name="username" value="${user.name}" />
                     </td>
                     <td class="table2_td3"></td>
                     <td class="table2_td4" id="table2_nameinput" colspan="3">
@@ -179,7 +188,7 @@
                     <td class="table2_td1"><strong>이메일</strong></td>
                     <td id="table2_mtd1">
                         <div class="hiddendiv_email_sub">&nbsp;</div>
-                        <input class="mailinput" id="mailinput1" name="mailinput1" type="text"/>
+                        <input class="mailinput" id="mailinput1" name="mailinput1" value="${user.email}" type="text"/>
                         <div class="hiddendiv_email">&nbsp;</div>
                     </td>
 

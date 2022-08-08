@@ -15,9 +15,11 @@
 		<result property="grade" column="grade" />
 	</resultMap>
 
+	<!-- 마이페이지 정보 조회 -->
 	<select id="selectMemberMyPage" resultMap="mypageResult">
 		<![CDATA[
 			SELECT id ,
+				   name,
 				   pwd ,
 				   nick_nm ,
 				   email
@@ -26,6 +28,7 @@
 		]]>
 	</select>
 	
+	<!-- 비밀번호 변경 -->
 	<select id="update_MyPage_Pw">
 		<![CDATA[
 			UPDATE P_MEMBER
@@ -34,6 +37,7 @@
 		]]>
 	</select>
 	
+	<!-- 닉네임 변경 -->
 	<select id="update_MyPage_nick_nm">
 		<![CDATA[
 			UPDATE P_MEMBER
@@ -50,4 +54,13 @@
 			WHERE NICK_NM = #{nick_nm}
 		]]>
 	</select>	
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteMember">
+		<![CDATA[
+			DELETE FROM P_MEMBER 
+			WHERE ID = #{id}
+			AND PWD = #{pwd}	
+		]]>
+	</delete>
 </mapper>

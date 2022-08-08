@@ -21,5 +21,8 @@ public interface MyPageDAO {
 	// 닉네임 검사
 	public int selectNickChk(MyPageDTO mypageDTO) throws DataAccessException;
 	
+	// 회원 탈퇴
+	public void deleteMember(MyPageDTO mypageDTO) throws DataAccessException;
+	
 	
 }

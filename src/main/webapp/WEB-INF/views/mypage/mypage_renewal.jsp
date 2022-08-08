@@ -97,6 +97,18 @@
         
 
     </style>
+<!--     <script type="text/javascript">
+    	function delete_Btn() {
+    		
+    		let dmPopup = null;
+    		
+			let url = "${contextPath}/mypage/member_delete.do?id=${user.id}";
+			let name = "회원탈퇴창"
+			let option = "width = 850, height = 500, top = 100, left = 300"
+			
+			dmPopup = window.open(url, name, option);
+		}
+    </script> -->
 </head>
 <body>
     <p class="cls1">마이페이지</p>
@@ -108,6 +120,10 @@
                 <td>${user.id }</td>
             </tr>
             <tr>
+            	<td>이름: </td>
+            	<td>${user.name }</td>
+            </tr>
+            <tr>
                 <td>닉네임: </td>
                 <td>${user.nick_nm }</td>
             </tr>
@@ -116,14 +132,11 @@
                 <td>${user.email }</td>
             </tr>
         </table>
-        <div class="img_box">
-            <img alt="프로필 이미지" src="apple.jfif"/>
-        </div>
     </div>
     <div class="cls3">
         <div>
             <a href="${contextPath}/mypage/modify_info?id=${user.id}">내 정보 수정</a>
-            <a href="#">회원 탈퇴</a>
+            <a href="${contextPath}/mypage/member_delete.do?id=${user.id}">회원 탈퇴</a>
         </div>
     </div>
     <br/><br/>

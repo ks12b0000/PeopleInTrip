@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.intrip.board.dto.BoardDTO;
@@ -99,7 +100,7 @@ public class TouristController {
 	}
 	
 	// 제주도 여행지 페이지 리스트 Sorting 기능
-	@PostMapping("tourist/tourist_PageList")
+	@GetMapping("tourist/tourist_PageList_Sorting")
 	public List<ApiDTO> jejutourist_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = tourservice.getTotalRowCount(pagingDTO);
 		pagingDTO.setTotalRowCount(totalRowCount);
@@ -110,7 +111,7 @@ public class TouristController {
 	}
 	
 	// 제주도 축제 페이지 리스트 Sorting 기능
-	@PostMapping("tourist/festival_PageList")
+	@GetMapping("tourist/festival_PageList_Sorting")
 	public List<ApiDTO> jejufestival_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = tourservice.getTotalRowCount2(pagingDTO);
 		pagingDTO.setTotalRowCount(totalRowCount);
@@ -121,7 +122,7 @@ public class TouristController {
 	}
 	
 	// 제주도 전시관 페이지 리스트 Sorting 기능
-	@PostMapping("tourist/exhibition_PageList")
+	@GetMapping("tourist/exhibition_PageList_Sorting")
 	public List<ApiDTO> jejuexhibition_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = tourservice.getTotalRowCount3(pagingDTO);
 		pagingDTO.setTotalRowCount(totalRowCount);
