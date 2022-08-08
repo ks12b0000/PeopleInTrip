@@ -178,19 +178,19 @@ public class TouristServiceImpl implements TouristService {
 	// 제주도 여행지 페이지 리스트 Sorting 기능
 	@Override
 	public List<ApiDTO> jejutourist_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws IOException {
-		int value = Integer.parseInt(request.getParameter("value"));
+		String value = request.getParameter("value");
 		model.addAttribute("value", value);
 		System.out.println(value);
-		if (value == 0) {
+		if (value.equals("basic")) {
 			return touristDAO.jejutourist(pagingDTO);
 		}
-		else if (value == 1) {
+		else if (value.equals("lookup")) {
 			return touristDAO.jejutourist_lookupSort(pagingDTO);
 		}
-		else if (value == 2) {
+		else if (value.equals("comment")) {
 			return touristDAO.jejutourist_lookupSort(pagingDTO);
 		}	
-		else if (value == 3) {
+		else if (value.equals("steamed")) {
 			return touristDAO.jejutourist_lookupSort(pagingDTO);
 		}
 		else {
@@ -201,19 +201,19 @@ public class TouristServiceImpl implements TouristService {
 	// 제주도 축제 페이지 리스트 Sorting 기능
 	@Override
 	public List<ApiDTO> jejufestival_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws IOException {
-		int value = Integer.parseInt(request.getParameter("value"));
+		String value = request.getParameter("value");
 		model.addAttribute("value", value);
 		System.out.println(value);
-		if (value == 0) {
+		if (value.equals("basic")) {
 			return touristDAO.jejufestival(pagingDTO);
 		}
-		else if (value == 1) {
+		else if (value.equals("lookup")) {
 			return touristDAO.jejufestival_lookupSort(pagingDTO);
 		}
-		else if (value == 2) {
+		else if (value.equals("comment")) {
 			return touristDAO.jejufestival_lookupSort(pagingDTO);
 		}	
-		else if (value == 3) {
+		else if (value.equals("steamed")) {
 			return touristDAO.jejufestival_lookupSort(pagingDTO);
 		}
 		else {
@@ -224,19 +224,19 @@ public class TouristServiceImpl implements TouristService {
 	// 제주도 전시관 페이지 리스트 Sorting 기능
 	@Override
 	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws IOException {
-		int value = Integer.parseInt(request.getParameter("value"));
+		String value = request.getParameter("value");
 		model.addAttribute("value", value);
 		System.out.println(value);
-		if (value == 0) {
+		if (value.equals("basic")) {
 			return touristDAO.jejuexhibition(pagingDTO);
 		}
-		else if (value == 1) {
+		else if (value.equals("lookup")) {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
 		}
-		else if (value == 2) {
+		else if (value.equals("comment")) {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
 		}	
-		else if (value == 3) {
+		else if (value.equals("steamed")) {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
 		}
 		else {

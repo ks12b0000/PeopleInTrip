@@ -62,18 +62,18 @@
 			</div>
 			<div name="tour_div3" id="tour_div3">
 				<c:if test="${pagingDTO.curPage > 1 }">
-					<a href="${contextPath}/tourist/exhibition_PageList?value=${value}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
-					<a href="${contextPath}/tourist/exhibition_PageList?value=${value}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+					<a href="${contextPath}/tourist/exhibition_PageList_Sorting?value=${value}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+					<a href="${contextPath}/tourist/exhibition_PageList_Sorting?value=${value}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
 				</c:if>
 					<c:forEach begin="${pagingDTO.firstPage }"  end="${pagingDTO.lastPage }" var="i"> &nbsp;
-	   					<a href="${contextPath}/tourist/exhibition_PageList?value=${value}&curPage=${i }" style="font-size: 18px;"  >  
+	   					<a href="${contextPath}/tourist/exhibition_PageList_Sorting?value=${value}&curPage=${i }" style="font-size: 18px;"  >  
 	   						<c:if test="${i eq pagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
 	   						<c:if test="${i ne pagingDTO.curPage }">  ${i } </c:if> 
 	   					</a>
 					</c:forEach>&nbsp;
 				<c:if test="${pagingDTO.curPage < pagingDTO.totalPageCount }">
-					<a href="${contextPath}/tourist/exhibition_PageList?value=${value}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
-					<a href="${contextPath}/tourist/exhibition_PageList?value=${value}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+					<a href="${contextPath}/tourist/exhibition_PageList_Sorting?value=${value}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+					<a href="${contextPath}/tourist/exhibition_PageList_Sorting?value=${value}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 				</c:if>
 			</div>
 		</div>
