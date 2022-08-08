@@ -17,16 +17,9 @@ public class BoardDTO {
 	private Date post_date;
 	private int visitcount;
 	private int count_comment;
-	private int post_cate;
 	
 	
-	public int getPost_cate() {
-		return post_cate;
-	}
 
-	public void setPost_cate(int post_cate) {
-		this.post_cate = post_cate;
-	}
 
 	public BoardDTO() {
 		// TODO Auto-generated constructor stub

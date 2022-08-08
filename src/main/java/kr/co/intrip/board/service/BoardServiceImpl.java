@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import kr.co.intrip.board.dao.BoardDAO;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
+import kr.co.intrip.board.dto.SearchCriteria;
 
 @Service("boardService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -21,40 +21,50 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	private BoardDAO boardDAO;
-	
-	//게시물 갯수
+
+	// 페이징 검색 1
 	@Override
-	public int listCount() throws Exception {
-		return boardDAO.listCount();
-	}
-	
-	//페이징
-	@Override
-	public List<BoardDTO> list(Criteria cri) throws Exception {
-		List<BoardDTO> boardsList = boardDAO.list(cri);
-		return boardsList;
-	}
-	
-	// 리스트
-	@Override
-	public List<BoardDTO> listArticles() throws Exception {
-		List<BoardDTO> boardsList = boardDAO.selectAllBoardList();
+	public List<BoardDTO> listfind1(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = boardDAO.listfind1(scri);
 		return boardsList;
 	}
 
-	// 리스트
+	// 게시물 갯수 검색 1
 	@Override
-	public List<BoardDTO> listArticles1() throws Exception {
-		List<BoardDTO> boardsList = boardDAO.selectAllBoardList1();
+	public int findlistCount1(SearchCriteria scri) throws Exception {
+		return boardDAO.findlistCount1(scri);
+	}
+
+	// 게시물 갯수 검색
+	@Override
+	public int findlistCount(SearchCriteria scri) throws Exception {
+		return boardDAO.findlistCount(scri);
+	}
+
+	// 페이징 검색
+	@Override
+	public List<BoardDTO> listfind(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = boardDAO.listfind(scri);
 		return boardsList;
 	}
 
 	// 상세보기
 	@Override
-	public Map<String, Object> viewdetail(int post_num){
+	public Map<String, Object> viewdetail(int post_num) {
 		Map<String, Object> boardMap = new HashMap<>();
 
 		BoardDTO boardDTO = boardDAO.selectBoard(post_num);
+
+		boardMap.put("board", boardDTO);
+		return boardMap;
+	}
+
+	// 상세보기1
+	@Override
+	public Map<String, Object> viewdetail1(int post_num) {
+		Map<String, Object> boardMap = new HashMap<>();
+
+		BoardDTO boardDTO = boardDAO.selectBoard1(post_num);
 
 		boardMap.put("board", boardDTO);
 		return boardMap;
@@ -72,7 +82,7 @@ public class BoardServiceImpl implements BoardService {
 		return post_num;
 	}
 
-	// 글쓰기
+	// 글쓰기1
 	@Override
 	public int insertBoard1(Map boardMap) throws Exception {
 
@@ -105,33 +115,71 @@ public class BoardServiceImpl implements BoardService {
 			}
 		}
 		// 새 이미지를 추가한 경우
-		else if (modAddImageFileList != null && modAddImageFileList.size() != 0)  {
+		else if (modAddImageFileList != null && modAddImageFileList.size() != 0) {
 			boardDAO.insertModNewImage(boardMap);
 		}
 
 	}
-	
-	//글이미지삭제
+
+	// 글수정1
+	@Override
+	public void modBoard1(Map<String, Object> boardMap) throws Exception {
+		boardDAO.updateBoard1(boardMap);
+
+		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
+		List<ImageDTO> modAddImageFileList = (List<ImageDTO>) boardMap.get("modAddImageFileList");
+
+		if (imageFileList != null && imageFileList.size() != 0) {
+			int added_img_num = Integer.parseInt((String) boardMap.get("added_img_num"));
+			int pre_img_num = Integer.parseInt((String) boardMap.get("pre_img_num"));
+
+			if (pre_img_num < added_img_num) { // 기존 이미지도 수정하고 새 이미지도 추가한 경우
+				boardDAO.updateImageFile(boardMap); // 기존 이미지 수정
+				boardDAO.insertModNewImage(boardMap); // 새 이미지 추가
+			} else { // 기존 이미지를 수정만 한 경우
+				boardDAO.updateImageFile(boardMap);
+			}
+		}
+		// 새 이미지를 추가한 경우
+		else if (modAddImageFileList != null && modAddImageFileList.size() != 0) {
+			boardDAO.insertModNewImage(boardMap);
+		}
+
+	}
+
+	// 글이미지삭제
 	@Override
 	public void removeModImage(ImageDTO imageDTO) {
 		boardDAO.deleteModImage(imageDTO);
-		
+
 	}
-	
-	//글삭제
+
+	// 글삭제
 	@Override
 	public void removeBoard(int post_num) throws Exception {
 		boardDAO.deleteBoard(post_num);
-		
+
 	}
-	//조회수
+
+	// 글삭제1
+	@Override
+	public void removeBoard1(int post_num) throws Exception {
+		boardDAO.deleteBoard1(post_num);
+
+	}
+
+	// 조회수
 	@Override
 	public void visitcount(int post_num) throws Exception {
 		boardDAO.visitcount(post_num);
-		
+
 	}
 
-	
+	// 조회수
+	@Override
+	public void visitcount1(int post_num) throws Exception {
+		boardDAO.visitcount1(post_num);
 
-	
+	}
+
 }
