@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.login_signup.service.MemberService;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.service.TouristService;
 import lombok.extern.slf4j.Slf4j;
@@ -91,12 +93,15 @@ public class TouristController {
 	
 	// 제주도 여행지 상세페이지 
 	@GetMapping("tourist/tourist_View")
-	public ApiDTO jejutourist_detail(ApiDTO apiDTO, Model model) throws Exception {
+	public String jejutourist_detail(ApiDTO apiDTO, Model model) throws Exception {
 		String schAirportCode = "alltag";
 		tourservice.jejutourist_viewcount(apiDTO);		
 		ApiDTO plist = tourservice.jejutourist_detail(apiDTO);		
 		model.addAttribute("plist", plist);
-		return plist;
+		
+		List<JejuCommentDTO> replyList = tourservice.readReply(apiDTO.getContentsid());
+		model.addAttribute("replyList", replyList);
+		return "tourist/tourist_View";
 	}
 	
 	// 제주도 여행지 페이지 리스트 Sorting 기능

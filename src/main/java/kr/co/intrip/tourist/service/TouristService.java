@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 
 public interface TouristService {
@@ -48,6 +49,8 @@ public interface TouristService {
 
 	// 제주도 전시관 페이지 리스트 Sorting 기능
 	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws IOException;
+
+	public List<JejuCommentDTO> readReply(String contentsid) throws Exception;
 
 
 }

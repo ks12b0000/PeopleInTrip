@@ -139,5 +139,14 @@
    		 	where rNum between #{firstRow} and #{lastRow}	
    		 	ORDER by viewcount desc
 		]]>
-	</select>	
+	</select>
+
+	<!-- 댓글 조회 -->
+   	<select id="jejuCommentselect" resultType="kr.co.intrip.tourist.dto.JejuCommentDTO">
+   		<![CDATA[
+	   		select *
+	   		from P_JEJU_COMMENT
+	   		where CONTENTSID = #{contentsid}
+   		]]>
+   	</select>
  </mapper>

@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <c:set var="plist" value="${plist}" />
+<c:set var="replyList" value="${replyList}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,23 +86,29 @@
     
     <!-- 댓글창 -->
     <div id="outter">	 
-		  <div id="form-commentInfo">
-		  
-	        <div id="comment-count"><strong>작성된 댓글<span id="count">(1개)</span></strong></div>
+		<div id="form-commentInfo">		 
+	      	<div id="comment-count"><strong>작성된 댓글<span id="count"></span></strong></div>
 	        <div id="css1">
-	        <hr align="left" style="border: solid 1px;  width: 100%;"></div>
-	        <input type="text" id="comment_input" placeholder="댓글을 입력해 주세요.">
-	        <button type="button" onClick="btnbtn()" class="submit" >등록</button>
+	        <hr align="left" style="border: solid 3px #D8D8D8;  width: 100%;"></div>		
 	    </div><br><br>
-	    <div class=list>
-			<span class="name">test |</span>
-			<span class="wdate">2022-07-18</span>&nbsp; &nbsp;
-			<button type="submit" onClick="check2()" class="SEDIT">수정</button>
-			<button type="submit" onClick="check1()" class="SDEL">삭제</button><br>
-			<c:out value="초밥 맛있어요~!!!!"></c:out><br>
-			<button type="submit" onClick="check()" class="SBTN1">신고</button>
-			 <hr align="left" style="border: solid 0.1px; width: 100%;"><br><br>		   
-    </div>
+	    <div class="list">
+	    <c:forEach items="${replyList}" var="replyList">
+	    	<p class="name" style="word-break: normal; font-size: 20px; display: inline-block;"><strong>${replyList.id}</strong></p>	
+	   		<p class="wdate" style="font-size: 10px;  display: inline-block"><strong><fmt:formatDate value="${replyList.com_date}" pattern="yyyy-MM-dd" /></strong></p><br>
+	   		<br><hr align="left" style="border: solid 1px #D8D8D8; width: 100%; margin-top: -15px;">		
+	   		<p style="font-size: 15px; margin-top: 10px;">${replyList.com_content }</p><br>   															 			  
+	   		<button type="submit" onClick="check()" class="SBTN2"><strong>수정</strong></button>
+			<button type="submit" onClick="check2()" class="SBTN3"><strong>삭제</strong></button>	
+			<button type="submit" onClick="check()" class="SBTN4"><strong>신고</strong></button>
+		</c:forEach>
+    	</div>        		
+    	<form action="${contextPath}/tourist/tourist_View" method="post">
+			<input type="hidden" name="ref_group" value="${dto.com_num }"/>
+			<input type="hidden" name="id" value="${dto.id }"/>
+			<textarea rows="content" name="com_content" id="comment_input" placeholder="댓글을 입력해주세요."><c:if test="${empty user.id}">로그인이 필요합니다.</c:if></textarea>
+	        <button type="submit" onClick="btnbtn()" class="submit">등록</button>
+		</form>	
+		<br><hr align="left" style="border: solid 3px #D8D8D8; width: 100%;"><br><br> 
   </div>
 </body>
 <script type="text/javascript">

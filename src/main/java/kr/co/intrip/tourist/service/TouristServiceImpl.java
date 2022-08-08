@@ -1,6 +1,7 @@
 package kr.co.intrip.tourist.service;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -17,10 +18,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import kr.co.intrip.tourist.controller.TouristController;
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class TouristServiceImpl implements TouristService {
 
@@ -180,7 +185,7 @@ public class TouristServiceImpl implements TouristService {
 	public List<ApiDTO> jejutourist_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws IOException {
 		String value = request.getParameter("value");
 		model.addAttribute("value", value);
-		System.out.println(value);
+		log.info("value = {}", value);
 		if (value.equals("basic")) {
 			return touristDAO.jejutourist(pagingDTO);
 		}
@@ -242,6 +247,10 @@ public class TouristServiceImpl implements TouristService {
 		else {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);		
 		}
+	}
+
+	public List<JejuCommentDTO> readReply (String contentsid) throws Exception {
+		return touristDAO.readReply(contentsid);
 	}
 
 }

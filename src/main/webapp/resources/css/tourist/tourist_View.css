@@ -159,32 +159,89 @@ margin-top: 7%;
 }
 
 #comment-count{
+	font-size: 25px;
     margin-bottom: 20px;
     margin-top: 20px;
 }
 
 #comment_input{
     width: 90%;
-    height: 3.3em;
-    margin-top: 4%;
+    height: 3em;
+    margin-top: 2.5%;
+    resize: none;
+    text-align: center;
+    padding-top: 23px;
+    border:solid 2px #D8D8D8;
 }
 
 .submit{
-    
+    margin-top: 25px;
+    margin-left: 1.5%;
     width: 5.5em;
-    height: 3.3em;;
+    height: 4.6em;;
     font-size: 15px;
     font-weight: bold;
-   
+	position: absolute;
+	background-color: white;
+	border: 2px solid #D8D8D8;
+	cursor: pointer;
 }
 
 #comments{
     margin-top: 10px;
 }
 
+.list {
+	position: relative;
+	height: auto;
+	margin-top: -30px;
+	padding-top: 5px;
+	padding-left: 2%;
+	border: solid 1px #D8D8D8;
+	width: 1040px;
+}
 
-.SBTN1{
-	margin-left: 1010px;
+
+.list > .SBTN2{
+	text-align: center;
+	display: flex;
+	margin-left: 860px;
+	margin-top: -30px;
+	width: 50px;
+	height: 30px;
+	background-color: white;
+	border: 2px solid #D8D8D8;
+	cursor: pointer;
+	padding-left: 9px;
+	padding-top: 3px;
+}
+
+.list > .SBTN3{
+	text-align: center;
+	display: flex;
+	margin-left: 920px;
+	margin-top: -30px;
+	width: 50px;
+	height: 30px;
+	background-color: white;
+	border: 2px solid #D8D8D8;
+	cursor: pointer;
+	padding-left: 9px;
+	padding-top: 3px;
+}
+
+.list > .SBTN4{
+	text-align: center;
+	display: flex;
+	margin-left: 980px;
+	margin-top: -30px;
+	width: 50px;
+	height: 30px;
+	background-color: white;
+	border: 2px solid #D8D8D8;
+	cursor: pointer;
+	padding-left: 9px;
+	padding-top: 3px;
 }
 .tg {
 	display: flex;

@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 
 @Repository
@@ -73,5 +74,9 @@ public class TouristDAO {
 	// 제주도 전시관 페이지 조회수별 리스트 Sorting 기능
 	public List<ApiDTO> jejuexhibition_lookupSort(PagingDTO pagingDTO) {
 		return sqlSession.selectList("mapper.tourist.jejuexhibition_lookupSort", pagingDTO);
+	}
+
+	public List<JejuCommentDTO> readReply(String contentsid) {
+		return sqlSession.selectList("mapper.tourist.jejuCommentselect", contentsid);
 	}
 }
