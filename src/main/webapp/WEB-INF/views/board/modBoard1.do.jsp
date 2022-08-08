@@ -64,7 +64,7 @@
     </script>
 </head>
 <body>
-	<form action="${contextPath}/board/modBoard.do" method="post"
+	<form action="${contextPath}/board/modBoard1.do" method="post"
 		enctype="multipart/form-data">
 		<!-- 헤더 -->
 		<div id="header-jeh">

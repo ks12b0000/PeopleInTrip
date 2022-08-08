@@ -10,17 +10,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 public interface BoardController {
 
-	public ModelAndView listArticles(HttpServletRequest request, HttpServletResponse response) throws Exception;
-	public ModelAndView listArticles1(HttpServletRequest request, HttpServletResponse response) throws Exception;
-
 	public ModelAndView viewdetail(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
-
-
-	
 
 	public ResponseEntity addNewArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
-
 	public ResponseEntity addNewArticle1(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
 	public ResponseEntity modBoard(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
@@ -31,6 +24,10 @@ public interface BoardController {
 	public ResponseEntity removeBoard1(int post_num, HttpServletRequest request, HttpServletResponse response)
 			throws Exception;
 	public ModelAndView viewdetail1(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ResponseEntity modBoard1(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+			throws Exception;
+
+	public ModelAndView update1(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 	
 	
