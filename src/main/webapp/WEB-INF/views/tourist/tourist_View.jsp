@@ -87,26 +87,42 @@
     <!-- 댓글창 -->
     <div id="outter">	 
 		<div id="form-commentInfo">		 
-	      	<div id="comment-count"><strong>작성된 댓글<span id="count"></span></strong></div>
+	      	<div id="comment-count" style="margin-left:17px;"><strong>작성된 댓글<span id="count"></span></strong></div>
 	        <div id="css1">
 	        <hr align="left" style="border: solid 3px #D8D8D8;  width: 100%;"></div>		
 	    </div><br><br>
 	    <div class="list">
 	    <c:forEach items="${replyList}" var="replyList">
 	    	<p class="name" style="word-break: normal; font-size: 20px; display: inline-block;"><strong>${replyList.id}</strong></p>	
-	   		<p class="wdate" style="font-size: 10px;  display: inline-block"><strong><fmt:formatDate value="${replyList.com_date}" pattern="yyyy-MM-dd" /></strong></p><br>
-	   		<br><hr align="left" style="border: solid 1px #D8D8D8; width: 100%; margin-top: -15px;">		
-	   		<p style="font-size: 15px; margin-top: 10px;">${replyList.com_content }</p><br>   															 			  
-	   		<button type="submit" onClick="check()" class="SBTN2"><strong>수정</strong></button>
-			<button type="submit" onClick="check2()" class="SBTN3"><strong>삭제</strong></button>	
-			<button type="submit" onClick="check()" class="SBTN4"><strong>신고</strong></button>
+	   		<p class="wdate" style="font-size: 10px;  display: inline-block"><strong><fmt:formatDate value="${replyList.com_date}" pattern="yyyy-MM-dd HH:mm:ss" /></strong></p><br>
+	   		<br><hr align="left" style="border: solid 1px #D8D8D8; width: 100%; margin-top: -15px; ">		   			
+	   		<p style="font-size: 15px; margin-top: 10px; word-break:break-all; width: 800px; " >${replyList.com_content }</p><br>   															 			  
+	   		
+		   		<c:if test="${replyList.id eq user.id}">
+			   		<button type="button" class="SBTN2" data-com_num="${replyList.com_num}"><strong>수정</strong></button>
+			   		<input type="hidden" name="contentid" value="${replyDelete.contentid}"/>
+			   		<input type="hidden" id="reply_number" name="com_num" value="${replyDelete.com_num}" />
+					<button type="button" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>	
+				</c:if>
+					<button type="button" class="SBTN4"><strong>신고</strong></button>
+			
 		</c:forEach>
     	</div>        		
-    	<form action="${contextPath}/tourist/tourist_View" method="post">
-			<input type="hidden" name="ref_group" value="${dto.com_num }"/>
-			<input type="hidden" name="id" value="${dto.id }"/>
-			<textarea rows="content" name="com_content" id="comment_input" placeholder="댓글을 입력해주세요."><c:if test="${empty user.id}">로그인이 필요합니다.</c:if></textarea>
-	        <button type="submit" onClick="btnbtn()" class="submit">등록</button>
+    	<form action="${contextPath}/tourist/jejureplyWrite" method="post">
+			<input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+			<input type="hidden" name="id" value="${user.id }"/>
+			<c:choose>
+				<c:when test="${!empty user.id}">
+					<textarea rows="content" name="com_content" id="comment_input" placeholder="댓글을 입력해주세요." onfocus="this.placeholder=''" onblur="this.placeholder='댓글을 입력해주세요.'"  style="outline: none; text-align: left; padding-left:10px;"></textarea>			
+			        <button type="submit" onClick="btnbtn()" class="submit">등록</button>
+			        <div id="textarea-cnt">(0 / 200)</div>
+		        </c:when>
+		        <c:otherwise>
+			        <textarea rows="content" name="com_content" id="comment_input" placeholder="로그인을 해주세요." disabled style="outline: none; text-align: left; padding-left:10px;"></textarea>			
+			        <button type="submit" onClick="btnbtn()" class="submit" disabled>등록</button>
+			        <div id="textarea-cnt">(0 / 200)</div>
+		        </c:otherwise>
+	        </c:choose>
 		</form>	
 		<br><hr align="left" style="border: solid 3px #D8D8D8; width: 100%;"><br><br> 
   </div>
@@ -149,4 +165,58 @@ kakao.maps.event.addListener(marker, 'mouseout', function() {
     infowindow.close();
 });
 </script>
+<!-- 제주도 댓글 작성 -->
+<script type="text/javascript">
+$(function () {
+	createReply();
+})
+		
+function createReply() {
+	$(".submit").on("click", function() {
+		var formObj = $("form[name='jejureplyForm']");
+		formObj.attr("action", "${contextPath}/tourist/jejureplyWrite");
+		formObj.submit();
+	});
+}
+</script>
+<script type="text/javascript">
+$(function () {
+	updateReply();
+	deleteReply();
+})
+
+function updateReply() {
+	$(".SBTN2").on("click", function(){
+		location.href = "${contextPath}/tourist/jejureplyUpdateView?contentsid=${plist.contentsid}"
+						+ "&com_num="+$(this).attr("data-com_num");
+	});
+}
+
+function deleteReply() {	
+	$(".SBTN3").on("click", function() {
+		var formObj = $("form[name='deleteForm']");
+		if(!confirm("댓글을 삭제하시겠습니까?")){		
+		}
+		else {
+			formObj.attr("action", "${contextPath}/tourist/jejureplyDelete");
+			formObj.submit();
+		}
+		
+	});
+	
+}
+</script>
+
+<script type="text/javascript">
+    	$(document).ready(function() {
+			$('#comment_input').on('keyup', function() {
+				$('#textarea-cnt').html("(" + $(this).val().length + " / 200)");
+				
+				if($(this).val().length > 200) {
+					$(this).val($(this).val().substring(0, 200));
+					$('#textarea-cnt').html("(200 / 200)");
+				}
+			});
+		});   	
+    </script>
 </html>

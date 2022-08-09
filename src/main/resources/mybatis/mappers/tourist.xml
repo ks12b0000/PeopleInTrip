@@ -141,12 +141,49 @@
 		]]>
 	</select>
 
-	<!-- 댓글 조회 -->
+	<!-- 제주도 댓글 조회 -->
    	<select id="jejuCommentselect" resultType="kr.co.intrip.tourist.dto.JejuCommentDTO">
    		<![CDATA[
 	   		select *
 	   		from P_JEJU_COMMENT
 	   		where CONTENTSID = #{contentsid}
+	   		order by com_date desc
    		]]>
    	</select>
+   	
+   	<!-- 제주도 댓글 작성 -->
+	<insert id="jejuWriteReply">
+			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
+				select com_num.nextval from dual
+			</selectKey>
+		   	insert into P_JEJU_COMMENT(COM_NUM, ID, contentsid, COM_CONTENT)
+		  	values( #{com_num}, #{id}, #{contentsid}, #{com_content})
+	</insert>
+	
+	<!-- 제주도 댓글 수정 -->
+	<update id="jejuupdateReply" parameterType="kr.co.intrip.tourist.dto.JejuCommentDTO">
+		<![CDATA[
+		   	update P_JEJU_COMMENT 
+		   	set COM_CONTENT = #{com_content}
+		   	where com_num = #{com_num}
+	   	]]>
+	</update>
+	   	
+	<!-- 제주도 댓글 삭제 -->
+	<delete id="jejudeleteReply" parameterType="kr.co.intrip.tourist.dto.JejuCommentDTO">
+		<![CDATA[
+		   	delete
+		   	from P_JEJU_COMMENT 
+		   	where com_num = #{com_num}
+		]]>
+	</delete>
+	
+	<!-- 제주도 선택된 댓글 조회 -->
+	<select id="jejuselectReply" resultType="kr.co.intrip.tourist.dto.JejuCommentDTO">
+		<![CDATA[
+			select *
+			from P_JEJU_COMMENT
+			where com_num = #{com_num}
+		]]>
+	</select>
  </mapper>
