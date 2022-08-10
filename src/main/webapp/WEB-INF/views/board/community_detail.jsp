@@ -7,6 +7,8 @@
 	request.setCharacterEncoding("UTF-8");
 %>
 <c:set var="board" value="${boardMap.board }" />
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,6 +35,39 @@
 		}
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	function updateLike(){ 
+	     $.ajax({
+	            type : 'post',  
+	            url : "/intrip/board/updateLike",   
+	            dataType : "json",
+	            data : {"post_num" : ${board.post_num}, "id" : "${user.id}" }, 
+	            error : function(){
+		               alert("통신 에러");
+		            },
+		            success : function(likeCheck) {
+	                    if(likeCheck == 0){
+	                    	alert("추천완료.");
+	                    	
+	                    }
+	                    else if (likeCheck == 1){
+	                     alert("추천취소");
+
+	                    
+	                }
+	            }
+	        });
+	 }
+	
+	 
+
+	
 
     </script>
 </head>
@@ -43,7 +78,7 @@
     <div id="header-jeh">
        <header>
 		<jsp:include page="/header_lhj/header.jsp" flush="false" />
-		<input type="hidden" name="articleNO" value="${board.post_num }">
+		<input type="hidden" name="post_num" value="${board.post_num }">
 	</header>
     </div>
     <!-- 왼쪽 메뉴바 -->
@@ -56,14 +91,14 @@
     <!-- 정보게시판 본문 -->
     <section class="content">
         <div>
-            <p class="write-detail">정보게시판 > 상세보기</p>
+            <p class="write-detail">동행구해요 > 상세보기</p>
         </div>
         <div class="write-title">
         	<div class="write-titlemain">
         		${board.post_title } 
         	</div>
         	<div class="write-titlesub">
-        		${board.id } | <fmt:formatDate value="${board.post_date }"/>| 추천 : 0 | 조회수 : ${board.visitcount} 
+        		${board.id } | <fmt:formatDate value="${board.post_date }"/>| 추천 : ${board.likehit} | 조회수 : ${board.visitcount} 
         	</div>
         </div>
         <div>
@@ -75,9 +110,17 @@
         <div>
         	<p class="write-comment1">작성된 댓글( X 개)</p>
         </div>
-        <div class="write-button">
-        	<button id="write-recommand" class="write-recommand" onclick="recommand()">추천</button>
+        
+       
+				
+	
+			
+				
+       <div class="write-button">
+        <c:if test="${user.id != null }">
+        	<button id="write-recommand" class="write-recommand"  onclick="updateLike()">추천</button>
         	<button class="write-declaration">신고</button>
+        	</c:if>
         </div>
         <div class="write-comment22">
         	<textarea class="write-comment2" placeholder="&#13;&#10; - 최대 300자까지 작성할 수 있습니다(띄어쓰기 포함).&#13;&#10; ※ 욕설, 영업에 방해되는 글은 관리자에 의해 삭제될 수 있습니다."></textarea>

@@ -39,4 +39,36 @@ public interface BoardService {
 	public Map<String, Object> viewdetail1(int post_num);
 
 	public void visitcount1(int post_num) throws Exception;
+
+	public void deleteLike(int post_num, String id) throws Exception;
+
+	public void updateLike(int post_num) throws Exception;
+
+	public void updateLikeCancel(int post_num) throws Exception;
+
+	public void insertLike(int post_num, String id) throws Exception;
+
+	public int likeCheck(int post_num, String id) throws Exception;
+
+	public void updateLikeCheck(int post_num, String id) throws Exception;
+
+	public void updateLikeCheckCancel(int post_num, String id) throws Exception;
+
+	public void updateLike1(int post_num) throws Exception;
+
+	public void updateLikeCancel1(int post_num) throws Exception;
+
+	public void updateLikeCheckCancel1(int post_num, String id) throws Exception;
+
+	public void updateLikeCheck1(int post_num, String id) throws Exception;
+
+	public int likeCheck1(int post_num, String id) throws Exception;
+
+	public void deleteLike1(int post_num, String id) throws Exception;
+
+	public void insertLike1(int post_num, String id) throws Exception;
+
+	
+
+	
 }

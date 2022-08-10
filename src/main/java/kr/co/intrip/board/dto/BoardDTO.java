@@ -17,7 +17,7 @@ public class BoardDTO {
 	private Date post_date;
 	private int visitcount;
 	private int count_comment;
-	
+	private int likehit;
 	
 
 
@@ -31,6 +31,15 @@ public class BoardDTO {
 		this.post_title = post_title;
 		this.post_content= post_content;
 		this.visitcount = visitcount;
+		this.likehit = likehit;
+	}
+
+	public int getLikehit() {
+		return likehit;
+	}
+
+	public void setLikehit(int likehit) {
+		this.likehit = likehit;
 	}
 
 	public int getPost_num() {

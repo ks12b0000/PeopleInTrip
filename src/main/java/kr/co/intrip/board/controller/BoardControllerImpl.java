@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.User;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +36,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+
+
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
@@ -42,9 +45,13 @@ import kr.co.intrip.board.dto.PageMaker;
 import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.login_signup.dto.MemberDTO;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class BoardControllerImpl implements BoardController {
+
 
 	@Autowired
 	private BoardService boardService;
@@ -56,20 +63,20 @@ public class BoardControllerImpl implements BoardController {
 	@Override
 	@RequestMapping(value = "/board/community_detail.do", method = RequestMethod.GET)
 	public ModelAndView viewdetail(@RequestParam(value = "post_num") int post_num, // 조회할 글 번호를 가져옴
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+			HttpServletRequest request, HttpServletResponse response,Model model) throws Exception {
+		
 		// 조회수 증가
 		boardService.visitcount(post_num);
 		String viewName = (String) request.getAttribute("viewName");
-
+		
 		Map<String, Object> boardMap = boardService.viewdetail(post_num); // 조회할 글 정보,이미지파일 정보를 articleMap에 설정
-
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		mav.addObject("boardMap", boardMap);
-
+		
 		return mav;
 	}
+
 
 	// 상세보기1
 	@Override
@@ -183,7 +190,7 @@ public class BoardControllerImpl implements BoardController {
 			}
 
 			message = "<script>";
-			message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
+			message += " alert('빈칸없이 입력해 주세요!.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/board/community-acco';";
 			message += "</script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -274,7 +281,7 @@ public class BoardControllerImpl implements BoardController {
 			}
 
 			message = "<script>";
-			message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
+			message += " alert('빈칸없이 입력해 주세요!.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/board/community-info';";
 			message += "</script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -757,6 +764,50 @@ public class BoardControllerImpl implements BoardController {
 		writer.print("success");
 
 	}
+
+	//추천
+	@RequestMapping(value = "/board/updateLike" , method = RequestMethod.POST)
+	@ResponseBody
+	public int updateLike(int post_num,  String id)throws Exception{
+		 
+		
+			int likeCheck = boardService.likeCheck(post_num, id);
+			
+			
+			if(likeCheck == 0) {
+				//좋아요 처음누름
+				boardService.insertLike(post_num, id); //like테이블 삽입
+				boardService.updateLike(post_num);	//게시판테이블 +1
+				boardService.updateLikeCheck(post_num, id);//like테이블 구분자 1
+				
+			}else if(likeCheck == 1) {
+				boardService.updateLikeCheckCancel(post_num, id); //like테이블 구분자0
+				boardService.updateLikeCancel(post_num); //게시판테이블 - 1
+				boardService.deleteLike(post_num, id); //like테이블 삭제
+			}
+			return likeCheck;
+	}
+
+	//추천1
+		@RequestMapping(value = "/board/updateLike1" , method = RequestMethod.POST)
+		@ResponseBody
+		public int updateLike1(int post_num,  String id)throws Exception{
+			 
+			
+				int likeCheck = boardService.likeCheck1(post_num, id);
+				
+				if(likeCheck == 0) {
+					boardService.insertLike1(post_num, id); //like테이블 삽입
+					boardService.updateLike1(post_num);	//게시판테이블 +1
+					boardService.updateLikeCheck1(post_num, id);//like테이블 구분자 1
+				}else if(likeCheck == 1) {
+					boardService.updateLikeCheckCancel1(post_num, id); //like테이블 구분자0
+					boardService.updateLikeCancel1(post_num); //게시판테이블 - 1
+					boardService.deleteLike1(post_num, id); //like테이블 삭제
+				}
+				return likeCheck;
+		}
+	
 
 	
 

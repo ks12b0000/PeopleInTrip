@@ -119,7 +119,7 @@ $(function(){
 								</a></td>
 								<td>${boards.id }</td>
 								<td><fmt:formatDate value="${boards.post_date }" /></td>
-								<td></td>
+								<td>${boards.likehit }</td>
 								<td>${boards.visitcount }</td>
 							</tr>
 						</tbody>
@@ -152,10 +152,10 @@ $(function(){
   </c:if>
  <c:choose>
    <c:when test= "${pageMaker.displayPageNum % 2 == 1 }">
-   <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 + 1) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+   <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 	</c:when>
 	 <c:when test= "${pageMaker.displayPageNum % 2 == 0 }">
-	 <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 +1 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+	 <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 + 1 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 	</c:when>
 	</c:choose>
  </ul>

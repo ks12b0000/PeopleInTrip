@@ -14,6 +14,7 @@ import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.login_signup.dto.MemberDTO;
 
 @Service("boardService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -175,11 +176,83 @@ public class BoardServiceImpl implements BoardService {
 
 	}
 
-	// 조회수
+	// 조회수1
 	@Override
 	public void visitcount1(int post_num) throws Exception {
 		boardDAO.visitcount1(post_num);
 
+	}
+
+	// 추천
+	@Override
+	public void updateLike(int post_num) throws Exception {
+		boardDAO.updateLike(post_num);
+	}
+
+	@Override
+	public void updateLikeCancel(int post_num) throws Exception {
+		boardDAO.updateLikeCancel(post_num);
+	}
+
+	@Override
+	public void insertLike(int post_num, String id) throws Exception {
+		boardDAO.insertLike(post_num, id);
+	}
+
+	@Override
+	public void deleteLike(int post_num, String id) throws Exception {
+		boardDAO.deleteLike(post_num, id);
+	}
+
+	@Override
+	public int likeCheck(int post_num, String id) throws Exception {
+		return boardDAO.likeCheck(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheck(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheck(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheckCancel(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheckCancel(post_num, id);
+	}
+
+	// 추천 1
+	@Override
+	public void updateLike1(int post_num) throws Exception {
+		boardDAO.updateLike1(post_num);
+	}
+
+	@Override
+	public void updateLikeCancel1(int post_num) throws Exception {
+		boardDAO.updateLikeCancel1(post_num);
+	}
+
+	@Override
+	public void insertLike1(int post_num, String id) throws Exception {
+		boardDAO.insertLike1(post_num, id);
+	}
+
+	@Override
+	public void deleteLike1(int post_num, String id) throws Exception {
+		boardDAO.deleteLike1(post_num, id);
+	}
+
+	@Override
+	public int likeCheck1(int post_num, String id) throws Exception {
+		return boardDAO.likeCheck1(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheck1(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheck1(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheckCancel1(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheckCancel1(post_num, id);
 	}
 
 }
