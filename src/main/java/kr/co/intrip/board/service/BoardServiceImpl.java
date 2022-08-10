@@ -255,4 +255,75 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.updateLikeCheckCancel1(post_num, id);
 	}
 
+	// 신고
+	@Override
+	public void updatesin(int post_num) throws Exception {
+		boardDAO.updatesin(post_num);
+	}
+
+	@Override
+	public void updatesinCancel(int post_num) throws Exception {
+		boardDAO.updatesinCancel(post_num);
+	}
+
+	@Override
+	public void insertsin(int post_num, String id) throws Exception {
+		boardDAO.insertsin(post_num, id);
+	}
+
+	@Override
+	public void deletesin(int post_num, String id) throws Exception {
+		boardDAO.deletesin(post_num, id);
+	}
+
+	@Override
+	public int sinCheck(int post_num, String id) throws Exception {
+		return boardDAO.sinCheck(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheck(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheck(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheckCancel(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheckCancel(post_num, id);
+	}
+
+	// 신고1
+	@Override
+	public void updatesin1(int post_num) throws Exception {
+		boardDAO.updatesin1(post_num);
+	}
+
+	@Override
+	public void updatesinCancel1(int post_num) throws Exception {
+		boardDAO.updatesinCancel1(post_num);
+	}
+
+	@Override
+	public void insertsin1(int post_num, String id) throws Exception {
+		boardDAO.insertsin1(post_num, id);
+	}
+
+	@Override
+	public void deletesin1(int post_num, String id) throws Exception {
+		boardDAO.deletesin1(post_num, id);
+	}
+
+	@Override
+	public int sinCheck1(int post_num, String id) throws Exception {
+		return boardDAO.sinCheck1(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheck1(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheck1(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheckCancel1(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheckCancel1(post_num, id);
+	}
 }

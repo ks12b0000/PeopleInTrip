@@ -134,16 +134,15 @@ $(function(){
 				style="background-color: #9966ff;"
 				onclick="location.href='${contextPath}/board/community_writeInfo.do'">글쓰기</button>
 		</div>
-		<div>
-		
+<div style="text-align: center; font-size: 18px;">	
  <ul>
-  <a href="${contextPath}/board/community-info?page=1">&laquo;</a> 
+  <a href="${contextPath}/board/community-info?page=1" style="color: #9966ff; font-size: 25px;">&laquo;</a> 
   <c:if test="${pageMaker.prev}">
    <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
   </c:if> 
   
-  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-   <a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}">${idx}</a>
+  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">&nbsp;
+   <a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}">${idx}</a>&nbsp;
   </c:forEach>
  
     

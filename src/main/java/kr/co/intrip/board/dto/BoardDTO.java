@@ -10,16 +10,25 @@ import lombok.Data;
 public class BoardDTO {
 	
 	private int post_num;
-	private String id;
-	
+	private String id;	
 	private String post_title;
 	private String post_content;
 	private Date post_date;
 	private int visitcount;
 	private int count_comment;
 	private int likehit;
+	private int sinhit;
+
 	
 
+
+	public int getSinhit() {
+		return sinhit;
+	}
+
+	public void setSinhit(int sinhit) {
+		this.sinhit = sinhit;
+	}
 
 	public BoardDTO() {
 		// TODO Auto-generated constructor stub

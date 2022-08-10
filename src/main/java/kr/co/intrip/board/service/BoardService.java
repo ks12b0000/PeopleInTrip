@@ -68,6 +68,34 @@ public interface BoardService {
 
 	public void insertLike1(int post_num, String id) throws Exception;
 
+	public void updatesinCheckCancel1(int post_num, String id) throws Exception;
+
+	public void updatesinCheck1(int post_num, String id) throws Exception;
+
+	public int sinCheck1(int post_num, String id) throws Exception;
+
+	public void deletesin1(int post_num, String id) throws Exception;
+
+	public void insertsin1(int post_num, String id) throws Exception;
+
+	public void updatesinCancel1(int post_num) throws Exception;
+
+	public void updatesin1(int post_num) throws Exception;
+
+	public void updatesinCheckCancel(int post_num, String id) throws Exception;
+
+	public void updatesinCheck(int post_num, String id) throws Exception;
+
+	public int sinCheck(int post_num, String id) throws Exception;
+
+	public void deletesin(int post_num, String id) throws Exception;
+
+	public void insertsin(int post_num, String id) throws Exception;
+
+	public void updatesinCancel(int post_num) throws Exception;
+
+	public void updatesin(int post_num) throws Exception;
+
 	
 
 	

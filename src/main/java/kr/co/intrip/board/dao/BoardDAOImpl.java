@@ -323,4 +323,109 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.update("mapper.board.updateLikeCheckCancel1", map);
 	}
 
+	// 신고
+	@Override
+	public void updatesin(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updatesin", post_num);
+	}
+
+	@Override
+	public void updatesinCancel(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updatesinCancel", post_num);
+
+	}
+
+	@Override
+	public void insertsin(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.insert("mapper.board.insertsin", map);
+	}
+
+	@Override
+	public void deletesin(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.delete("mapper.board.deletesin", map);
+	}
+
+	@Override
+	public int sinCheck(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		return sqlSession.selectOne("mapper.board.sinCheck", map);
+	}
+
+	@Override
+	public void updatesinCheck(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updatesinCheck", map);
+
+	}
+
+	@Override
+	public void updatesinCheckCancel(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updatesinCheckCancel", map);
+	}
+
+	// 신고2
+	@Override
+	public void updatesin1(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updatesin1", post_num);
+	}
+
+	@Override
+	public void updatesinCancel1(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updatesinCancel1", post_num);
+
+	}
+
+	@Override
+	public void insertsin1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.insert("mapper.board.insertsin1", map);
+	}
+
+	@Override
+	public void deletesin1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.delete("mapper.board.deletesin1", map);
+	}
+
+	@Override
+	public int sinCheck1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		return sqlSession.selectOne("mapper.board.sinCheck1", map);
+	}
+
+	@Override
+	public void updatesinCheck1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updatesinCheck1", map);
+
+	}
+
+	@Override
+	public void updatesinCheckCancel1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updatesinCheckCancel1", map);
+	}
 }
