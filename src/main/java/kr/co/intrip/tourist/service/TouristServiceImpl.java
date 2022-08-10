@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import kr.co.intrip.tourist.controller.TouristController;
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -193,7 +194,7 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejutourist_lookupSort(pagingDTO);
 		}
 		else if (value.equals("comment")) {
-			return touristDAO.jejutourist_lookupSort(pagingDTO);
+			return touristDAO.jejutourist_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
 			return touristDAO.jejutourist_lookupSort(pagingDTO);
@@ -216,7 +217,7 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejufestival_lookupSort(pagingDTO);
 		}
 		else if (value.equals("comment")) {
-			return touristDAO.jejufestival_lookupSort(pagingDTO);
+			return touristDAO.jejufestival_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
 			return touristDAO.jejufestival_lookupSort(pagingDTO);
@@ -239,7 +240,7 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
 		}
 		else if (value.equals("comment")) {
-			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
+			return touristDAO.jejuexhibition_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
@@ -248,11 +249,29 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);		
 		}
 	}
+	
+	// 제주도 댓글 수 증가
+	@Override
+	public int jejucommentcount(ApiDTO apiDTO) throws Exception {
+		return touristDAO.commentcount(apiDTO);
+	}
+	
+	// 제주도 댓글 수 감소
+	@Override
+	public int jejucommentcountminus(ApiDTO apiDTO) throws Exception {
+		return touristDAO.commentcountminus(apiDTO);
+	}
+	
+	// 제주도 댓글 총 개수
+	@Override
+	public int getCommentTotalRowCount(CommentPagingDTO commentpagingDTO) throws Exception {
+		return touristDAO.CommentgetTotalRowCount(commentpagingDTO);
+	}
 
 	// 제주도 댓글 조회
 	@Override
-	public List<JejuCommentDTO> jejureadReply (String contentsid) throws Exception {
-		return touristDAO.jejureadReply(contentsid);
+	public List<JejuCommentDTO> jejureadReply (CommentPagingDTO commentpagingDTO) throws Exception {
+		return touristDAO.jejureadReply(commentpagingDTO);
 	}
 	
 	// 제주도 댓글 작성

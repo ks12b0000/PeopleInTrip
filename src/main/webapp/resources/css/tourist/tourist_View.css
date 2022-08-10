@@ -216,7 +216,7 @@ margin-top: 7%;
 	padding-top: 3px;
 }
 
-.list > .SBTN3{
+.list > #deleteForm > .SBTN3{
 	text-align: center;
 	display: flex;
 	margin-left: 920px;

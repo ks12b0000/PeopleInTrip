@@ -53,7 +53,7 @@
 					<tr>
 						<td class="tb_td1"><a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}"><img src="${plist.imgpath }"/></a></td>
 						<td class="tb_td2">
-							<span class="tourpost_title"><a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}">${plist.title}</a></span> <br> <strong>🧡 0,000개 💬 0,000개 👍️ 0,000개 👀 ${plist.viewcount}회</strong> <br/>
+							<span class="tourpost_title"><a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}">${plist.title}</a></span> <br> <strong>🧡 0,000개 💬 ${plist.commentcount}개 👍️ 0,000개 👀 ${plist.viewcount}회</strong> <br/>
 							<span class="tourpost_place">${plist.address }</span>
 						</td>
 					</tr>					
