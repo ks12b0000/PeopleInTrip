@@ -10,22 +10,24 @@ import lombok.Data;
 public class BoardDTO {
 	
 	private int post_num;
-	private String id;
-	
+	private String id;	
 	private String post_title;
 	private String post_content;
 	private Date post_date;
 	private int visitcount;
 	private int count_comment;
-	private int post_cate;
+	private int likehit;
+	private int sinhit;
+
 	
-	
-	public int getPost_cate() {
-		return post_cate;
+
+
+	public int getSinhit() {
+		return sinhit;
 	}
 
-	public void setPost_cate(int post_cate) {
-		this.post_cate = post_cate;
+	public void setSinhit(int sinhit) {
+		this.sinhit = sinhit;
 	}
 
 	public BoardDTO() {
@@ -38,6 +40,15 @@ public class BoardDTO {
 		this.post_title = post_title;
 		this.post_content= post_content;
 		this.visitcount = visitcount;
+		this.likehit = likehit;
+	}
+
+	public int getLikehit() {
+		return likehit;
+	}
+
+	public void setLikehit(int likehit) {
+		this.likehit = likehit;
 	}
 
 	public int getPost_num() {

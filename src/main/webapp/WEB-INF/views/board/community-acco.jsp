@@ -30,6 +30,19 @@ request.setCharacterEncoding("UTF-8");
 	font-size: 15px;
 }
 </style>
+<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
+<script type="text/javascript">
+$(function(){
+	  $('#searchBtn').click(function() {
+	   self.location = "${contextPath}/board/community-acco"
+	     + '${pageMaker.makeQuery(1)}'
+	     + "&searchType="
+	     + $("select option:selected").val()
+	     + "&keyword="
+	     + encodeURIComponent($('#keywordInput').val());
+	    });
+	 });  
+</script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -103,7 +116,7 @@ request.setCharacterEncoding("UTF-8");
 								</a></td>
 								<td>${boards.id }</td>
 								<td><fmt:formatDate value="${boards.post_date }" /></td>
-								<td></td>
+								<td>${boards.likehit }</td>
 								<td>${boards.visitcount }</td>
 							</tr>
 						</tbody>
@@ -119,28 +132,26 @@ request.setCharacterEncoding("UTF-8");
 				style="background-color: #9966ff;"
 				onclick="location.href='${contextPath}/board/community_writeWith.do'">글쓰기</button>
 		</div>
-		<div>
-		
+<div style="text-align: center; font-size: 18px;">		
  <ul>
-  <a href="${contextPath}/board/community-acco?page=1">&laquo;</a> 
+  <a href="${contextPath}/board/community-acco?page=1" style="color: #9966ff; font-size: 25px;">&laquo;</a> 
   <c:if test="${pageMaker.prev}">
-   <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a>
+   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
   </c:if> 
   
-  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-   <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(idx)}">${idx}</a>
+  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> &nbsp;
+   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(idx)}">${idx}</a> &nbsp;
   </c:forEach>
- 
-    
+     
   <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-   <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a>
+   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a> 
   </c:if>
  <c:choose>
-   <c:when test= "${pageMaker.totalCount % 2 == 1 }">
-   <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(pageMaker.totalCount/10 + 1) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+   <c:when test= "${pageMaker.displayPageNum % 2 == 1 }">
+   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 	</c:when>
-	<c:when test= "${pageMaker.totalCount % 2 == 0 }">
-	 <a href="${contextPath}/board/community-acco${pageMaker.makeQuery(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+	<c:when test= "${pageMaker.displayPageNum % 2 == 0 }">
+	 <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.totalCount/10 +1  ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 	</c:when>
 	</c:choose>
  </ul>
@@ -156,8 +167,6 @@ request.setCharacterEncoding("UTF-8");
 				<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
 			<option value="w"
 				<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
-			<option value="tc"
-				<c:out value="${scri.searchType eq 'tc' ? 'selected' : ''}"/>>제목+내용</option>
 		</select> <input type="text" name="keyword" id="keywordInput"
 			value="${scri.keyword}" />
 

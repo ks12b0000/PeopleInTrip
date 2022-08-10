@@ -1,5 +1,6 @@
 package kr.co.intrip.board.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,43 +12,59 @@ import org.springframework.stereotype.Repository;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
+import kr.co.intrip.board.dto.SearchCriteria;
 
 @Repository("boardDAO")
 public class BoardDAOImpl implements BoardDAO {
 
 	@Autowired
 	SqlSession sqlSession;
-	
-	//조회수
+
+	// 페이징 검색 1
+	@Override
+	public List<BoardDTO> listfind1(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = sqlSession.selectList("mapper.board.listfind1", scri);
+		return boardsList;
+	}
+
+	// 게시물 갯수 검색 1
+	@Override
+	public int findlistCount1(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.board.findlistCount1");
+	}
+
+	// 조회수
 	@Override
 	public void visitcount(int post_num) {
-		sqlSession.update("mapper.board.visitcount",post_num);
-		
+		sqlSession.update("mapper.board.visitcount", post_num);
+
 	}
-	//게시물 갯수
+
+	// 조회수
 	@Override
-	public int listCount() throws Exception {
-		return sqlSession.selectOne("mapper.board.listCount");
+	public void visitcount1(int post_num) {
+		sqlSession.update("mapper.board.visitcount1", post_num);
+
 	}
-	
-	//페이징
+
+	// 게시물 갯수 검색
 	@Override
-	public List<BoardDTO> list(Criteria cri) throws Exception {
-		List<BoardDTO> boardsList =sqlSession.selectList("mapper.board.list",cri);
+	public int findlistCount(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.board.findlistCount");
+	}
+
+	// 페이징 검색
+	@Override
+	public List<BoardDTO> listfind(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = sqlSession.selectList("mapper.board.listfind", scri);
 		return boardsList;
 	}
-	
-	//리스트
+
+	// 상세보기1
 	@Override
-	public List<BoardDTO> selectAllBoardList() throws DataAccessException {
-		List<BoardDTO> boardsList = sqlSession.selectList("mapper.board.selectAllBoardList");
-		return boardsList;
-	}
-	//리스트
-	@Override
-	public List<BoardDTO> selectAllBoardList1() throws DataAccessException {
-		List<BoardDTO> boardsList = sqlSession.selectList("mapper.board.selectAllBoardList1");
-		return boardsList;
+	public BoardDTO selectBoard1(int post_num) throws DataAccessException {
+
+		return sqlSession.selectOne("mapper.board.selectBoard1", post_num);
 	}
 
 	// 상세보기
@@ -56,7 +73,8 @@ public class BoardDAOImpl implements BoardDAO {
 
 		return sqlSession.selectOne("mapper.board.selectBoard", post_num);
 	}
-	//글쓰기
+
+	// 글쓰기
 	@Override
 	public int insertBoard(Map boardMap) {
 		int post_num = selectNewpost_num();
@@ -65,18 +83,25 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("mapper.board.insertBoard", boardMap);
 		return post_num;
 	}
-	//글쓰기
+
+	// 글쓰기1
 	@Override
 	public int insertBoard1(Map boardMap) {
-		int post_num = selectNewpost_num();
+		int post_num = selectNewpost_num1();
 		boardMap.put("post_num", post_num);
 
 		sqlSession.insert("mapper.board.insertBoard1", boardMap);
 		return post_num;
 	}
 
+	// 추가하는 새글에 대한 글번호 가져옴
 	private int selectNewpost_num() {
 		return sqlSession.selectOne("mapper.board.selectNewpost_num");
+	}
+
+	// 추가하는 새글에 대한 글번호 가져옴
+	private int selectNewpost_num1() {
+		return sqlSession.selectOne("mapper.board.selectNewpost_num1");
 	}
 
 	@Override
@@ -120,65 +145,287 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public void updateImageFile(Map<String, Object> boardMap) throws DataAccessException {
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
-		int post_num = Integer.parseInt((String)boardMap.get("post_num"));
-		
-		for (int i = imageFileList.size()-1; i>=0; i--) {
+		int post_num = Integer.parseInt((String) boardMap.get("post_num"));
+
+		for (int i = imageFileList.size() - 1; i >= 0; i--) {
 			ImageDTO imageDTO = imageFileList.get(i);
 			String imageFileName = imageDTO.getImageFileName();
-			if (imageFileName == null) {		//기존 이미지를 수정하지 않는 경우는 수정할 필요없음
+			if (imageFileName == null) { // 기존 이미지를 수정하지 않는 경우는 수정할 필요없음
 				imageFileList.remove(i);
-			} 
-			else {
+			} else {
 				imageDTO.setpost_num(post_num);
 			}
 		}
-		
+
 		if (imageFileList != null && imageFileList.size() != 0) {
-			sqlSession.update("mapper.board.updateImageFile", imageFileList);		//수정한 이미지만 갱신함
+			sqlSession.update("mapper.board.updateImageFile", imageFileList); // 수정한 이미지만 갱신함
 		}
-		
 
 	}
-	//글 수정 이미지
+
+	// 글 수정 이미지
 	@Override
 	public void insertModNewImage(Map<String, Object> boardMap) throws DataAccessException {
-		
+
 		List<ImageDTO> modAddImageFileList = (List<ImageDTO>) boardMap.get("modAddImageFileList");
-		int post_num = Integer.parseInt((String)boardMap.get("post_num"));
-		
+		int post_num = Integer.parseInt((String) boardMap.get("post_num"));
+
 		int imageFileNO = selectNewImageFileNO();
-		
+
 		for (ImageDTO imageDTO : modAddImageFileList) {
 			imageDTO.setpost_num(post_num);
 			imageDTO.setImageFileNO(++imageFileNO);
 		}
-		
+
 		sqlSession.insert("mapper.board.insertModNewImage", modAddImageFileList);
-				
+
 	}
-	
-	//글 수정
+
+	// 글 수정
 	@Override
 	public void updateBoard(Map<String, Object> boardMap) throws DataAccessException {
 		sqlSession.update("mapper.board.updateBoard", boardMap);
 
 	}
-	//글 이미지 삭제
+
+	// 글 수정1
+	@Override
+	public void updateBoard1(Map<String, Object> boardMap) throws DataAccessException {
+		sqlSession.update("mapper.board.updateBoard1", boardMap);
+
+	}
+
+	// 글 이미지 삭제
 	@Override
 	public void deleteModImage(ImageDTO imageDTO) {
 		sqlSession.delete("mapper.board.deleteModImage", imageDTO);
-		
+
 	}
-	//글삭제
+
+	// 글삭제
 	@Override
 	public void deleteBoard(int post_num) {
 		sqlSession.delete("mapper.board.deleteBoard", post_num);
-		
+
 	}
 
-	
+	// 글삭제1
+	@Override
+	public void deleteBoard1(int post_num) {
+		sqlSession.delete("mapper.board.deleteBoard1", post_num);
 
-	
-	
+	}
 
+	// 추천
+
+	@Override
+	public void updateLike(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updateLike", post_num);
+	}
+
+	@Override
+	public void updateLikeCancel(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updateLikeCancel", post_num);
+
+	}
+
+	@Override
+	public void insertLike(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.insert("mapper.board.insertLike", map);
+	}
+
+	@Override
+	public void deleteLike(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.delete("mapper.board.deleteLike", map);
+	}
+
+	@Override
+	public int likeCheck(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		return sqlSession.selectOne("mapper.board.likeCheck", map);
+	}
+
+	@Override
+	public void updateLikeCheck(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updateLikeCheck", map);
+
+	}
+
+	@Override
+	public void updateLikeCheckCancel(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updateLikeCheckCancel", map);
+	}
+
+	// 추천 1
+	@Override
+	public void updateLike1(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updateLike1", post_num);
+	}
+
+	@Override
+	public void updateLikeCancel1(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updateLikeCancel1", post_num);
+
+	}
+
+	@Override
+	public void insertLike1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.insert("mapper.board.insertLike1", map);
+	}
+
+	@Override
+	public void deleteLike1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.delete("mapper.board.deleteLike1", map);
+	}
+
+	@Override
+	public int likeCheck1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		return sqlSession.selectOne("mapper.board.likeCheck1", map);
+	}
+
+	@Override
+	public void updateLikeCheck1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updateLikeCheck1", map);
+
+	}
+
+	@Override
+	public void updateLikeCheckCancel1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updateLikeCheckCancel1", map);
+	}
+
+	// 신고
+	@Override
+	public void updatesin(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updatesin", post_num);
+	}
+
+	@Override
+	public void updatesinCancel(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updatesinCancel", post_num);
+
+	}
+
+	@Override
+	public void insertsin(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.insert("mapper.board.insertsin", map);
+	}
+
+	@Override
+	public void deletesin(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.delete("mapper.board.deletesin", map);
+	}
+
+	@Override
+	public int sinCheck(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		return sqlSession.selectOne("mapper.board.sinCheck", map);
+	}
+
+	@Override
+	public void updatesinCheck(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updatesinCheck", map);
+
+	}
+
+	@Override
+	public void updatesinCheckCancel(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updatesinCheckCancel", map);
+	}
+
+	// 신고2
+	@Override
+	public void updatesin1(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updatesin1", post_num);
+	}
+
+	@Override
+	public void updatesinCancel1(int post_num) throws Exception {
+		sqlSession.update("mapper.board.updatesinCancel1", post_num);
+
+	}
+
+	@Override
+	public void insertsin1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.insert("mapper.board.insertsin1", map);
+	}
+
+	@Override
+	public void deletesin1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.delete("mapper.board.deletesin1", map);
+	}
+
+	@Override
+	public int sinCheck1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		return sqlSession.selectOne("mapper.board.sinCheck1", map);
+	}
+
+	@Override
+	public void updatesinCheck1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updatesinCheck1", map);
+
+	}
+
+	@Override
+	public void updatesinCheckCancel1(int post_num, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("post_num", post_num);
+		sqlSession.update("mapper.board.updatesinCheckCancel1", map);
+	}
 }

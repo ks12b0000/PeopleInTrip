@@ -7,8 +7,6 @@
 	<resultMap type="boardDTO" id="boardResult">
 		<result property="post_num" column="post_num" />
 		<result property="id" column="id" />
-
-		<result property="post_cate" column="post_cate" />
 		<result property="post_title" column="post_title" />
 		<result property="post_content" column="post_content" />
 		<result property="post_date" column="post_date" />
@@ -22,77 +20,85 @@
 		<result property="post_num" column="post_num" />
 
 	</resultMap>
-	
+
 	<!-- 조회수 -->
 	<update id="visitcount">
-	UPDATE
+		UPDATE
 		P_BOARD
-	SET
+		SET
 		VISITCOUNT = visitcount + 1
-	WHERE
+		WHERE
 		POST_NUM = #{post_num}
 	</update>
 	
-	<!-- 페이징 -->
-	<select id="list" resultType="boardDTO"
-	parameterType="kr.co.intrip.board.dto.Criteria">
-	   select POST_NUM, POST_TITLE, ID, POST_DATE, VISITCOUNT
-    from (
-        select POST_NUM, POST_TITLE, ID, POST_DATE, VISITCOUNT,
-            row_number() over(order by POST_NUM desc) as rNum
-        from P_BOARD
-        ) mb
-   		 where rNum between #{rowStart} and #{rowEnd}
-        order by POST_NUM desc
-</select>
-	
-	<!-- 검색기능 -->
+	<!-- 조회수 -->
+	<update id="visitcount1">
+		UPDATE
+		P_BOARD1
+		SET
+		VISITCOUNT = visitcount + 1
+		WHERE
+		POST_NUM = #{post_num}
+	</update>
+
+	<!-- 페이징 검색 -->
+	<select id="listfind" resultType="boardDTO"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT,likehit
+		from (
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,likehit,
+		VISITCOUNT,
+		row_number() over(order by POST_NUM desc) as rNum
+		from
+		P_BOARD
+		<include refid="search"></include>
+		) mb
+		where rNum between #{rowStart} and #{rowEnd}
+		order by POST_NUM desc
+	</select>
+
+	<!-- 페이징 검색1 -->
+	<select id="listfind1" resultType="boardDTO"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
+		from (
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
+		VISITCOUNT,
+		row_number() over(order by POST_NUM desc) as rNum
+		from
+		P_BOARD1
+		<include refid="search"></include>
+		) mb
+		where rNum between #{rowStart} and #{rowEnd}
+		order by POST_NUM desc
+	</select>
+
+	<!-- 검색 -->
 	<sql id="search">
 		<if test="searchType != null">
-			<if test="searchType == 't'.toString()">AND POST_TITLE LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'c'.toString()">AND POST_CONTENT LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'w'.toString()">AND ID LIKE '%' || #{keyword} || '%'</if>	
+			<if test="searchType == 't'.toString()">where POST_TITLE LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">where POST_CONTENT LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">where ID LIKE '%' || #{keyword} || '%'</if>
 		</if>
 	</sql>
 
-	<!-- 게시물 갯수 -->
-	<select id="listCount" resultType="int">
-		<![CDATA[
-			select count(post_num)
-			from p_board
-			where post_num > 0
-		]]>
-	</select>
-	
-	<!-- 리스트 -->
-	<select id="selectAllBoardList" resultMap="boardResult">
-      <![CDATA[
-         SELECT POST_NUM      ,
-               id          ,
-               POST_TITLE    ,
-               POST_DATE,
-               POST_CATE,
-               VISITCOUNT
-         FROM P_BOARD 
-          WHERE POST_CATE ='1'
-         ORDER by POST_NUM desc      
-      ]]>
+	<!--검색어 갯수 -->
+	<select id="findlistCount" resultType="int"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select count(post_num)
+		from p_board
+		<include refid="search"></include>
+		where post_num > 0
 	</select>
 
-	<select id="selectAllBoardList1" resultMap="boardResult">
-      <![CDATA[
-         SELECT POST_NUM      ,
-               id          ,
-               POST_TITLE    ,
-               POST_DATE,
-               POST_CATE,
-               VISITCOUNT
-         FROM P_BOARD 
-          WHERE POST_CATE ='2'
-         ORDER by POST_NUM desc      
-      ]]>
+	<!--검색어 갯수 -->
+	<select id="findlistCount1" resultType="int"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select count(post_num)
+		from p_board1
+		<include refid="search"></include>
+		where post_num > 0
 	</select>
-
 
 	<!-- 상세보기 -->
 	<select id="selectBoard" parameterType="java.lang.Integer"
@@ -102,27 +108,44 @@
          WHERE POST_NUM = #{post_num}   
       ]]>
 	</select>
+	
+	<!-- 상세보기 -->
+	<select id="selectBoard1" parameterType="java.lang.Integer"
+		resultType="boardDTO">
+      <![CDATA[
+         SELECT * FROM P_BOARD1
+         WHERE POST_NUM = #{post_num}   
+      ]]>
+	</select>
 
 	<!-- 게시물 등록 -->
 	<insert id="insertBoard" parameterType="java.util.Map">
    <![CDATA[
       INSERT INTO P_BOARD
-      (POST_NUM, ID, POST_TITLE, POST_CONTENT,POST_CATE)
-      VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR},'1')
+      (POST_NUM, ID, POST_TITLE, POST_CONTENT)
+      VALUES(#{post_num}, #{id}, #{post_title}, #{post_content})
    ]]>
 	</insert>
-
+	<!-- 게시물 등록1 -->
 	<insert id="insertBoard1" parameterType="java.util.Map">
    <![CDATA[
-      INSERT INTO P_BOARD
-      (POST_NUM, ID, POST_TITLE, POST_CONTENT,POST_CATE)
-      VALUES(#{post_num,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{post_title,jdbcType=VARCHAR}, #{post_content,jdbcType=VARCHAR},'2')
+      INSERT INTO P_BOARD1
+      (POST_NUM, ID, POST_TITLE, POST_CONTENT)
+      VALUES(#{post_num}, #{id}, #{post_title}, #{post_content})
    ]]>
 	</insert>
 
-	<select id="selectNewpost_num" resultType="int">    <!-- 추가하는 새글에 대한 글번호 가져옴 -->
+	<!-- 추가하는 새글에 대한 글번호 가져옴 -->
+	<select id="selectNewpost_num" resultType="int">   
       <![CDATA[    
          SELECT nvl(MAX(post_num),0) + 1 FROM P_BOARD
+      ]]>
+	</select>
+	
+	<!-- 추가하는 새글에 대한 글번호 가져옴 -->
+	<select id="selectNewpost_num1" resultType="int">   
+      <![CDATA[    
+         SELECT nvl(MAX(post_num),0) + 1 FROM P_BOARD1
       ]]>
 	</select>
 
@@ -141,12 +164,14 @@
       ]]>
 	</select>
 
+	<!-- 한꺼번에 여러 개의 레코드 추가 -->
 	<insert id="insertNewImage" parameterType="java.util.Map">
-		<!-- 한꺼번에 여러 개의 레코드 추가 -->
 		<foreach collection="list" item="item" open="INSERT ALL"
 			separator=" " close="SELECT * FROM DUAL">
-			INTO P_imageFile(imageFileNO, imageFileName, post_num, regDate)
-			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+			INTO P_imageFile(imageFileNO, imageFileName,
+			post_num, regDate)
+			VALUES
+			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
 		</foreach>
 	</insert>
 
@@ -168,6 +193,16 @@
 				WHERE POST_NUM = #{post_num}		
 		]]>
 	</update>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateBoard1" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE P_BOARD1 
+				SET POST_TITLE = #{post_title}
+					,POST_CONTENT = #{post_content}
+				WHERE POST_NUM = #{post_num}		
+		]]>
+	</update>
 
 	<update id="updateImageFile" parameterType="java.util.List">
 		<foreach collection="list" item="item" separator=";"
@@ -175,16 +210,18 @@
 			<choose>
 				<when test="item.imageFileName != null">
 					UPDATE P_imageFile
-					SET IMAGEFILENAME = #{item.imageFileName}
+					SET IMAGEFILENAME =
+					#{item.imageFileName}
 					WHERE
 					POST_NUM = #{item.post_num}
-					AND IMAGEFILENO = #{item.imageFileNO}
+					AND
+					IMAGEFILENO = #{item.imageFileNO}
 				</when>
 				<otherwise></otherwise>
 			</choose>
 		</foreach>
 	</update>
-
+	<!-- 이미지 추가 -->
 	<insert id="insertModNewImage" parameterType="java.util.Map">
 		<foreach collection="list" item="item" open="INSERT ALL"
 			separator=" " close="SELECT * FROM DUAL">
@@ -194,7 +231,7 @@
 			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
 		</foreach>
 	</insert>
-	
+
 	<!-- 글삭제 -->
 	<delete id="deleteBoard" parameterType="int">
 		<![CDATA[
@@ -203,10 +240,190 @@
 		]]>
 	</delete>
 	
-	<delete id="deleteModImage" parameterType="imageDTO">
-		DELETE FROM P_imageFile
-		WHERE ARTICLENO = #{articleNO}
-		AND IMAGEFILENO = #{imageFileNO}		
+	<!-- 글삭제1 -->
+	<delete id="deleteBoard1" parameterType="int">
+		<![CDATA[
+			DELETE FROM P_BOARD1
+			WHERE POST_NUM	= #{post_num}
+		]]>
 	</delete>
 	
+	<!-- 이미지 삭제 -->
+	<delete id="deleteModImage" parameterType="imageDTO">
+		DELETE FROM
+		P_imageFile
+		WHERE POST_NUM = #{post_num}
+		AND IMAGEFILENO =
+		#{imageFileNO}
+	</delete>
+	
+	<!-- 게시글 추천수 -->
+	<update id="updateLike" parameterType="int">
+	update p_board set 
+	LIKEHIT = LIKEHIT+1
+	where POST_NUM = #{POST_NUM}
+	</update>
+	
+	<!-- 게시글 추천수취소 -->
+	<update id="updateLikeCancel" parameterType="int">
+	update p_board set 
+	LIKEHIT = LIKEHIT - 1
+	where POST_NUM = #{POST_NUM}
+	</update>
+	
+	<!-- 게시글 추천 시 Like 테이블에 insert -->
+	<insert id="insertLike" parameterType="java.util.Map">
+	insert into l_board(LIKENO , POST_NUM , id) 
+	values((SELECT NVL(MAX(likeno), 0) + 1 FROM l_board) ,#{post_num} ,#{id})
+	</insert>
+	
+	<!-- 게시글 추천취소 시 delete -->
+	<delete id="deleteLike">
+	delete from l_board where post_num = #{post_num} and id = #{id}
+	</delete>
+	
+	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지-->
+	<update id="updateLikeCheck">
+	update l_board set LIKECHECK = 1
+	where post_num = #{post_num} and id = #{id}
+	</update>
+	
+	<!-- 게시글 추천취소 시 다시 0  -->
+	<update id="updateLikeCheckCancel">
+	update l_board set LIKECHECK = 0
+	where post_num = #{post_num} and id = #{id}
+	</update>
+	
+	<!-- 게시글 추천 중복방지 select문 -->
+	<select id="likeCheck" resultType="int" >
+	select count(*) from l_board where post_num = #{post_num} and id = #{id} 
+	</select>
+	
+	<!-- 추천1 -->
+	<!-- 게시글 추천수 -->
+	<update id="updateLike1" parameterType="int">
+	update p_board1 set 
+	LIKEHIT = LIKEHIT+1
+	where POST_NUM = #{POST_NUM}
+	</update>
+	
+	<!-- 게시글 추천수취소 -->
+	<update id="updateLikeCancel1" parameterType="int">
+	update p_board1 set 
+	LIKEHIT = LIKEHIT - 1
+	where POST_NUM = #{POST_NUM}
+	</update>
+	
+	<!-- 게시글 추천 시 Like 테이블에 insert -->
+	<insert id="insertLike1" parameterType="java.util.Map">
+	insert into l_board1(LIKENO1 , POST_NUM , id) 
+	values((SELECT NVL(MAX(likeno1), 0) + 1 FROM l_board1) ,#{post_num} ,#{id})
+	</insert>
+	
+	<!-- 게시글 추천취소 시 delete -->
+	<delete id="deleteLike1">
+	delete from l_board1 where post_num = #{post_num} and id = #{id}
+	</delete>
+	
+	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지-->
+	<update id="updateLikeCheck1">
+	update l_board1 set LIKECHECK = 1
+	where post_num = #{post_num} and id = #{id}
+	</update>
+	
+	<!-- 게시글 추천취소 시 다시 0  -->
+	<update id="updateLikeCheckCancel1">
+	update l_board1 set LIKECHECK = 0
+	where post_num = #{post_num} and id = #{id}
+	</update>
+	
+	<!-- 게시글 추천 중복방지 select문 -->
+	<select id="likeCheck1" resultType="int" >
+	select count(*) from l_board1 where post_num = #{post_num} and id = #{id} 
+	</select>
+	
+	<!-- 신고 -->
+	<!-- 신고수 -->
+	<update id="updatesin" parameterType="int">
+	update p_board set 
+	SINHIT = SINHIT+1
+	where POST_NUM = #{POST_NUM}
+	</update>
+	
+	<!-- 신고취소 -->
+	<update id="updatesinCancel" parameterType="int">
+	update p_board set 
+	SINHIT = SINHIT - 1
+	where POST_NUM = #{POST_NUM}
+	</update>
+	
+	<!-- 신고시 신고 테이블에 insert -->
+	<insert id="insertsin" parameterType="java.util.Map">
+	insert into s_board(SNO , POST_NUM , id) 
+	values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board) ,#{post_num} ,#{id})
+	</insert>
+	
+	<!-- 신고 취소 시 delete -->
+	<delete id="deletesin">
+	delete from s_board where post_num = #{post_num} and id = #{id}
+	</delete>
+	
+	<!-- 신고시 Check를 1로 만들어서 중복방지-->
+	<update id="updatesinCheck">
+	update s_board set SCHECK = 1
+	where post_num = #{post_num} and id = #{id}
+	</update>
+	
+	<!-- 신고시 다시 0  -->
+	<update id="updatesinCheckCancel">
+	update s_board set SCHECK = 0
+	where post_num = #{post_num} and id = #{id}
+	</update>
+	
+	<!-- 신고 중복방지 select문 -->
+	<select id="sinCheck" resultType="int" >
+	select count(*) from s_board where post_num = #{post_num} and id = #{id} 
+	</select>
+	
+	<!-- 신고1 -->
+	<update id="updatesin1" parameterType="int">
+	update p_board1 set 
+	SINHIT = SINHIT+1
+	where POST_NUM = #{POST_NUM}
+	</update>
+	
+	<!-- 신고취소 -->
+	<update id="updatesinCancel1" parameterType="int">
+	update p_board1 set 
+	SINHIT = SINHIT - 1
+	where POST_NUM = #{POST_NUM}
+	</update>
+	
+	<!-- 신고시 신고 테이블에 insert -->
+	<insert id="insertsin1" parameterType="java.util.Map">
+	insert into s_board1(SNO , POST_NUM , id) 
+	values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board1) ,#{post_num} ,#{id})
+	</insert>
+	
+	<!-- 신고 취소 시 delete -->
+	<delete id="deletesin1">
+	delete from s_board1 where post_num = #{post_num} and id = #{id}
+	</delete>
+	
+	<!-- 신고시 Check를 1로 만들어서 중복방지-->
+	<update id="updatesinCheck1">
+	update s_board1 set SCHECK = 1
+	where post_num = #{post_num} and id = #{id}
+	</update>
+	
+	<!-- 신고시 다시 0  -->
+	<update id="updatesinCheckCancel1">
+	update s_board1 set SCHECK = 0
+	where post_num = #{post_num} and id = #{id}
+	</update>
+	
+	<!-- 신고 중복방지 select문 -->
+	<select id="sinCheck1" resultType="int" >
+	select count(*) from s_board1 where post_num = #{post_num} and id = #{id} 
+	</select>
 </mapper>

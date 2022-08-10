@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import kr.co.intrip.board.dao.BoardDAO;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
+import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.login_signup.dto.MemberDTO;
 
 @Service("boardService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -21,40 +22,50 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	private BoardDAO boardDAO;
-	
-	//게시물 갯수
+
+	// 페이징 검색 1
 	@Override
-	public int listCount() throws Exception {
-		return boardDAO.listCount();
-	}
-	
-	//페이징
-	@Override
-	public List<BoardDTO> list(Criteria cri) throws Exception {
-		List<BoardDTO> boardsList = boardDAO.list(cri);
-		return boardsList;
-	}
-	
-	// 리스트
-	@Override
-	public List<BoardDTO> listArticles() throws Exception {
-		List<BoardDTO> boardsList = boardDAO.selectAllBoardList();
+	public List<BoardDTO> listfind1(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = boardDAO.listfind1(scri);
 		return boardsList;
 	}
 
-	// 리스트
+	// 게시물 갯수 검색 1
 	@Override
-	public List<BoardDTO> listArticles1() throws Exception {
-		List<BoardDTO> boardsList = boardDAO.selectAllBoardList1();
+	public int findlistCount1(SearchCriteria scri) throws Exception {
+		return boardDAO.findlistCount1(scri);
+	}
+
+	// 게시물 갯수 검색
+	@Override
+	public int findlistCount(SearchCriteria scri) throws Exception {
+		return boardDAO.findlistCount(scri);
+	}
+
+	// 페이징 검색
+	@Override
+	public List<BoardDTO> listfind(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = boardDAO.listfind(scri);
 		return boardsList;
 	}
 
 	// 상세보기
 	@Override
-	public Map<String, Object> viewdetail(int post_num){
+	public Map<String, Object> viewdetail(int post_num) {
 		Map<String, Object> boardMap = new HashMap<>();
 
 		BoardDTO boardDTO = boardDAO.selectBoard(post_num);
+
+		boardMap.put("board", boardDTO);
+		return boardMap;
+	}
+
+	// 상세보기1
+	@Override
+	public Map<String, Object> viewdetail1(int post_num) {
+		Map<String, Object> boardMap = new HashMap<>();
+
+		BoardDTO boardDTO = boardDAO.selectBoard1(post_num);
 
 		boardMap.put("board", boardDTO);
 		return boardMap;
@@ -72,7 +83,7 @@ public class BoardServiceImpl implements BoardService {
 		return post_num;
 	}
 
-	// 글쓰기
+	// 글쓰기1
 	@Override
 	public int insertBoard1(Map boardMap) throws Exception {
 
@@ -105,33 +116,214 @@ public class BoardServiceImpl implements BoardService {
 			}
 		}
 		// 새 이미지를 추가한 경우
-		else if (modAddImageFileList != null && modAddImageFileList.size() != 0)  {
+		else if (modAddImageFileList != null && modAddImageFileList.size() != 0) {
 			boardDAO.insertModNewImage(boardMap);
 		}
 
 	}
-	
-	//글이미지삭제
+
+	// 글수정1
+	@Override
+	public void modBoard1(Map<String, Object> boardMap) throws Exception {
+		boardDAO.updateBoard1(boardMap);
+
+		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
+		List<ImageDTO> modAddImageFileList = (List<ImageDTO>) boardMap.get("modAddImageFileList");
+
+		if (imageFileList != null && imageFileList.size() != 0) {
+			int added_img_num = Integer.parseInt((String) boardMap.get("added_img_num"));
+			int pre_img_num = Integer.parseInt((String) boardMap.get("pre_img_num"));
+
+			if (pre_img_num < added_img_num) { // 기존 이미지도 수정하고 새 이미지도 추가한 경우
+				boardDAO.updateImageFile(boardMap); // 기존 이미지 수정
+				boardDAO.insertModNewImage(boardMap); // 새 이미지 추가
+			} else { // 기존 이미지를 수정만 한 경우
+				boardDAO.updateImageFile(boardMap);
+			}
+		}
+		// 새 이미지를 추가한 경우
+		else if (modAddImageFileList != null && modAddImageFileList.size() != 0) {
+			boardDAO.insertModNewImage(boardMap);
+		}
+
+	}
+
+	// 글이미지삭제
 	@Override
 	public void removeModImage(ImageDTO imageDTO) {
 		boardDAO.deleteModImage(imageDTO);
-		
+
 	}
-	
-	//글삭제
+
+	// 글삭제
 	@Override
 	public void removeBoard(int post_num) throws Exception {
 		boardDAO.deleteBoard(post_num);
-		
+
 	}
-	//조회수
+
+	// 글삭제1
+	@Override
+	public void removeBoard1(int post_num) throws Exception {
+		boardDAO.deleteBoard1(post_num);
+
+	}
+
+	// 조회수
 	@Override
 	public void visitcount(int post_num) throws Exception {
 		boardDAO.visitcount(post_num);
-		
+
 	}
 
-	
+	// 조회수1
+	@Override
+	public void visitcount1(int post_num) throws Exception {
+		boardDAO.visitcount1(post_num);
 
-	
+	}
+
+	// 추천
+	@Override
+	public void updateLike(int post_num) throws Exception {
+		boardDAO.updateLike(post_num);
+	}
+
+	@Override
+	public void updateLikeCancel(int post_num) throws Exception {
+		boardDAO.updateLikeCancel(post_num);
+	}
+
+	@Override
+	public void insertLike(int post_num, String id) throws Exception {
+		boardDAO.insertLike(post_num, id);
+	}
+
+	@Override
+	public void deleteLike(int post_num, String id) throws Exception {
+		boardDAO.deleteLike(post_num, id);
+	}
+
+	@Override
+	public int likeCheck(int post_num, String id) throws Exception {
+		return boardDAO.likeCheck(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheck(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheck(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheckCancel(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheckCancel(post_num, id);
+	}
+
+	// 추천 1
+	@Override
+	public void updateLike1(int post_num) throws Exception {
+		boardDAO.updateLike1(post_num);
+	}
+
+	@Override
+	public void updateLikeCancel1(int post_num) throws Exception {
+		boardDAO.updateLikeCancel1(post_num);
+	}
+
+	@Override
+	public void insertLike1(int post_num, String id) throws Exception {
+		boardDAO.insertLike1(post_num, id);
+	}
+
+	@Override
+	public void deleteLike1(int post_num, String id) throws Exception {
+		boardDAO.deleteLike1(post_num, id);
+	}
+
+	@Override
+	public int likeCheck1(int post_num, String id) throws Exception {
+		return boardDAO.likeCheck1(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheck1(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheck1(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheckCancel1(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheckCancel1(post_num, id);
+	}
+
+	// 신고
+	@Override
+	public void updatesin(int post_num) throws Exception {
+		boardDAO.updatesin(post_num);
+	}
+
+	@Override
+	public void updatesinCancel(int post_num) throws Exception {
+		boardDAO.updatesinCancel(post_num);
+	}
+
+	@Override
+	public void insertsin(int post_num, String id) throws Exception {
+		boardDAO.insertsin(post_num, id);
+	}
+
+	@Override
+	public void deletesin(int post_num, String id) throws Exception {
+		boardDAO.deletesin(post_num, id);
+	}
+
+	@Override
+	public int sinCheck(int post_num, String id) throws Exception {
+		return boardDAO.sinCheck(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheck(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheck(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheckCancel(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheckCancel(post_num, id);
+	}
+
+	// 신고1
+	@Override
+	public void updatesin1(int post_num) throws Exception {
+		boardDAO.updatesin1(post_num);
+	}
+
+	@Override
+	public void updatesinCancel1(int post_num) throws Exception {
+		boardDAO.updatesinCancel1(post_num);
+	}
+
+	@Override
+	public void insertsin1(int post_num, String id) throws Exception {
+		boardDAO.insertsin1(post_num, id);
+	}
+
+	@Override
+	public void deletesin1(int post_num, String id) throws Exception {
+		boardDAO.deletesin1(post_num, id);
+	}
+
+	@Override
+	public int sinCheck1(int post_num, String id) throws Exception {
+		return boardDAO.sinCheck1(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheck1(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheck1(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheckCancel1(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheckCancel1(post_num, id);
+	}
 }
