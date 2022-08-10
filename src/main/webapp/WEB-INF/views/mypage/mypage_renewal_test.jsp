@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<%-- <c:set var="board" value="${myboardsList.board }" /> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,18 +18,11 @@
             margin: 0px auto;            
         }
         .cls1 {
-        	position: relative;
             font-size: 25px;
             font-weight: 500;
             padding: 15px;
             border-bottom: solid 2px black;
             /* border: solid 1px red; */
-        }
-        
-        .cls1left {
-        	position: absolute;
-        	margin-top: -30px;
-        	margin-left: 980px;
         }
         .cls2 {
             display: flex;
@@ -43,7 +35,6 @@
             border-bottom: solid 1px #bfbfbf;
             /* border: solid 1px purple; */
         }
-        
         .wait {
             border: solid 1px red;
         }
@@ -106,19 +97,10 @@
         
 
     </style>
-<!--     <script type="text/javascript">
-    
-    	function myboardListClick() {
-			document.show_My_boards_List.action="${contextPath }/mypage/mypage_renewal?id=${user.id}";
-			document.show_My_boards_List.method="post";
-			document.show_My_boards_List.submit();
-			return true;
-		}
-    
-    </script> -->
 
 </head>
 <body>
+<form action="${contextPath }/mypage/mypage_renewal_test?id=${user.id}" method="POST">
     <p class="cls1">마이페이지</p>
     <hr/><br/><br/>
     <div class="cls2">
@@ -148,10 +130,9 @@
         </div>
     </div>
     <br/><br/>
-    <p class="cls1">내가 쓴 글</p><!-- <b class="cls1left" onclick="return myboardListClick()">조회하기</b> -->
+    <p class="cls1">내가 쓴 글</p>
     <hr/>
     <div class="article_box">
-    	 <form action="${contextPath }/mypage/mypage_renewal?id=${user.id}" method="POST" name="show_My_boards_List"> 
 	        <table align="center" class="articles">
 	            <tr align="center">
 	                <td width="5%">번호</td>
@@ -161,50 +142,18 @@
 	                <td width="5%">추천</td>
 	                <td width="5%">조회수</td>
 	            </tr>
-	            <c:forEach var="myboardsList" items="${myboardsList}" begin="0" end="9" varStatus="myboardsListNum">
-		            <tr align="center">
-		                <td>${myboardsListNum.count }</td>
-		                <c:choose>
-		                	<c:when test="${myboardsList.post_cate == 1 }">
-		                		<td><a href="${contextPath}/mypage/view_my_board1?post_num=${myboardsList.post_num}">${myboardsList.post_title }</a></td>
-		                	</c:when>
-		                	<c:when test="${myboardsList.post_cate == 2 }">
-		                		<td><a href="${contextPath}/mypage/view_my_board2?post_num=${myboardsList.post_num}">${myboardsList.post_title }</a></td>
-		                	</c:when>
-		                </c:choose>
-		                <td>${myboardsList.id }</td>
-		                <td>${myboardsList.post_date }</td>
-		                <td>${myboardsList.post_cate }</td>
-		                <td>${myboardsList.visitcount }</td>
-		            </tr>
+	            <c:forEach var="myboardsList" items="${myboardsList}" begin="0" end="4">
+	            <tr align="center">
+	                <td>${myboardsList.post_num }</td>
+	                <td>${myboardsList.post_title }</td>
+	                <td>${myboardsList.id }</td>
+	                <td>${myboardsList.post_date }</td>
+	                <td>${myboardsList.post_cate }</td>
+	                <td>${myboardsList.visitcount }</td>
+	            </tr>
 	            </c:forEach>
 	        </table>
-    	</form>
-        <div align="center">
- 	         <ul>
-				  <a href="${contextPath}/mypage/mypage_renewal?page=1">&laquo;</a> 
-				  <c:if test="${pageMaker.prev}">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a>
-				  </c:if> 
-				  
-				  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(idx)}">${idx}</a>
-				  </c:forEach>
-				 
-				    
-				  <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a>
-				  </c:if>
-				 <c:choose>
-				   <c:when test= "${pageMaker.totalCount % 2 == 1 }">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(pageMaker.totalCount/10 + 1) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
-					</c:when>
-					<c:when test= "${pageMaker.totalCount % 2 == 0 }">
-					 <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
-					</c:when>
-					</c:choose>
- 			</ul>
-        </div>
+        <div align="center">페이징</div>
         <div class="search">
             <select>
                 <option>제목</option>
@@ -215,7 +164,6 @@
             <input type="submit" value="검색" class="search_btn"/>
         </div>
     </div>
-
     <br/><br/>
     <p class="cls1">찜한 내역</p>
     <hr/>
@@ -337,5 +285,6 @@
         </div>
         <div align="center">페이징</div>
     </div>
+        </form>
 </body>
 </html>

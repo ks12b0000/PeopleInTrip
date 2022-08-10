@@ -11,5 +11,6 @@
 		<typeAlias type="kr.co.intrip.main.dto.MainDTO" alias="mainDTO"/>
 		<typeAlias type="kr.co.intrip.board.dto.ImageDTO" alias="imageDTO"/>
 		<typeAlias type="kr.co.intrip.mypage.dto.MyPageDTO" alias="mypageDTO"/>
+		<typeAlias type="kr.co.intrip.mypage.dto.MyBoardDTO" alias="myboardDTO"/>
 	</typeAliases>
 </configuration>  
