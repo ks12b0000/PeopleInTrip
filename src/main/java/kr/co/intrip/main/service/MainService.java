@@ -7,4 +7,6 @@ import kr.co.intrip.main.dto.MainDTO;
 public interface MainService {
 
 	public List<MainDTO> listMain() throws Exception;
+
+	public List<MainDTO> listMain1() throws Exception;
 }

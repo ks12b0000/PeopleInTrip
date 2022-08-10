@@ -26,9 +26,12 @@ public class MainControllerImpl implements MainController {
 		
 		String viewName = (String) request.getAttribute("viewName");
 		List<MainDTO> mainsList = mainService.listMain();
+		List<MainDTO> mainsList1 = mainService.listMain1();
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("mainsList", mainsList);
-		
+		mav.addObject("mainsList1", mainsList1);
 		return mav;
 	}
+	
+
 }

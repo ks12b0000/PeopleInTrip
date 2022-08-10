@@ -9,4 +9,6 @@ import kr.co.intrip.main.dto.MainDTO;
 public interface MainDAO {
 
 	public List<MainDTO> selectBoardList() throws DataAccessException;
+
+	public List<MainDTO> selectBoardList1() throws DataAccessException;
 }

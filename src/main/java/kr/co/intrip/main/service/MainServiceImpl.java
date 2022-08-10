@@ -20,5 +20,11 @@ public class MainServiceImpl implements MainService {
 		List<MainDTO> mainsList = mainDAO.selectBoardList();
 		return mainsList;
 	}
+	
+	@Override
+	public List<MainDTO> listMain1() throws Exception {
+		List<MainDTO> mainsList = mainDAO.selectBoardList1();
+		return mainsList;
+	}
 
 }

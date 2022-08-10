@@ -97,10 +97,10 @@
                         </tr>
                     </thead>
                     <tbody>
-	                    <c:forEach var="main" items="${mainsList}" begin="0" end="3">
+	                    <c:forEach var="main1" items="${mainsList1}" begin="0" end="3">
 	                    	<tr>
-		                    	<td>${main.post_title}</td>
-		                    	<td>${main.visitcount }</td>
+		                    	<td>${main1.post_title}</td>
+		                    	<td>${main1.visitcount }</td>
 	                    	</tr>
 	                    </c:forEach>
                     </tbody>

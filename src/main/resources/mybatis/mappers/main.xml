@@ -23,4 +23,13 @@
 			ORDER by VISITCOUNT desc		
 		]]>
 	</select>	
+	
+	<select id="selectBoardList1" resultMap="mainResult">
+		<![CDATA[
+			SELECT  POST_TITLE 	,
+				   VISITCOUNT
+			FROM P_BOARD1 
+			ORDER by VISITCOUNT desc		
+		]]>
+	</select>
 </mapper>

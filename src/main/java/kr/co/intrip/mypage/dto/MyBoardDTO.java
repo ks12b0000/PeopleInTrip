@@ -1,4 +1,4 @@
-package kr.co.intrip.board.dto;
+package kr.co.intrip.mypage.dto;
 
 import java.sql.Date;
 
@@ -6,49 +6,41 @@ import org.springframework.stereotype.Component;
 
 import lombok.Data;
 
-@Component("boardDTO")
-public class BoardDTO {
+@Component("myboardDTO")
+public class MyBoardDTO {
 	
 	private int post_num;
-	private String id;	
+	private String id;
+	
 	private String post_title;
 	private String post_content;
 	private Date post_date;
 	private int visitcount;
 	private int count_comment;
-	private int likehit;
-	private int sinhit;
-
+	private int post_cate;
 	
-
-
-	public int getSinhit() {
-		return sinhit;
+	public int getPost_cate() {
+		return post_cate;
 	}
 
-	public void setSinhit(int sinhit) {
-		this.sinhit = sinhit;
+	public void setPost_cate(int post_cate) {
+		this.post_cate = post_cate;
 	}
 
-	public BoardDTO() {
+	public MyBoardDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BoardDTO(int post_num, String id, String post_title, String post_content, int board_num,int visitcount) {
+	public MyBoardDTO(String id) {
+		this.id = id;
+	}
+
+	public MyBoardDTO(int post_num, String id, String post_title, String post_content, int board_num,int visitcount) {
 		this.post_num = post_num;
 		this.id = id;
 		this.post_title = post_title;
 		this.post_content= post_content;
 		this.visitcount = visitcount;
-		this.likehit = likehit;
-	}
-
-	public int getLikehit() {
-		return likehit;
-	}
-
-	public void setLikehit(int likehit) {
-		this.likehit = likehit;
 	}
 
 	public int getPost_num() {
@@ -110,8 +102,8 @@ public class BoardDTO {
 	public void setCount_comment(int count_comment) {
 		this.count_comment = count_comment;
 	}
-
 	
+
 
 
 

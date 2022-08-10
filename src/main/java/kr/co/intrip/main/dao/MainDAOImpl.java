@@ -20,5 +20,10 @@ public class MainDAOImpl implements MainDAO {
 		List<MainDTO> mainsList = sqlSession.selectList("mapper.main.selectBoardList");
 		return mainsList;
 	}
+	@Override
+	public List<MainDTO> selectBoardList1() throws DataAccessException {
+		List<MainDTO> mainsList = sqlSession.selectList("mapper.main.selectBoardList1");
+		return mainsList;
+	}
 
 }

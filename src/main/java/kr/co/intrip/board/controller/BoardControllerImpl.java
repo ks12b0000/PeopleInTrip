@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.User;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -42,7 +43,10 @@ import kr.co.intrip.board.dto.PageMaker;
 import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.login_signup.dto.MemberDTO;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class BoardControllerImpl implements BoardController {
 
@@ -56,14 +60,13 @@ public class BoardControllerImpl implements BoardController {
 	@Override
 	@RequestMapping(value = "/board/community_detail.do", method = RequestMethod.GET)
 	public ModelAndView viewdetail(@RequestParam(value = "post_num") int post_num, // 조회할 글 번호를 가져옴
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
 		// 조회수 증가
 		boardService.visitcount(post_num);
 		String viewName = (String) request.getAttribute("viewName");
 
 		Map<String, Object> boardMap = boardService.viewdetail(post_num); // 조회할 글 정보,이미지파일 정보를 articleMap에 설정
-
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		mav.addObject("boardMap", boardMap);
@@ -183,7 +186,7 @@ public class BoardControllerImpl implements BoardController {
 			}
 
 			message = "<script>";
-			message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
+			message += " alert('빈칸없이 입력해 주세요!.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/board/community-acco';";
 			message += "</script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -193,7 +196,8 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
-	//글쓰기 1
+
+	// 글쓰기 1
 	@Override
 	@RequestMapping(value = "board/community_writeWith.do", method = RequestMethod.POST)
 	@ResponseBody
@@ -274,7 +278,7 @@ public class BoardControllerImpl implements BoardController {
 			}
 
 			message = "<script>";
-			message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
+			message += " alert('빈칸없이 입력해 주세요!.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/board/community-info';";
 			message += "</script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -335,7 +339,6 @@ public class BoardControllerImpl implements BoardController {
 		model.addAttribute("pageMaker", pageMaker);
 	}
 
-
 	// 글 수정 페이지
 	@Override
 	@RequestMapping(value = "/board/modBoard.do", method = RequestMethod.GET)
@@ -349,7 +352,7 @@ public class BoardControllerImpl implements BoardController {
 
 		return mav;
 	}
-	
+
 	// 글 수정 페이지 1
 	@Override
 	@RequestMapping(value = "/board/modBoard1.do", method = RequestMethod.GET)
@@ -489,132 +492,132 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
-	
+
 	// 글 수정하기
-		@Override
-		@RequestMapping(value = "/board/modBoard1.do", method = RequestMethod.POST)
-		@ResponseBody
-		public ResponseEntity modBoard1(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
-				throws Exception {
+	@Override
+	@RequestMapping(value = "/board/modBoard1.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity modBoard1(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+			throws Exception {
 
-			multipartRequest.setCharacterEncoding("utf-8");
+		multipartRequest.setCharacterEncoding("utf-8");
 
-			Map<String, Object> boardMap = new HashMap<>();
+		Map<String, Object> boardMap = new HashMap<>();
 
-			Enumeration enu = multipartRequest.getParameterNames();
-			while (enu.hasMoreElements()) {
-				String name = (String) enu.nextElement();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while (enu.hasMoreElements()) {
+			String name = (String) enu.nextElement();
 
-				if (name.equals("imageFileNO")) {
-					String[] values = multipartRequest.getParameterValues(name);
-					boardMap.put(name, values);
-				} else if (name.equals("oldFileName")) {
-					String[] values = multipartRequest.getParameterValues(name);
-					boardMap.put(name, values);
-				} else {
-					String value = multipartRequest.getParameter(name);
-					boardMap.put(name, value);
+			if (name.equals("imageFileNO")) {
+				String[] values = multipartRequest.getParameterValues(name);
+				boardMap.put(name, values);
+			} else if (name.equals("oldFileName")) {
+				String[] values = multipartRequest.getParameterValues(name);
+				boardMap.put(name, values);
+			} else {
+				String value = multipartRequest.getParameter(name);
+				boardMap.put(name, value);
+			}
+		}
+
+		// 수정한 이미지 파일을 업로드함
+		List<String> fileList = uploadModImageFile(multipartRequest);
+
+		// 수정시 새로 추가된 이미지 수
+		int added_img_num = Integer.parseInt((String) boardMap.get("added_img_num"));
+
+		// 기존 이미지 수
+		int pre_img_num = Integer.parseInt((String) boardMap.get("pre_img_num"));
+
+		List<ImageDTO> imageFileList = new ArrayList<>();
+		List<ImageDTO> modAddImageFileList = new ArrayList<>();
+
+		if (fileList != null && fileList.size() != 0) {
+			String[] imageFileNO = (String[]) boardMap.get("imageFileNO");
+
+			for (int i = 0; i < added_img_num; i++) {
+				String fileName = fileList.get(i);
+				ImageDTO imageDTO = new ImageDTO();
+				if (i < pre_img_num) { // 기존의 이미지를 수정해서 첨부한 이미지들
+					imageDTO.setImageFileName(fileName);
+					imageDTO.setImageFileNO(Integer.parseInt(imageFileNO[i]));
+					imageFileList.add(imageDTO);
+					boardMap.put("imageFileList", imageFileList);
+				} else { // 새로 추가한 이미지들
+					imageDTO.setImageFileName(fileName);
+					modAddImageFileList.add(imageDTO); // ??
+					boardMap.put("modAddImageFileList", modAddImageFileList);
 				}
 			}
 
-			// 수정한 이미지 파일을 업로드함
-			List<String> fileList = uploadModImageFile(multipartRequest);
+		}
 
-			// 수정시 새로 추가된 이미지 수
-			int added_img_num = Integer.parseInt((String) boardMap.get("added_img_num"));
+		String post_num = (String) boardMap.get("post_num");
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
 
-			// 기존 이미지 수
-			int pre_img_num = Integer.parseInt((String) boardMap.get("pre_img_num"));
-
-			List<ImageDTO> imageFileList = new ArrayList<>();
-			List<ImageDTO> modAddImageFileList = new ArrayList<>();
+		try {
+			boardService.modBoard1(boardMap);
 
 			if (fileList != null && fileList.size() != 0) {
-				String[] imageFileNO = (String[]) boardMap.get("imageFileNO");
-
-				for (int i = 0; i < added_img_num; i++) {
+				for (int i = 0; i < fileList.size(); i++) {
 					String fileName = fileList.get(i);
-					ImageDTO imageDTO = new ImageDTO();
-					if (i < pre_img_num) { // 기존의 이미지를 수정해서 첨부한 이미지들
-						imageDTO.setImageFileName(fileName);
-						imageDTO.setImageFileNO(Integer.parseInt(imageFileNO[i]));
-						imageFileList.add(imageDTO);
-						boardMap.put("imageFileList", imageFileList);
-					} else { // 새로 추가한 이미지들
-						imageDTO.setImageFileName(fileName);
-						modAddImageFileList.add(imageDTO); // ??
-						boardMap.put("modAddImageFileList", modAddImageFileList);
-					}
-				}
 
-			}
+					if (i < pre_img_num) {
+						if (fileName != null) {
+							File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileName);
+							File destFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
+							FileUtils.moveFileToDirectory(srcFile, destFile, true);
 
-			String post_num = (String) boardMap.get("post_num");
-			String message;
-			ResponseEntity resEnt = null;
-			HttpHeaders responseHeaders = new HttpHeaders();
-			responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+							String[] oldName = (String[]) boardMap.get("oldFileName");
+							String oldFileName = oldName[i];
 
-			try {
-				boardService.modBoard1(boardMap);
-
-				if (fileList != null && fileList.size() != 0) {
-					for (int i = 0; i < fileList.size(); i++) {
-						String fileName = fileList.get(i);
-
-						if (i < pre_img_num) {
-							if (fileName != null) {
-								File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileName);
-								File destFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
-								FileUtils.moveFileToDirectory(srcFile, destFile, true);
-
-								String[] oldName = (String[]) boardMap.get("oldFileName");
-								String oldFileName = oldName[i];
-
-								File oldFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num + "\\" + oldFileName);
-								oldFile.delete();
-							}
-						} else {
-							if (fileName != null) {
-								File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileName);
-								File destFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
-								FileUtils.moveFileToDirectory(srcFile, destFile, true);
-							}
+							File oldFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num + "\\" + oldFileName);
+							oldFile.delete();
 						}
-
+					} else {
+						if (fileName != null) {
+							File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileName);
+							File destFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
+							FileUtils.moveFileToDirectory(srcFile, destFile, true);
+						}
 					}
+
 				}
-
-				message = "<script>";
-				message += " alert('글을 수정했습니다.');";
-				message += " location.href='" + multipartRequest.getContextPath() + "/board/community_detail2.do?post_num="
-						+ post_num + "';";
-				message += "</script>";
-
-				// 새 글을 추가한 후 메시지를 전달함
-				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-
-			} catch (Exception e) {
-				if (fileList != null && fileList.size() != 0) {
-					// 오류 발생시 temp폴더의 이미지들 모두 삭제
-					for (int i = 0; i < fileList.size(); i++) {
-						File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileList.get(i));
-						srcFile.delete();
-					}
-				}
-
-				message = "<script>";
-				message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
-				message += " location.href='" + multipartRequest.getContextPath() + "/board/community_detail2.do?post_num="
-						+ post_num + "';";
-				message += "</script>";
-				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-
-				e.printStackTrace();
 			}
 
-			return resEnt;
+			message = "<script>";
+			message += " alert('글을 수정했습니다.');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/community_detail2.do?post_num="
+					+ post_num + "';";
+			message += "</script>";
+
+			// 새 글을 추가한 후 메시지를 전달함
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+
+		} catch (Exception e) {
+			if (fileList != null && fileList.size() != 0) {
+				// 오류 발생시 temp폴더의 이미지들 모두 삭제
+				for (int i = 0; i < fileList.size(); i++) {
+					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileList.get(i));
+					srcFile.delete();
+				}
+			}
+
+			message = "<script>";
+			message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/community_detail2.do?post_num="
+					+ post_num + "';";
+			message += "</script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+
+			e.printStackTrace();
 		}
+
+		return resEnt;
+	}
 
 	// 수정시 다중 이미지 업로드하기
 	private List<String> uploadModImageFile(MultipartHttpServletRequest multipartRequest)
@@ -758,6 +761,86 @@ public class BoardControllerImpl implements BoardController {
 
 	}
 
-	
+	// 추천
+	@RequestMapping(value = "/board/updateLike", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateLike(int post_num, String id) throws Exception {
+
+		int likeCheck = boardService.likeCheck(post_num, id);
+
+		if (likeCheck == 0) {
+			// 좋아요 처음누름
+			boardService.insertLike(post_num, id); // like테이블 삽입
+			boardService.updateLike(post_num); // 게시판테이블 +1
+			boardService.updateLikeCheck(post_num, id);// like테이블 구분자 1
+
+		} else if (likeCheck == 1) {
+			boardService.updateLikeCheckCancel(post_num, id); // like테이블 구분자0
+			boardService.updateLikeCancel(post_num); // 게시판테이블 - 1
+			boardService.deleteLike(post_num, id); // like테이블 삭제
+		}
+		return likeCheck;
+	}
+
+	// 추천1
+	@RequestMapping(value = "/board/updateLike1", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateLike1(int post_num, String id) throws Exception {
+
+		int likeCheck = boardService.likeCheck1(post_num, id);
+
+		if (likeCheck == 0) {
+			boardService.insertLike1(post_num, id); // like테이블 삽입
+			boardService.updateLike1(post_num); // 게시판테이블 +1
+			boardService.updateLikeCheck1(post_num, id);// like테이블 구분자 1
+		} else if (likeCheck == 1) {
+			boardService.updateLikeCheckCancel1(post_num, id); // like테이블 구분자0
+			boardService.updateLikeCancel1(post_num); // 게시판테이블 - 1
+			boardService.deleteLike1(post_num, id); // like테이블 삭제
+		}
+		return likeCheck;
+	}
+
+	// 신고
+	@RequestMapping(value = "/board/updatesin", method = RequestMethod.POST)
+	@ResponseBody
+	public int updatesin(int post_num, String id) throws Exception {
+
+		int sinCheck = boardService.sinCheck(post_num, id);
+
+		if (sinCheck == 0) {
+
+			boardService.insertsin(post_num, id);
+			boardService.updatesin(post_num);
+			boardService.updatesinCheck(post_num, id);
+
+		} else if (sinCheck == 1) {
+			boardService.updatesinCheckCancel(post_num, id);
+			boardService.updatesinCancel(post_num);
+			boardService.deletesin(post_num, id);
+		}
+		return sinCheck;
+	}
+
+	// 신고2
+	@RequestMapping(value = "/board/updatesin1", method = RequestMethod.POST)
+	@ResponseBody
+	public int updatesin1(int post_num, String id) throws Exception {
+
+		int sinCheck = boardService.sinCheck1(post_num, id);
+
+		if (sinCheck == 0) {
+
+			boardService.insertsin1(post_num, id);
+			boardService.updatesin1(post_num);
+			boardService.updatesinCheck1(post_num, id);
+
+		} else if (sinCheck == 1) {
+			boardService.updatesinCheckCancel1(post_num, id);
+			boardService.updatesinCancel1(post_num);
+			boardService.deletesin1(post_num, id);
+		}
+		return sinCheck;
+	}
 
 }

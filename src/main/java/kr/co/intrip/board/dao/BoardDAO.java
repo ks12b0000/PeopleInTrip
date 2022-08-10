@@ -52,5 +52,61 @@ public interface BoardDAO {
 
 	public void visitcount1(int post_num);
 
+	public void updateLikeCheck(int post_num, String id) throws Exception;
+
+	public int likeCheck(int post_num, String id) throws Exception;
+
+	public void updateLikeCheckCancel(int post_num, String id) throws Exception;
+
+	public void deleteLike(int post_num, String id) throws Exception;
+
+	public void insertLike(int post_num, String id) throws Exception;
+
+	public void updateLikeCancel(int post_num) throws Exception;
+
+	public void updateLike(int post_num) throws Exception;
+
+	public void updateLike1(int post_num) throws Exception;
+
+	public void updateLikeCancel1(int post_num) throws Exception;
+
+	public void insertLike1(int post_num, String id) throws Exception;
+
+	public void deleteLike1(int post_num, String id) throws Exception;
+
+	public int likeCheck1(int post_num, String id) throws Exception;
+
+	public void updateLikeCheck1(int post_num, String id) throws Exception;
+
+	public void updateLikeCheckCancel1(int post_num, String id) throws Exception;
+
+	public void updatesin(int post_num) throws Exception;
+
+	public void updatesinCancel(int post_num) throws Exception;
+
+	public void insertsin(int post_num, String id) throws Exception;
+
+	public void deletesin(int post_num, String id) throws Exception;
+
+	public int sinCheck(int post_num, String id) throws Exception;
+
+	public void updatesinCheck(int post_num, String id) throws Exception;
+
+	public void updatesinCheckCancel1(int post_num, String id) throws Exception;
+
+	public void updatesin1(int post_num) throws Exception;
+
+	public void updatesinCheckCancel(int post_num, String id) throws Exception;
+
+	public void updatesinCancel1(int post_num) throws Exception;
+
+	public void insertsin1(int post_num, String id) throws Exception;
+
+	public void deletesin1(int post_num, String id) throws Exception;
+
+	public int sinCheck1(int post_num, String id) throws Exception;
+
+	public void updatesinCheck1(int post_num, String id) throws Exception;
+
 	
 }

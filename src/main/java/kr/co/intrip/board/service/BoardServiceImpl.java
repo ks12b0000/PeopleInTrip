@@ -14,6 +14,7 @@ import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.login_signup.dto.MemberDTO;
 
 @Service("boardService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -175,11 +176,154 @@ public class BoardServiceImpl implements BoardService {
 
 	}
 
-	// 조회수
+	// 조회수1
 	@Override
 	public void visitcount1(int post_num) throws Exception {
 		boardDAO.visitcount1(post_num);
 
 	}
 
+	// 추천
+	@Override
+	public void updateLike(int post_num) throws Exception {
+		boardDAO.updateLike(post_num);
+	}
+
+	@Override
+	public void updateLikeCancel(int post_num) throws Exception {
+		boardDAO.updateLikeCancel(post_num);
+	}
+
+	@Override
+	public void insertLike(int post_num, String id) throws Exception {
+		boardDAO.insertLike(post_num, id);
+	}
+
+	@Override
+	public void deleteLike(int post_num, String id) throws Exception {
+		boardDAO.deleteLike(post_num, id);
+	}
+
+	@Override
+	public int likeCheck(int post_num, String id) throws Exception {
+		return boardDAO.likeCheck(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheck(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheck(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheckCancel(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheckCancel(post_num, id);
+	}
+
+	// 추천 1
+	@Override
+	public void updateLike1(int post_num) throws Exception {
+		boardDAO.updateLike1(post_num);
+	}
+
+	@Override
+	public void updateLikeCancel1(int post_num) throws Exception {
+		boardDAO.updateLikeCancel1(post_num);
+	}
+
+	@Override
+	public void insertLike1(int post_num, String id) throws Exception {
+		boardDAO.insertLike1(post_num, id);
+	}
+
+	@Override
+	public void deleteLike1(int post_num, String id) throws Exception {
+		boardDAO.deleteLike1(post_num, id);
+	}
+
+	@Override
+	public int likeCheck1(int post_num, String id) throws Exception {
+		return boardDAO.likeCheck1(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheck1(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheck1(post_num, id);
+	}
+
+	@Override
+	public void updateLikeCheckCancel1(int post_num, String id) throws Exception {
+		boardDAO.updateLikeCheckCancel1(post_num, id);
+	}
+
+	// 신고
+	@Override
+	public void updatesin(int post_num) throws Exception {
+		boardDAO.updatesin(post_num);
+	}
+
+	@Override
+	public void updatesinCancel(int post_num) throws Exception {
+		boardDAO.updatesinCancel(post_num);
+	}
+
+	@Override
+	public void insertsin(int post_num, String id) throws Exception {
+		boardDAO.insertsin(post_num, id);
+	}
+
+	@Override
+	public void deletesin(int post_num, String id) throws Exception {
+		boardDAO.deletesin(post_num, id);
+	}
+
+	@Override
+	public int sinCheck(int post_num, String id) throws Exception {
+		return boardDAO.sinCheck(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheck(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheck(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheckCancel(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheckCancel(post_num, id);
+	}
+
+	// 신고1
+	@Override
+	public void updatesin1(int post_num) throws Exception {
+		boardDAO.updatesin1(post_num);
+	}
+
+	@Override
+	public void updatesinCancel1(int post_num) throws Exception {
+		boardDAO.updatesinCancel1(post_num);
+	}
+
+	@Override
+	public void insertsin1(int post_num, String id) throws Exception {
+		boardDAO.insertsin1(post_num, id);
+	}
+
+	@Override
+	public void deletesin1(int post_num, String id) throws Exception {
+		boardDAO.deletesin1(post_num, id);
+	}
+
+	@Override
+	public int sinCheck1(int post_num, String id) throws Exception {
+		return boardDAO.sinCheck1(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheck1(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheck1(post_num, id);
+	}
+
+	@Override
+	public void updatesinCheckCancel1(int post_num, String id) throws Exception {
+		boardDAO.updatesinCheckCancel1(post_num, id);
+	}
 }

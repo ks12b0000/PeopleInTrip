@@ -116,7 +116,7 @@ $(function(){
 								</a></td>
 								<td>${boards.id }</td>
 								<td><fmt:formatDate value="${boards.post_date }" /></td>
-								<td></td>
+								<td>${boards.likehit }</td>
 								<td>${boards.visitcount }</td>
 							</tr>
 						</tbody>
@@ -132,28 +132,26 @@ $(function(){
 				style="background-color: #9966ff;"
 				onclick="location.href='${contextPath}/board/community_writeWith.do'">글쓰기</button>
 		</div>
-		<div>
-		
+<div style="text-align: center; font-size: 18px;">		
  <ul>
-  <a href="${contextPath}/board/community-acco?page=1">&laquo;</a> 
+  <a href="${contextPath}/board/community-acco?page=1" style="color: #9966ff; font-size: 25px;">&laquo;</a> 
   <c:if test="${pageMaker.prev}">
    <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
   </c:if> 
   
-  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(idx)}">${idx}</a>
+  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> &nbsp;
+   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(idx)}">${idx}</a> &nbsp;
   </c:forEach>
- 
-    
+     
   <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a>
+   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a> 
   </c:if>
  <c:choose>
    <c:when test= "${pageMaker.displayPageNum % 2 == 1 }">
-   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.totalCount/10 + 1) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+   <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 	</c:when>
 	<c:when test= "${pageMaker.displayPageNum % 2 == 0 }">
-	 <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.totalCount/10 + 1  ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+	 <a href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.totalCount/10 +1  ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 	</c:when>
 	</c:choose>
  </ul>

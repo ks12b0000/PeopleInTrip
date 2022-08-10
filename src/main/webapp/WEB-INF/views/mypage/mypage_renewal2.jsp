@@ -182,25 +182,25 @@
     	</form>
         <div align="center">
  	         <ul>
-				  <a href="${contextPath}/mypage/mypage_renewal?page=1">&laquo;</a> 
+				  <a href="${contextPath}/mypage/mypage_renewal2?page=1">&laquo;</a> 
 				  <c:if test="${pageMaker.prev}">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a>
+				   <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a>
 				  </c:if> 
 				  
 				  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(idx)}">${idx}</a>
+				   <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeQuery(idx)}">${idx}</a>
 				  </c:forEach>
 				 
 				    
 				  <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a>
+				   <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a>
 				  </c:if>
 				 <c:choose>
 				   <c:when test= "${pageMaker.totalCount % 2 == 1 }">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(pageMaker.totalCount/10 + 1) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+				   <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeQuery(pageMaker.totalCount/10 + 1) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 					</c:when>
 					<c:when test= "${pageMaker.totalCount % 2 == 0 }">
-					 <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeQuery(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+					 <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeQuery(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 					</c:when>
 					</c:choose>
  			</ul>
