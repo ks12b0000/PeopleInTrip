@@ -37,13 +37,14 @@ table td{
 .left-menu-ul {
     background-color: var(--white-color);
     border-right: 1px solid var(--black-color);
-    position: fixed;
-    height: 100%;
+    position: absolute;
+    height: 1290px;
     width: 250px;
     margin: 0;
     padding: 0;
     text-align: center;
     list-style: none;
+    
 }
 
 .left-menu-ul .menu-list a {

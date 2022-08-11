@@ -27,7 +27,7 @@ public interface BoardController {
 	public ResponseEntity removeBoard(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ResponseEntity removeBoard1(int post_num, HttpServletRequest request, HttpServletResponse response)
 			throws Exception;
-	public ModelAndView viewdetail1(int post_num, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ModelAndView viewdetail1(int post_num, HttpServletRequest request, HttpServletResponse response,Model model, CommentPagingDTO commentpagingDTO) throws Exception;
 	public ResponseEntity modBoard1(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
 

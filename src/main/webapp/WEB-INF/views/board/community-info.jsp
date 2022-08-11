@@ -31,16 +31,19 @@ request.setCharacterEncoding("UTF-8");
 </style>
 <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 <script type="text/javascript">
-$(function(){
-	  $('#searchBtn').click(function() {
-	   self.location = "${contextPath}/board/community-info"
-	     + '${pageMaker.makeQuery(1)}'
-	     + "&searchType="
-	     + $("select option:selected").val()
-	     + "&keyword="
-	     + encodeURIComponent($('#keywordInput').val());
-	    });
-	 });  
+	$(function() {
+		$('#searchBtn').click(
+				function() {
+					self.location = "${contextPath}/board/community-info"
+							+ '${pageMaker.makeQuery(1)}' + "&searchType="
+							+ $("select option:selected").val() + "&keyword="
+							+ encodeURIComponent($('#keywordInput').val());
+				});
+	});
+	function logingo() {
+		alert("로그인 후 사용이 가능합니다.");
+		location.href = "${contextPath}/login_signup/login";
+	}
 </script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -130,58 +133,75 @@ $(function(){
 		</table>
 		<hr />
 		<div class="text-lg-end text-end">
-			<button type="button" class="btn text-white"
-				style="background-color: #9966ff;"
-				onclick="location.href='${contextPath}/board/community_writeInfo.do'">글쓰기</button>
+			<c:choose>
+				<c:when test="${!empty user.id}">
+					<button type="button" class="btn text-white"
+						style="background-color: #9966ff;"
+						onclick="location.href='${contextPath}/board/community_writeInfo.do'">글쓰기</button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" class="btn text-white"
+						style="background-color: #9966ff;" onclick="logingo()">글쓰기</button>
+				</c:otherwise>
+			</c:choose>
 		</div>
-<div style="text-align: center; font-size: 18px;">	
- <ul>
-  <a href="${contextPath}/board/community-info?page=1" style="color: #9966ff; font-size: 25px;">&laquo;</a> 
-  <c:if test="${pageMaker.prev}">
-   <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
-  </c:if> 
-  
-  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">&nbsp;
-   <a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}">${idx}</a>&nbsp;
+		<div style="text-align: center; font-size: 18px;">
+			<ul>
+				<a href="${contextPath}/board/community-info?page=1"
+					style="color: #9966ff; font-size: 25px;">&laquo;</a>
+				<c:if test="${pageMaker.prev}">
+					<a
+						href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
+				</c:if>
+
+				<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+					var="idx">&nbsp;
+   <a
+						href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}">${idx}</a>&nbsp;
   </c:forEach>
- 
-    
-  <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-   <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a>
-  </c:if>
- <c:choose>
-   <c:when test= "${pageMaker.displayPageNum % 2 == 1 }">
-   <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
-	</c:when>
-	 <c:when test= "${pageMaker.displayPageNum % 2 == 0 }">
-	 <a href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 + 1 ) }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
-	</c:when>
-	</c:choose>
- </ul>
-</div>
 
-	<div class="search">
-		<select name="searchType">
-			<option value="n"
-				<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
-			<option value="t"
-				<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
-			<option value="c"
-				<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
-			<option value="w"
-				<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
-		</select> <input type="text" name="keyword" id="keywordInput"
-			value="${scri.keyword}" />
 
-		<button id="searchBtn" type="button">검색</button>
+				<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+					<a
+						href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a>
+				</c:if>
+				<c:choose>
+					<c:when test="${pageMaker.displayPageNum % 2 == 1 }">
+						<a
+							href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 ) }"
+							style="color: #9966ff; font-size: 25px;">&raquo;</a>
+					</c:when>
+					<c:when test="${pageMaker.displayPageNum % 2 == 0 }">
+						<a
+							href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 + 1 ) }"
+							style="color: #9966ff; font-size: 25px;">&raquo;</a>
+					</c:when>
+				</c:choose>
+			</ul>
+		</div>
 
-		<script
-			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-			integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-			crossorigin="anonymous"></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-			integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-			crossorigin="anonymous"></script>
+		<div class="search">
+			<select name="searchType">
+				<option value="n"
+					<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
+				<option value="t"
+					<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
+				<option value="c"
+					<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
+				<option value="w"
+					<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
+			</select> <input type="text" name="keyword" id="keywordInput"
+				value="${scri.keyword}" />
+
+			<button id="searchBtn" type="button">검색</button>
+
+			<script
+				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+				integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+				crossorigin="anonymous"></script>
+			<script
+				src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+				integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+				crossorigin="anonymous"></script>
 </body>
 </html>

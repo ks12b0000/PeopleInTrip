@@ -119,10 +119,26 @@ public interface BoardDAO {
 	public int boardcommentcountminus(BoardDTO boardDTO) throws Exception;
 
 	public void boardcreate(boardCommentDTO boardCommentDTO) throws Exception;
-	
+
 	public boardCommentDTO boardselectReply(int com_num) throws Exception;
-	
+
 	public void boarddeleteReply(boardCommentDTO boardCommentDTO) throws Exception;
-	
+
 	public void boardupdate(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public int boardCommentgetTotalRowCount2(CommentPagingDTO commentpagingDTO) throws Exception;
+
+	public List<boardCommentDTO> boardreadReply2(CommentPagingDTO commentpagingDTO) throws Exception;
+
+	public int boardcommentcount2(BoardDTO boardDTO) throws Exception;
+
+	public int boardcommentcountminus2(BoardDTO boardDTO) throws Exception;
+
+	public void boardcreate2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boardupdate2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boarddeleteReply2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public boardCommentDTO boardselectReply2(int com_num) throws Exception;
 }

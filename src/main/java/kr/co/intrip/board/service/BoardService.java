@@ -98,27 +98,35 @@ public interface BoardService {
 
 	public void updatesin(int post_num) throws Exception;
 
-	
 	public int getboardCommentTotalRowCount(CommentPagingDTO commentpaging) throws Exception;
 
-	
 	public List<boardCommentDTO> boardreadReply(CommentPagingDTO commentpaging) throws Exception;
 
-	// 제주도 댓글 수 증가
-	   public int boardcommentcount(BoardDTO boardDTO) throws Exception;
-	   
-	   // 제주도 댓글 수 감소
-	   public int boardcommentcountminus(BoardDTO boardDTO) throws Exception;
-	   
-	// 제주도 댓글 작성
-	   public void boardregister(boardCommentDTO boardCommentDTO) throws Exception;
-	   
-	// 제주도 댓글 수정
-	   public void boardmodify(boardCommentDTO boardCommentDTO) throws Exception; 
-	   
-	   // 제주도 댓글 삭제
-	   public void boardremove(boardCommentDTO boardCommentDTO) throws Exception;
-	   
-	   // 제주도 선택된 댓글 조회
-	   public boardCommentDTO boardselectReply(int com_num) throws Exception;
+	public int boardcommentcount(BoardDTO boardDTO) throws Exception;
+
+	public int boardcommentcountminus(BoardDTO boardDTO) throws Exception;
+
+	public void boardregister(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boardmodify(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boardremove(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public boardCommentDTO boardselectReply(int com_num) throws Exception;
+
+	public int getboardCommentTotalRowCount2(CommentPagingDTO commentpagingDTO) throws Exception;
+
+	public List<boardCommentDTO> boardreadReply2(CommentPagingDTO commentpagingDTO) throws Exception;
+
+	public int boardcommentcount2(BoardDTO boardDTO) throws Exception;
+
+	public int boardcommentcountminus2(BoardDTO boardDTO) throws Exception;
+
+	public void boardregister2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boardmodify2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boardremove2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public boardCommentDTO boardselectReply2(int com_num) throws Exception;
 }

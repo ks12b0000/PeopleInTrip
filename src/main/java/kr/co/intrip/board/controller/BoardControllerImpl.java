@@ -88,7 +88,7 @@ public class BoardControllerImpl implements BoardController {
 	@Override
 	@RequestMapping(value = "/board/community_detail2.do", method = RequestMethod.GET)
 	public ModelAndView viewdetail1(@RequestParam(value = "post_num") int post_num, // 조회할 글 번호를 가져옴
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {
 
 		// 조회수 증가
 		boardService.visitcount1(post_num);
@@ -99,6 +99,13 @@ public class BoardControllerImpl implements BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		mav.addObject("boardMap", boardMap);
+		
+		int totalRowCount = boardService.getboardCommentTotalRowCount2(commentpagingDTO);
+	      commentpagingDTO.setTotalRowCount(totalRowCount);
+	      commentpagingDTO.pageSetting();
+	      List<boardCommentDTO> replyList = boardService.boardreadReply2(commentpagingDTO);
+	      model.addAttribute("replyList", replyList);
+
 
 		return mav;
 	}
@@ -853,7 +860,7 @@ public class BoardControllerImpl implements BoardController {
 		return sinCheck;
 	}
 	
-	// 제주도 댓글 작성
+	// 댓글 작성
 	   @PostMapping("board/boardreplyWrite")
 	   public String boardreplyWrite(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
 	      log.info("reply write");
@@ -864,7 +871,7 @@ public class BoardControllerImpl implements BoardController {
 	      return "redirect:/board/community_detail.do";
 	   }
 
-	// 제주도 댓글 수정 페이지
+	// 댓글 수정 페이지
 	   @GetMapping("board/boardreplyUpdateView")
 	   public String boardreplyUpdateView(boardCommentDTO boardCommentDTO, Criteria cri, Model model) throws Exception {
 	      log.info("reply write");
@@ -877,7 +884,7 @@ public class BoardControllerImpl implements BoardController {
 	      return "board/boardreplyUpdateView";
 	   }
 	      
-	   // 제주도 댓글 수정 폼
+	   // 댓글 수정 폼
 	   @PostMapping("board/boardreplyUpdate")
 	   public String boardreplyUpdate(boardCommentDTO boardCommentDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
 	      log.info("reply Write");
@@ -889,7 +896,7 @@ public class BoardControllerImpl implements BoardController {
 	      return "redirect:/board/community_detail.do";
 	   }
 	   
-	   // 제주도 댓글 삭제 폼
+	   // 댓글 삭제 폼
 	   @PostMapping("board/boardreplyDelete")
 	   public String boardreplyDelete(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri,Model model, RedirectAttributes rttr) throws Exception {
 	      log.info("reply delete");
@@ -899,5 +906,55 @@ public class BoardControllerImpl implements BoardController {
 	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
 	         
 	      return "redirect:/board/community_detail.do";
+	   }
+	   
+	   
+	   //댓글2
+	// 댓글 작성
+	   @PostMapping("board/boardreplyWrite2")
+	   public String boardreplyWrite2(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
+	      log.info("reply write2");
+	      boardService.boardregister2(boardCommentDTO);
+	      boardService.boardcommentcount2(boardDTO);
+	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+	      
+	      return "redirect:/board/community_detail2.do";
+	   }
+
+	// 댓글 수정 페이지
+	   @GetMapping("board/boardreplyUpdateView2")
+	   public String boardreplyUpdateView2(boardCommentDTO boardCommentDTO, Criteria cri, Model model) throws Exception {
+	      log.info("reply write2");
+	         
+	      boardCommentDTO reply = boardService.boardselectReply2(boardCommentDTO.getCom_num());
+	      log.info("댓글번호 : " + reply.getCom_num());
+	      model.addAttribute("replyUpdate", boardService.boardselectReply2(boardCommentDTO.getCom_num()));
+	      model.addAttribute("cri", cri);
+
+	      return "board/boardreplyUpdateView2";
+	   }
+	      
+	   // 댓글 수정 폼
+	   @PostMapping("board/boardreplyUpdate2")
+	   public String boardreplyUpdate2(boardCommentDTO boardCommentDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
+	      log.info("reply Write2");
+	      
+	      boardService.boardmodify2(boardCommentDTO);
+	         
+	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+	         
+	      return "redirect:/board/community_detail2.do";
+	   }
+	   
+	   //댓글 삭제 폼
+	   @PostMapping("board/boardreplyDelete2")
+	   public String boardreplyDelete2(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri,Model model, RedirectAttributes rttr) throws Exception {
+	      log.info("reply delete");
+
+	      boardService.boardremove2(boardCommentDTO);
+	      boardService.boardcommentcountminus2(boardDTO);
+	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+	         
+	      return "redirect:/board/community_detail2.do";
 	   }
 }
