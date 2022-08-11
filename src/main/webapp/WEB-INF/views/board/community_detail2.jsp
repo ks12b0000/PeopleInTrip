@@ -105,6 +105,16 @@ request.setCharacterEncoding("UTF-8");
 	            }
 	        });
 	 }
+	
+	function readURL(input,index) {
+		if (input.files && input.files[0]) {
+			let reader = new FileReader()
+			reader.onload = function(e) {
+				$('#preview'+index).attr('src', e.target.result)
+			}
+			reader.readAsDataURL(input.files[0])
+		}
+	}	
     </script>
 </head>
 <body>
@@ -140,7 +150,7 @@ request.setCharacterEncoding("UTF-8");
 				</div>
 			</div>
 			<div>
-				<p class="write-file">첨부파일 : XX.xxx</p>
+				<p class="write-file">첨부파일 : <img id="preview0" alt="이미지" src="#" width="440px" height="280px"></p>
 			</div>
 			<div>
 				<p class="write-content">${board.post_content }</p>
@@ -154,9 +164,8 @@ request.setCharacterEncoding("UTF-8");
 
 			<div class="write-button">
 				<c:if test="${user.id != null }">
-					<button id="write-recommand" class="write-recommand" style="outline: none; cursor: pointer; background-color : #9966ff;
-					border-radius: 7px; border: 2px solid #FFFFFF; 
-						onclick="updateLike()">👍️</button>
+					<button id="write-recommand" class="write-recommand" onclick="updateLike()" style="outline: none; cursor: pointer; background-color : #9966ff;
+					border-radius: 7px; border: 2px solid #FFFFFF; ">👍️</button>
 					<button class="write-declaration" onclick="updatesin()" style="outline: none; cursor: pointer; background-color : #9966ff;
 					 border-radius: 7px; border: 2px solid #FFFFFF;">🚨</button>
 				</c:if>

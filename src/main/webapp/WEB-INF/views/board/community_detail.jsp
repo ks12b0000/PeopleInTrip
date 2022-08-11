@@ -46,13 +46,47 @@
 	cursor: pointer;
 	font-size: 12px;
 }
+#comment_input{
+    width: 60%;
+    height: 3em;
+    margin-top: 2.5%;
+    margin-left : 200px;
+    resize: none;
+    text-align: center;
+    padding-top: 23px;
+    border:solid 2px #D8D8D8;
+}
+.submit{
+    margin-top: 25px;
+    margin-left: 1.5%;
+    width: 5.5em;
+    height: 4.6em;
+    font-size: 15px;
+    font-weight: bold;
+   position: absolute;
+   background-color: white;
+   border: 2px solid #D8D8D8;
+   cursor: pointer;
+}
+#comment-count{
+   font-size: 25px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+#form-commentInfo{
+    width: 100%;
+    margin-bottom: 5px;
+}
+#outter{
+   
+margin-top: 7%;
+   text-align: center;
+}
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
-	function singo() {
-		alert("댓글이 신고되었습니다");
-	}
+	
 	
 	function btnbtn() {
 		if ($("#comment_input").val() == "") {
@@ -138,7 +172,7 @@
 				<p class="write-detail">동행구해요 > 상세보기</p>
 			</div>
 			<div class="write-title">
-				<div class="write-titlemain" style="font-size: 17.5px;">${board.post_title }</div>
+				<div class="write-titlemain" >${board.post_title }</div>
 				<div class="write-titlesub">
 					${board.id } |
 					<fmt:formatDate value="${board.post_date }" />
@@ -151,36 +185,79 @@
 			<div>
 				<p class="write-content">${board.post_content }</p>
 			</div>
-			<div>
-				<p class="write-comment1">작성된 댓글( X 개)</p>
-			</div>
+
+			
+
 			<div class="write-button">
 				<c:if test="${user.id != null }">
-					<button id="write-recommand" class="write-recommand" style="outline: none; cursor: pointer; background-color :  #9966ff;
-					border-radius: 7px; border: 2px solid #FFFFFF; 
-						onclick="updateLike()">👍️</button>
+					<button id="write-recommand" class="write-recommand" onclick="updateLike()"style="outline: none; cursor: pointer; background-color :  #9966ff;
+					border-radius: 7px; border: 2px solid #FFFFFF; ">👍️</button>
 					<button class="write-declaration" onclick="updatesin()" style="outline: none; cursor: pointer; background-color :  #9966ff;
 					 border-radius: 7px; border: 2px solid #FFFFFF;">🚨</button>
 				</c:if>
 			</div>
-			<div class="write-comment22">
-				<textarea class="write-comment2"
-					placeholder="&#13;&#10; - 최대 300자까지 작성할 수 있습니다(띄어쓰기 포함).&#13;&#10; ※ 욕설, 영업에 방해되는 글은 관리자에 의해 삭제될 수 있습니다."></textarea>
-				<button class="write-comment3">등록</button>
-			</div>
-			<div>
-
-				<p class="write-id">
-					<span class="write-id2">${board.id }</span> <span
-						class="write-date">| <fmt:formatDate
-							value="${board.post_date }" /></span>
-					<button class="write-edit">수정</button>
-					<button class="write-delete">삭제</button>
-				</p>
-				<p class="write-comment4">테스트 댓글</p>
-				<p class="write-declaration2" onclick="singo()">
-					<button>신고</button>
-				</p>
+			
+			<!-- 댓글창 -->
+    <div id="outter">    
+      <div id="form-commentInfo">       
+            <div id="comment-count" style="margin-left:250px;"><strong style="font-size: 20px;" >작성된 댓글<span id="count"> [${plist.commentcount}]개</span></strong></div>
+           <div id="css1">
+           <hr align="left" style="border: solid 3px #D8D8D8;  width: 100%;"></div>      
+       </div><br><br>
+       <div class="list">
+       <c:forEach items="${replyList}" var="replyList">
+          <p class="name" style="word-break: normal; font-size: 20px; display: inline-block;"><strong>${replyList.id}</strong></p>   
+            <p class="wdate" style="font-size: 10px;  display: inline-block"><strong><fmt:formatDate value="${replyList.com_date}" pattern="yyyy-MM-dd HH:mm:ss" /></strong></p><br>
+            <br><hr align="left" style="border: solid 1px #D8D8D8; width: 100%; margin-top: -15px; ">                  
+            <p style="font-size: 15px; margin-top: 10px; word-break:break-all; width: 800px; " >${replyList.com_content }</p><br>                                                            
+            
+               <c:if test="${replyList.id eq user.id}">
+                  <button type="button" class="SBTN2" data-com_num="${replyList.com_num}"><strong>수정</strong></button>
+               <form action="${contextPath}/tourist/jejureplyDelete" method="post" name="deleteForm" id="deleteForm">
+                  <input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+                  <input type="hidden" name="com_num" value="${replyList.com_num }"/>
+               <button type="button" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>   
+            </form>   
+            </c:if>
+               <button type="button" class="SBTN4"><strong>신고</strong></button>
+         
+      </c:forEach>
+       </div>              
+       <form action="${contextPath}/tourist/jejureplyWrite" method="post">
+         <input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+         <input type="hidden" name="id" value="${user.id }"/>
+         <c:choose>
+            <c:when test="${!empty user.id}">
+               <textarea rows="content" name="com_content" id="comment_input" placeholder="댓글을 입력해주세요." onfocus="this.placeholder=''" onblur="this.placeholder='댓글을 입력해주세요.'"  style="outline: none; text-align: left; padding-left:10px;"></textarea>         
+                 <button type="submit" onClick="btnbtn()" class="submit">등록</button>
+                 <div id="textarea-cnt"  style="margin-left:250px;">(0 / 200)</div>
+              </c:when>
+              <c:otherwise>
+                 <textarea rows="content" name="com_content" id="comment_input" placeholder="로그인을 해주세요." disabled style="outline: none; text-align: left; padding-left:10px;"></textarea>         
+                 <button type="submit" onClick="btnbtn()" class="submit" disabled>등록</button>
+                 <div id="textarea-cnt" style="margin-left:250px;">(0 / 200)</div>
+              </c:otherwise>
+           </c:choose>
+      </form>   
+      <div name="tour_div3" id="tour_div3" style="text-align: center;">
+            <c:if test="${commentpagingDTO.curPage > 1 }">
+               <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+               <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+            </c:if>
+               <c:forEach begin="${commentpagingDTO.firstPage }"  end="${commentpagingDTO.lastPage }" var="i"> &nbsp;
+                     <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${i }" style="font-size: 18px; color:black; margin-left:250px;"  >  
+                        <c:if test="${i eq commentpagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
+                        <c:if test="${i ne commentpagingDTO.curPage }">  ${i } </c:if> 
+                     </a>
+               </c:forEach>&nbsp;
+            <c:if test="${commentpagingDTO.curPage < commentpagingDTO.totalPageCount }">
+               <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+               <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+            </c:if>
+      </div>
+      <br><hr align="left" style="border: solid 3px #D8D8D8; width: 100%;"><br><br> 
+  </div>
+		
 			</div>
 			<div class="write-form">
 				<button class="btn313"
