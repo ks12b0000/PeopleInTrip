@@ -43,23 +43,7 @@
 			}
 		}
     	
-    	let cnt = 1
-		function fn_addFile() {
-			cnt++;
-			let innerHtml = "";
-			
-			innerHtml += '<tr width=100% align=center>'
-			
-			innerHtml += '<td>' +
-								"<input type=file name='file"+cnt+"' onchange='readURL(this, "+cnt+")' />" +
-						 '</td>'
-			innerHtml += '<td>' +		
-								"<img id='preview"+cnt+"' width=440 height=280 />" +
-						 '</td>'
-
-			innerHtml += '</tr>'
-			$("#tb_newImage").append(innerHtml)
-		}
+    
     </script>
 </head>
 <body>
@@ -112,7 +96,7 @@
 						<div>
 							이미지파일 첨부 <br>
 							<input type="file" name="imageFileName"  onchange="readURL(this, 0)" />
-							
+							<img id="preview0" alt="이미지" src="#" width="440px" height="280px">
 							
 						</div>
 

@@ -119,8 +119,8 @@ $(function(){
 								</a></td>
 								<td>${boards.id }</td>
 								<td><fmt:formatDate value="${boards.post_date }" /></td>
-								<td>${boards.likehit }</td>
-								<td>${boards.visitcount }</td>
+								<td>${boards.likehit}</td>
+								<td>${boards.visitcount}</td>
 							</tr>
 						</tbody>
 					</c:forEach>

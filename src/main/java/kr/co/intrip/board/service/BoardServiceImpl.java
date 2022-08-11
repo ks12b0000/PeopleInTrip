@@ -11,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.intrip.board.dao.BoardDAO;
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.CommentPagingDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.board.dto.boardCommentDTO;
 import kr.co.intrip.login_signup.dto.MemberDTO;
 
 @Service("boardService")
@@ -326,4 +328,52 @@ public class BoardServiceImpl implements BoardService {
 	public void updatesinCheckCancel1(int post_num, String id) throws Exception {
 		boardDAO.updatesinCheckCancel1(post_num, id);
 	}
+
+	// 제주도 댓글 총 개수
+	@Override
+	public int getboardCommentTotalRowCount(CommentPagingDTO commentpagingDTO) throws Exception {
+		return boardDAO.boardCommentgetTotalRowCount(commentpagingDTO);
+	}
+
+	// 제주도 댓글 조회
+	@Override
+	public List<boardCommentDTO> boardreadReply(CommentPagingDTO commentpagingDTO) throws Exception {
+		return boardDAO.boardreadReply(commentpagingDTO);
+	}
+	
+	// 제주도 댓글 수 증가
+	   @Override
+	   public int boardcommentcount(BoardDTO boardDTO) throws Exception {
+	      return boardDAO.boardcommentcount(boardDTO);
+	   }
+	   
+	   // 제주도 댓글 수 감소
+	   @Override
+	   public int boardcommentcountminus(BoardDTO boardDTO) throws Exception {
+	      return boardDAO.boardcommentcountminus(boardDTO);
+	   }
+	   
+	// 제주도 댓글 작성
+	   @Override
+	   public void boardregister(boardCommentDTO boardCommentDTO) throws Exception {
+		   boardDAO.boardcreate(boardCommentDTO);
+	   }
+	   
+	// 제주도 댓글 수정
+	   @Override
+	   public void boardmodify(boardCommentDTO boardCommentDTO) throws Exception {  
+		   boardDAO.boardupdate(boardCommentDTO);      
+	   }
+	   
+	   // 제주도 댓글 삭제
+	   @Override
+	   public void boardremove(boardCommentDTO boardCommentDTO) throws Exception {  
+		   boardDAO.boarddeleteReply(boardCommentDTO);
+	   }
+	   
+	   // 제주도 선택된 댓글 조회
+	   @Override
+	   public boardCommentDTO boardselectReply(int com_num) throws Exception {  
+	      return boardDAO.boardselectReply(com_num);
+	   }
 }
