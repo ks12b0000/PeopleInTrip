@@ -79,8 +79,60 @@
 }
 #outter{
    
-margin-top: 7%;
+	text-align: center;
+	    padding-left: 250px;
+   
+}
+
+.list > .SBTN2{
    text-align: center;
+   display: flex;
+   margin-left: 890px;
+   margin-top: -30px;
+   width: 50px;
+   height: 30px;
+   background-color: white;
+   border: 2px solid #D8D8D8;
+   cursor: pointer;
+   padding-left: 9px;
+   padding-top: 3px;
+}
+
+.list > #deleteForm > .SBTN3{
+   text-align: center;
+   display: flex;
+   margin-left: 950px;
+   margin-top: -30px;
+   width: 50px;
+   height: 30px;
+   background-color: white;
+   border: 2px solid #D8D8D8;
+   cursor: pointer;
+   padding-left: 9px;
+   padding-top: 3px;
+}
+
+.list > .SBTN4{
+   text-align: center;
+   display: flex;
+   margin-left: 1010px;
+   margin-top: -30px;
+   width: 50px;
+   height: 30px;
+   background-color: white;
+   border: 2px solid #D8D8D8;
+   cursor: pointer;
+   padding-left: 9px;
+   padding-top: 3px;
+}
+.list {
+   position: relative;
+   height: auto;
+   margin-top: -30px;
+   padding-top: 5px;
+   padding-left: 2%;
+   border: solid 1px #D8D8D8;
+   width: 1040px;
 }
 </style>
 <script
@@ -145,6 +197,43 @@ margin-top: 7%;
 	        });
 	 }
 	
+	$(function () {
+		   createReply();
+		})
+		      
+		function createReply() {
+		   $(".submit").on("click", function() {
+		      var formObj = $("form[name='boardreplyForm']");
+		      formObj.attr("action", "${contextPath}/board/boardreplyWrite");
+		      formObj.submit();
+		   });
+		}
+	
+	$(function () {
+		   updateReply();
+		   deleteReply();
+		})
+
+		function updateReply() {
+		   $(".SBTN2").on("click", function(){
+		      location.href = "${contextPath}/board/boardreplyUpdateView?post_num=${board.post_num}"
+		                  + "&com_num="+$(this).attr("data-com_num");
+		   });
+		}
+
+		function deleteReply() {   
+		   $(".SBTN3").on("click", function() {
+		      var formObj = $("form[name='deleteForm']");
+		      if(!confirm("댓글을 삭제하시겠습니까?")){      
+		      }
+		      else {
+		         formObj.attr("action", "${contextPath}/board/boardreplyDelete");
+		         formObj.submit();
+		      }
+		      
+		   });
+		   
+		}
     </script>
 </head>
 <body>
@@ -200,21 +289,21 @@ margin-top: 7%;
 			<!-- 댓글창 -->
     <div id="outter">    
       <div id="form-commentInfo">       
-            <div id="comment-count" style="margin-left:250px;"><strong style="font-size: 20px;" >작성된 댓글<span id="count"> [${plist.commentcount}]개</span></strong></div>
+            <div id="comment-count" style="margin-left:250px;"><strong style="font-size: 20px;" >작성된 댓글<span id="count"> [${board.commentcount}]개</span></strong></div>
            <div id="css1">
            <hr align="left" style="border: solid 3px #D8D8D8;  width: 100%;"></div>      
        </div><br><br>
        <div class="list">
        <c:forEach items="${replyList}" var="replyList">
-          <p class="name" style="word-break: normal; font-size: 20px; display: inline-block;"><strong>${replyList.id}</strong></p>   
+          <p class="name" style="word-break: normal; font-size: 20px; display: inline-block; margin-left: -360px;" ><strong>${replyList.id}</strong></p>   
             <p class="wdate" style="font-size: 10px;  display: inline-block"><strong><fmt:formatDate value="${replyList.com_date}" pattern="yyyy-MM-dd HH:mm:ss" /></strong></p><br>
             <br><hr align="left" style="border: solid 1px #D8D8D8; width: 100%; margin-top: -15px; ">                  
-            <p style="font-size: 15px; margin-top: 10px; word-break:break-all; width: 800px; " >${replyList.com_content }</p><br>                                                            
+            <p style="font-size: 15px; margin-top: 10px; word-break:break-all; width: 800px; margin-left: -70px; text-align: left;" >${replyList.com_content }</p><br>                                                            
             
                <c:if test="${replyList.id eq user.id}">
                   <button type="button" class="SBTN2" data-com_num="${replyList.com_num}"><strong>수정</strong></button>
-               <form action="${contextPath}/tourist/jejureplyDelete" method="post" name="deleteForm" id="deleteForm">
-                  <input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+               <form action="${contextPath}/board/boardreplyDelete" method="post" name="deleteForm" id="deleteForm">
+                  <input type="hidden" name="post_num" value="${board.post_num }"/>
                   <input type="hidden" name="com_num" value="${replyList.com_num }"/>
                <button type="button" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>   
             </form>   
@@ -223,8 +312,8 @@ margin-top: 7%;
          
       </c:forEach>
        </div>              
-       <form action="${contextPath}/tourist/jejureplyWrite" method="post">
-         <input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+       <form action="${contextPath}/board/boardreplyWrite" method="post">
+         <input type="hidden" name="post_num" value="${board.post_num }"/>
          <input type="hidden" name="id" value="${user.id }"/>
          <c:choose>
             <c:when test="${!empty user.id}">
@@ -241,18 +330,18 @@ margin-top: 7%;
       </form>   
       <div name="tour_div3" id="tour_div3" style="text-align: center;">
             <c:if test="${commentpagingDTO.curPage > 1 }">
-               <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
-               <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+               <a href="${contextPath}/board/community_detail?post_num=${board.post_num}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+               <a href="${contextPath}/board/community_detail?post_num=${board.post_num}&curPage=${commentpagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
             </c:if>
                <c:forEach begin="${commentpagingDTO.firstPage }"  end="${commentpagingDTO.lastPage }" var="i"> &nbsp;
-                     <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${i }" style="font-size: 18px; color:black; margin-left:250px;"  >  
+                     <a href="${contextPath}/board/community_detail?post_num=${board.post_num}&curPage=${i }" style="font-size: 18px; color:black; margin-left:250px;"  >  
                         <c:if test="${i eq commentpagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
                         <c:if test="${i ne commentpagingDTO.curPage }">  ${i } </c:if> 
                      </a>
                </c:forEach>&nbsp;
             <c:if test="${commentpagingDTO.curPage < commentpagingDTO.totalPageCount }">
-               <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
-               <a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+               <a href="${contextPath}/board/community_detail?post_num=${board.post_num}&curPage=${commentpagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+               <a href="${contextPath}/board/community_detail?post_num=${board.post_num}&curPage=${commentpagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
             </c:if>
       </div>
       <br><hr align="left" style="border: solid 3px #D8D8D8; width: 100%;"><br><br> 

@@ -426,4 +426,80 @@
 	<select id="sinCheck1" resultType="int" >
 	select count(*) from s_board1 where post_num = #{post_num} and id = #{id} 
 	</select>
+	
+	<!-- 댓글 총 개수 -->
+   <select id="boardCommentgetTotalRowCount" parameterType="kr.co.intrip.board.dto.CommentPagingDTO" resultType="int">
+      <![CDATA[
+         SELECT count(*)
+         FROM P_BOARD_COMMENT
+         WHERE post_num = #{post_num}
+      ]]>
+   </select>
+
+   <!-- 댓글 조회 -->
+      <select id="boardCommentselect" resultType="kr.co.intrip.board.dto.boardCommentDTO" parameterType="kr.co.intrip.board.dto.CommentPagingDTO">
+         <![CDATA[
+            select *
+             from (
+           select pt.*, row_number() over(order by com_date desc) as rNum
+           from P_BOARD_COMMENT pt
+           where post_num = #{post_num}
+           ) mb
+             where rNum between #{firstRow} and #{lastRow}
+         ]]>
+      </select>
+          
+      <!-- 제주도 댓글 작성 -->
+   <insert id="boardWriteReply">
+         <selectKey keyProperty="com_num" order="BEFORE" resultType="int">
+            select com_num.nextval from dual
+         </selectKey>
+            insert into P_BOARD_COMMENT(COM_NUM, ID, post_num, COM_CONTENT)
+           values( #{com_num}, #{id}, #{post_num}, #{com_content})
+   </insert>
+   
+   <!-- 제주도 댓글 수 증가  -->
+   <update id="boardcommentcount">
+      <![CDATA[
+         UPDATE P_BOARD
+         SET commentcount = commentcount + 1 
+         WHERE post_num = #{post_num}
+      ]]>
+   </update>
+   
+   <!-- 제주도 댓글 수 감소 -->
+   <update id="boardcommentcountminus">
+      <![CDATA[
+         UPDATE P_BOARD
+         SET commentcount = commentcount - 1 
+         WHERE post_num = #{post_num}
+      ]]>
+   </update>
+   
+   <!-- 제주도 댓글 수정 -->
+   <update id="boardupdateReply" parameterType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+            update P_BOARD_COMMENT 
+            set COM_CONTENT = #{com_content}
+            where com_num = #{com_num}
+         ]]>
+   </update>
+         
+   <!-- 제주도 댓글 삭제 -->
+   <delete id="boarddeleteReply" parameterType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+            delete
+            from P_BOARD_COMMENT 
+            where com_num = #{com_num}
+      ]]>
+   </delete>
+   
+   <!-- 제주도 선택된 댓글 조회 -->
+   <select id="boardselectReply" resultType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+         select *
+         from P_BOARD_COMMENT
+         where com_num = #{com_num}
+      ]]>
+   </select>
 </mapper>

@@ -15,7 +15,7 @@ public class BoardDTO {
 	private String post_content;
 	private Date post_date;
 	private int visitcount;
-	private int count_comment;
+	private int commentcount;
 	private int likehit;
 	private int sinhit;
 
@@ -103,13 +103,15 @@ public class BoardDTO {
 		this.visitcount = visitcount;
 	}
 
-	public int getCount_comment() {
-		return count_comment;
+	public int getCommentcount() {
+		return commentcount;
 	}
 
-	public void setCount_comment(int count_comment) {
-		this.count_comment = count_comment;
+	public void setCommentcount(int commentcount) {
+		this.commentcount = commentcount;
 	}
+
+
 
 	
 

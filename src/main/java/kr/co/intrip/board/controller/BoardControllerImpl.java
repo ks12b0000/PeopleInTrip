@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,10 +38,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.CommentPagingDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.PageMaker;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.board.dto.boardCommentDTO;
 import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.login_signup.dto.MemberDTO;
 import lombok.extern.java.Log;
@@ -60,7 +63,7 @@ public class BoardControllerImpl implements BoardController {
 	@Override
 	@RequestMapping(value = "/board/community_detail.do", method = RequestMethod.GET)
 	public ModelAndView viewdetail(@RequestParam(value = "post_num") int post_num, // 조회할 글 번호를 가져옴
-			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+			HttpServletRequest request, HttpServletResponse response, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {
 
 		// 조회수 증가
 		boardService.visitcount(post_num);
@@ -70,8 +73,15 @@ public class BoardControllerImpl implements BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		mav.addObject("boardMap", boardMap);
+		
+		int totalRowCount = boardService.getboardCommentTotalRowCount(commentpagingDTO);
+	      commentpagingDTO.setTotalRowCount(totalRowCount);
+	      commentpagingDTO.pageSetting();
+	      List<boardCommentDTO> replyList = boardService.boardreadReply(commentpagingDTO);
+	      model.addAttribute("replyList", replyList);
 
 		return mav;
+		
 	}
 
 	// 상세보기1
@@ -842,5 +852,52 @@ public class BoardControllerImpl implements BoardController {
 		}
 		return sinCheck;
 	}
+	
+	// 제주도 댓글 작성
+	   @PostMapping("board/boardreplyWrite")
+	   public String boardreplyWrite(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
+	      log.info("reply write");
+	      boardService.boardregister(boardCommentDTO);
+	      boardService.boardcommentcount(boardDTO);
+	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+	      
+	      return "redirect:/board/community_detail.do";
+	   }
 
+	// 제주도 댓글 수정 페이지
+	   @GetMapping("board/boardreplyUpdateView")
+	   public String boardreplyUpdateView(boardCommentDTO boardCommentDTO, Criteria cri, Model model) throws Exception {
+	      log.info("reply write");
+	         
+	      boardCommentDTO reply = boardService.boardselectReply(boardCommentDTO.getCom_num());
+	      log.info("댓글번호 : " + reply.getCom_num());
+	      model.addAttribute("replyUpdate", boardService.boardselectReply(boardCommentDTO.getCom_num()));
+	      model.addAttribute("cri", cri);
+
+	      return "board/boardreplyUpdateView";
+	   }
+	      
+	   // 제주도 댓글 수정 폼
+	   @PostMapping("board/boardreplyUpdate")
+	   public String boardreplyUpdate(boardCommentDTO boardCommentDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
+	      log.info("reply Write");
+	      
+	      boardService.boardmodify(boardCommentDTO);
+	         
+	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+	         
+	      return "redirect:/board/community_detail.do";
+	   }
+	   
+	   // 제주도 댓글 삭제 폼
+	   @PostMapping("board/boardreplyDelete")
+	   public String boardreplyDelete(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri,Model model, RedirectAttributes rttr) throws Exception {
+	      log.info("reply delete");
+
+	      boardService.boardremove(boardCommentDTO);
+	      boardService.boardcommentcountminus(boardDTO);
+	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+	         
+	      return "redirect:/board/community_detail.do";
+	   }
 }
