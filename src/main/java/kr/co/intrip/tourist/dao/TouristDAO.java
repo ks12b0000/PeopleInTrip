@@ -1,7 +1,10 @@
 package kr.co.intrip.tourist.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -72,6 +75,11 @@ public class TouristDAO {
 		return sqlSession.selectList("mapper.tourist.jejutourist_commentSort", pagingDTO);
 	}
 	
+	// 제주도 여행지 페이지 찜수별 리스트 Sorting 기능
+	public List<ApiDTO> jejutourist_steamedSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejutourist_steamedSort", pagingDTO);
+	}
+	
 	// 제주도 축제 페이지 조회수별 리스트 Sorting 기능
 	public List<ApiDTO> jejufestival_lookupSort(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejufestival_lookupSort", pagingDTO);
@@ -80,6 +88,11 @@ public class TouristDAO {
 	// 제주도 축제 페이지 댓글수별 리스트 Sorting 기능
 	public List<ApiDTO> jejufestival_commentSort(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejufestival_commentSort", pagingDTO);
+	}
+	
+	// 제주도 축제 페이지 찜수별 리스트 Sorting 기능
+	public List<ApiDTO> jejufestival_steamedSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejufestival_steamedSort", pagingDTO);
 	}
 		
 	// 제주도 전시관 페이지 조회수별 리스트 Sorting 기능
@@ -90,6 +103,11 @@ public class TouristDAO {
 	// 제주도 전시관 페이지 댓글수별 리스트 Sorting 기능
 	public List<ApiDTO> jejuexhibition_commentSort(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejuexhibition_commentSort", pagingDTO);
+	}
+	
+	// 제주도 전시관 페이지 찜수별 리스트 Sorting 기능
+	public List<ApiDTO> jejuexhibition_steamedSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejuexhibition_steamedSort", pagingDTO);
 	}
 	
 	// 제주도 댓글 수 증가
@@ -130,6 +148,56 @@ public class TouristDAO {
 	// 제주도 선택된 댓글 조회
 	public JejuCommentDTO jejuselectReply(int com_num) throws Exception { 
 		return sqlSession.selectOne("mapper.tourist.jejuselectReply", com_num);
+	}
+	
+	// 제주도 여행지 찜 수
+	public void updateSteamed(String contentsid) throws Exception {
+		sqlSession.update("mapper.tourist.updateSteamed", contentsid);
+	}
+	
+	// 제주도 여행지 찜 수 취소
+	public void updateSteamedCancel(String contentsid) throws Exception {
+		sqlSession.update("mapper.tourist.updateSteamedCancel", contentsid);
+	}
+
+	// 제주도 여행지 찜 시 steamed 테이블에 insert
+	public void insertSteamed(String contentsid, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("contentsid", contentsid);
+		sqlSession.insert("mapper.tourist.insertSteamed", map);
+	}
+
+	// 제주도 여행지 찜 취소 시 delete
+	public void deleteSteamed(String contentsid, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("contentsid", contentsid);
+		sqlSession.delete("mapper.tourist.deleteSteamed", map);
+	}
+
+	// 제주도 여행지 찜 중복방지 select문
+	public String SteamedCheck(String contentsid, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("contentsid", contentsid);
+		return sqlSession.selectOne("mapper.tourist.SteamedCheck", map);
+	}
+
+	// 제주도 여행지 찜 시 Check를 1로 만들어서 중복방지
+	public void updateSteamedCheck(String contentsid, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("contentsid", contentsid);
+		sqlSession.update("mapper.tourist.updateSteamedCheck", map);
+	}
+
+	// 제주도 여행지 찜 취소 시 다시 0 
+	public void updateSteamedCheckCancel(String contentsid, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("contentsid", contentsid);
+		sqlSession.update("mapper.tourist.updateSteamedCheckCancel", map);
 	}
 	
 

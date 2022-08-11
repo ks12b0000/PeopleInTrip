@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -191,6 +192,27 @@ public class TouristController {
 		rttr.addAttribute("contentsid", jejuDTO.getContentsid());
 			
 		return "redirect:/tourist/tourist_View";
+	}
+	
+	// 제주도 여행지 찜하기
+	@PostMapping("tourist/updatesteamed")
+	@ResponseBody
+	public String updateSteamed(String contentsid,  String id)throws Exception{
+		
+		String steamedCheck = tourservice.steamedCheck(contentsid, id);
+
+		if(steamedCheck.equals("0")) {
+			//좋아요 처음누름
+			tourservice.insertSteamed(contentsid, id); //like테이블 삽입
+			tourservice.updateSteamed(contentsid);	//게시판테이블 +1
+			tourservice.updateSteamedCheck(contentsid, id);//like테이블 구분자 1
+		}
+		else if(steamedCheck.equals("1")) {
+			tourservice.updateSteamedCheckCancel(contentsid, id); //like테이블 구분자0
+			tourservice.updateSteamedCancel(contentsid); //게시판테이블 - 1
+			tourservice.deleteSteamed(contentsid, id); //like테이블 삭제
+		}
+		return steamedCheck;
 	}
 
 	

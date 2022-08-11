@@ -75,4 +75,25 @@ public interface TouristService {
 	// 제주도 선택된 댓글 조회
 	public JejuCommentDTO jejuselectReply(int com_num) throws Exception;
 
+	// 제주도 여행지 찜 중복방지 select문
+	public String steamedCheck(String contentsid, String id) throws Exception;
+
+	// 제주도 여행지 찜 시 steamed 테이블에 insert
+	public void insertSteamed(String contentsid, String id) throws Exception;
+
+	// 제주도 여행지 찜 수
+	public void updateSteamed(String contentsid) throws Exception;
+
+	// 제주도 여행지 찜 시 Check를 1로 만들어서 중복방지
+	public void updateSteamedCheck(String contentsid, String id) throws Exception;
+
+	// 제주도 여행지 찜 취소 시 다시 0
+	public void updateSteamedCheckCancel(String contentsid, String id) throws Exception;
+
+	// 제주도 여행지 찜 수 취소
+	public void updateSteamedCancel(String contentsid) throws Exception;
+
+	// 제주도 여행지 찜 취소 시 delete
+	public void deleteSteamed(String contentsid, String id) throws Exception;
+
 }

@@ -197,7 +197,7 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejutourist_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
-			return touristDAO.jejutourist_lookupSort(pagingDTO);
+			return touristDAO.jejutourist_steamedSort(pagingDTO);
 		}
 		else {
 			return touristDAO.jejutourist_lookupSort(pagingDTO);		
@@ -220,7 +220,7 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejufestival_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
-			return touristDAO.jejufestival_lookupSort(pagingDTO);
+			return touristDAO.jejufestival_steamedSort(pagingDTO);
 		}
 		else {
 			return touristDAO.jejufestival_lookupSort(pagingDTO);		
@@ -243,7 +243,7 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejuexhibition_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
-			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
+			return touristDAO.jejuexhibition_steamedSort(pagingDTO);
 		}
 		else {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);		
@@ -296,6 +296,48 @@ public class TouristServiceImpl implements TouristService {
 	@Override
 	public JejuCommentDTO jejuselectReply(int com_num) throws Exception {  
 		return touristDAO.jejuselectReply(com_num);
+	}
+	
+	// 제주도 여행지 찜 중복방지 select문
+	@Override
+	public String steamedCheck(String contentsid, String id) throws Exception {
+		return touristDAO.SteamedCheck(contentsid, id);
+	}
+
+	// 제주도 여행지 찜 시 steamed 테이블에 insert
+	@Override
+	public void insertSteamed(String contentsid, String id) throws Exception {
+		touristDAO.insertSteamed(contentsid, id);
+	}
+
+	// 제주도 여행지 찜 수
+	@Override
+	public void updateSteamed(String contentsid) throws Exception {
+		touristDAO.updateSteamed(contentsid);
+	}
+
+	// 제주도 여행지 찜 시 Check를 1로 만들어서 중복방지
+	@Override
+	public void updateSteamedCheck(String contentsid, String id) throws Exception {
+		touristDAO.updateSteamedCheck(contentsid, id);
+	}
+
+	// 제주도 여행지 찜 취소 시 다시 0
+	@Override
+	public void updateSteamedCheckCancel(String contentsid, String id) throws Exception {
+		touristDAO.updateSteamedCheckCancel(contentsid, id);
+	}
+
+	// 제주도 여행지 찜 수 취소
+	@Override
+	public void updateSteamedCancel(String contentsid) throws Exception {
+		touristDAO.updateSteamedCancel(contentsid);
+	}
+
+	// 제주도 여행지 찜 취소 시 delete
+	@Override
+	public void deleteSteamed(String contentsid, String id) throws Exception {
+		touristDAO.deleteSteamed(contentsid, id);
 	}
 
 }

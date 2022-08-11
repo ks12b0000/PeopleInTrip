@@ -126,6 +126,21 @@
 		]]>
 	</select>	
 	
+	<!-- 제주도 여행지 찜순 페이지 리스트  -->
+	<select id="jejutourist_steamedSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by steamedhit desc		  		 	
+		]]>
+	</select>
+	
 	<!-- 제주도 축제 조회순 페이지 리스트  -->
 	<select id="jejufestival_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
 		<![CDATA[
@@ -153,6 +168,21 @@
         	) mb
    		 	where rNum between #{firstRow} and #{lastRow}	
    		 	ORDER by commentcount desc
+		]]>
+	</select>
+	
+	<!-- 제주도 축제 찜순 페이지 리스트  -->
+	<select id="jejufestival_steamedSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '%축제%'
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}	
+   		 	ORDER by steamedhit desc
 		]]>
 	</select>	
 	
@@ -183,6 +213,21 @@
         	) mb
    		 	where rNum between #{firstRow} and #{lastRow}	
    		 	ORDER by commentcount desc
+		]]>
+	</select>
+	
+	<!-- 제주도 전시관 찜순 페이지 리스트  -->
+	<select id="jejuexhibition_steamedSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}	
+   		 	ORDER by steamedhit desc
 		]]>
 	</select>
 
@@ -259,6 +304,68 @@
 			select *
 			from P_JEJU_COMMENT
 			where com_num = #{com_num}
+		]]>
+	</select>
+	
+	<!-- 제주도 여행지 찜 수 -->
+	<update id="updateSteamed" parameterType="String">
+		<![CDATA[
+			update P_TOURIST 
+			set steamedhit = steamedhit + 1
+			where contentsid = #{contentsid}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 찜 수 취소 -->
+	<update id="updateSteamedCancel" parameterType="String">
+		<![CDATA[
+			update P_TOURIST 
+			set steamedhit = steamedhit - 1
+			where contentsid = #{contentsid}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 찜 시 steamed 테이블에 insert -->
+	<insert id="insertSteamed" parameterType="java.util.Map">
+		<![CDATA[
+			insert into tourist_steamed(steamedno , contentsid , id) 
+			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM tourist_steamed) ,#{contentsid} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 제주도 여행지 찜 취소 시 delete -->
+	<delete id="deleteSteamed">
+		<![CDATA[
+			delete 
+			from tourist_steamed 
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 제주도 여행지 찜 시 Check를 1로 만들어서 중복방지-->
+	<update id="updateSteamedCheck">
+		<![CDATA[
+			update tourist_steamed 
+			set STEAMEDCHECK = 1
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 찜 취소 시 다시 0  -->
+	<update id="updateSteamedCheckCancel">
+		<![CDATA[
+			update tourist_steamed 
+			set STEAMEDCHECK = 0
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 찜 중복방지 select문 -->
+	<select id="SteamedCheck" resultType="String" >
+		<![CDATA[
+			select count(*) 
+			from tourist_steamed 
+			where contentsid = #{contentsid} and id = #{id} 
 		]]>
 	</select>
  </mapper>

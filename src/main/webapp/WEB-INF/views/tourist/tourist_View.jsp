@@ -49,8 +49,17 @@
     </div>
     
     <div class="title_heart">
-        <span>조회수 : [${plist.viewcount}]&nbsp;&nbsp;</span>
-        <a> <img alt="찜" src="https://cdn-icons-png.flaticon.com/512/6704/6704230.png" width="20" height="auto"> </a>
+        <span><strong>조회수 : [${plist.viewcount}]</strong>&nbsp;&nbsp;</span>
+        <c:choose>
+        	<c:when test="${user.id != null }">
+        		<input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+        		<span><strong>찜하기 <button onclick="updateSteamed()" style="background-color: white; color: red; border: 2px solid #9966ff; width: 30px; cursor: pointer;">🧡</button> : [${plist.steamedhit}]</strong></span>
+        	</c:when>
+        	<c:otherwise>
+        		<span><strong>찜하기 <button onclick="updateSteamed2()" class="updateSteamed2"  style="background-color: white; color: red; border: 2px solid #9966ff; width: 30px;">🧡</button> : [${plist.steamedhit}]</strong></span>        		
+        	</c:otherwise>
+        </c:choose>   
+        
     </div> 
     <div class="img_big">
     	<img src="${plist.imgpath}">
@@ -237,5 +246,35 @@ function deleteReply() {
 				}
 			});
 		});   	
-    </script>
+</script>
+
+<script type="text/javascript">
+function updateSteamed(){ 
+    $.ajax({
+           type : 'post',  
+           url : "/intrip/tourist/updatesteamed",   
+           dataType : "json",
+           data : {"contentsid" : "${plist.contentsid}", "id" : "${user.id}" }, 
+           error : function(){
+	               alert("통신 에러");
+	            },
+	            success : function(steamedCheck) {
+                   if(steamedCheck == 0){
+                   	alert("찜하기 완료.");
+                   	location.href = "${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}";
+                   }
+                   else if (steamedCheck == 1){
+                    alert("찜하기 취소"); 
+                    location.href = "${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}";
+               }
+           }
+       });
+}
+</script>
+<script type="text/javascript">
+	$(".updateSteamed2").on("click", function(){
+		alert("로그인 후 이용가능합니다!")
+	});
+
+</script>
 </html>
