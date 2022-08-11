@@ -1,5 +1,6 @@
 package kr.co.intrip.mypage.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import kr.co.intrip.board.dto.Criteria;
+import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 
 @Repository("mypageDAO")
@@ -48,7 +51,40 @@ public class MyPageDAOImpl implements MyPageDAO {
 		sqlSession.delete("mapper.mypage.deleteMember", mypageDTO);
 		
 	}
-	
+
+	// 내가 쓴 글 리스트
+	@Override
+	public List<MyBoardDTO> selectMyBoard(String id) throws DataAccessException {
+		List<MyBoardDTO> boardsList = sqlSession.selectList("mapper.mypage.select_My_Board", id);
+		return boardsList;
+	}
+
+	// 내가 쓴 글 보기1
+	@Override
+	public MyBoardDTO selectMyBoardShow1(int post_num) throws DataAccessException {
+		return sqlSession.selectOne("mapper.mypage.select_My_Board_Show1", post_num);
+	}
+
+	// 내가 쓴 글 보기2
+	@Override
+	public MyBoardDTO selectMyBoardShow2(int post_num) throws DataAccessException {
+		return sqlSession.selectOne("mapper.mypage.select_My_Board_Show2", post_num);
+	}
+
+	// 페이징
+	@Override
+	public List<MyBoardDTO> list(Criteria cri) throws Exception {
+		List<MyBoardDTO> boardsList = sqlSession.selectList("mapper.mypage.my_Board_List", cri);
+		return boardsList;
+	}
+
+	// 게시물 갯수
+	@Override
+	public int listCount() throws Exception {
+		return sqlSession.selectOne("mapper.mypage.my_List_Count");
+	}
+
+
 	
 
 

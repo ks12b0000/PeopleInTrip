@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 
@@ -49,9 +50,18 @@ public interface TouristService {
 
 	// 제주도 전시관 페이지 리스트 Sorting 기능
 	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
-
+	
+	// 제주도 댓글 수 증가
+	public int jejucommentcount(ApiDTO apiDTO) throws Exception;
+	
+	// 제주도 댓글 수 감소
+	public int jejucommentcountminus(ApiDTO apiDTO) throws Exception;
+	
+	// 제주도 댓글 총 개수
+	public int getCommentTotalRowCount(CommentPagingDTO commentpaging) throws Exception;
+	
 	// 제주도 댓글 조회
-	public List<JejuCommentDTO> jejureadReply(String contentsid) throws Exception;
+	public List<JejuCommentDTO> jejureadReply(CommentPagingDTO commentpaging) throws Exception;
 
 	// 제주도 댓글 작성
 	public void jejuregister(JejuCommentDTO jejuDTO) throws Exception;
@@ -64,4 +74,5 @@ public interface TouristService {
 	
 	// 제주도 선택된 댓글 조회
 	public JejuCommentDTO jejuselectReply(int com_num) throws Exception;
+
 }

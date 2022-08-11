@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 
@@ -66,19 +67,49 @@ public class TouristDAO {
 		return sqlSession.selectList("mapper.tourist.jejutourist_lookupSort", pagingDTO);
 	}
 	
+	// 제주도 여행지 페이지 댓글수별 리스트 Sorting 기능
+	public List<ApiDTO> jejutourist_commentSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejutourist_commentSort", pagingDTO);
+	}
+	
 	// 제주도 축제 페이지 조회수별 리스트 Sorting 기능
 	public List<ApiDTO> jejufestival_lookupSort(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejufestival_lookupSort", pagingDTO);
+	}
+	
+	// 제주도 축제 페이지 댓글수별 리스트 Sorting 기능
+	public List<ApiDTO> jejufestival_commentSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejufestival_commentSort", pagingDTO);
 	}
 		
 	// 제주도 전시관 페이지 조회수별 리스트 Sorting 기능
 	public List<ApiDTO> jejuexhibition_lookupSort(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejuexhibition_lookupSort", pagingDTO);
 	}
+	
+	// 제주도 전시관 페이지 댓글수별 리스트 Sorting 기능
+	public List<ApiDTO> jejuexhibition_commentSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejuexhibition_commentSort", pagingDTO);
+	}
+	
+	// 제주도 댓글 수 증가
+	public int commentcount(ApiDTO apiDTO) throws Exception {
+		return sqlSession.update("mapper.tourist.commentcount", apiDTO);
+	}
+	
+	// 제주도 댓글 수 감소
+	public int commentcountminus(ApiDTO apiDTO) throws Exception {
+		return sqlSession.update("mapper.tourist.commentcountminus", apiDTO);
+	}
+	
+	// 제주도 댓글 총 개수
+	public int CommentgetTotalRowCount(CommentPagingDTO commentpagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.CommentgetTotalRowCount", commentpagingDTO);
+	}
 
 	// 제주도 댓글 조회
-	public List<JejuCommentDTO> jejureadReply(String contentsid) throws Exception {
-		return sqlSession.selectList("mapper.tourist.jejuCommentselect", contentsid);
+	public List<JejuCommentDTO> jejureadReply(CommentPagingDTO commentpagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejuCommentselect", commentpagingDTO);
 	}
 	
 	// 제주도 댓글 작성
@@ -100,4 +131,6 @@ public class TouristDAO {
 	public JejuCommentDTO jejuselectReply(int com_num) throws Exception { 
 		return sqlSession.selectOne("mapper.tourist.jejuselectReply", com_num);
 	}
+	
+
 }

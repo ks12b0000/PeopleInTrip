@@ -14,6 +14,7 @@
 		function delete_Btn() {
 			let id = document.getElementById('delete_id').value;
 			let pass = document.getElementById('delete_pw').value;
+			let _pass = document.getElementById('hedden_pw').value;
 			if(id == "") {
 				alert("아이디를 입력해주세요");
 				document.deleteMember.pwd.focus();
@@ -22,9 +23,7 @@
 				alert("비밀번호를 입력해주세요");
 				document.deleteMember.pwd.focus();
 				return false;
-			} else {
-				alert("그동안 이용해 주셔서 감사합니다!");
-			}
+			} 
 			
 		}
 	</script>
@@ -37,11 +36,13 @@
 				<input type="text" placeholder="아이디" id="delete_id" name="id" onfocus="this.placeholder='';" onblur="this.placeholder='아이디'" /><br>
 				<input type="password" placeholder="비밀번호" id="delete_pw" name="pwd" onfocus="this.placeholder='';" onblur="this.placeholder='비밀번호'" /><br>
 				<button type="submit" id="delete_bt" onclick="delete_Btn()"><strong>회원탈퇴</strong></button>
-<%-- 				 <c:if test="${message == 'error'}">
-				 <div style="color:red;"> 아이디 또는 비밀번호가 일치하지 않습니다.</div>
-				</c:if> --%>
 			</div>
 		</form>
+		<div>
+			<c:if test="${msg == false }">
+				비밀번호가 맞지 않습니다.
+			</c:if>
+		</div>
 	</div>
 </body>
 </html>

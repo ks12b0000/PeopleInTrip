@@ -1,13 +1,18 @@
 package kr.co.intrip.mypage.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.mypage.dao.MyPageDAO;
+import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 
 @Service("mypageService")
@@ -46,6 +51,53 @@ public class MyPageServiceImpl implements MyPageService {
 		mypageDAO.deleteMember(myPageDTO);
 		
 	}
+
+	// 내가 쓴 글
+	@Override
+	public List<MyBoardDTO> listArticles(String id) throws Exception {
+		List<MyBoardDTO> boardsList = mypageDAO.selectMyBoard(id);
+		return boardsList;
+	}
+
+	// 내가 쓴 글 보기1
+	@Override
+	public Map<String, Object> showMyBoard1(int post_num) throws Exception {
+		Map<String, Object> boardMap = new HashMap<>();
+		
+		MyBoardDTO myboardDTO = mypageDAO.selectMyBoardShow1(post_num);
+		
+		boardMap.put("board", myboardDTO);
+		
+		return boardMap;
+	}
+	
+	// 내가 쓴 글 보기2
+	@Override
+	public Map<String, Object> showMyBoard2(int post_num) throws Exception {
+		Map<String, Object> boardMap = new HashMap<>();
+		
+		MyBoardDTO myboardDTO = mypageDAO.selectMyBoardShow2(post_num);
+		
+		boardMap.put("board", myboardDTO);
+		
+		return boardMap;
+	}
+
+	// 페이징
+	@Override
+	public List<MyBoardDTO> list(Criteria cri) throws Exception {
+		List<MyBoardDTO> boardsList = mypageDAO.list(cri);
+		return boardsList;
+	}
+
+	// 게시물 갯수
+	@Override
+	public int listCount() throws Exception {
+		return mypageDAO.listCount();
+	}
+
+
+
 
 
 

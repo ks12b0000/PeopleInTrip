@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.login_signup.service.MemberService;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.service.TouristService;
@@ -65,9 +66,10 @@ public class TouristController {
 	public List<ApiDTO> jejutourist_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = tourservice.getTotalRowCount(pagingDTO);
 		pagingDTO.setTotalRowCount(totalRowCount);
-		pagingDTO.pageSetting();
+		pagingDTO.pageSetting();		
 		List<ApiDTO> plist = tourservice.jejutourist_list(pagingDTO);
 		model.addAttribute("plist", plist);
+
 		return plist;
 	}
 	
@@ -95,13 +97,17 @@ public class TouristController {
 	
 	// 제주도 여행지 상세페이지 
 	@GetMapping("tourist/tourist_View")
-	public String jejutourist_detail(ApiDTO apiDTO, Model model) throws Exception {
+	public String jejutourist_detail(ApiDTO apiDTO, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {
 		String schAirportCode = "alltag";
 		tourservice.jejutourist_viewcount(apiDTO);		
 		ApiDTO plist = tourservice.jejutourist_detail(apiDTO);		
 		model.addAttribute("plist", plist);
 		
-		List<JejuCommentDTO> replyList = tourservice.jejureadReply(apiDTO.getContentsid());
+		
+		int totalRowCount = tourservice.getCommentTotalRowCount(commentpagingDTO);
+		commentpagingDTO.setTotalRowCount(totalRowCount);
+		commentpagingDTO.pageSetting();
+		List<JejuCommentDTO> replyList = tourservice.jejureadReply(commentpagingDTO);
 		model.addAttribute("replyList", replyList);
 		return "tourist/tourist_View";
 	}
@@ -141,11 +147,10 @@ public class TouristController {
 	
 	// 제주도 댓글 작성
 	@PostMapping("tourist/jejureplyWrite")
-	public String jejureplyWrite(JejuCommentDTO jejuDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
+	public String jejureplyWrite(JejuCommentDTO jejuDTO,ApiDTO apiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply write");
-		
 		tourservice.jejuregister(jejuDTO);
-		
+		tourservice.jejucommentcount(apiDTO);
 		rttr.addAttribute("contentsid", jejuDTO.getContentsid());
 		
 		return "redirect:/tourist/tourist_View";
@@ -178,13 +183,11 @@ public class TouristController {
 	
 	// 제주도 댓글 삭제 폼
 	@PostMapping("tourist/jejureplyDelete")
-	public String jejureplyDelete(JejuCommentDTO jejuDTO, PagingDTO pagingDTO,Model model, RedirectAttributes rttr) throws Exception {
+	public String jejureplyDelete(JejuCommentDTO jejuDTO,ApiDTO apiDTO, PagingDTO pagingDTO,Model model, RedirectAttributes rttr) throws Exception {
 		log.info("reply delete");
-	
-		
-		model.addAttribute("replyDelete", tourservice.jejuselectReply(jejuDTO.getCom_num()));
-		model.addAttribute("pagingDTO", pagingDTO);
+
 		tourservice.jejuremove(jejuDTO);
+		tourservice.jejucommentcountminus(apiDTO);
 		rttr.addAttribute("contentsid", jejuDTO.getContentsid());
 			
 		return "redirect:/tourist/tourist_View";
