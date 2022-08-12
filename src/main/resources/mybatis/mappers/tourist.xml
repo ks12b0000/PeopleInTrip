@@ -478,4 +478,15 @@
 		]]>
 	</select>
 
+	<!-- 제주도 여행지 메인페이지 배너-->
+	<select id="jejutouristmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_TOURIST pt 
+        	) mb
+   		 	where rNum between 1 AND 4	
+		]]>
+	</select>
  </mapper>

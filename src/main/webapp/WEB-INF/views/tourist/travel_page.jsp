@@ -71,12 +71,12 @@
 	<!-- 헤더 -->
 	<header>
 		<div class="title">
-			<h2 style="display: inline;"><strong><a href="${contextPath}/tourist/travel_page_kms">제주도</a></strong></h2>&nbsp;
+			<h2 style="display: inline;"><strong><a href="${contextPath}/tourist/travel_page">제주도</a></strong></h2>&nbsp;
 			<h3 style="display: inline;">jeju</h3>
 		</div>
 		<nav class="tourismenu">
 			<ul>
-				<li><a href="${contextPath}/tourist/travel_page_kms"><strong>홈</strong></a></li>
+				<li><a href="${contextPath}/tourist/travel_page"><strong>홈</strong></a></li>
 				<li><a href="${contextPath}/tourist/tourist_PageList"><strong>여행지</strong></a></li>
 				<li><a href="${contextPath}/tourist/festival_PageList"><strong>축제</strong></a></li>
 				<li><a href="${contextPath}/tourist/exhibition_PageList"><strong>전시관</strong></a></li>
@@ -86,22 +86,11 @@
 	<br/><br/><br/>
 	
 	<div class="slideshow-container" >
+	<c:forEach var="mainlist" items="${mainlist}">
         <div class="mySlides fade">
-            <img src="${contextPath}/resources/images/tourist/travler1.png" style="width: 100%;">
-        </div>
-
-        <div class="mySlides fade">
-            <img src="${contextPath}/resources/images/tourist/travler2.png" style="width: 100%;">
-        </div>
-
-        <div class="mySlides fade">
-            <img src="${contextPath}/resources/images/tourist/travler3.png" style="width: 100%;">
-        </div>
-
-        <div class="mySlides fade">
-            <img src="${contextPath}/resources/images/tourist/travler4.png"style="width: 100%;">
-        </div>
-
+            <a href="${contextPath}/tourist/tourist_View?contentsid=${mainlist.contentsid}"><img src="${mainlist.imgpath}" style="width: 100%;"></a>
+  		</div>
+	</c:forEach>
         <div style="text-align: center">
             <span class="dot" onclick="currentSlide(0)"></span>
             <span class="dot" onclick="currentSlide(1)"></span>

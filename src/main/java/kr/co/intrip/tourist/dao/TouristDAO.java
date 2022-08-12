@@ -265,4 +265,8 @@ public class TouristDAO {
 		sqlSession.update("mapper.tourist.updateSuggestionCheckCancel", map);
 	}
 
+	// 제주도 여행지 메인페이지 배너
+	public List<ApiDTO> jejutouristmain(ApiDTO apiDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejutouristmain", apiDTO);	 		
+	}
 }

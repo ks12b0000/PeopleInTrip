@@ -39,16 +39,13 @@ public class TouristController {
 	private TouristService tourservice;
 	
 	//관광지 메인화면   
-	@RequestMapping(value = "tourist/travel_page_kms")
-	public ModelAndView travel_page_kms (HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		   
-		String viewName = (String) request.getAttribute("viewName");
-		System.out.println(viewName);
-		   
-		mav.setViewName("tourist/travel_page_kms");
-		   
-		return mav;
+	@GetMapping("tourist/travel_page")
+	public List<ApiDTO> travel_page (Model model, ApiDTO apiDTO) throws Exception {
+		
+		List<ApiDTO> mainlist = tourservice.jejutourist_main(apiDTO);
+		model.addAttribute("mainlist", mainlist);
+
+		return mainlist;
 	}
 	   
 	// 관광지 api db에 저장용

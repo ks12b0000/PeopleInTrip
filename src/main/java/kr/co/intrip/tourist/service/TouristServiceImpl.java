@@ -385,5 +385,10 @@ public class TouristServiceImpl implements TouristService {
 		touristDAO.deleteSuggestion(contentsid, id);
 	}
 
+	@Override
+	public List<ApiDTO> jejutourist_main(ApiDTO apiDTO) throws Exception {
+		return touristDAO.jejutouristmain(apiDTO);
+	}
+
 
 }

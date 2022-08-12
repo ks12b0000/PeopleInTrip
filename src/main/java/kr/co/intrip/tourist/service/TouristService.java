@@ -117,4 +117,6 @@ public interface TouristService {
 	// 제주도 여행지 추천 취소 시 delete
 	public void deleteSuggestion(String contentsid, String id) throws Exception;
 
+	// 제주도 여행지 메인페이지 배너
+	public List<ApiDTO> jejutourist_main(ApiDTO apiDTO) throws Exception;
 }
