@@ -96,4 +96,25 @@ public interface TouristService {
 	// 제주도 여행지 찜 취소 시 delete
 	public void deleteSteamed(String contentsid, String id) throws Exception;
 
+	// 제주도 여행지 추천 중복방지 select문
+	public String SuggestionCheck(String contentsid, String id) throws Exception;
+	
+	// 제주도 여행지 추천 시 steamed 테이블에 insert
+	public void insertSuggestion(String contentsid, String id) throws Exception;		
+
+	// 제주도 여행지 추천 수
+	public void updateSuggestion(String contentsid) throws Exception;	
+
+	// 제주도 여행지 추천 시 Check를 1로 만들어서 중복방지
+	public void updateSuggestionCheck(String contentsid, String id) throws Exception;
+
+	// 제주도 여행지 추천 취소 시 다시 0
+	public void updateSuggestionCheckCancel(String contentsid, String id) throws Exception;
+
+	// 제주도 여행지 추천 수 취소
+	public void updateSuggestionCancel(String contentsid) throws Exception;
+
+	// 제주도 여행지 추천 취소 시 delete
+	public void deleteSuggestion(String contentsid, String id) throws Exception;
+
 }

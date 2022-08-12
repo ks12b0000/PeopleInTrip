@@ -20,5 +20,6 @@ public class ApiDTO {
 	private int viewcount;
 	private int commentcount;
 	private int steamedhit;
-	
+	private int suggestionhit;
+
 }

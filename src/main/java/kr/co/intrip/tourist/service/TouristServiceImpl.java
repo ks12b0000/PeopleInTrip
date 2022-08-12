@@ -38,7 +38,7 @@ public class TouristServiceImpl implements TouristService {
 	public void parkApi(String schAirportCode) throws Exception {
 		ArrayList<ApiDTO> list = new ArrayList<ApiDTO>();
 		// url
-		StringBuilder urlBuilder = new StringBuilder("http://api.visitjeju.net/vsjApi/contents/searchList?apiKey=lvg5ciolx7x4i2je&locale=kr&page=45");
+		StringBuilder urlBuilder = new StringBuilder("http://api.visitjeju.net/vsjApi/contents/searchList?apiKey=lvg5ciolx7x4i2je&locale=kr&page=46");
 		
 		URL url = new URL(urlBuilder.toString());
 		
@@ -187,6 +187,7 @@ public class TouristServiceImpl implements TouristService {
 		String value = request.getParameter("value");
 		model.addAttribute("value", value);
 		log.info("value = {}", value);
+		
 		if (value.equals("basic")) {
 			return touristDAO.jejutourist(pagingDTO);
 		}
@@ -200,7 +201,7 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejutourist_steamedSort(pagingDTO);
 		}
 		else {
-			return touristDAO.jejutourist_lookupSort(pagingDTO);		
+			return touristDAO.jejutourist_SuggestionSort(pagingDTO);		
 		}
 	}
 	
@@ -209,7 +210,8 @@ public class TouristServiceImpl implements TouristService {
 	public List<ApiDTO> jejufestival_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception {
 		String value = request.getParameter("value");
 		model.addAttribute("value", value);
-		System.out.println(value);
+		log.info("value = {}", value);
+		
 		if (value.equals("basic")) {
 			return touristDAO.jejufestival(pagingDTO);
 		}
@@ -223,7 +225,7 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejufestival_steamedSort(pagingDTO);
 		}
 		else {
-			return touristDAO.jejufestival_lookupSort(pagingDTO);		
+			return touristDAO.jejufestival_SuggestionSort(pagingDTO);		
 		}
 	}
 		
@@ -232,7 +234,8 @@ public class TouristServiceImpl implements TouristService {
 	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception {
 		String value = request.getParameter("value");
 		model.addAttribute("value", value);
-		System.out.println(value);
+		log.info("value = {}", value);
+		
 		if (value.equals("basic")) {
 			return touristDAO.jejuexhibition(pagingDTO);
 		}
@@ -339,5 +342,48 @@ public class TouristServiceImpl implements TouristService {
 	public void deleteSteamed(String contentsid, String id) throws Exception {
 		touristDAO.deleteSteamed(contentsid, id);
 	}
+
+	// 제주도 여행지 추천 중복방지 select문
+	@Override
+	public String SuggestionCheck(String contentsid, String id) throws Exception {
+		return touristDAO.SuggestionCheck(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 시 steamed 테이블에 insert
+	@Override
+	public void insertSuggestion(String contentsid, String id) throws Exception {
+		touristDAO.insertSuggestion(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 수
+	@Override
+	public void updateSuggestion(String contentsid) throws Exception {
+		touristDAO.updateSuggestion(contentsid);
+	}
+
+	// 제주도 여행지 추천 시 Check를 1로 만들어서 중복방지
+	@Override
+	public void updateSuggestionCheck(String contentsid, String id) throws Exception {
+		touristDAO.updateSuggestionCheck(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 취소 시 다시 0
+	@Override
+	public void updateSuggestionCheckCancel(String contentsid, String id) throws Exception {
+		touristDAO.updateSuggestionCheckCancel(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 수 취소
+	@Override
+	public void updateSuggestionCancel(String contentsid) throws Exception {
+		touristDAO.updateSuggestionCancel(contentsid);
+	}
+
+	// 제주도 여행지 추천 취소 시 delete
+	@Override
+	public void deleteSuggestion(String contentsid, String id) throws Exception {
+		touristDAO.deleteSuggestion(contentsid, id);
+	}
+
 
 }

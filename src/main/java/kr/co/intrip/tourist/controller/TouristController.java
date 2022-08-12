@@ -214,6 +214,26 @@ public class TouristController {
 		}
 		return steamedCheck;
 	}
+	
+	// 제주도 여행지 추천기능
+	@PostMapping("tourist/updateSuggestion")
+	@ResponseBody
+	public String updateSuggestion(String contentsid,  String id)throws Exception{			
+		String suggestionCheck = tourservice.SuggestionCheck(contentsid, id);
+
+		if(suggestionCheck.equals("0")) {
+			//추천 처음누름
+			tourservice.insertSuggestion(contentsid, id); 
+			tourservice.updateSuggestion(contentsid);	
+			tourservice.updateSuggestionCheck(contentsid, id);
+		}
+		else if(suggestionCheck.equals("1")) {
+			tourservice.updateSuggestionCheckCancel(contentsid, id); 
+			tourservice.updateSuggestionCancel(contentsid); 
+			tourservice.deleteSuggestion(contentsid, id); 
+		}
+		return suggestionCheck;
+	}
 
 	
 }
