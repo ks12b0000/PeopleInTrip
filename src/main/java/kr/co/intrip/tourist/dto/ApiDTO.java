@@ -18,5 +18,8 @@ public class ApiDTO {
 	private double latitude;
 	private double longitude;
 	private int viewcount;
-	
+	private int commentcount;
+	private int steamedhit;
+	private int suggestionhit;
+
 }

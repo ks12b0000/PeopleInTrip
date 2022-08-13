@@ -22,7 +22,7 @@
 </head>
 <body>
 	<div class="login_form">
-		<h1>People in Trip</h1>
+		<h1><a href="${contextPath}/mainpage/main" style="text-decoration: none;">People in Trip</a></h1>
 		<form action="${contextPath}/login_signup/login" name="loginFrm" method="post">
 			<div>
 				<input type="text" placeholder="아이디" id="login_id" name="id" onfocus="this.placeholder='';" onblur="this.placeholder='아이디'" /><br>

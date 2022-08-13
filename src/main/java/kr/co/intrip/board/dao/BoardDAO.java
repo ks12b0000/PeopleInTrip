@@ -6,9 +6,11 @@ import java.util.Map;
 import org.springframework.dao.DataAccessException;
 
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.CommentPagingDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.board.dto.boardCommentDTO;
 
 public interface BoardDAO {
 
@@ -33,9 +35,9 @@ public interface BoardDAO {
 	public void deleteBoard(int post_num);
 
 	public void visitcount(int post_num);
-		
+
 	public List<BoardDTO> listfind(SearchCriteria scri) throws Exception;
-	
+
 	public int findlistCount(SearchCriteria scri) throws Exception;
 
 	public List<BoardDTO> listfind1(SearchCriteria scri) throws Exception;
@@ -43,7 +45,7 @@ public interface BoardDAO {
 	public int findlistCount1(SearchCriteria scri) throws Exception;
 
 	public BoardDTO selectBoard(int post_num) throws DataAccessException;
-	
+
 	public BoardDTO selectBoard1(int post_num) throws DataAccessException;
 
 	public void updateBoard1(Map<String, Object> boardMap) throws DataAccessException;
@@ -108,5 +110,35 @@ public interface BoardDAO {
 
 	public void updatesinCheck1(int post_num, String id) throws Exception;
 
-	
+	public int boardCommentgetTotalRowCount(CommentPagingDTO commentpagingDTO) throws Exception;
+
+	public List<boardCommentDTO> boardreadReply(CommentPagingDTO commentpagingDTO) throws Exception;
+
+	public int boardcommentcount(BoardDTO boardDTO) throws Exception;
+
+	public int boardcommentcountminus(BoardDTO boardDTO) throws Exception;
+
+	public void boardcreate(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public boardCommentDTO boardselectReply(int com_num) throws Exception;
+
+	public void boarddeleteReply(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boardupdate(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public int boardCommentgetTotalRowCount2(CommentPagingDTO commentpagingDTO) throws Exception;
+
+	public List<boardCommentDTO> boardreadReply2(CommentPagingDTO commentpagingDTO) throws Exception;
+
+	public int boardcommentcount2(BoardDTO boardDTO) throws Exception;
+
+	public int boardcommentcountminus2(BoardDTO boardDTO) throws Exception;
+
+	public void boardcreate2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boardupdate2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public void boarddeleteReply2(boardCommentDTO boardCommentDTO) throws Exception;
+
+	public boardCommentDTO boardselectReply2(int com_num) throws Exception;
 }

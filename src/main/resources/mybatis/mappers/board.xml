@@ -30,7 +30,7 @@
 		WHERE
 		POST_NUM = #{post_num}
 	</update>
-	
+
 	<!-- 조회수 -->
 	<update id="visitcount1">
 		UPDATE
@@ -44,11 +44,14 @@
 	<!-- 페이징 검색 -->
  	<select id="listfind" resultType="boardDTO"
 		parameterType="kr.co.intrip.board.dto.Criteria">
-		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT,likehit
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
+		VISITCOUNT,likehit
 		from (
-		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,likehit,
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID,
+		POST_DATE,likehit,
 		VISITCOUNT,
-		row_number() over(order by POST_NUM desc) as rNum
+		row_number() over(order by POST_NUM desc)
+		as rNum
 		from
 		P_BOARD
 		<include refid="search"></include>
@@ -60,11 +63,14 @@
 	<!-- 페이징 검색1 -->
 	<select id="listfind1" resultType="boardDTO"
 		parameterType="kr.co.intrip.board.dto.Criteria">
-		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
-		from (
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
+		VISITCOUNT,likehit
+		from (
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID,
+		POST_DATE,likehit,
 		VISITCOUNT,
-		row_number() over(order by POST_NUM desc) as rNum
+		row_number() over(order by POST_NUM desc)
+		as rNum
 		from
 		P_BOARD1
 		<include refid="search"></include>
@@ -108,7 +114,7 @@
          WHERE POST_NUM = #{post_num}   
       ]]>
 	</select>
-	
+
 	<!-- 상세보기 -->
 	<select id="selectBoard1" parameterType="java.lang.Integer"
 		resultType="boardDTO">
@@ -141,7 +147,7 @@
          SELECT nvl(MAX(post_num),0) + 1 FROM P_BOARD
       ]]>
 	</select>
-	
+
 	<!-- 추가하는 새글에 대한 글번호 가져옴 -->
 	<select id="selectNewpost_num1" resultType="int">   
       <![CDATA[    
@@ -193,7 +199,7 @@
 				WHERE POST_NUM = #{post_num}		
 		]]>
 	</update>
-	
+
 	<!-- 게시글 수정 -->
 	<update id="updateBoard1" parameterType="java.util.Map">
 		<![CDATA[
@@ -239,7 +245,7 @@
 			WHERE POST_NUM	= #{post_num}
 		]]>
 	</delete>
-	
+
 	<!-- 글삭제1 -->
 	<delete id="deleteBoard1" parameterType="int">
 		<![CDATA[
@@ -247,7 +253,7 @@
 			WHERE POST_NUM	= #{post_num}
 		]]>
 	</delete>
-	
+
 	<!-- 이미지 삭제 -->
 	<delete id="deleteModImage" parameterType="imageDTO">
 		DELETE FROM
@@ -256,174 +262,343 @@
 		AND IMAGEFILENO =
 		#{imageFileNO}
 	</delete>
-	
+
 	<!-- 게시글 추천수 -->
 	<update id="updateLike" parameterType="int">
-	update p_board set 
-	LIKEHIT = LIKEHIT+1
-	where POST_NUM = #{POST_NUM}
+		update p_board set
+		LIKEHIT = LIKEHIT+1
+		where POST_NUM = #{POST_NUM}
 	</update>
-	
+
 	<!-- 게시글 추천수취소 -->
 	<update id="updateLikeCancel" parameterType="int">
-	update p_board set 
-	LIKEHIT = LIKEHIT - 1
-	where POST_NUM = #{POST_NUM}
+		update p_board set
+		LIKEHIT = LIKEHIT - 1
+		where POST_NUM = #{POST_NUM}
 	</update>
-	
+
 	<!-- 게시글 추천 시 Like 테이블에 insert -->
 	<insert id="insertLike" parameterType="java.util.Map">
-	insert into l_board(LIKENO , POST_NUM , id) 
-	values((SELECT NVL(MAX(likeno), 0) + 1 FROM l_board) ,#{post_num} ,#{id})
+		insert into l_board(LIKENO , POST_NUM , id)
+		values((SELECT NVL(MAX(likeno), 0) + 1 FROM l_board) ,#{post_num} ,#{id})
 	</insert>
-	
+
 	<!-- 게시글 추천취소 시 delete -->
 	<delete id="deleteLike">
-	delete from l_board where post_num = #{post_num} and id = #{id}
+		delete from l_board where post_num = #{post_num} and id = #{id}
 	</delete>
-	
-	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지-->
+
+	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지 -->
 	<update id="updateLikeCheck">
-	update l_board set LIKECHECK = 1
-	where post_num = #{post_num} and id = #{id}
+		update l_board set LIKECHECK = 1
+		where post_num = #{post_num} and id = #{id}
 	</update>
-	
-	<!-- 게시글 추천취소 시 다시 0  -->
+
+	<!-- 게시글 추천취소 시 다시 0 -->
 	<update id="updateLikeCheckCancel">
-	update l_board set LIKECHECK = 0
-	where post_num = #{post_num} and id = #{id}
+		update l_board set LIKECHECK = 0
+		where post_num = #{post_num} and id = #{id}
 	</update>
-	
+
 	<!-- 게시글 추천 중복방지 select문 -->
-	<select id="likeCheck" resultType="int" >
-	select count(*) from l_board where post_num = #{post_num} and id = #{id} 
+	<select id="likeCheck" resultType="int">
+		select count(*) from l_board where post_num = #{post_num} and id = #{id}
 	</select>
-	
+
 	<!-- 추천1 -->
 	<!-- 게시글 추천수 -->
 	<update id="updateLike1" parameterType="int">
-	update p_board1 set 
-	LIKEHIT = LIKEHIT+1
-	where POST_NUM = #{POST_NUM}
+		update p_board1 set
+		LIKEHIT = LIKEHIT+1
+		where POST_NUM = #{POST_NUM}
 	</update>
-	
+
 	<!-- 게시글 추천수취소 -->
 	<update id="updateLikeCancel1" parameterType="int">
-	update p_board1 set 
-	LIKEHIT = LIKEHIT - 1
-	where POST_NUM = #{POST_NUM}
+		update p_board1 set
+		LIKEHIT = LIKEHIT - 1
+		where POST_NUM = #{POST_NUM}
 	</update>
-	
+
 	<!-- 게시글 추천 시 Like 테이블에 insert -->
 	<insert id="insertLike1" parameterType="java.util.Map">
-	insert into l_board1(LIKENO1 , POST_NUM , id) 
-	values((SELECT NVL(MAX(likeno1), 0) + 1 FROM l_board1) ,#{post_num} ,#{id})
+		insert into l_board1(LIKENO1 , POST_NUM , id)
+		values((SELECT NVL(MAX(likeno1), 0) + 1 FROM l_board1) ,#{post_num} ,#{id})
 	</insert>
-	
+
 	<!-- 게시글 추천취소 시 delete -->
 	<delete id="deleteLike1">
-	delete from l_board1 where post_num = #{post_num} and id = #{id}
+		delete from l_board1 where post_num = #{post_num} and id = #{id}
 	</delete>
-	
-	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지-->
+
+	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지 -->
 	<update id="updateLikeCheck1">
-	update l_board1 set LIKECHECK = 1
-	where post_num = #{post_num} and id = #{id}
+		update l_board1 set LIKECHECK = 1
+		where post_num = #{post_num} and id = #{id}
 	</update>
-	
-	<!-- 게시글 추천취소 시 다시 0  -->
+
+	<!-- 게시글 추천취소 시 다시 0 -->
 	<update id="updateLikeCheckCancel1">
-	update l_board1 set LIKECHECK = 0
-	where post_num = #{post_num} and id = #{id}
+		update l_board1 set LIKECHECK = 0
+		where post_num = #{post_num} and id = #{id}
 	</update>
-	
+
 	<!-- 게시글 추천 중복방지 select문 -->
-	<select id="likeCheck1" resultType="int" >
-	select count(*) from l_board1 where post_num = #{post_num} and id = #{id} 
+	<select id="likeCheck1" resultType="int">
+		select count(*) from l_board1 where post_num = #{post_num} and id = #{id}
 	</select>
-	
+
 	<!-- 신고 -->
 	<!-- 신고수 -->
 	<update id="updatesin" parameterType="int">
-	update p_board set 
-	SINHIT = SINHIT+1
-	where POST_NUM = #{POST_NUM}
+		update p_board set
+		SINHIT = SINHIT+1
+		where POST_NUM = #{POST_NUM}
 	</update>
-	
+
 	<!-- 신고취소 -->
 	<update id="updatesinCancel" parameterType="int">
-	update p_board set 
-	SINHIT = SINHIT - 1
-	where POST_NUM = #{POST_NUM}
+		update p_board set
+		SINHIT = SINHIT - 1
+		where POST_NUM = #{POST_NUM}
 	</update>
-	
+
 	<!-- 신고시 신고 테이블에 insert -->
 	<insert id="insertsin" parameterType="java.util.Map">
-	insert into s_board(SNO , POST_NUM , id) 
-	values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board) ,#{post_num} ,#{id})
+		insert into s_board(SNO , POST_NUM , id)
+		values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board) ,#{post_num} ,#{id})
 	</insert>
-	
+
 	<!-- 신고 취소 시 delete -->
 	<delete id="deletesin">
-	delete from s_board where post_num = #{post_num} and id = #{id}
+		delete from s_board where post_num = #{post_num} and id = #{id}
 	</delete>
-	
-	<!-- 신고시 Check를 1로 만들어서 중복방지-->
+
+	<!-- 신고시 Check를 1로 만들어서 중복방지 -->
 	<update id="updatesinCheck">
-	update s_board set SCHECK = 1
-	where post_num = #{post_num} and id = #{id}
+		update s_board set SCHECK = 1
+		where post_num = #{post_num} and id = #{id}
 	</update>
-	
-	<!-- 신고시 다시 0  -->
+
+	<!-- 신고시 다시 0 -->
 	<update id="updatesinCheckCancel">
-	update s_board set SCHECK = 0
-	where post_num = #{post_num} and id = #{id}
+		update s_board set SCHECK = 0
+		where post_num = #{post_num} and id = #{id}
 	</update>
-	
+
 	<!-- 신고 중복방지 select문 -->
-	<select id="sinCheck" resultType="int" >
-	select count(*) from s_board where post_num = #{post_num} and id = #{id} 
+	<select id="sinCheck" resultType="int">
+		select count(*) from s_board where post_num = #{post_num} and id = #{id}
 	</select>
-	
+
 	<!-- 신고1 -->
 	<update id="updatesin1" parameterType="int">
-	update p_board1 set 
-	SINHIT = SINHIT+1
-	where POST_NUM = #{POST_NUM}
+		update p_board1 set
+		SINHIT = SINHIT+1
+		where POST_NUM = #{POST_NUM}
 	</update>
-	
+
 	<!-- 신고취소 -->
 	<update id="updatesinCancel1" parameterType="int">
-	update p_board1 set 
-	SINHIT = SINHIT - 1
-	where POST_NUM = #{POST_NUM}
+		update p_board1 set
+		SINHIT = SINHIT - 1
+		where POST_NUM = #{POST_NUM}
 	</update>
-	
+
 	<!-- 신고시 신고 테이블에 insert -->
 	<insert id="insertsin1" parameterType="java.util.Map">
-	insert into s_board1(SNO , POST_NUM , id) 
-	values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board1) ,#{post_num} ,#{id})
+		insert into s_board1(SNO , POST_NUM , id)
+		values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board1) ,#{post_num} ,#{id})
 	</insert>
-	
+
 	<!-- 신고 취소 시 delete -->
 	<delete id="deletesin1">
-	delete from s_board1 where post_num = #{post_num} and id = #{id}
+		delete from s_board1 where post_num = #{post_num} and id = #{id}
 	</delete>
-	
-	<!-- 신고시 Check를 1로 만들어서 중복방지-->
+
+	<!-- 신고시 Check를 1로 만들어서 중복방지 -->
 	<update id="updatesinCheck1">
-	update s_board1 set SCHECK = 1
-	where post_num = #{post_num} and id = #{id}
+		update s_board1 set SCHECK = 1
+		where post_num = #{post_num} and id = #{id}
 	</update>
-	
-	<!-- 신고시 다시 0  -->
+
+	<!-- 신고시 다시 0 -->
 	<update id="updatesinCheckCancel1">
-	update s_board1 set SCHECK = 0
-	where post_num = #{post_num} and id = #{id}
+		update s_board1 set SCHECK = 0
+		where post_num = #{post_num} and id = #{id}
 	</update>
-	
+
 	<!-- 신고 중복방지 select문 -->
-	<select id="sinCheck1" resultType="int" >
-	select count(*) from s_board1 where post_num = #{post_num} and id = #{id} 
+	<select id="sinCheck1" resultType="int">
+		select count(*) from s_board1 where post_num = #{post_num} and id = #{id}
+	</select>
+
+	<!-- 댓글 총 개수 -->
+	<select id="boardCommentgetTotalRowCount"
+		parameterType="kr.co.intrip.board.dto.CommentPagingDTO"
+		resultType="int">
+      <![CDATA[
+         SELECT count(*)
+         FROM P_BOARD_COMMENT
+         WHERE post_num = #{post_num}
+      ]]>
+	</select>
+
+	<!-- 댓글 조회 -->
+	<select id="boardCommentselect"
+		resultType="kr.co.intrip.board.dto.boardCommentDTO"
+		parameterType="kr.co.intrip.board.dto.CommentPagingDTO">
+         <![CDATA[
+            select *
+             from (
+           select pt.*, row_number() over(order by com_date desc) as rNum
+           from P_BOARD_COMMENT pt
+           where post_num = #{post_num}
+           ) mb
+             where rNum between #{firstRow} and #{lastRow}
+         ]]>
+	</select>
+
+	<!-- 댓글 작성 -->
+	<insert id="boardWriteReply">
+		<selectKey keyProperty="com_num" order="BEFORE"
+			resultType="int">
+			select com_num.nextval from dual
+		</selectKey>
+		insert into P_BOARD_COMMENT(COM_NUM, ID, post_num, COM_CONTENT)
+		values( #{com_num}, #{id}, #{post_num}, #{com_content})
+	</insert>
+
+	<!-- 댓글 수 증가 -->
+	<update id="boardcommentcount">
+      <![CDATA[
+         UPDATE P_BOARD
+         SET commentcount = commentcount + 1 
+         WHERE post_num = #{post_num}
+      ]]>
+	</update>
+
+	<!-- 댓글 수 감소 -->
+	<update id="boardcommentcountminus">
+      <![CDATA[
+         UPDATE P_BOARD
+         SET commentcount = commentcount - 1 
+         WHERE post_num = #{post_num}
+      ]]>
+	</update>
+
+	<!-- 댓글 수정 -->
+	<update id="boardupdateReply"
+		parameterType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+            update P_BOARD_COMMENT 
+            set COM_CONTENT = #{com_content}
+            where com_num = #{com_num}
+         ]]>
+	</update>
+
+	<!--댓글 삭제 -->
+	<delete id="boarddeleteReply"
+		parameterType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+            delete
+            from P_BOARD_COMMENT 
+            where com_num = #{com_num}
+      ]]>
+	</delete>
+
+	<!-- 선택된 댓글 조회 -->
+	<select id="boardselectReply"
+		resultType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+         select *
+         from P_BOARD_COMMENT
+         where com_num = #{com_num}
+      ]]>
+	</select>
+
+	<!-- 댓글2 -->
+	<!-- 댓글 총 개수 -->
+	<select id="boardCommentgetTotalRowCount2"
+		parameterType="kr.co.intrip.board.dto.CommentPagingDTO"
+		resultType="int">
+      <![CDATA[
+         SELECT count(*)
+         FROM P_BOARD_COMMENT2
+         WHERE post_num = #{post_num}
+      ]]>
+	</select>
+
+	<!-- 댓글 조회 -->
+	<select id="boardCommentselect2"
+		resultType="kr.co.intrip.board.dto.boardCommentDTO"
+		parameterType="kr.co.intrip.board.dto.CommentPagingDTO">
+         <![CDATA[
+            select *
+             from (
+           select pt.*, row_number() over(order by com_date desc) as rNum
+           from P_BOARD_COMMENT2 pt
+           where post_num = #{post_num}
+           ) mb
+             where rNum between #{firstRow} and #{lastRow}
+         ]]>
+	</select>
+
+	<!-- 댓글 작성 -->
+	<insert id="boardWriteReply2">
+		<selectKey keyProperty="com_num" order="BEFORE"
+			resultType="int">
+			select com_num2.nextval from dual
+		</selectKey>
+		insert into P_BOARD_COMMENT2(COM_NUM, ID, post_num, COM_CONTENT)
+		values( #{com_num}, #{id}, #{post_num}, #{com_content})
+	</insert>
+
+	<!-- 댓글 수 증가 -->
+	<update id="boardcommentcount2">
+      <![CDATA[
+         UPDATE P_BOARD1
+         SET commentcount = commentcount + 1 
+         WHERE post_num = #{post_num}
+      ]]>
+	</update>
+
+	<!-- 댓글 수 감소 -->
+	<update id="boardcommentcountminus2">
+      <![CDATA[
+         UPDATE P_BOARD1
+         SET commentcount = commentcount - 1 
+         WHERE post_num = #{post_num}
+      ]]>
+	</update>
+
+	<!-- 댓글 수정 -->
+	<update id="boardupdateReply2"
+		parameterType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+            update P_BOARD_COMMENT2 
+            set COM_CONTENT = #{com_content}
+            where com_num = #{com_num}
+         ]]>
+	</update>
+
+	<!-- 댓글 삭제 -->
+	<delete id="boarddeleteReply2"
+		parameterType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+            delete
+            from P_BOARD_COMMENT2 
+            where com_num = #{com_num}
+      ]]>
+	</delete>
+
+	<!-- 선택된 댓글 조회 -->
+	<select id="boardselectReply2"
+		resultType="kr.co.intrip.board.dto.boardCommentDTO">
+      <![CDATA[
+         select *
+         from P_BOARD_COMMENT2
+         where com_num = #{com_num}
+      ]]>
 	</select>
 </mapper>

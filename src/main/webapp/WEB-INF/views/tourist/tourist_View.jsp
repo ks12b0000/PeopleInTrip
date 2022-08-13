@@ -10,7 +10,6 @@
 <head>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0a9924a1f6188f938003ae8f12bf5ea6"></script>
 	<link rel="stylesheet" href="${contextPath}/resources/css/tourist/tourist_View.css?ver=123"/>
-	<script type="text/javascript" src="${contextPath}/resources/js/tourist/tourist_View.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<meta charset="UTF-8">
 	<title>${plist.title} 상세페이지</title>
@@ -29,12 +28,12 @@
 	<!-- 헤더 -->
 	<header>
 		<div class="title">
-			<h2 style="display: inline;"><strong><a href="${contextPath}/tourist/travel_page_kms">제주도</a></strong></h2>&nbsp;
+			<h2 style="display: inline;"><strong><a href="${contextPath}/tourist/travel_page">제주도</a></strong></h2>&nbsp;
 			<h3 style="display: inline;">jeju</h3>
 		</div>
 		<nav class="tourismenu">
 			<ul>
-				<li><a href="${contextPath}/tourist/travel_page_kms"><strong>홈</strong></a></li>
+				<li><a href="${contextPath}/tourist/travel_page"><strong>홈</strong></a></li>
 				<li><a href="${contextPath}/tourist/tourist_PageList"><strong>여행지</strong></a></li>
 				<li><a href="${contextPath}/tourist/festival_PageList"><strong>축제</strong></a></li>
 				<li><a href="${contextPath}/tourist/exhibition_PageList"><strong>전시관</strong></a></li>
@@ -49,8 +48,27 @@
     </div>
     
     <div class="title_heart">
-        <span>조회수 : [${plist.viewcount}]&nbsp;&nbsp;</span>
-        <a> <img alt="찜" src="https://cdn-icons-png.flaticon.com/512/6704/6704230.png" width="20" height="auto"> </a>
+        <span><strong>조회수 : [${plist.viewcount}]&nbsp;<span style="color:#9966ff;">|</span></strong>&nbsp;&nbsp;</span>
+        <c:choose>
+        	<c:when test="${user.id != null }">
+        		<input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+        		<span><strong>찜하기 <button onclick="updateSteamed()" style="background-color: #9966ff;  border: 2px solid #9966ff; border-radius: 7px; width: 30px; cursor: pointer;">🧡</button> : [${plist.steamedhit}]&nbsp;<span style="color:#9966ff;">|</span></strong></span>&nbsp;&nbsp;
+        	</c:when>
+        	<c:otherwise>
+        		<span><strong>찜하기 <button onclick="updateSteamed2()" class="updateSteamed2"  style="background-color: #9966ff;  border: 2px solid #9966ff; border-radius: 7px; width: 30px; cursor: pointer;">🧡</button> : [${plist.steamedhit}]&nbsp;<span style="color:#9966ff;">|</span></strong></span>&nbsp;&nbsp;        		
+        	</c:otherwise>
+        </c:choose>
+        
+        <c:choose>
+        	<c:when test="${user.id != null }">
+        		<input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+        		<span><strong> 추천하기 <button onclick="updateSuggestion()" style="background-color: #9966ff;  border: 2px solid #9966ff; width: 30px; cursor: pointer; border-radius: 7px; ">👍️</button> : [${plist.suggestionhit}]&nbsp;</strong></span>&nbsp;&nbsp;
+        	</c:when>
+        	<c:otherwise>
+        		<span><strong> 추천하기 <button onclick="updateSuggestion2()" class="updateSuggestion2"  style="background-color: #9966ff; border: 2px solid #9966ff; width: 30px; cursor: pointer; border-radius: 7px; ">👍️</button> : [${plist.suggestionhit}]&nbsp;</strong></span>&nbsp;&nbsp;        		
+        	</c:otherwise>
+        </c:choose>   
+        
     </div> 
     <div class="img_big">
     	<img src="${plist.imgpath}">
@@ -87,7 +105,7 @@
     <!-- 댓글창 -->
     <div id="outter">	 
 		<div id="form-commentInfo">		 
-	      	<div id="comment-count" style="margin-left:17px;"><strong>작성된 댓글<span id="count"></span></strong></div>
+	      	<div id="comment-count" style="margin-left:17px;"><strong>작성된 댓글<span id="count"> [${plist.commentcount}]개</span></strong></div>
 	        <div id="css1">
 	        <hr align="left" style="border: solid 3px #D8D8D8;  width: 100%;"></div>		
 	    </div><br><br>
@@ -100,17 +118,18 @@
 	   		
 		   		<c:if test="${replyList.id eq user.id}">
 			   		<button type="button" class="SBTN2" data-com_num="${replyList.com_num}"><strong>수정</strong></button>
-			   		<input type="hidden" name="contentid" value="${replyDelete.contentid}"/>
-			   		<input type="hidden" id="reply_number" name="com_num" value="${replyDelete.com_num}" />
+			   	<form action="${contextPath}/tourist/jejureplyDelete" method="post" name="deleteForm" id="deleteForm">
+			  	 	<input type="hidden" name="contentsid" value="${plist.contentsid }"/>
+			  	 	<input type="hidden" name="com_num" value="${replyList.com_num }"/>
 					<button type="button" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>	
-				</c:if>
-					<button type="button" class="SBTN4"><strong>신고</strong></button>
-			
+				</form>	
+				</c:if>	        		
+		        	<button onclick="updateDeclaration()" class="SBTN4">신고</button>
 		</c:forEach>
     	</div>        		
     	<form action="${contextPath}/tourist/jejureplyWrite" method="post">
 			<input type="hidden" name="contentsid" value="${plist.contentsid }"/>
-			<input type="hidden" name="id" value="${user.id }"/>
+			<input type="hidden" name="id" value="${user.id}"/>
 			<c:choose>
 				<c:when test="${!empty user.id}">
 					<textarea rows="content" name="com_content" id="comment_input" placeholder="댓글을 입력해주세요." onfocus="this.placeholder=''" onblur="this.placeholder='댓글을 입력해주세요.'"  style="outline: none; text-align: left; padding-left:10px;"></textarea>			
@@ -124,6 +143,22 @@
 		        </c:otherwise>
 	        </c:choose>
 		</form>	
+		<div name="tour_div3" id="tour_div3" style="text-align: center;">
+				<c:if test="${commentpagingDTO.curPage > 1 }">
+					<a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+					<a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+				</c:if>
+					<c:forEach begin="${commentpagingDTO.firstPage }"  end="${commentpagingDTO.lastPage }" var="i"> &nbsp;
+	   					<a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${i }" style="font-size: 18px; color:black;"  >  
+	   						<c:if test="${i eq commentpagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
+	   						<c:if test="${i ne commentpagingDTO.curPage }">  ${i } </c:if> 
+	   					</a>
+					</c:forEach>&nbsp;
+				<c:if test="${commentpagingDTO.curPage < commentpagingDTO.totalPageCount }">
+					<a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+					<a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}&curPage=${commentpagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+				</c:if>
+		</div>
 		<br><hr align="left" style="border: solid 3px #D8D8D8; width: 100%;"><br><br> 
   </div>
 </body>
@@ -179,6 +214,7 @@ function createReply() {
 	});
 }
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(function () {
 	updateReply();
@@ -206,7 +242,6 @@ function deleteReply() {
 	
 }
 </script>
-
 <script type="text/javascript">
     	$(document).ready(function() {
 			$('#comment_input').on('keyup', function() {
@@ -217,6 +252,58 @@ function deleteReply() {
 					$('#textarea-cnt').html("(200 / 200)");
 				}
 			});
-		});   	
-    </script>
+		}); 
+</script>
+<script type="text/javascript">
+function updateSteamed(){ 
+    $.ajax({
+           type : 'post',  
+           url : "/intrip/tourist/updatesteamed",   
+           dataType : "json",
+           data : {"contentsid" : "${plist.contentsid}", "id" : "${user.id}" }, 
+           error : function(){
+	               alert("통신 에러");
+	            },
+	            success : function(steamedCheck) {
+                   if(steamedCheck == 0){
+                   	alert("찜하기 완료.");
+                   	location.href = "${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}";
+                   }
+                   else if (steamedCheck == 1){
+                    alert("찜하기 취소"); 
+                    location.href = "${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}";
+               }
+           }
+       });
+}
+	$(".updateSteamed2").on("click", function(){
+		alert("로그인 후 이용가능합니다!")
+	});
+</script>	
+<script type="text/javascript">
+	function updateSuggestion(){ 
+	    $.ajax({
+	           type : 'post',  
+	           url : "/intrip/tourist/updateSuggestion",   
+	           dataType : "json",
+	           data : {"contentsid" : "${plist.contentsid}", "id" : "${user.id}" }, 
+	           error : function(){
+		               alert("통신 에러");
+		            },
+		            success : function(suggestionCheck) {
+	                   if(suggestionCheck == 0){
+	                   	alert("추천하기 완료.");
+	                   	location.href = "${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}";
+	                   }
+	                   else if (suggestionCheck == 1){
+	                    alert("추천하기 취소"); 
+	                    location.href = "${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}";
+	               }
+	           }
+	       });
+	}
+		$(".updateSuggestion2").on("click", function(){
+			alert("로그인 후 이용가능합니다!")
+		});
+</script>	
 </html>

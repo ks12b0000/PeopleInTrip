@@ -21,12 +21,12 @@
 	
 	<header>
 		<div class="title">
-			<h2 style="display: inline;"><strong><a href="${contextPath}/tourist/travel_page_kms">제주도</a></strong></h2>&nbsp;
+			<h2 style="display: inline;"><strong><a href="${contextPath}/tourist/travel_page">제주도</a></strong></h2>&nbsp;
 			<h3 style="display: inline;">jeju</h3>
 		</div>
 		<nav class="tourismenu">
 			<ul>
-				<li><a href="${contextPath}/tourist/travel_page_kms"><strong>홈</strong></a></li>
+				<li><a href="${contextPath}/tourist/travel_page"><strong>홈</strong></a></li>
 				<li><a href="${contextPath}/tourist/tourist_PageList"><strong>여행지</strong></a></li>
 				<li><a href="${contextPath}/tourist/festival_PageList"><strong>축제</strong></a></li>
 				<li><a href="${contextPath}/tourist/exhibition_PageList"><strong>전시관</strong></a></li>
@@ -53,7 +53,7 @@
 					<tr>
 						<td class="tb_td1"><a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}"><img src="${plist.imgpath }"/></a></td>
 						<td class="tb_td2">
-							<span class="tourpost_title"><a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}">${plist.title}</a></span> <br> <strong>🧡 0,000개 💬 0,000개 👍️ 0,000개 👀 ${plist.viewcount}회</strong> <br/>
+							<span class="tourpost_title"><a href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}">${plist.title}</a></span> <br> <strong>🧡 ${plist.steamedhit}개 💬 ${plist.commentcount}개 👍️ ${plist.suggestionhit}개 👀 ${plist.viewcount}회</strong> <br/>
 							<span class="tourpost_place">${plist.address }</span>
 						</td>
 					</tr>					

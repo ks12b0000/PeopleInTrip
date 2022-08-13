@@ -20,7 +20,7 @@
 	border-left: none;
 }
 
-h1 {
+h1 > a {
 	color: #9966ff;
 	font-family: Pacifico;
 	font-size: 45px;

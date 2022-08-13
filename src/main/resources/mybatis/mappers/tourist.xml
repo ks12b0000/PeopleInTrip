@@ -109,7 +109,52 @@
    		 	where rNum between #{firstRow} and #{lastRow}
    		 	ORDER by viewcount desc		  		 	
 		]]>
+	</select>
+	
+	<!-- 제주도 여행지 댓글순 페이지 리스트  -->
+	<select id="jejutourist_commentSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by commentcount desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+        	ORDER by commentcount desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by commentcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 제주도 여행지 추천순 페이지 리스트  -->
+	<select id="jejutourist_SuggestionSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+        	ORDER by suggestionhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by suggestionhit desc		  		 	
+		]]>
 	</select>	
+	
+	<!-- 제주도 여행지 찜순 페이지 리스트  -->
+	<select id="jejutourist_steamedSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by steamedhit desc		  		 	
+		]]>
+	</select>
 	
 	<!-- 제주도 축제 조회순 페이지 리스트  -->
 	<select id="jejufestival_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
@@ -123,6 +168,51 @@
         	) mb
    		 	where rNum between #{firstRow} and #{lastRow}	
    		 	ORDER by viewcount desc
+		]]>
+	</select>
+	
+	<!-- 제주도 축제 추천순 페이지 리스트  -->
+	<select id="jejufestival_SuggestionSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '%축제%'
+        	ORDER by suggestionhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}	
+   		 	ORDER by suggestionhit desc
+		]]>
+	</select>
+	
+	<!-- 제주도 축제 댓글순 페이지 리스트  -->
+	<select id="jejufestival_commentSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by commentcount desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '%축제%'
+        	ORDER by commentcount desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}	
+   		 	ORDER by commentcount desc
+		]]>
+	</select>
+	
+	<!-- 제주도 축제 찜순 페이지 리스트  -->
+	<select id="jejufestival_steamedSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '%축제%'
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}	
+   		 	ORDER by steamedhit desc
 		]]>
 	</select>	
 	
@@ -140,25 +230,102 @@
    		 	ORDER by viewcount desc
 		]]>
 	</select>
+	
+	<!-- 제주도 전시관 추천순 페이지 리스트  -->
+	<select id="jejuexhibition_SuggestionSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
+        	ORDER by suggestionhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}	
+   		 	ORDER by suggestionhit desc
+		]]>
+	</select>
+	
+	<!-- 제주도 전시관 댓글순 페이지 리스트  -->
+	<select id="jejuexhibition_commentSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by commentcount desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
+        	ORDER by commentcount desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}	
+   		 	ORDER by commentcount desc
+		]]>
+	</select>
+	
+	<!-- 제주도 전시관 찜순 페이지 리스트  -->
+	<select id="jejuexhibition_steamedSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}	
+   		 	ORDER by steamedhit desc
+		]]>
+	</select>
+
+	<!-- 제주도 댓글 총 개수 -->
+	<select id="CommentgetTotalRowCount" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM P_JEJU_COMMENT
+			WHERE contentsid = #{contentsid}
+		]]>
+	</select>
 
 	<!-- 제주도 댓글 조회 -->
-   	<select id="jejuCommentselect" resultType="kr.co.intrip.tourist.dto.JejuCommentDTO">
+   	<select id="jejuCommentselect" resultType="kr.co.intrip.tourist.dto.JejuCommentDTO" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO">
    		<![CDATA[
 	   		select *
-	   		from P_JEJU_COMMENT
-	   		where CONTENTSID = #{contentsid}
-	   		order by com_date desc
+   			 from (
+        	select pt.*, row_number() over(order by com_date desc) as rNum
+        	from P_JEJU_COMMENT pt 
+        	where contentsid = #{contentsid}
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
    		]]>
    	</select>
    	
    	<!-- 제주도 댓글 작성 -->
 	<insert id="jejuWriteReply">
 			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
-				select com_num.nextval from dual
+				select com_num1.nextval from dual
 			</selectKey>
-		   	insert into P_JEJU_COMMENT(COM_NUM, ID, contentsid, COM_CONTENT)
-		  	values( #{com_num}, #{id}, #{contentsid}, #{com_content})
+			<![CDATA[
+			   	insert into P_JEJU_COMMENT(COM_NUM, ID, contentsid, COM_CONTENT)
+			  	values( #{com_num}, #{id}, #{contentsid}, #{com_content})
+		  	]]>
 	</insert>
+	
+	<!-- 제주도 댓글 수 증가  -->
+	<update id="commentcount">
+		<![CDATA[
+			UPDATE P_TOURIST
+			SET commentcount = commentcount + 1 
+			WHERE contentsid = #{contentsid}
+		]]>
+	</update>
+	
+	<!-- 제주도 댓글 수 감소 -->
+	<update id="commentcountminus">
+		<![CDATA[
+			UPDATE P_TOURIST
+			SET commentcount = commentcount - 1 
+			WHERE contentsid = #{contentsid}
+		]]>
+	</update>
 	
 	<!-- 제주도 댓글 수정 -->
 	<update id="jejuupdateReply" parameterType="kr.co.intrip.tourist.dto.JejuCommentDTO">
@@ -184,6 +351,142 @@
 			select *
 			from P_JEJU_COMMENT
 			where com_num = #{com_num}
+		]]>
+	</select>
+	
+	<!-- 제주도 여행지 찜 수 -->
+	<update id="updateSteamed" parameterType="String">
+		<![CDATA[
+			update P_TOURIST 
+			set steamedhit = steamedhit + 1
+			where contentsid = #{contentsid}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 찜 수 취소 -->
+	<update id="updateSteamedCancel" parameterType="String">
+		<![CDATA[
+			update P_TOURIST 
+			set steamedhit = steamedhit - 1
+			where contentsid = #{contentsid}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 찜 시 steamed 테이블에 insert -->
+	<insert id="insertSteamed" parameterType="java.util.Map">
+		<![CDATA[
+			insert into tourist_steamed(steamedno , contentsid , id) 
+			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM tourist_steamed) ,#{contentsid} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 제주도 여행지 찜 취소 시 delete -->
+	<delete id="deleteSteamed">
+		<![CDATA[
+			delete 
+			from tourist_steamed 
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 제주도 여행지 찜 시 Check를 1로 만들어서 중복방지-->
+	<update id="updateSteamedCheck">
+		<![CDATA[
+			update tourist_steamed 
+			set STEAMEDCHECK = 1
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 찜 취소 시 다시 0  -->
+	<update id="updateSteamedCheckCancel">
+		<![CDATA[
+			update tourist_steamed 
+			set STEAMEDCHECK = 0
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 찜 중복방지 select문 -->
+	<select id="SteamedCheck" resultType="String" >
+		<![CDATA[
+			select count(*) 
+			from tourist_steamed 
+			where contentsid = #{contentsid} and id = #{id} 
+		]]>
+	</select>
+
+	<!-- 제주도 여행지 추천 수 -->
+	<update id="updateSuggestion" parameterType="String">
+		<![CDATA[
+			update P_TOURIST 
+			set suggestionhit = suggestionhit + 1
+			where contentsid = #{contentsid}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 추천 수 취소 -->
+	<update id="updateSuggestionCancel" parameterType="String">
+		<![CDATA[
+			update P_TOURIST 
+			set suggestionhit = suggestionhit - 1
+			where contentsid = #{contentsid}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 추천 시 steamed 테이블에 insert -->
+	<insert id="insertSuggestion" parameterType="java.util.Map">
+		<![CDATA[
+			insert into tourist_suggestion(suggestionno , contentsid , id) 
+			values((SELECT NVL(MAX(suggestionno), 0) + 1 FROM tourist_suggestion) ,#{contentsid} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 제주도 여행지 추천 취소 시 delete -->
+	<delete id="deleteSuggestion">
+		<![CDATA[
+			delete 
+			from tourist_suggestion 
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 제주도 여행지 추천 시 Check를 1로 만들어서 중복방지-->
+	<update id="updateSuggestionCheck">
+		<![CDATA[
+			update tourist_suggestion 
+			set suggestioncheck = 1
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 추천 취소 시 다시 0  -->
+	<update id="updateSuggestionCheckCancel">
+		<![CDATA[
+			update tourist_suggestion 
+			set suggestioncheck = 0
+			where contentsid = #{contentsid} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 제주도 여행지 추천 중복방지 select문 -->
+	<select id="SuggestionCheck" resultType="String" >
+		<![CDATA[
+			select count(*) 
+			from tourist_suggestion 
+			where contentsid = #{contentsid} and id = #{id} 
+		]]>
+	</select>
+
+	<!-- 제주도 여행지 메인페이지 배너-->
+	<select id="jejutouristmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_TOURIST pt 
+        	) mb
+   		 	where rNum between 1 AND 4	
 		]]>
 	</select>
  </mapper>

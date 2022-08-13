@@ -10,9 +10,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.CommentPagingDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.board.dto.boardCommentDTO;
 
 @Repository("boardDAO")
 public class BoardDAOImpl implements BoardDAO {
@@ -427,5 +429,102 @@ public class BoardDAOImpl implements BoardDAO {
 		map.put("id", id);
 		map.put("post_num", post_num);
 		sqlSession.update("mapper.board.updatesinCheckCancel1", map);
+	}
+
+	// 댓글 총 개수
+	@Override
+	public int boardCommentgetTotalRowCount(CommentPagingDTO commentpagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.board.boardCommentgetTotalRowCount", commentpagingDTO);
+	}
+
+	// 댓글 조회
+	@Override
+	public List<boardCommentDTO> boardreadReply(CommentPagingDTO commentpagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.board.boardCommentselect", commentpagingDTO);
+	}
+
+	// 댓글 수 증가
+	@Override
+	public int boardcommentcount(BoardDTO boardDTO) throws Exception {
+		return sqlSession.update("mapper.board.boardcommentcount", boardDTO);
+	}
+
+	// 댓글 수 감소
+	@Override
+	public int boardcommentcountminus(BoardDTO boardDTO) throws Exception {
+		return sqlSession.update("mapper.board.boardcommentcountminus", boardDTO);
+	}
+
+	// 댓글 작성
+	@Override
+	public void boardcreate(boardCommentDTO boardCommentDTO) throws Exception {
+		sqlSession.insert("mapper.board.boardWriteReply", boardCommentDTO);
+	}
+
+	// 댓글 수정
+	@Override
+	public void boardupdate(boardCommentDTO boardCommentDTO) throws Exception {
+		sqlSession.update("mapper.board.boardupdateReply", boardCommentDTO);
+	}
+
+	// 댓글 삭제
+	@Override
+	public void boarddeleteReply(boardCommentDTO boardCommentDTO) throws Exception {
+		sqlSession.delete("mapper.board.boarddeleteReply", boardCommentDTO);
+	}
+
+	// 선택된 댓글 조회
+	@Override
+	public boardCommentDTO boardselectReply(int com_num) throws Exception {
+		return sqlSession.selectOne("mapper.board.boardselectReply", com_num);
+	}
+
+	// 댓글2
+	// 댓글 총 개수
+	@Override
+	public int boardCommentgetTotalRowCount2(CommentPagingDTO commentpagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.board.boardCommentgetTotalRowCount2", commentpagingDTO);
+	}
+
+	// 댓글 조회
+	@Override
+	public List<boardCommentDTO> boardreadReply2(CommentPagingDTO commentpagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.board.boardCommentselect2", commentpagingDTO);
+	}
+
+	// 댓글 수 증가
+	@Override
+	public int boardcommentcount2(BoardDTO boardDTO) throws Exception {
+		return sqlSession.update("mapper.board.boardcommentcount2", boardDTO);
+	}
+
+	// 댓글 수 감소
+	@Override
+	public int boardcommentcountminus2(BoardDTO boardDTO) throws Exception {
+		return sqlSession.update("mapper.board.boardcommentcountminus2", boardDTO);
+	}
+
+	// 댓글 작성
+	@Override
+	public void boardcreate2(boardCommentDTO boardCommentDTO) throws Exception {
+		sqlSession.insert("mapper.board.boardWriteReply2", boardCommentDTO);
+	}
+
+	// 댓글 수정
+	@Override
+	public void boardupdate2(boardCommentDTO boardCommentDTO) throws Exception {
+		sqlSession.update("mapper.board.boardupdateReply2", boardCommentDTO);
+	}
+
+	// 댓글 삭제
+	@Override
+	public void boarddeleteReply2(boardCommentDTO boardCommentDTO) throws Exception {
+		sqlSession.delete("mapper.board.boarddeleteReply2", boardCommentDTO);
+	}
+
+	// 선택된 댓글 조회
+	@Override
+	public boardCommentDTO boardselectReply2(int com_num) throws Exception {
+		return sqlSession.selectOne("mapper.board.boardselectReply2", com_num);
 	}
 }

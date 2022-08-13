@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.login_signup.service.MemberService;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.service.TouristService;
@@ -37,16 +39,13 @@ public class TouristController {
 	private TouristService tourservice;
 	
 	//관광지 메인화면   
-	@RequestMapping(value = "tourist/travel_page_kms")
-	public ModelAndView travel_page_kms (HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		   
-		String viewName = (String) request.getAttribute("viewName");
-		System.out.println(viewName);
-		   
-		mav.setViewName("tourist/travel_page_kms");
-		   
-		return mav;
+	@GetMapping("tourist/travel_page")
+	public List<ApiDTO> travel_page (Model model, ApiDTO apiDTO) throws Exception {
+		
+		List<ApiDTO> mainlist = tourservice.jejutourist_main(apiDTO);
+		model.addAttribute("mainlist", mainlist);
+
+		return mainlist;
 	}
 	   
 	// 관광지 api db에 저장용
@@ -65,9 +64,10 @@ public class TouristController {
 	public List<ApiDTO> jejutourist_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = tourservice.getTotalRowCount(pagingDTO);
 		pagingDTO.setTotalRowCount(totalRowCount);
-		pagingDTO.pageSetting();
+		pagingDTO.pageSetting();		
 		List<ApiDTO> plist = tourservice.jejutourist_list(pagingDTO);
 		model.addAttribute("plist", plist);
+
 		return plist;
 	}
 	
@@ -95,13 +95,17 @@ public class TouristController {
 	
 	// 제주도 여행지 상세페이지 
 	@GetMapping("tourist/tourist_View")
-	public String jejutourist_detail(ApiDTO apiDTO, Model model) throws Exception {
+	public String jejutourist_detail(ApiDTO apiDTO, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {
 		String schAirportCode = "alltag";
 		tourservice.jejutourist_viewcount(apiDTO);		
 		ApiDTO plist = tourservice.jejutourist_detail(apiDTO);		
 		model.addAttribute("plist", plist);
 		
-		List<JejuCommentDTO> replyList = tourservice.jejureadReply(apiDTO.getContentsid());
+		
+		int totalRowCount = tourservice.getCommentTotalRowCount(commentpagingDTO);
+		commentpagingDTO.setTotalRowCount(totalRowCount);
+		commentpagingDTO.pageSetting();
+		List<JejuCommentDTO> replyList = tourservice.jejureadReply(commentpagingDTO);
 		model.addAttribute("replyList", replyList);
 		return "tourist/tourist_View";
 	}
@@ -141,11 +145,10 @@ public class TouristController {
 	
 	// 제주도 댓글 작성
 	@PostMapping("tourist/jejureplyWrite")
-	public String jejureplyWrite(JejuCommentDTO jejuDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
+	public String jejureplyWrite(JejuCommentDTO jejuDTO,ApiDTO apiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply write");
-		
 		tourservice.jejuregister(jejuDTO);
-		
+		tourservice.jejucommentcount(apiDTO);
 		rttr.addAttribute("contentsid", jejuDTO.getContentsid());
 		
 		return "redirect:/tourist/tourist_View";
@@ -178,16 +181,55 @@ public class TouristController {
 	
 	// 제주도 댓글 삭제 폼
 	@PostMapping("tourist/jejureplyDelete")
-	public String jejureplyDelete(JejuCommentDTO jejuDTO, PagingDTO pagingDTO,Model model, RedirectAttributes rttr) throws Exception {
+	public String jejureplyDelete(JejuCommentDTO jejuDTO,ApiDTO apiDTO, PagingDTO pagingDTO,Model model, RedirectAttributes rttr) throws Exception {
 		log.info("reply delete");
-	
-		
-		model.addAttribute("replyDelete", tourservice.jejuselectReply(jejuDTO.getCom_num()));
-		model.addAttribute("pagingDTO", pagingDTO);
+
 		tourservice.jejuremove(jejuDTO);
+		tourservice.jejucommentcountminus(apiDTO);
 		rttr.addAttribute("contentsid", jejuDTO.getContentsid());
 			
 		return "redirect:/tourist/tourist_View";
+	}
+	
+	// 제주도 여행지 찜하기
+	@PostMapping("tourist/updatesteamed")
+	@ResponseBody
+	public String updateSteamed(String contentsid,  String id)throws Exception{
+		
+		String steamedCheck = tourservice.steamedCheck(contentsid, id);
+
+		if(steamedCheck.equals("0")) {
+			//좋아요 처음누름
+			tourservice.insertSteamed(contentsid, id); //like테이블 삽입
+			tourservice.updateSteamed(contentsid);	//게시판테이블 +1
+			tourservice.updateSteamedCheck(contentsid, id);//like테이블 구분자 1
+		}
+		else if(steamedCheck.equals("1")) {
+			tourservice.updateSteamedCheckCancel(contentsid, id); //like테이블 구분자0
+			tourservice.updateSteamedCancel(contentsid); //게시판테이블 - 1
+			tourservice.deleteSteamed(contentsid, id); //like테이블 삭제
+		}
+		return steamedCheck;
+	}
+	
+	// 제주도 여행지 추천기능
+	@PostMapping("tourist/updateSuggestion")
+	@ResponseBody
+	public String updateSuggestion(String contentsid,  String id)throws Exception{			
+		String suggestionCheck = tourservice.SuggestionCheck(contentsid, id);
+
+		if(suggestionCheck.equals("0")) {
+			//추천 처음누름
+			tourservice.insertSuggestion(contentsid, id); 
+			tourservice.updateSuggestion(contentsid);	
+			tourservice.updateSuggestionCheck(contentsid, id);
+		}
+		else if(suggestionCheck.equals("1")) {
+			tourservice.updateSuggestionCheckCancel(contentsid, id); 
+			tourservice.updateSuggestionCancel(contentsid); 
+			tourservice.deleteSuggestion(contentsid, id); 
+		}
+		return suggestionCheck;
 	}
 
 	

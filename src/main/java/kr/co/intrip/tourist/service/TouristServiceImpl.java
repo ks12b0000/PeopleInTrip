@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import kr.co.intrip.tourist.controller.TouristController;
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class TouristServiceImpl implements TouristService {
 	public void parkApi(String schAirportCode) throws Exception {
 		ArrayList<ApiDTO> list = new ArrayList<ApiDTO>();
 		// url
-		StringBuilder urlBuilder = new StringBuilder("http://api.visitjeju.net/vsjApi/contents/searchList?apiKey=lvg5ciolx7x4i2je&locale=kr&page=45");
+		StringBuilder urlBuilder = new StringBuilder("http://api.visitjeju.net/vsjApi/contents/searchList?apiKey=lvg5ciolx7x4i2je&locale=kr&page=46");
 		
 		URL url = new URL(urlBuilder.toString());
 		
@@ -186,6 +187,7 @@ public class TouristServiceImpl implements TouristService {
 		String value = request.getParameter("value");
 		model.addAttribute("value", value);
 		log.info("value = {}", value);
+		
 		if (value.equals("basic")) {
 			return touristDAO.jejutourist(pagingDTO);
 		}
@@ -193,13 +195,13 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejutourist_lookupSort(pagingDTO);
 		}
 		else if (value.equals("comment")) {
-			return touristDAO.jejutourist_lookupSort(pagingDTO);
+			return touristDAO.jejutourist_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
-			return touristDAO.jejutourist_lookupSort(pagingDTO);
+			return touristDAO.jejutourist_steamedSort(pagingDTO);
 		}
 		else {
-			return touristDAO.jejutourist_lookupSort(pagingDTO);		
+			return touristDAO.jejutourist_SuggestionSort(pagingDTO);		
 		}
 	}
 	
@@ -208,7 +210,8 @@ public class TouristServiceImpl implements TouristService {
 	public List<ApiDTO> jejufestival_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception {
 		String value = request.getParameter("value");
 		model.addAttribute("value", value);
-		System.out.println(value);
+		log.info("value = {}", value);
+		
 		if (value.equals("basic")) {
 			return touristDAO.jejufestival(pagingDTO);
 		}
@@ -216,13 +219,13 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejufestival_lookupSort(pagingDTO);
 		}
 		else if (value.equals("comment")) {
-			return touristDAO.jejufestival_lookupSort(pagingDTO);
+			return touristDAO.jejufestival_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
-			return touristDAO.jejufestival_lookupSort(pagingDTO);
+			return touristDAO.jejufestival_steamedSort(pagingDTO);
 		}
 		else {
-			return touristDAO.jejufestival_lookupSort(pagingDTO);		
+			return touristDAO.jejufestival_SuggestionSort(pagingDTO);		
 		}
 	}
 		
@@ -231,7 +234,8 @@ public class TouristServiceImpl implements TouristService {
 	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception {
 		String value = request.getParameter("value");
 		model.addAttribute("value", value);
-		System.out.println(value);
+		log.info("value = {}", value);
+		
 		if (value.equals("basic")) {
 			return touristDAO.jejuexhibition(pagingDTO);
 		}
@@ -239,20 +243,38 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
 		}
 		else if (value.equals("comment")) {
-			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
+			return touristDAO.jejuexhibition_commentSort(pagingDTO);
 		}	
 		else if (value.equals("steamed")) {
-			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
+			return touristDAO.jejuexhibition_steamedSort(pagingDTO);
 		}
 		else {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);		
 		}
 	}
+	
+	// 제주도 댓글 수 증가
+	@Override
+	public int jejucommentcount(ApiDTO apiDTO) throws Exception {
+		return touristDAO.commentcount(apiDTO);
+	}
+	
+	// 제주도 댓글 수 감소
+	@Override
+	public int jejucommentcountminus(ApiDTO apiDTO) throws Exception {
+		return touristDAO.commentcountminus(apiDTO);
+	}
+	
+	// 제주도 댓글 총 개수
+	@Override
+	public int getCommentTotalRowCount(CommentPagingDTO commentpagingDTO) throws Exception {
+		return touristDAO.CommentgetTotalRowCount(commentpagingDTO);
+	}
 
 	// 제주도 댓글 조회
 	@Override
-	public List<JejuCommentDTO> jejureadReply (String contentsid) throws Exception {
-		return touristDAO.jejureadReply(contentsid);
+	public List<JejuCommentDTO> jejureadReply (CommentPagingDTO commentpagingDTO) throws Exception {
+		return touristDAO.jejureadReply(commentpagingDTO);
 	}
 	
 	// 제주도 댓글 작성
@@ -278,5 +300,95 @@ public class TouristServiceImpl implements TouristService {
 	public JejuCommentDTO jejuselectReply(int com_num) throws Exception {  
 		return touristDAO.jejuselectReply(com_num);
 	}
+	
+	// 제주도 여행지 찜 중복방지 select문
+	@Override
+	public String steamedCheck(String contentsid, String id) throws Exception {
+		return touristDAO.SteamedCheck(contentsid, id);
+	}
+
+	// 제주도 여행지 찜 시 steamed 테이블에 insert
+	@Override
+	public void insertSteamed(String contentsid, String id) throws Exception {
+		touristDAO.insertSteamed(contentsid, id);
+	}
+
+	// 제주도 여행지 찜 수
+	@Override
+	public void updateSteamed(String contentsid) throws Exception {
+		touristDAO.updateSteamed(contentsid);
+	}
+
+	// 제주도 여행지 찜 시 Check를 1로 만들어서 중복방지
+	@Override
+	public void updateSteamedCheck(String contentsid, String id) throws Exception {
+		touristDAO.updateSteamedCheck(contentsid, id);
+	}
+
+	// 제주도 여행지 찜 취소 시 다시 0
+	@Override
+	public void updateSteamedCheckCancel(String contentsid, String id) throws Exception {
+		touristDAO.updateSteamedCheckCancel(contentsid, id);
+	}
+
+	// 제주도 여행지 찜 수 취소
+	@Override
+	public void updateSteamedCancel(String contentsid) throws Exception {
+		touristDAO.updateSteamedCancel(contentsid);
+	}
+
+	// 제주도 여행지 찜 취소 시 delete
+	@Override
+	public void deleteSteamed(String contentsid, String id) throws Exception {
+		touristDAO.deleteSteamed(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 중복방지 select문
+	@Override
+	public String SuggestionCheck(String contentsid, String id) throws Exception {
+		return touristDAO.SuggestionCheck(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 시 steamed 테이블에 insert
+	@Override
+	public void insertSuggestion(String contentsid, String id) throws Exception {
+		touristDAO.insertSuggestion(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 수
+	@Override
+	public void updateSuggestion(String contentsid) throws Exception {
+		touristDAO.updateSuggestion(contentsid);
+	}
+
+	// 제주도 여행지 추천 시 Check를 1로 만들어서 중복방지
+	@Override
+	public void updateSuggestionCheck(String contentsid, String id) throws Exception {
+		touristDAO.updateSuggestionCheck(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 취소 시 다시 0
+	@Override
+	public void updateSuggestionCheckCancel(String contentsid, String id) throws Exception {
+		touristDAO.updateSuggestionCheckCancel(contentsid, id);
+	}
+
+	// 제주도 여행지 추천 수 취소
+	@Override
+	public void updateSuggestionCancel(String contentsid) throws Exception {
+		touristDAO.updateSuggestionCancel(contentsid);
+	}
+
+	// 제주도 여행지 추천 취소 시 delete
+	@Override
+	public void deleteSuggestion(String contentsid, String id) throws Exception {
+		touristDAO.deleteSuggestion(contentsid, id);
+	}
+
+	@Override
+	public List<ApiDTO> jejutourist_main(ApiDTO apiDTO) throws Exception {
+		return touristDAO.jejutouristmain(apiDTO);
+	}
+
 
 }
