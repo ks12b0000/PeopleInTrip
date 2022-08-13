@@ -1,0 +1,242 @@
+
+:root {
+   
+    --white-color:#fff;
+    --black-color:#140a00;
+    --purple-color: #9966ff;
+
+   
+    --font-large: 18px;
+    --font-medium: 14px;
+    --font-small: 12px;
+    --font-micro: 10px;
+}
+.page {
+	
+}
+body {
+    font-family: Roboto;
+    width: 1060px;
+    max-width: 1060px;
+    margin: 0px auto;
+}
+#header-jeh {
+    border-bottom: 1px solid var(--purple-color);
+}
+table td{
+	padding-left: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	width: 180px;
+}
+.left-menu {
+    width: 250px;
+    float: left;
+}
+
+.left-menu-ul {
+    background-color: var(--white-color);
+    border-right: 1px solid var(--black-color);
+    position: fixed;
+    height: 100%;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    list-style: none;
+}
+
+.left-menu-ul .menu-list a {
+    display: block;
+    font-size: var(--font-large);
+    font-weight: bold;
+    color: var(--black-color);
+    text-decoration: none;
+    padding: 20px;
+    text-align: center;
+}
+
+.left-menu-ul li i {
+    font-size: 26px;
+    padding-right: 10px;
+}
+
+.left-menu-ul li a:hover {
+    background-color: var(--purple-color);
+    color: var(--white-color);
+}
+
+.fa-solid fa-bullhorn {
+    font-size: 50px;
+    color: black;
+}
+
+.write-detail {
+    font-size: var(--font-small);
+    padding-left: 260px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--black-color);
+}
+.write-titlemain{
+	float : left;
+	padding-left: 260px;
+	text-align: left;
+	width: 30%;
+}
+.write-titlesub{
+	float : right;
+	text-align: right;
+	width: 45.44%;
+}
+.write-titlemain:after{
+	border-bottom: 2px solid #DCDCDC;
+	content: "";
+	display: block;
+	margin: 10px 0px 10px 0px;
+}
+.write-titlesub:after{
+	border-bottom: 2px solid #DCDCDC;
+	content: "";
+	display: block;
+	margin: 10px 0px 10px 0px;
+}
+.write-file {
+	text-align: right;
+	padding-right: 15px;
+}
+.write-content{
+	padding-left: 265px;
+}
+.write-content:after{
+	border-bottom: 2px solid #DCDCDC;
+	content: "";
+	display: block;
+	margin: 80px 0px 10px 0px;
+}
+.write-comment1{
+	margin : 0px;
+	padding-left: 260px;
+	padding-bottom: 15px;
+}
+.write-button{
+	text-align: right;
+	padding-right: 15px;
+	padding-left: 265px;
+}
+.write-button:after{
+	border-bottom: 2px solid #DCDCDC;
+	content: "";
+	display: block;
+	margin: 15px 0px 10px 0px;
+}
+.write-recommand{
+	font-size: var(--font-medium);
+	background-color: var(--purple-color);
+	color: var(--white-color);
+	border: 2px solid #9e0add;
+	width: 60px;
+	height: 24px;
+}
+.write-declaration{
+	font-size: var(--font-medium);
+	background-color: #dcdcdc;
+	color: var(--black-color);
+	border: 2px solid #b4b4b4;
+	width: 60px;
+	height: 24px;
+}
+.write-comment22 {
+	padding-left: 270px;
+	padding-right: 40px;
+}
+.write-comment2 {
+	width: 80%;
+	height: 70px;
+	text-align: left;
+}
+.write-comment3 {
+	float: right;
+	width: 100px;
+	height: 75px;
+	background-color: white;
+}
+.write-id {
+	padding-top: 20px;
+	padding-left: 285px;
+}
+.write-id2 {
+	padding-right: 10px;
+	width: 50px;
+	font-weight: bold;
+}
+.write-date{
+	padding-right: 10px;
+}
+.write-edit{
+	font-size: 10px;
+	width: 30px;
+	height: 16px;
+	background-color: #6e6e6e;
+	color: white;
+	border: 1px solid #6e6e6e;
+}
+.write-delete{
+	font-size: 10px;
+	width: 30px;
+	height: 16px;
+	background-color: white;
+	color: black;
+	border: 1px solid #dcdcdc;
+}
+.write-comment4{
+	padding-top: 5px;
+	padding-left: 285px;
+}
+.write-declaration2{
+	text-align: right;
+	padding-right: 15px;
+	padding-left: 265px;
+}
+.write-declaration2-btn{
+	font-size: var(--font-medium);
+	background-color: #dcdcdc;
+	color: var(--black-color);
+	border: 2px solid #b4b4b4;
+	width: 60px;
+	height: 24px;
+}
+.write-declaration2:after {
+	border-bottom: 2px solid #DCDCDC;
+	content: "";
+	display: block;
+	margin: 15px 0px 10px 0px;
+}
+.write-form{
+	padding-top: 100px;
+	padding-right: 15px;
+	text-align: right;
+}
+.write-form-write {
+	font-size: var(--font-medium);
+	background-color: var(--purple-color);
+	color: var(--white-color);
+	border: 2px solid #9e0add;
+	width: 85px;
+	height: 24px;
+}
+.write-form-edit{
+	font-size: var(--font-medium);
+	background-color: #dcdcdc;
+	color: var(--black-color);
+	border: 2px solid #b4b4b4;
+	width: 85px;
+	height: 24px;
+}
+.write-form-delete{
+	font-size: var(--font-medium);
+	background-color: #dcdcdc;
+	color: var(--black-color);
+	border: 2px solid #b4b4b4;
+	width: 85px;
+	height: 24px;
+}

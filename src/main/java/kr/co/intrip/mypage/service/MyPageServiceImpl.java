@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
+import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.mypage.dao.MyPageDAO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
@@ -61,40 +62,43 @@ public class MyPageServiceImpl implements MyPageService {
 
 	// 내가 쓴 글 보기1
 	@Override
-	public Map<String, Object> showMyBoard1(int post_num) throws Exception {
+	public Map<String, Object> showMyBoard1(String post_title) throws Exception {
 		Map<String, Object> boardMap = new HashMap<>();
 		
-		MyBoardDTO myboardDTO = mypageDAO.selectMyBoardShow1(post_num);
+		MyBoardDTO myboardDTO = mypageDAO.selectMyBoardShow1(post_title);
 		
 		boardMap.put("board", myboardDTO);
 		
 		return boardMap;
 	}
 	
-	// 내가 쓴 글 보기2
+	// 페이징 검색
 	@Override
-	public Map<String, Object> showMyBoard2(int post_num) throws Exception {
-		Map<String, Object> boardMap = new HashMap<>();
-		
-		MyBoardDTO myboardDTO = mypageDAO.selectMyBoardShow2(post_num);
-		
-		boardMap.put("board", myboardDTO);
-		
-		return boardMap;
-	}
-
-	// 페이징
-	@Override
-	public List<MyBoardDTO> list(Criteria cri) throws Exception {
-		List<MyBoardDTO> boardsList = mypageDAO.list(cri);
+	public List<MyBoardDTO> listfind(SearchCriteria scri) throws Exception {
+		List<MyBoardDTO> boardsList = mypageDAO.listfind(scri);
 		return boardsList;
 	}
-
-	// 게시물 갯수
+	
+	// 게시물 갯수 검색
 	@Override
-	public int listCount() throws Exception {
-		return mypageDAO.listCount();
+	public int findlistCount(SearchCriteria scri) throws Exception {
+		return mypageDAO.findlistCount(scri);
 	}
+
+//	// 페이징
+//	@Override
+//	public List<MyBoardDTO> list(Criteria cri) throws Exception {
+//		List<MyBoardDTO> boardsList = mypageDAO.list(cri);
+//		return boardsList;
+//	}
+//
+//	// 게시물 갯수
+//	@Override
+//	public int listCount() throws Exception {
+//		return mypageDAO.listCount();
+//	}
+	
+	
 
 
 

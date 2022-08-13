@@ -79,38 +79,90 @@
 	<!-- 내가 쓴 글 -->
 	<select id="select_My_Board" resultMap="myBoardResult">
 		<![CDATA[
-			 SELECT POST_NUM      ,
-			        id          ,
-			        POST_TITLE    ,
-			        POST_DATE,
-			        POST_CATE,
-			        VISITCOUNT
-			 FROM P_BOARD 
-			 WHERE id = #{id}
-			 ORDER by POST_NUM desc    
+			SELECT P_BOARD.POST_NUM      ,
+			       P_BOARD.id          ,
+			       P_BOARD.POST_TITLE    ,
+			       P_BOARD.POST_DATE	,
+			       P_BOARD.VISITCOUNT
+			FROM P_BOARD
+			WHERE P_BOARD.id = #{id}
+			UNION
+			SELECT P_BOARD1.POST_NUM      ,
+			       P_BOARD1.id          ,
+			       P_BOARD1.POST_TITLE    ,
+			       P_BOARD1.POST_DATE,
+			       P_BOARD1.VISITCOUNT
+			FROM P_BOARD1
+			WHERE P_BOARD1.id = #{id}
+			ORDER by 1
 		]]>
 	</select>
+	
 	
 	<!-- 내가 쓴 글 보기1 -->
-	<select id="select_My_Board_Show1" parameterType="java.lang.Integer" resultType="myboardDTO">
+	<select id="select_My_Board_Show1" resultType="myboardDTO">
 		<![CDATA[
-			SELECT * FROM P_BOARD
-			WHERE POST_CATE = '1'
-			AND POST_NUM = #{post_num}
+			SELECT P_BOARD.*
+			FROM P_BOARD
+			WHERE P_BOARD.POST_TITLE = #{POST_TITLE}
+			UNION
+			SELECT P_BOARD1.*
+			FROM P_BOARD1
+			WHERE P_BOARD1.POST_TITLE = #{POST_TITLE}
+			ORDER by 1
 		]]>
 	</select>
 	
-	<!-- 내가 쓴 글 보기2 -->
-	<select id="select_My_Board_Show2" parameterType="java.lang.Integer" resultType="myboardDTO">
-		<![CDATA[
-			SELECT * FROM P_BOARD
-			WHERE POST_CATE = '2'
-			AND POST_NUM = #{post_num}
-		]]>
+	<!-- 페이징 검색1 -->
+	<select id="listfind" resultType="myboardDTO"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
+		from (
+				select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
+				VISITCOUNT,
+		row_number() over(order by POST_NUM desc) as rNum
+		from P_BOARD
+		where id = #{id}
+		<include refid="search"></include>
+		ORDER by 1
+		) mb
+		where rNum between #{rowStart} and #{rowEnd}
+		union
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
+		from (
+			select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
+			VISITCOUNT,
+			row_number() over(order by POST_NUM desc) as rNum
+			from
+			P_BOARD1
+			where id = #{id}
+			<include refid="search"></include>
+			ORDER by 1
+		) mb
+		where rNum between #{rowStart} and #{rowEnd}
+		order by POST_NUM DESC
+	</select>	
+	
+	<!-- 검색 -->
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">and POST_TITLE LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">and POST_CONTENT LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">and ID LIKE '%' || #{keyword} || '%'</if>
+		</if>
+	</sql>
+	
+	<!--검색어 갯수 -->
+	<select id="findlistCount" resultType="int"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select count(post_num)
+		from p_board
+		<include refid="search"></include>
+		where post_num > 0
 	</select>
 	
 	<!-- 페이징 -->
-	<select id="my_Board_List" resultType="boardDTO"
+<!--  	<select id="my_Board_List" resultType="boardDTO"
 	parameterType="kr.co.intrip.board.dto.Criteria">
 	   select POST_NUM, POST_TITLE, ID, POST_DATE, VISITCOUNT
     from (
@@ -120,14 +172,14 @@
         ) mb
    		 where rNum between #{rowStart} and #{rowEnd}
         order by POST_NUM desc
-   </select>
+   </select> -->
 
 	<!-- 게시물 갯수 -->
-	<select id="my_List_Count" resultType="int">
+<!--  	<select id="my_List_Count" resultType="int">
 		<![CDATA[
 			select count(post_num)
 			from p_board
 			where post_num > 0
 		]]>
-	</select>
+	</select> -->
 </mapper>
