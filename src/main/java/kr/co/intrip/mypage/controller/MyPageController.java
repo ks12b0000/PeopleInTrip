@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.PageMaker;
+import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
@@ -42,14 +43,8 @@ public class MyPageController {
 	@Autowired
 	MyBoardDTO myboardDTO;
 	
-//	@RequestMapping(value = "mypage/mypage_renewal")
-//	public ModelAndView mypage(@ModelAttribute MyPageDTO mypageDTO, HttpSession session, 
-//								HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		String viewName = (String) request.getAttribute("viewName");
-//		MyPageDTO user = mypageService.MyPage(mypageDTO, session);
-//		ModelAndView mav = new ModelAndView();
-//		return mav;
-//	}
+	@Autowired
+	BoardService boardService;
 	
 	@GetMapping("mypage/mypage_renewal.do")
 	public String myboardtest() {
@@ -138,84 +133,44 @@ public class MyPageController {
 		return "mypage/mypage_renewal_test";
 	}
 	
-	// 내가 쓴 글
-//	@RequestMapping(value = "mypage/mypage_renewal", method = {RequestMethod.GET, RequestMethod.POST})
-//	public ModelAndView listArticles(@RequestParam(value = "id", defaultValue = "", required = false) String id, 
-//						HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		System.out.println("들어온 id : " + id);
-//		String viewName = (String) request.getAttribute("viewName");
-//		ModelAndView mav = new ModelAndView(viewName);
-//		List<MyBoardDTO> boardsList =  mypageService.listArticles(id);
-//		mav.addObject("myboardsList", boardsList);
-//		
-//		return mav;
-//	}
-	
-	// 내가 쓴 글 보기1
-	@RequestMapping(value = "mypage/view_my_board1", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView viewMyBoard1(@RequestParam(value = "post_num") int post_num, 
-						HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		System.out.println("들어온 post_num1 : " + post_num);
-		
-		String viewName = (String) request.getAttribute("viewName");
-		
-		Map<String, Object> boardMap = mypageService.showMyBoard1(post_num);
-		
-		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("boardMap", boardMap);
-		
-		return mav;
-	}
-	
-	// 내가 쓴 글 보기2
-	@RequestMapping(value = "mypage/view_my_board2", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView viewMyBoard2(@RequestParam(value = "post_num") int post_num, 
-						HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		System.out.println("들어온 post_num2 : " + post_num);
-		
-		String viewName = (String) request.getAttribute("viewName");
-		
-		Map<String, Object> boardMap = mypageService.showMyBoard2(post_num);
-		
-		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("boardMap", boardMap);
-		
-		return mav;
-	}
-	
+	 //내가 쓴 글
 	@RequestMapping(value = "mypage/mypage_renewal", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView listArticles(@RequestParam(value = "id", defaultValue = "", required = false) 
-						String id, Criteria cri, Model model, 
+	public ModelAndView listArticles(@RequestParam(value = "id", defaultValue = "", required = false) String id,
+						@ModelAttribute("scri") SearchCriteria scri, Model model,
 						HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
 		System.out.println("들어온 id : " + id);
 		String viewName = (String) request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView(viewName);
-		List<MyBoardDTO> boardsList =  mypageService.listArticles(id);
-		mav.addObject("myboardsList", boardsList);
+//		List<MyBoardDTO> boardsList =  mypageService.listArticles(id);
+//		mav.addObject("myboardsList", boardsList);
 		
-		List<MyBoardDTO> boardsList2 = mypageService.list(cri);
-		model.addAttribute("boardsList", boardsList2);
+		System.out.println("들어온 scri : " + scri);
+		List<MyBoardDTO> boardsList2 = mypageService.listfind(scri);
+		model.addAttribute("myboardsList", boardsList2);
 		
 		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(mypageService.listCount());
+		pageMaker.setCri(scri);
+		pageMaker.setTotalCount(mypageService.findlistCount(scri));
 		model.addAttribute("pageMaker", pageMaker);
 		
 		return mav;
 	}
 	
-//	// 페이징1
-//	@RequestMapping(value = "mypage/mypage_renewal2", method = RequestMethod.GET)
-//	public void list(Criteria cri, Model model) throws Exception {
-//		List<MyBoardDTO> boardsList = mypageService.list(cri);
-//		model.addAttribute("boardsList", boardsList);
-//		
-//		PageMaker pageMaker = new PageMaker();
-//		pageMaker.setCri(cri);
-//		pageMaker.setTotalCount(mypageService.listCount());
-//		model.addAttribute("pageMaker", pageMaker);
-//	}
+	// 내가 쓴 글 보기1
+	@RequestMapping(value = "mypage/myview_detail", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView viewMyBoard1(@RequestParam(value = "post_title") String post_title,
+						HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		System.out.println("들어온 post_num1 : " + post_title);
+		
+		String viewName = (String) request.getAttribute("viewName");
+		
+		Map<String, Object> boardMap = mypageService.showMyBoard1(post_title);
+		
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("boardMap", boardMap);
+		
+		return mav;
+	}
+	
 }

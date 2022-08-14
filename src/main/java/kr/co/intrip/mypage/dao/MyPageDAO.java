@@ -7,9 +7,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.dao.DataAccessException;
 
+import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
+import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
+
 import kr.co.intrip.mypage.dto.MyPageDTO;
+
 
 public interface MyPageDAO {
 
@@ -31,12 +35,10 @@ public interface MyPageDAO {
 	public List<MyBoardDTO> selectMyBoard(String id) throws DataAccessException;
 	
 	// 내가 쓴 글 보기1
-	public MyBoardDTO selectMyBoardShow1(int post_num) throws DataAccessException;
+	public MyBoardDTO selectMyBoardShow1(String post_title) throws DataAccessException;	
 	
-	// 내가 쓴 글 보기2
-	public MyBoardDTO selectMyBoardShow2(int post_num) throws DataAccessException;
+	public List<MyBoardDTO> listfind(SearchCriteria scri) throws Exception;
 	
-	public List<MyBoardDTO> list(Criteria cri) throws Exception;
+	public int findlistCount(SearchCriteria scri) throws Exception;
 	
-	public int listCount() throws Exception;
 }

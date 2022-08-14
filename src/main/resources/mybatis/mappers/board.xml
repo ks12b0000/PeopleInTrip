@@ -42,7 +42,7 @@
 	</update>
 
 	<!-- 페이징 검색 -->
-	<select id="listfind" resultType="boardDTO"
+ 	<select id="listfind" resultType="boardDTO"
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
 		VISITCOUNT,likehit

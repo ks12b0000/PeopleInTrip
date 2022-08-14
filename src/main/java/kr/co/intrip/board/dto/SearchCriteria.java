@@ -5,7 +5,16 @@ public class SearchCriteria extends Criteria{
 	 private String searchType ="";
 	 private String keyword = "";
 	 
-	 public String getSearchType() {
+	 private String id = "";
+	 public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	 
+
+	public String getSearchType() {
 	  return searchType;
 	 }
 	 public void setSearchType(String searchType) {
