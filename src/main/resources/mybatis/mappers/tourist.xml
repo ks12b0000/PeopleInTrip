@@ -12,7 +12,7 @@
 			values (#{pvo.alltag, jdbcType=VARCHAR}, #{pvo.label, jdbcType=VARCHAR}, #{pvo.label2, jdbcType=VARCHAR}, #{pvo.title, jdbcType=VARCHAR}, #{pvo.address, jdbcType=VARCHAR}, #{pvo.tag, jdbcType=VARCHAR}, #{pvo.introduction, jdbcType=VARCHAR}, #{pvo.imgpath, jdbcType=VARCHAR}, #{pvo.contentsid, jdbcType=VARCHAR}, #{pvo.phoneno, jdbcType=VARCHAR}, #{pvo.latitude, jdbcType=VARCHAR}, #{pvo.longitude, jdbcType=VARCHAR})
 		</foreach>
 	</insert>
-	
+
 	<!-- 제주도 여행지 총 개수 -->
 	<select id="getTotalRowCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
 		<![CDATA[
@@ -481,12 +481,10 @@
 	<!-- 제주도 여행지 메인페이지 배너-->
 	<select id="jejutouristmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
 		<![CDATA[
-			select *
-   			 from (
-        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
-        	from P_TOURIST pt 
-        	) mb
-   		 	where rNum between 1 AND 4	
+			SELECT *
+   		 	FROM P_TOURIST 
+   		 	WHERE SUGGESTIONHIT BETWEEN 1 AND 4
+   		 	ORDER BY SUGGESTIONHIT desc	
 		]]>
 	</select>
  </mapper>

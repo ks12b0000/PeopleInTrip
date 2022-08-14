@@ -24,7 +24,7 @@ public class TouristDAO {
 		sqlSession.insert("mapper.tourist.touristadd", list);
 		
 	}
-	
+
 	// 제주도 여행지 총 개수
 	public int getTotalRowCount(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectOne("mapper.tourist.getTotalRowCount");

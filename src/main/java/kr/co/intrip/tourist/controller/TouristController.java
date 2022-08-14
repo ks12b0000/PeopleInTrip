@@ -40,12 +40,13 @@ public class TouristController {
 	
 	//관광지 메인화면   
 	@GetMapping("tourist/travel_page")
-	public List<ApiDTO> travel_page (Model model, ApiDTO apiDTO) throws Exception {
-		
+	public List<ApiDTO> travel_page (Model model,ApiDTO apiDTO) throws Exception {
 		List<ApiDTO> mainlist = tourservice.jejutourist_main(apiDTO);
 		model.addAttribute("mainlist", mainlist);
 
+		
 		return mainlist;
+
 	}
 	   
 	// 관광지 api db에 저장용
@@ -232,5 +233,7 @@ public class TouristController {
 		return suggestionCheck;
 	}
 
+	// 제주도 날씨
+	
 	
 }

@@ -17,7 +17,7 @@ public interface TouristService {
 
 	// 관광지 api db에 저장용
 	public void parkApi(String schAirportCode) throws Exception;
-	
+
 	// 제주도 여행지 총 개수
 	public int getTotalRowCount(PagingDTO pagingDTO) throws Exception;
 
@@ -119,4 +119,5 @@ public interface TouristService {
 
 	// 제주도 여행지 메인페이지 배너
 	public List<ApiDTO> jejutourist_main(ApiDTO apiDTO) throws Exception;
+
 }
