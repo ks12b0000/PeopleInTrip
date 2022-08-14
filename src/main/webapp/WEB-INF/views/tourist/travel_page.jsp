@@ -1,13 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
+<c:set var="plist" value="${plist}" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 	<title>제주도 메인페이지</title>
 	<link rel="stylesheet" href="${contextPath}/resources/css/tourist/travler.css">
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0a9924a1f6188f938003ae8f12bf5ea6&libraries=services"></script>	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script type="text/javascript">
 	var slideIndex = 0; //slide index
 	
@@ -103,16 +107,24 @@
 		<table id="weather_table" >
 			<tr>
 				<th><h3>오늘의 날씨</h3></th>
-				<th>
-					<input class="map_btn" type="button" value="서울" onclick="click_seoul()">
-					<input class="map_btn" type="button" value="제주" onclick="click_jeju()">
-				</th>
 			</tr>
 			<tr>
 				<td><img class="weather" alt="날씨" src="${contextPath}/resources/images/tourist/weather.png"></td>
-				<td><img class="map" id="maps" alt="지역" src="${contextPath}/resources/images/tourist/map.png"></td>
+				<td><div id="map" style="margin-bottom: 50px; height: 300px;"></div></td>
+				
 			</tr>
-		</table>
+		</table>		
 	</div>
+	
 </body>
+
+<script type="text/javascript">
+	var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+	var options = { //지도를 생성할 때 필요한 기본 옵션
+		center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+		level: 11 //지도의 레벨(확대, 축소 정도)
+	};
+	
+	var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴	
+</script>
 </html>

@@ -146,7 +146,7 @@ body {
 	height: 200px;
 }
 
-#weather_table .map {
+#weather_table #map {
 	width: 690px;
 	height: 200px;
 }
