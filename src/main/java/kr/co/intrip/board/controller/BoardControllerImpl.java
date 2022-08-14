@@ -498,7 +498,7 @@ public class BoardControllerImpl implements BoardController {
 			}
 
 			message = "<script>";
-			message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
+			
 			message += " location.href='" + multipartRequest.getContextPath() + "/board/community_detail.do?post_num="
 					+ post_num + "';";
 			message += "</script>";

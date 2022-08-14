@@ -87,33 +87,6 @@
 				}
 			})
 		}
-    	function readURL(input,index) {
-			if (input.files && input.files[0]) {
-				let reader = new FileReader()
-				reader.onload = function(e) {
-					$('#preview0').attr('src', e.target.result)
-				}
-				reader.readAsDataURL(input.files[0])
-			}
-		}
-    	
-    	let cnt = 1
-		function fn_addFile() {
-			cnt++;
-			let innerHtml = "";
-			
-			innerHtml += '<tr width=100% align=center>'
-			
-			innerHtml += '<td>' +
-								"<input type=file name='file"+cnt+"' onchange='readURL(this, "+cnt+")' />" +
-						 '</td>'
-			innerHtml += '<td>' +		
-								"<img id='preview"+cnt+"' width=440 height=280 />" +
-						 '</td>'
-
-			innerHtml += '</tr>'
-			$("#tb_newImage").append(innerHtml)
-		}
     </script>
 </head>
 <body>
@@ -199,15 +172,12 @@
 				<c:otherwise>
 					<c:set var="img_index" value="${0 }" />
 					<input type="hidden" name="pre_img_num"  value="${0 }"/>	<!-- 기존의 이미지수 -->
-					<input type="hidden" name="added_img_num" id="added_img_num"  value="${0 }"/>	<!-- 수정시 새로 추가된 이미지수 -->
-					이미지파일 첨부 <br> <input type="file" name="imageFileName"
-								onchange="readURL(this, 0)" / onclick="">					
+					<input type="hidden" name="added_img_num" id="added_img_num"  value="${0 }"/>	<!-- 수정시 새로 추가된 이미지수 -->					
 				</c:otherwise>
+			</c:choose>	
 			
-			</c:choose>
-
-						
-
+			
+			
 					</div>
 				</div>
 			</div>
