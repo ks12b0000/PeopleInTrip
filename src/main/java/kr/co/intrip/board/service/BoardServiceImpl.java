@@ -57,8 +57,13 @@ public class BoardServiceImpl implements BoardService {
 		Map<String, Object> boardMap = new HashMap<>();
 
 		BoardDTO boardDTO = boardDAO.selectBoard(post_num);
+		
+		//이미지 부분 정보 요청
+		List<ImageDTO> imageFileList = boardDAO.selectImageFileList(post_num);
 
 		boardMap.put("board", boardDTO);
+		boardMap.put("imageFileList", imageFileList);
+		
 		return boardMap;
 	}
 

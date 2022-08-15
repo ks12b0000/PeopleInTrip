@@ -106,6 +106,7 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlSession.selectOne("mapper.board.selectNewpost_num1");
 	}
 
+	//이미지 추가
 	@Override
 	public void insertNewImage(Map boardMap) {
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
@@ -125,7 +126,7 @@ public class BoardDAOImpl implements BoardDAO {
 		}
 
 	}
-
+	//새 이미지파일 번호 추가
 	private int selectNewImageFileNO() {
 		return sqlSession.selectOne("mapper.board.selectNewImageFileNO");
 	}
