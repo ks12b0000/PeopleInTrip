@@ -14,4 +14,8 @@ public class BusanApiDTO {
 	private String ITEMCNTNTS;
 	private String MAIN_IMG_NORMAL;
 	private String SUBTITLE;
+	private int viewcount;
+	private int commentcount;
+	private int steamedhit;
+	private int suggestionhit;
 }

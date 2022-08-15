@@ -230,7 +230,7 @@ function updateReply() {
 
 function deleteReply() {	
 	$(".SBTN3").on("click", function() {
-		var formObj = $("form[name='busandeleteForm']");
+		var formObj = $("form[name='deleteForm']");
 		if(!confirm("댓글을 삭제하시겠습니까?")){		
 		}
 		else {

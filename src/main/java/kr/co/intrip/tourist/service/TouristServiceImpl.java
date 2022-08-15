@@ -32,6 +32,7 @@ import kr.co.intrip.tourist.controller.TouristController;
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
+import kr.co.intrip.tourist.dto.BusanCommentDTO;
 import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
@@ -437,14 +438,13 @@ public class TouristServiceImpl implements TouristService {
 		}
 	}
 	
-	//
-	// 제주도 통합 상세페이지
+	// 부산 여행지 상세페이지
 	@Override
 	public BusanApiDTO busantourist_detail(BusanApiDTO busanApiDTO) throws Exception {   
 		return touristDAO.busandetail(busanApiDTO);
 	}
 
-	// 제주도 통합 상세페이지 조회수 증가
+	// 부산 여행지 상세페이지 조회수 증가
 	@Override
 	public int busantourist_viewcount(BusanApiDTO busanApiDTO) throws Exception {
 		return touristDAO.busanviewcount(busanApiDTO);
@@ -473,7 +473,6 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.busantourist_SuggestionSort(pagingDTO);		
 		}
 	}
-	//
 	
 	// 제주도 축제 페이지 리스트 Sorting 기능
 	@Override
@@ -661,6 +660,145 @@ public class TouristServiceImpl implements TouristService {
 		return touristDAO.jejutouristmain(apiDTO);
 	}
 	
+	//
+	// 부산 댓글 수 증가
+	@Override
+	public int busancommentcount(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busancommentcount(busanApiDTO);
+	}
+	
+	// 부산 댓글 수 감소
+	@Override
+	public int busancommentcountminus(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busancommentcountminus(busanApiDTO);
+	}
+	
+	// 부산 댓글 총 개수
+	@Override
+	public int busangetCommentTotalRowCount(CommentPagingDTO commentpagingDTO) throws Exception {
+		return touristDAO.busanCommentgetTotalRowCount(commentpagingDTO);
+	}
+
+	// 부산 댓글 조회
+	@Override
+	public List<BusanCommentDTO> busanreadReply (CommentPagingDTO commentpagingDTO) throws Exception {
+		return touristDAO.busanreadReply(commentpagingDTO);
+	}
+	
+	// 부산 댓글 작성
+	@Override
+	public void busanregister(BusanCommentDTO busanCommentDTO) throws Exception {
+		touristDAO.busancreate(busanCommentDTO);
+	}
+	
+	// 부산 댓글 수정
+	@Override
+	public void busanmodify(BusanCommentDTO busanCommentDTO) throws Exception {  
+		touristDAO.busanupdate(busanCommentDTO);		
+	}
+	
+	// 부산 댓글 삭제
+	@Override
+	public void busanremove(BusanCommentDTO busanCommentDTO) throws Exception {  
+		touristDAO.busandeleteReply(busanCommentDTO);
+	}
+	
+	// 부산 선택된 댓글 조회
+	@Override
+	public BusanCommentDTO busanselectReply(int com_num) throws Exception {  
+		return touristDAO.busanselectReply(com_num);
+	}
+	
+	// 부산 여행지 찜 중복방지 select문
+	@Override
+	public int busansteamedCheck(int UC_SEQ, String id) throws Exception {
+		return touristDAO.busanSteamedCheck(UC_SEQ, id);
+	}
+
+	// 부산 여행지 찜 시 steamed 테이블에 insert
+	@Override
+	public void busaninsertSteamed(int UC_SEQ, String id) throws Exception {
+		touristDAO.busaninsertSteamed(UC_SEQ, id);
+	}
+
+	// 부산 여행지 찜 수
+	@Override
+	public void busanupdateSteamed(int UC_SEQ) throws Exception {
+		touristDAO.busanupdateSteamed(UC_SEQ);
+	}
+
+	// 부산 여행지 찜 시 Check를 1로 만들어서 중복방지
+	@Override
+	public void busanupdateSteamedCheck(int UC_SEQ, String id) throws Exception {
+		touristDAO.busanupdateSteamedCheck(UC_SEQ, id);
+	}
+
+	// 부산 여행지 찜 취소 시 다시 0
+	@Override
+	public void busanupdateSteamedCheckCancel(int UC_SEQ, String id) throws Exception {
+		touristDAO.busanupdateSteamedCheckCancel(UC_SEQ, id);
+	}
+
+	// 부산 여행지 찜 수 취소
+	@Override
+	public void busanupdateSteamedCancel(int UC_SEQ) throws Exception {
+		touristDAO.busanupdateSteamedCancel(UC_SEQ);
+	}
+
+	// 부산 여행지 찜 취소 시 delete
+	@Override
+	public void busandeleteSteamed(int UC_SEQ, String id) throws Exception {
+		touristDAO.busandeleteSteamed(UC_SEQ, id);
+	}
+
+	// 부산 여행지 추천 중복방지 select문
+	@Override
+	public int busanSuggestionCheck(int UC_SEQ, String id) throws Exception {
+		return touristDAO.busanSuggestionCheck(UC_SEQ, id);
+	}
+
+	// 부산 여행지 추천 시 steamed 테이블에 insert
+	@Override
+	public void busaninsertSuggestion(int UC_SEQ, String id) throws Exception {
+		touristDAO.busaninsertSuggestion(UC_SEQ, id);
+	}
+
+	// 부산 여행지 추천 수
+	@Override
+	public void busanupdateSuggestion(int UC_SEQ) throws Exception {
+		touristDAO.busanupdateSuggestion(UC_SEQ);
+	}
+
+	// 부산 여행지 추천 시 Check를 1로 만들어서 중복방지
+	@Override
+	public void busanupdateSuggestionCheck(int UC_SEQ, String id) throws Exception {
+		touristDAO.busanupdateSuggestionCheck(UC_SEQ, id);
+	}
+
+	// 부산 여행지 추천 취소 시 다시 0
+	@Override
+	public void busanupdateSuggestionCheckCancel(int UC_SEQ, String id) throws Exception {
+		touristDAO.busanupdateSuggestionCheckCancel(UC_SEQ, id);
+	}
+
+	// 부산 여행지 추천 수 취소
+	@Override
+	public void busanupdateSuggestionCancel(int UC_SEQ) throws Exception {
+		touristDAO.busanupdateSuggestionCancel(UC_SEQ);
+	}
+
+	// 부산 여행지 추천 취소 시 delete
+	@Override
+	public void busandeleteSuggestion(int UC_SEQ, String id) throws Exception {
+		touristDAO.busandeleteSuggestion(UC_SEQ, id);
+	}
+	
+	// 부산 여행지 메인페이지 배너
+	@Override
+	public List<BusanApiDTO> busantourist_main(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busantouristmain(busanApiDTO);
+	}
+	//
 	
 
 }

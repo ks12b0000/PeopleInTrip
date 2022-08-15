@@ -25,6 +25,7 @@ import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.login_signup.service.MemberService;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
+import kr.co.intrip.tourist.dto.BusanCommentDTO;
 import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
@@ -40,7 +41,7 @@ public class TouristController {
 	@Autowired
 	private TouristService tourservice;
 	
-	//관광지 메인화면   
+	//제주도 메인화면   
 	@GetMapping("tourist/travel_page")
 	public String travel_page (Model model,ApiDTO apiDTO) throws Exception {
 		String weather = "test";
@@ -51,6 +52,20 @@ public class TouristController {
 
 		
 		return "tourist/travel_page";
+
+	}
+	
+	//부산 메인화면   
+	@GetMapping("tourist/busantravel_page")
+	public String busantravel_page (Model model,BusanApiDTO busanApiDTO) throws Exception {
+		String weather = "test";
+		weatherDTO wlist = tourservice.apitest2(weather);
+		model.addAttribute("wlist",wlist);
+		List<BusanApiDTO> mainlist = tourservice.busantourist_main(busanApiDTO);
+		model.addAttribute("mainlist", mainlist);
+
+		
+		return "tourist/busantravel_page";
 
 	}
 	   
@@ -154,12 +169,12 @@ public class TouristController {
 		model.addAttribute("plist", plist);
 		
 		
-		int totalRowCount = tourservice.getCommentTotalRowCount(commentpagingDTO);
+		int totalRowCount = tourservice.busangetCommentTotalRowCount(commentpagingDTO);
 		commentpagingDTO.setTotalRowCount(totalRowCount);
 		commentpagingDTO.pageSetting();
-		List<JejuCommentDTO> replyList = tourservice.jejureadReply(commentpagingDTO);
+		List<BusanCommentDTO> replyList = tourservice.busanreadReply(commentpagingDTO);
 		model.addAttribute("replyList", replyList);
-		return "tourist/tourist_View";
+		return "tourist/busantourist_View";
 	}
 	
 	// 부산 여행지 페이지 리스트 Sorting 기능
@@ -284,7 +299,96 @@ public class TouristController {
 		return suggestionCheck;
 	}
 
-	// 제주도 날씨
+	//
+	// 부산 댓글 작성
+	@PostMapping("tourist/busanreplyWrite")
+	public String busanreplyWrite(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
+		log.info("reply write");
+		tourservice.busanregister(busanCommentDTO);
+		tourservice.busancommentcount(busanApiDTO);
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+		
+		return "redirect:/tourist/busantourist_View";
+	}
+	
+	// 부산 댓글 수정 페이지
+	@GetMapping("tourist/busanreplyUpdateView")
+	public String busanreplyUpdateView(BusanCommentDTO busanCommentDTO, PagingDTO pagingDTO, Model model) throws Exception {
+		log.info("reply write");
+			
+		BusanCommentDTO reply = tourservice.busanselectReply(busanCommentDTO.getCom_num());
+		log.info("댓글번호 : " + reply.getCom_num());
+		model.addAttribute("replyUpdate", tourservice.busanselectReply(busanCommentDTO.getCom_num()));
+		model.addAttribute("pagingDTO", pagingDTO);
+
+		return "tourist/busanreplyUpdateView";
+	}
+		
+	// 부산 댓글 수정 폼
+	@PostMapping("tourist/busanreplyUpdate")
+	public String busanreplyUpdate(BusanCommentDTO busanCommentDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
+		log.info("reply Write");
+		
+		tourservice.busanmodify(busanCommentDTO);
+			
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+			
+		return "redirect:/tourist/busantourist_View";
+	}
+	
+	// 부산 댓글 삭제 폼
+	@PostMapping("tourist/busanreplyDelete")
+	public String busanreplyDelete(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO,Model model, RedirectAttributes rttr) throws Exception {
+		log.info("reply delete");
+
+		tourservice.busanremove(busanCommentDTO);
+		tourservice.busancommentcountminus(busanApiDTO);
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+			
+		return "redirect:/tourist/busantourist_View";
+	}
+	
+	// 부산 여행지 찜하기
+	@PostMapping("tourist/busanupdatesteamed")
+	@ResponseBody
+	public int busanupdateSteamed(int UC_SEQ,  String id)throws Exception{
+		
+		int steamedCheck = tourservice.busansteamedCheck(UC_SEQ, id);
+
+		if(steamedCheck == 0) {
+			//좋아요 처음누름
+			tourservice.busaninsertSteamed(UC_SEQ, id); //like테이블 삽입
+			tourservice.busanupdateSteamed(UC_SEQ);	//게시판테이블 +1
+			tourservice.busanupdateSteamedCheck(UC_SEQ, id);//like테이블 구분자 1
+		}
+		else if(steamedCheck == 1) {
+			tourservice.busanupdateSteamedCheckCancel(UC_SEQ, id); //like테이블 구분자0
+			tourservice.busanupdateSteamedCancel(UC_SEQ); //게시판테이블 - 1
+			tourservice.busandeleteSteamed(UC_SEQ, id); //like테이블 삭제
+		}
+		return steamedCheck;
+	}
+	
+	// 부산 여행지 추천기능
+	@PostMapping("tourist/busanupdateSuggestion")
+	@ResponseBody
+	public int busanupdateSuggestion(int UC_SEQ,  String id)throws Exception{			
+		int suggestionCheck = tourservice.busanSuggestionCheck(UC_SEQ, id);
+
+		if(suggestionCheck == 0) {
+			//추천 처음누름
+			tourservice.busaninsertSuggestion(UC_SEQ, id); 
+			tourservice.busanupdateSuggestion(UC_SEQ);	
+			tourservice.busanupdateSuggestionCheck(UC_SEQ, id);
+		}
+		else if(suggestionCheck == 1) {
+			tourservice.busanupdateSuggestionCheckCancel(UC_SEQ, id); 
+			tourservice.busanupdateSuggestionCancel(UC_SEQ); 
+			tourservice.busandeleteSuggestion(UC_SEQ, id); 
+		}
+		return suggestionCheck;
+	}
+	//
 	
 	
 }

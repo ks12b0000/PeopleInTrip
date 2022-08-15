@@ -10,21 +10,7 @@
 		<typeAlias type="kr.co.intrip.board.dto.BoardDTO" alias="boardDTO"/>
 		<typeAlias type="kr.co.intrip.main.dto.MainDTO" alias="mainDTO"/>
 		<typeAlias type="kr.co.intrip.board.dto.ImageDTO" alias="imageDTO"/>
-<<<<<<< HEAD
 		<typeAlias type="kr.co.intrip.mypage.dto.MyPageDTO" alias="mypageDTO"/>
 		<typeAlias type="kr.co.intrip.mypage.dto.MyBoardDTO" alias="myboardDTO"/>
-=======
-
-
-		<typeAlias type="kr.co.intrip.mypage.dto.MyPageDTO" alias="mypageDTO"/>
-		<typeAlias type="kr.co.intrip.mypage.dto.MyBoardDTO" alias="myboardDTO"/>
-
-		<typeAlias type="kr.co.intrip.mypage.dto.MyPageDTO" alias="mypageDTO"/>	
-
-
-		<typeAlias type="kr.co.intrip.mypage.dto.MyBoardDTO" alias="myboardDTO"/>
-		<typeAlias type="kr.co.intrip.mypage.dto.MyPageDTO" alias="mypageDTO"/>	
-
->>>>>>> 682857ed184c61337dc7ed7c27c055083c351a60
 	</typeAliases>
 </configuration>  

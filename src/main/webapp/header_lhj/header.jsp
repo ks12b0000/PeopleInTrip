@@ -29,7 +29,7 @@
                     <p>관광지</p>
                 </div>
                 <ul class="submenuitem">
-                    <li><a href="#">서울</a></li>
+                    <li><a href="${contextPath}/tourist/busantravel_page">부산</a></li>
                     <li><a href="${contextPath}/tourist/travel_page">제주도</a></li>
                 </ul>
             </div> 
