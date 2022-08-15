@@ -8,13 +8,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,15 +31,20 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.co.intrip.tourist.controller.TouristController;
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
+import kr.co.intrip.tourist.dto.weatherDTO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class TouristServiceImpl implements TouristService {
 
+	enum WeatherValue {
+		POP, PTY, PCP, REH, SNO, SKY, TMP, TMN, TMX, UUU, VVV, WAV, VEC, WSD
+	}
 	@Autowired
 	private TouristDAO touristDAO;
 	
@@ -142,6 +150,209 @@ public class TouristServiceImpl implements TouristService {
 			
 			touristDAO.touristadd(list);
 	}
+	
+	// 부산 여행지 api db에 저장용
+	@Override
+	public void busanApi() throws Exception {
+		ArrayList<BusanApiDTO> list = new ArrayList<BusanApiDTO>();
+		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/6260000/AttractionService/getAttractionKr"); /*URL*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=6FKxrGLyiJy9V0QFz5JpDYNHcC7zcCTo5K%2F%2FqA3n9WRmWUHmqVDq%2B2B6JKG8iJ%2BConwMG8s0bZKflAN2kqhtCA%3D%3D"); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("127", "UTF-8")); /*한 페이지 결과 수*/
+        urlBuilder.append("&" + URLEncoder.encode("resultType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*JSON방식으로 호출 시 파라미터 resultType=json 입력*/
+        URL url = new URL(urlBuilder.toString());
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-type", "application/json");
+        System.out.println("Response code: " + conn.getResponseCode());
+        BufferedReader rd;
+        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        } else {
+            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+        }
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = rd.readLine()) != null) {
+            sb.append(line);
+        }
+        rd.close();
+        conn.disconnect();
+        //System.out.println(sb.toString());
+        
+        String jsonString = sb.toString();
+		// 가장 큰 JSONObject를 가져옵니다.
+		JSONObject jObject = new JSONObject(jsonString);
+
+		// (response) 0번째 JSONObject를 가져옵니다.
+		JSONObject responseObject = jObject.getJSONObject("getAttractionKr");
+		JSONArray itemArray = (JSONArray) responseObject.get("item");
+
+		for (int i = 0; i < itemArray.length(); i++) {					
+			BusanApiDTO pvo1 = new BusanApiDTO();
+			JSONObject iobj = itemArray.getJSONObject(i);					
+				
+			if(!(itemArray.getJSONObject(i).isNull("LAT"))) {
+				pvo1.setLAT(iobj.getDouble("LAT"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("LNG"))) {
+				pvo1.setLNG(iobj.getDouble("LNG"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("UC_SEQ"))) {
+				pvo1.setUC_SEQ(iobj.getInt("UC_SEQ"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("PLACE"))) {
+				pvo1.setPLACE(iobj.getString("PLACE"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("ADDR1"))) {
+				pvo1.setADDR1(iobj.getString("ADDR1"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("CNTCT_TEL"))) {
+				pvo1.setCNTCT_TEL(iobj.getString("CNTCT_TEL"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("ITEMCNTNTS"))) {
+				pvo1.setITEMCNTNTS(iobj.getString("ITEMCNTNTS"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("MAIN_IMG_NORMAL"))) {
+				pvo1.setMAIN_IMG_NORMAL(iobj.getString("MAIN_IMG_NORMAL"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("SUBTITLE"))) {
+				pvo1.setSUBTITLE(iobj.getString("SUBTITLE"));
+			}
+			
+			/* log.info(i + "번째 item: " + pvo1); */
+			list.add(pvo1);
+		}
+		/* System.out.println("list: " + list); */				
+		
+		touristDAO.busantouristadd(list);
+	}
+	
+	
+	// 제주도 날씨 정보 api
+	@Override
+	public weatherDTO apitest2(String weather) throws Exception {
+		weatherDTO wDTO = new weatherDTO();
+		Date date = new Date();        
+		String thistime = DateFormatUtils.format(date, "yyyyMMdd"); // 현재 날짜
+		String baseTime = "0800";
+		String baseTime2 = "1400";
+		String baseTime3 = "2000";
+		SimpleDateFormat sysdate = new SimpleDateFormat("HHmmss");	
+		Date thisTime2 = new Date();
+		String thisTime = sysdate.format(thisTime2); // 현재 시간
+		int thisTime1 = Integer.parseInt(thisTime); // 현재 시간을 int로 변환 
+		Date yDate = new Date();
+		yDate = new Date(yDate.getTime()+(1000*60*60*24*-1)); // 어제 시간 구하기
+		String yestertime = DateFormatUtils.format(yDate, "yyyyMMdd"); // 어제 날짜
+		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /*URL*/
+		urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=6FKxrGLyiJy9V0QFz5JpDYNHcC7zcCTo5K%2F%2FqA3n9WRmWUHmqVDq%2B2B6JKG8iJ%2BConwMG8s0bZKflAN2kqhtCA%3D%3D"); /*Service Key*/
+		urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("13", "UTF-8")); /*한 페이지 결과 수*/
+		urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*요청자료형식(XML/JSON) Default: XML*/
+		
+		if((thisTime1 - 50000) < 0) { // 현재 시간이 오전 5시 전일때 어제 날짜 나타내줌
+			urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(yestertime, "UTF-8")); /*‘21년 6월 28일발표*/
+		}
+		 else { // 5시 이후면 오늘 날짜 나타냄
+		        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(thistime, "UTF-8")); /*‘21년 6월 28일발표*/
+	   	}
+		if((thisTime1 - 140000) < 0) { // 현재 시간이 14시 전일때 08시 기준 날씨 가져옴
+		urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8")); /*05시 발표*/
+		}
+		else if((thisTime1 - 200000) < 0) { // 현재 시간이 20시 전일때 14시 기준 날씨 가져옴
+			urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(baseTime2, "UTF-8")); /*05시 발표*/
+		}
+		else { // 현재 시간이 14시 20시 전이 아니면 20시 기준 날씨 가져옴
+			urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(baseTime3, "UTF-8")); /*05시 발표*/
+		}
+		urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode("53", "UTF-8")); /*예보지점의 X 좌표값*/
+		urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode("37", "UTF-8")); /*예보지점의 Y 좌표값*/
+		URL url = new URL(urlBuilder.toString());
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Content-type", "application/json");
+		System.out.println("Response code: " + conn.getResponseCode());
+		BufferedReader rd;
+		
+		if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		} else {
+			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+		}
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = rd.readLine()) != null) {
+			sb.append(line);
+		}
+		rd.close();
+		conn.disconnect();
+		//System.out.println(sb.toString());
+		
+		String jsonString = sb.toString();
+		// 가장 큰 JSONObject를 가져옵니다.
+		JSONObject jObject = new JSONObject(jsonString);	
+
+		// (response) 0번째 JSONObject를 가져옵니다.
+		JSONObject responseObject = jObject.getJSONObject("response");
+		// (response -> header) 1번째 JSONObject를 가져와서 key-value를 읽습니다.
+		/* log.info("(header)resultCode={}" , responseObject); */
+		JSONObject body = (JSONObject) responseObject.get("body");
+		JSONObject items =(JSONObject) body.get("items");
+		JSONArray itemArray = (JSONArray) items.get("item");
+		
+		for (int i = 0; i < itemArray.length(); i++) {									
+			JSONObject iobj = itemArray.getJSONObject(i);					
+			String category = (String) iobj.get("category");						
+			String value = (String) iobj.get("fcstValue");
+			
+			WeatherValue weatherValue = WeatherValue.valueOf(category);
+			
+			switch(weatherValue) {
+			case POP:
+				wDTO.setPOP(value);
+				break;						
+			case SKY:
+				wDTO.setSKY(value);
+				break;
+			case TMP:
+				wDTO.setTMP(value);
+				break;
+			case PTY:
+				wDTO.setTMP(value);
+				break;
+			default:
+				break;
+			}			
+		}
+		
+		if((thisTime1 - 50000) < 0) {	// 현재 시간이 오전 5시 전이면 basedate 어제 날짜로 저장
+			wDTO.setBaseDate(yestertime);
+		}
+		else { // 5시 이후면 오늘 날짜 저장
+			wDTO.setBaseDate(thistime);
+		}	
+		
+		if((thisTime1 - 140000) < 0) { // 현재 시간이 14시 전이면 8시 날씨 가져옴
+			wDTO.setBaseTime(baseTime);
+		}
+		else if((thisTime1 - 200000) < 0) { // 현재 시간이 20시 전이면 14시 날씨 가져옴
+			wDTO.setBaseTime(baseTime2);
+		}
+		else { // 현재 시간이 14시, 20시 전이 아니면 20시 날씨 가져옴
+			wDTO.setBaseTime(baseTime3);
+		}
+		System.out.println(wDTO);
+		return wDTO;	
+	}
 
 	// 제주도 여행지 총 개수
 	public int getTotalRowCount(PagingDTO pagingDTO) throws Exception {
@@ -153,6 +364,19 @@ public class TouristServiceImpl implements TouristService {
 	public List<ApiDTO> jejutourist_list(PagingDTO pagingDTO) throws Exception {
 		return touristDAO.jejutourist(pagingDTO);		
 	}
+	
+	//
+	// 부산 여행지 총 개수
+	public int busangetTotalRowCount(PagingDTO pagingDTO) throws Exception {
+		return touristDAO.busangetTotalRowCount(pagingDTO);
+	}
+	
+	// 부산 여행지 페이지 리스트
+	@Override
+	public List<BusanApiDTO> busantourist_list(PagingDTO pagingDTO) throws Exception {
+		return touristDAO.busantourist(pagingDTO);		
+	}
+	//
 	
 	// 제주도 축제 총 개수
 	public int getTotalRowCount2(PagingDTO pagingDTO) throws Exception {
@@ -179,6 +403,7 @@ public class TouristServiceImpl implements TouristService {
 	// 제주도 통합 상세페이지
 	@Override
 	public ApiDTO jejutourist_detail(ApiDTO apiDTO) throws Exception {
+    
 		return touristDAO.jejudetail(apiDTO);
 	}
 
@@ -211,6 +436,44 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejutourist_SuggestionSort(pagingDTO);		
 		}
 	}
+	
+	//
+	// 제주도 통합 상세페이지
+	@Override
+	public BusanApiDTO busantourist_detail(BusanApiDTO busanApiDTO) throws Exception {   
+		return touristDAO.busandetail(busanApiDTO);
+	}
+
+	// 제주도 통합 상세페이지 조회수 증가
+	@Override
+	public int busantourist_viewcount(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busanviewcount(busanApiDTO);
+	}
+
+	// 부산 여행지 페이지 리스트 Sorting 기능
+	@Override
+	public List<BusanApiDTO> busantourist_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception {
+		String value = request.getParameter("value");
+		model.addAttribute("value", value);
+		log.info("value = {}", value);
+		
+		if (value.equals("basic")) {
+			return touristDAO.busantourist(pagingDTO);
+		}
+		else if (value.equals("lookup")) {
+			return touristDAO.busantourist_lookupSort(pagingDTO);
+		}
+		else if (value.equals("comment")) {
+			return touristDAO.busantourist_commentSort(pagingDTO);
+		}	
+		else if (value.equals("steamed")) {
+			return touristDAO.busantourist_steamedSort(pagingDTO);
+		}
+		else {
+			return touristDAO.busantourist_SuggestionSort(pagingDTO);		
+		}
+	}
+	//
 	
 	// 제주도 축제 페이지 리스트 Sorting 기능
 	@Override
@@ -398,35 +661,6 @@ public class TouristServiceImpl implements TouristService {
 		return touristDAO.jejutouristmain(apiDTO);
 	}
 	
-	public void apitest(String schAirportCode1) throws Exception {
-		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=6FKxrGLyiJy9V0QFz5JpDYNHcC7zcCTo5K%2F%2FqA3n9WRmWUHmqVDq%2B2B6JKG8iJ%2BConwMG8s0bZKflAN2kqhtCA%3D%3D"); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*한 페이지 결과 수*/
-        urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*요청자료형식(XML/JSON) Default: XML*/
-        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode("20220812", "UTF-8")); /*‘21년 6월 28일 발표*/
-        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode("0630", "UTF-8")); /*06시30분 발표(30분 단위)*/
-        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode("55", "UTF-8")); /*예보지점 X 좌표값*/
-        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode("127", "UTF-8")); /*예보지점 Y 좌표값*/
-        URL url = new URL(urlBuilder.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code: " + conn.getResponseCode());
-        BufferedReader rd;
-        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-        }
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            sb.append(line);
-        }
-        rd.close();
-        conn.disconnect();
-        System.out.println(sb.toString());
-    }
+	
 
 }

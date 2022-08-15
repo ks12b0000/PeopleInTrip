@@ -5,8 +5,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -19,20 +21,38 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.co.intrip.tourist.dto.weatherDTO;
 
 public class ApiTest {
-	@Test
-	public void apitest() throws Exception {
+	
+	enum WeatherValue {
+		POP, PTY, PCP, REH, SNO, SKY, TMP, TMN, TMX, UUU, VVV, WAV, VEC, WSD
+	}
+	
+	public static void main(String []args) throws Exception { 
+		weatherDTO wDTO = new weatherDTO();
 		Date date = new Date();        
-		String dateToStr = DateFormatUtils.format(date, "yyyyMMdd");
-		String dateToStr1 = DateFormatUtils.format(date, "HHmm");
-		 StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /*URL*/
+		String thistime = DateFormatUtils.format(date, "yyyyMMdd");
+		System.out.println(thistime);
+		String baseTime = "1400";
+		SimpleDateFormat sysdate = new SimpleDateFormat("HHmmss");
+		Date thisTime2 = new Date();
+		String thisTime = sysdate.format(thisTime2);
+		int thisTime1 = Integer.parseInt(thisTime);
+		Date yDate = new Date();
+		yDate = new Date(yDate.getTime()+(1000*60*60*24*-1));
+		String yestertime = DateFormatUtils.format(yDate, "yyyyMMdd");
+		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /*URL*/
 	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=6FKxrGLyiJy9V0QFz5JpDYNHcC7zcCTo5K%2F%2FqA3n9WRmWUHmqVDq%2B2B6JKG8iJ%2BConwMG8s0bZKflAN2kqhtCA%3D%3D"); /*Service Key*/
 	        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("733", "UTF-8")); /*한 페이지 결과 수*/
+	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("13", "UTF-8")); /*한 페이지 결과 수*/
 	        urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*요청자료형식(XML/JSON) Default: XML*/
-	        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(dateToStr, "UTF-8")); /*‘21년 6월 28일발표*/
-	        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode("0800", "UTF-8")); /*05시 발표*/
-	        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode("55", "UTF-8")); /*예보지점의 X 좌표값*/
-	        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode("127", "UTF-8")); /*예보지점의 Y 좌표값*/
+	        if((thisTime1 - 50000) < 0) {
+		        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(yestertime, "UTF-8")); /*‘21년 6월 28일발표*/
+	        }
+	        else {
+		        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(thistime, "UTF-8")); /*‘21년 6월 28일발표*/
+	        }
+	        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8")); /*05시 발표*/
+	        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode("53", "UTF-8")); /*예보지점의 X 좌표값*/
+	        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode("37", "UTF-8")); /*예보지점의 Y 좌표값*/
 	        URL url = new URL(urlBuilder.toString());
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("GET");
@@ -51,7 +71,7 @@ public class ApiTest {
 	        }
 	        rd.close();
 	        conn.disconnect();
-	        System.out.println(sb.toString());
+	        //System.out.println(sb.toString());
 	        
 	        String jsonString = sb.toString();
 			// 가장 큰 JSONObject를 가져옵니다.
@@ -61,21 +81,47 @@ public class ApiTest {
 			JSONObject responseObject = jObject.getJSONObject("response");
 			// (response -> header) 1번째 JSONObject를 가져와서 key-value를 읽습니다.
 			/* log.info("(header)resultCode={}" , responseObject); */
-			JSONObject body = responseObject.getJSONObject("body");
-			JSONObject items = body.getJSONObject("items");
-			JSONArray itemArray = items.getJSONArray("item");
+			JSONObject body = (JSONObject) responseObject.get("body");
+			JSONObject items =(JSONObject) body.get("items");
+			JSONArray itemArray = (JSONArray) items.get("item");
 			
-				for (int i = 0; i < itemArray.length(); i++) {					
-					weatherDTO pvo = new weatherDTO();
+				for (int i = 0; i < itemArray.length(); i++) {									
 					JSONObject iobj = itemArray.getJSONObject(i);					
+					String category = (String) iobj.get("category");	
+					
+					String value = (String) iobj.get("fcstValue");
+					
+					WeatherValue weatherValue = WeatherValue.valueOf(category);
+				
+					switch(weatherValue) {
+						case POP:
+							wDTO.setPOP(value);
+							break;
 						
-						pvo.setBaseDate(iobj.getString("baseDate"));			
-						pvo.setCategory(iobj.getString("category"));
-						pvo.setFcstTime(iobj.getString("fcstTime"));
-						pvo.setFcstValue(iobj.getString("fcstValue"));
-
-					System.out.println("list는?" + pvo);
+						case SKY:
+							wDTO.setSKY(value);
+							break;
+						case TMP:
+							wDTO.setTMP(value);
+							break;
+						case PTY:
+							wDTO.setTMP(value);
+							break;
+						default:
+							break;
+					}
+					
 				}
+				if((thisTime1 - 50000) < 0) {
+					wDTO.setBaseDate(yestertime);
+				}
+				else {
+					wDTO.setBaseDate(thistime);
+				}
+		       			
+				wDTO.setBaseTime(baseTime);
+				System.out.println(wDTO);
+				
 
     }
 }
