@@ -35,6 +35,7 @@ public interface BoardController {
 
 	public ModelAndView viewdetail(int post_num, HttpServletRequest request, HttpServletResponse response,Model model, CommentPagingDTO commentpagingDTO)
 			throws Exception;
+	
 
 	
 	

@@ -53,9 +53,7 @@
 			innerHtml += '<td>' +
 								"<input type=file name='file"+cnt+"' onchange='readURL(this, "+cnt+")' />" +
 						 '</td>'
-			innerHtml += '<td>' +		
-								"<img id='preview"+cnt+"' width=440 height=280 />" +
-						 '</td>'
+			
 
 			innerHtml += '</tr>'
 			$("#tb_newImage").append(innerHtml)
@@ -109,9 +107,9 @@
 						</div>
 
 						<div>
-							이미지파일 첨부 <br> <input type="file" name="imageFileName"
-								onchange="readURL(this, 0)" />
-						</div>
+						 <br>
+						<input type="button" value="파일 추가하기" onclick="fn_addFile()" />
+						<div id="tb_newImage" />
 					</div>
 				</div>
 			</div>

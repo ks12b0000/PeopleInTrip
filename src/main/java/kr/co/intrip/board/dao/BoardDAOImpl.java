@@ -121,11 +121,13 @@ public class BoardDAOImpl implements BoardDAO {
 				imageDTO.setpost_num(post_num);
 			}
 
-			// T_IMAGEFILE 테이블에 INSERT
+			
 			sqlSession.insert("mapper.board.insertNewImage", imageFileList);
 		}
 
 	}
+	
+	
 	//새 이미지파일 번호 추가
 	private int selectNewImageFileNO() {
 		return sqlSession.selectOne("mapper.board.selectNewImageFileNO");
@@ -166,7 +168,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	}
 
-	// 글 수정 이미지
+	// 새 이미지 추가
 	@Override
 	public void insertModNewImage(Map<String, Object> boardMap) throws DataAccessException {
 

@@ -141,4 +141,6 @@ public interface BoardDAO {
 	public void boarddeleteReply2(boardCommentDTO boardCommentDTO) throws Exception;
 
 	public boardCommentDTO boardselectReply2(int com_num) throws Exception;
+	
+	
 }

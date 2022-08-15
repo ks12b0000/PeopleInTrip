@@ -89,6 +89,14 @@ public class BoardServiceImpl implements BoardService {
 
 		return post_num;
 	}
+	
+	// 글쓰기
+		@Override
+		public void insertimg(Map boardMap) throws Exception {
+			 boardDAO.insertNewImage(boardMap); // 이미지 정보를 저장함
+		}
+	
+	
 
 	// 글쓰기1
 	@Override
@@ -107,6 +115,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void modBoard(Map<String, Object> boardMap) throws Exception {
 		boardDAO.updateBoard(boardMap);
+
 
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
 		List<ImageDTO> modAddImageFileList = (List<ImageDTO>) boardMap.get("modAddImageFileList");
@@ -205,6 +214,7 @@ public class BoardServiceImpl implements BoardService {
 	public void insertLike(int post_num, String id) throws Exception {
 		boardDAO.insertLike(post_num, id);
 	}
+	
 
 	@Override
 	public void deleteLike(int post_num, String id) throws Exception {
@@ -430,4 +440,6 @@ public class BoardServiceImpl implements BoardService {
 	public boardCommentDTO boardselectReply2(int com_num) throws Exception {
 		return boardDAO.boardselectReply2(com_num);
 	}
+
+	
 }

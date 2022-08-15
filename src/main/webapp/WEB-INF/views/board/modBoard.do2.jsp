@@ -34,9 +34,12 @@
 			});
 		});
     	
+    	let pre_img_num = 0;			//기존 이미지 갯수 (수정 이전의 이미지 갯수)
+		let img_index = 0;	
     	let isFirstAddImage = true
+    	
 		function fn_addModImage(_img_index) {
-			console.log("here!")
+			
 			if (isFirstAddImage == true) {
 				pre_img_num = _img_index
 				img_index = ++_img_index
@@ -48,18 +51,15 @@
 			
 			let innerHtml = "";
 			
-			innerHtml += '<tr width=200px align=center>'
+			
 			
 			innerHtml += '<td>' +
 								"<input type=file name='imageFileName"+img_index+"' onchange='readURL(this, "+img_index+")' />" +
 						 '</td>'
-			innerHtml += '<td>' +		
-								"<img id='preview"+img_index+"' width=640 height=480 />" +
-						 '</td>'
-
-			innerHtml += '</tr>'
+			
 			$("#td_addImage").append(innerHtml)		
 			$("#added_img_num").val(img_index);		//추가된 이미지수를 hidden 속성의 태그에 저장해서 컨트롤러에 보냄
+			console.log("here!")
 		}
     	
     	function fn_removeModImage(_imageFileNO, post_num, _imageFileName) {
@@ -87,6 +87,17 @@
 				}
 			})
 		}
+    	function readURL(input,index) {
+			if (input.files && input.files[0]) {
+				let reader = new FileReader()
+				reader.onload = function(e) {
+					$('#preview0').attr('src', e.target.result)
+				}
+				reader.readAsDataURL(input.files[0])
+			}
+		}
+    	
+    	
     </script>
 </head>
 <body>
@@ -143,9 +154,7 @@
 				<c:when test="${not empty imageFileList && imageFileList != 'null' }">
 					<c:forEach var="item" items="${imageFileList }" varStatus="status">
 						<tr id="tr_${status.count }">
-							<td width="150" align="center" bgcolor="#add3f7">
-
-							</td>
+							
 							<td>
 								<!-- 이미지 수정시 미리 원래 이미지 파일이름을 저장함 -->
 								<input type="hidden" name="oldFileName" value="${item.imageFileName }" />
@@ -172,12 +181,11 @@
 				<c:otherwise>
 					<c:set var="img_index" value="${0 }" />
 					<input type="hidden" name="pre_img_num"  value="${0 }"/>	<!-- 기존의 이미지수 -->
-					<input type="hidden" name="added_img_num" id="added_img_num"  value="${0 }"/>	<!-- 수정시 새로 추가된 이미지수 -->					
-				</c:otherwise>
-			</c:choose>	
-			
-			
-			
+						<input type="hidden" name="added_img_num" id="added_img_num"  value="${0 }"/>	<!-- 수정시 새로 추가된 이미지수 -->
+						<input type="button" value="이미지 추가" onclick="fn_addModImage(${img_index})" />
+				</c:otherwise>	
+			</c:choose>
+							<table id="td_addImage" align="center">	<br>
 					</div>
 				</div>
 			</div>
