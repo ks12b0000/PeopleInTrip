@@ -12,6 +12,14 @@
 			values (#{pvo.alltag, jdbcType=VARCHAR}, #{pvo.label, jdbcType=VARCHAR}, #{pvo.label2, jdbcType=VARCHAR}, #{pvo.title, jdbcType=VARCHAR}, #{pvo.address, jdbcType=VARCHAR}, #{pvo.tag, jdbcType=VARCHAR}, #{pvo.introduction, jdbcType=VARCHAR}, #{pvo.imgpath, jdbcType=VARCHAR}, #{pvo.contentsid, jdbcType=VARCHAR}, #{pvo.phoneno, jdbcType=VARCHAR}, #{pvo.latitude, jdbcType=VARCHAR}, #{pvo.longitude, jdbcType=VARCHAR})
 		</foreach>
 	</insert>
+	
+	<!-- 관광지 api db에 저장용 -->
+  	<insert id="busantouristadd">
+		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo1">		
+			insert into P_busantourist (LAT, LNG, UC_SEQ, PLACE, ADDR1, CNTCT_TEL, ITEMCNTNTS, MAIN_IMG_NORMAL, SUBTITLE)
+			values (#{pvo1.LAT, jdbcType=VARCHAR}, #{pvo1.LNG, jdbcType=VARCHAR}, #{pvo1.UC_SEQ, jdbcType=VARCHAR}, #{pvo1.PLACE, jdbcType=VARCHAR}, #{pvo1.ADDR1, jdbcType=VARCHAR}, #{pvo1.CNTCT_TEL, jdbcType=VARCHAR}, #{pvo1.ITEMCNTNTS, jdbcType=VARCHAR}, #{pvo1.MAIN_IMG_NORMAL, jdbcType=VARCHAR}, #{pvo1.SUBTITLE, jdbcType=VARCHAR})
+		</foreach>
+	</insert>
 
 	<!-- 제주도 여행지 총 개수 -->
 	<select id="getTotalRowCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
@@ -30,6 +38,26 @@
         	select pt.*, row_number() over(order by label desc) as rNum
         	from P_TOURIST pt 
         	WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}		
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 총 개수 -->
+	<select id="busangetTotalRowCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM P_busantourist
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 페이지 리스트  -->
+	<select id="busantourist" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by UC_SEQ desc) as rNum
+        	from P_busantourist pt 
         	) mb
    		 	where rNum between #{firstRow} and #{lastRow}		
 		]]>
@@ -155,6 +183,81 @@
    		 	ORDER by steamedhit desc		  		 	
 		]]>
 	</select>
+	
+	<!--  -->
+	<!-- 부산 여행지 상세페이지  -->
+	<select id="busandetail" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="String">
+		<![CDATA[
+			SELECT * FROM P_busantourist 
+			WHERE UC_SEQ = #{UC_SEQ,jdbcType=VARCHAR}
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 상세페이지 조회수 증가  -->
+	<update id="busanviewcount">
+		<![CDATA[
+			UPDATE P_busantourist
+			SET viewcount = viewcount + 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	
+	<!-- 부산 여행지 조회순 페이지 리스트  -->
+	<select id="busantourist_lookupSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by viewcount desc) as rNum
+        	from P_busantourist pt 
+        	ORDER by viewcount desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by viewcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 제주도 여행지 댓글순 페이지 리스트  -->
+	<select id="busantourist_commentSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by commentcount desc) as rNum
+        	from P_busantourist pt 
+        	ORDER by commentcount desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by commentcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 제주도 여행지 추천순 페이지 리스트  -->
+	<select id="busantourist_SuggestionSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_busantourist pt 
+        	ORDER by suggestionhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by suggestionhit desc		  		 	
+		]]>
+	</select>	
+	
+	<!-- 제주도 여행지 찜순 페이지 리스트  -->
+	<select id="busantourist_steamedSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_busantourist pt 
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by steamedhit desc		  		 	
+		]]>
+	</select>
+	<!--  -->
 	
 	<!-- 제주도 축제 조회순 페이지 리스트  -->
 	<select id="jejufestival_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">

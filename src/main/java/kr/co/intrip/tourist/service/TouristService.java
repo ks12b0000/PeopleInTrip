@@ -9,20 +9,34 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
+import kr.co.intrip.tourist.dto.weatherDTO;
 
 public interface TouristService {
 
 	// 관광지 api db에 저장용
 	public void parkApi(String schAirportCode) throws Exception;
+	
+	// 부산 여행지 api db에 저장
+	public void busanApi() throws Exception;
+	
+	// 제주도 날씨 api
+	public weatherDTO apitest2(String weather) throws Exception;
 
 	// 제주도 여행지 총 개수
 	public int getTotalRowCount(PagingDTO pagingDTO) throws Exception;
 
 	// 제주도 여행지 페이지 리스트
 	public List<ApiDTO> jejutourist_list(PagingDTO pagingDTO) throws Exception;
+	
+	// 부산 여행지 총 개수
+	public int busangetTotalRowCount(PagingDTO pagingDTO) throws Exception;
+
+	// 부산 여행지 페이지 리스트
+	public List<BusanApiDTO> busantourist_list(PagingDTO pagingDTO) throws Exception;
 
 	// 제주도 축제 총 개수
 	public int getTotalRowCount2(PagingDTO pagingDTO) throws Exception;
@@ -50,6 +64,17 @@ public interface TouristService {
 
 	// 제주도 전시관 페이지 리스트 Sorting 기능
 	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
+	
+	//
+	// 부산 여행지 상세페이지
+	public BusanApiDTO busantourist_detail(BusanApiDTO busanApiDTO) throws Exception;
+
+	// 부산 여행지 상세페이지 조회수 증가
+	public int busantourist_viewcount(BusanApiDTO busanApiDTO) throws Exception;
+
+	// 부산 여행지 페이지 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
+	//
 	
 	// 제주도 댓글 수 증가
 	public int jejucommentcount(ApiDTO apiDTO) throws Exception;
@@ -119,5 +144,6 @@ public interface TouristService {
 
 	// 제주도 여행지 메인페이지 배너
 	public List<ApiDTO> jejutourist_main(ApiDTO apiDTO) throws Exception;
+
 
 }

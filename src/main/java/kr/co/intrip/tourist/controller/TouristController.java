@@ -24,9 +24,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.login_signup.service.MemberService;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
+import kr.co.intrip.tourist.dto.weatherDTO;
 import kr.co.intrip.tourist.service.TouristService;
 import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.proxy.annotation.Post;
@@ -40,12 +42,15 @@ public class TouristController {
 	
 	//관광지 메인화면   
 	@GetMapping("tourist/travel_page")
-	public List<ApiDTO> travel_page (Model model,ApiDTO apiDTO) throws Exception {
+	public String travel_page (Model model,ApiDTO apiDTO) throws Exception {
+		String weather = "test";
+		weatherDTO wlist = tourservice.apitest2(weather);
+		model.addAttribute("wlist",wlist);
 		List<ApiDTO> mainlist = tourservice.jejutourist_main(apiDTO);
 		model.addAttribute("mainlist", mainlist);
 
 		
-		return mainlist;
+		return "tourist/travel_page";
 
 	}
 	   
@@ -59,6 +64,13 @@ public class TouristController {
 
 		return "tourist/tourist_PageList12";
 	}
+	
+	// 부산 여행지 api db에 저장용
+	@GetMapping("tourist/tourist_PageList13")
+	public String busanApi() throws Exception {			
+		tourservice.busanApi();
+		return "tourist/tourist_PageList13";
+	}
 
 	// 제주도 여행지 페이지 리스트
 	@GetMapping("tourist/tourist_PageList")
@@ -67,6 +79,18 @@ public class TouristController {
 		pagingDTO.setTotalRowCount(totalRowCount);
 		pagingDTO.pageSetting();		
 		List<ApiDTO> plist = tourservice.jejutourist_list(pagingDTO);
+		model.addAttribute("plist", plist);
+
+		return plist;
+	}
+	
+	// 부산 여행지 페이지 리스트
+	@GetMapping("tourist/busantourist_PageList")
+	public List<BusanApiDTO> busantourist_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.busangetTotalRowCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();		
+		List<BusanApiDTO> plist = tourservice.busantourist_list(pagingDTO);
 		model.addAttribute("plist", plist);
 
 		return plist;
@@ -96,7 +120,7 @@ public class TouristController {
 	
 	// 제주도 여행지 상세페이지 
 	@GetMapping("tourist/tourist_View")
-	public String jejutourist_detail(ApiDTO apiDTO, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {
+	public String jejutourist_detail(ApiDTO apiDTO, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {		
 		String schAirportCode = "alltag";
 		tourservice.jejutourist_viewcount(apiDTO);		
 		ApiDTO plist = tourservice.jejutourist_detail(apiDTO);		
@@ -118,6 +142,33 @@ public class TouristController {
 		pagingDTO.setTotalRowCount(totalRowCount);
 		pagingDTO.pageSetting();
 		List<ApiDTO> plist = tourservice.jejutourist_Sort(pagingDTO, model, request);
+		model.addAttribute("plist", plist);
+		return plist;		
+	}
+	
+	// 부산 여행지 상세페이지 
+	@GetMapping("tourist/busantourist_View")
+	public String busantourist_detail(BusanApiDTO busanApiDTO, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {		
+		tourservice.busantourist_viewcount(busanApiDTO);		
+		BusanApiDTO plist = tourservice.busantourist_detail(busanApiDTO);		
+		model.addAttribute("plist", plist);
+		
+		
+		int totalRowCount = tourservice.getCommentTotalRowCount(commentpagingDTO);
+		commentpagingDTO.setTotalRowCount(totalRowCount);
+		commentpagingDTO.pageSetting();
+		List<JejuCommentDTO> replyList = tourservice.jejureadReply(commentpagingDTO);
+		model.addAttribute("replyList", replyList);
+		return "tourist/tourist_View";
+	}
+	
+	// 부산 여행지 페이지 리스트 Sorting 기능
+	@GetMapping("tourist/busantourist_PageList_Sorting")
+	public List<BusanApiDTO> busantourist_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.busangetTotalRowCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<BusanApiDTO> plist = tourservice.busantourist_Sort(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
 		return plist;		
 	}

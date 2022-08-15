@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
@@ -21,8 +22,12 @@ public class TouristDAO {
 	
 	// 관광지 api db에 저장용
 	public void touristadd(ArrayList<ApiDTO> list) throws Exception {
-		sqlSession.insert("mapper.tourist.touristadd", list);
-		
+		sqlSession.insert("mapper.tourist.touristadd", list);		
+	}
+	
+	// 부산 여행지 api db에 저장용
+	public void busantouristadd(ArrayList<BusanApiDTO> list) throws Exception {
+		sqlSession.insert("mapper.tourist.busantouristadd", list);		
 	}
 
 	// 제주도 여행지 총 개수
@@ -33,6 +38,16 @@ public class TouristDAO {
 	// 제주도 여행지 페이지 리스트
 	public List<ApiDTO> jejutourist(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejutourist", pagingDTO);	 		
+	}
+	
+	// 부산 여행지 총 개수
+	public int busangetTotalRowCount(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.busangetTotalRowCount");
+	}
+
+	// 부산 여행지 페이지 리스트
+	public List<BusanApiDTO> busantourist(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist", pagingDTO);	 		
 	}
 	
 	// 제주도 축제 총 개수
@@ -84,6 +99,37 @@ public class TouristDAO {
 	public List<ApiDTO> jejutourist_SuggestionSort(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejutourist_SuggestionSort", pagingDTO);
 	}
+	//
+	// 부산 여행지 상세페이지
+	public BusanApiDTO busandetail(BusanApiDTO busanApiDTO) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.busandetail", busanApiDTO);
+	}
+	
+	// 부산 여행지 상세페이지 조회수 증가
+	public int busanviewcount(BusanApiDTO busanApiDTO) throws Exception {
+		return sqlSession.update("mapper.tourist.busanviewcount", busanApiDTO);
+	}
+
+	// 부산 여행지 페이지 조회수별 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_lookupSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist_lookupSort", pagingDTO);
+	}
+	
+	// 부산 여행지 페이지 댓글수별 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_commentSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist_commentSort", pagingDTO);
+	}
+	
+	// 부산 여행지 페이지 찜수별 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_steamedSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist_steamedSort", pagingDTO);
+	}
+	
+	// 부산 여행지 페이지 추천수별 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_SuggestionSort(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist_SuggestionSort", pagingDTO);
+	}
+	//
 	
 	// 제주도 축제 페이지 조회수별 리스트 Sorting 기능
 	public List<ApiDTO> jejufestival_lookupSort(PagingDTO pagingDTO) throws Exception {

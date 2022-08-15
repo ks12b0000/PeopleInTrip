@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
 <c:set var="plist" value="${plist}" />
+<c:set var="wlist" value="${wlist}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,7 +93,7 @@
 	<div class="slideshow-container" >
 	<c:forEach var="mainlist" items="${mainlist}">
         <div class="mySlides fade">
-            <a href="${contextPath}/tourist/tourist_View?contentsid=${mainlist.contentsid}"><img src="${mainlist.imgpath}" style="width: 100%;"></a>
+            <a href="${contextPath}/tourist/tourist_View?contentsid=${mainlist.contentsid}"><img src="${mainlist.imgpath}" style="width: 100%;"></a>            
   		</div>
 	</c:forEach>
         <div style="text-align: center">
@@ -102,16 +103,44 @@
             <span class="dot" onclick="currentSlide(3)"></span>
         </div>
 	</div>
-	
 	<div id="table_div">
 		<table id="weather_table" >
 			<tr>
-				<th><h3>오늘의 날씨</h3></th>
+				<th><h3 style="text-align: center; margin-left: 70px; white-space: nowrap; font-size: 25px;">오늘의 날씨</h3></th>
 			</tr>
 			<tr>
-				<td><img class="weather" alt="날씨" src="${contextPath}/resources/images/tourist/weather.png"></td>
-				<td><div id="map" style="margin-bottom: 50px; height: 300px;"></div></td>
-				
+				<td><h3 style="text-align: left; margin-left: 70px; white-space: nowrap; font-size: 18px;">제주시 아라동 기준</h3></td>							
+			</tr>
+			<tr>
+				<td style="text-align: center;"><p style="margin-left:65px; margin-bottom: 15px;"><strong>${wlist.baseTime}시 기준</strong><p>
+				<p style="font-size: 36px; position: absolute; margin-top: 5px; margin-left: 170px;"><strong>${wlist.TMP}º</strong></p>
+				<c:if test="${wlist.SKY == 1}">
+					<img src="${contextPath}/resources/images/tourist/맑음.png" class="weather" style="width: 140px; height: 140px; margin-left: 55px;" />
+					<p style="font-size: 17px; margin-left:45px;"><strong>맑음</strong></p>
+				</c:if>
+				<c:if test="${wlist.SKY == 2}">
+					<img src="${contextPath}/resources/images/tourist/구름조금.png" class="weather" style="width: 140px; height: 140px; margin-left: 55px;" />
+					<p style="font-size: 17px; margin-left:45px;"><strong>구름조금</strong></p>
+				</c:if>
+				<c:if test="${wlist.SKY == 3}">
+					<img src="${contextPath}/resources/images/tourist/구름많음.png" class="weather" style="width: 140px; height: 140px; margin-left: 55px;" />
+					<p style="font-size: 17px; margin-left:45px;"><strong>구름많음</strong></p>
+				</c:if>
+				<c:if test="${wlist.SKY == 4}">
+					<img src="${contextPath}/resources/images/tourist/흐림1.png" class="weather" style="width: 140px; height: 140px; margin-left: 55px;" />
+					<p style="font-size: 17px; margin-left:45px;"><strong>흐림</strong></p>
+				</c:if>
+				<c:if test="${wlist.PTY == 1}">
+					<img src="${contextPath}/resources/images/tourist/비.jpg" class="weather" style="width: 140px; height: 140px; margin-left: 55px;" />
+					<p style="font-size: 17px; margin-left:45px;"><strong>비</strong></p>
+				</c:if>
+				<c:if test="${wlist.PTY == 3}">
+					<img src="${contextPath}/resources/images/tourist/눈.jpg" class="weather" style="width: 140px; height: 140px; margin-left: 55px;" />
+					<p style="font-size: 17px; margin-left:45px;"><strong>눈</strong></p>
+				</c:if>
+					<p style="font-size: 17px; margin-left:50px;"><strong>강수확률 ${wlist.POP}%</strong></p>
+				</td>
+				<td><div id="map" style="margin-bottom: 50px; height: 300px; margin-left: 100px;"></div></td>				
 			</tr>
 		</table>		
 	</div>
