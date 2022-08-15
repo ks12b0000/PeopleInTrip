@@ -509,6 +509,38 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
+	
+	// 수정시 다중 이미지 업로드하기
+		private List<String> uploadModImageFile(MultipartHttpServletRequest multipartRequest)
+				throws Exception, IOException {
+
+			List<String> fileList = new ArrayList<>();
+			Iterator<String> fileNames = multipartRequest.getFileNames();
+
+			while (fileNames.hasNext()) {
+				String fileName = fileNames.next();
+
+				MultipartFile mFile = multipartRequest.getFile(fileName);
+				String originalFileName = mFile.getOriginalFilename();
+				if (originalFileName != "" && originalFileName != null) {
+					fileList.add(originalFileName);
+
+					File file = new File(ARTICLE_IMAGE_REPO + "\\" + fileName);
+					if (mFile.getSize() != 0) {
+						if (!file.exists()) {
+							file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
+							mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName)); // 임시로
+							// 저장된 MultipartFile을 실제 파일로 전송
+						}
+					}
+
+				} else { // 첨부한 이미지가 없었을 경우
+					fileList.add(null);
+				}
+			}
+
+			return fileList;
+		}
 
 	// 글 수정하기
 	@Override
@@ -636,37 +668,7 @@ public class BoardControllerImpl implements BoardController {
 		return resEnt;
 	}
 
-	// 수정시 다중 이미지 업로드하기
-	private List<String> uploadModImageFile(MultipartHttpServletRequest multipartRequest)
-			throws Exception, IOException {
-
-		List<String> fileList = new ArrayList<>();
-		Iterator<String> fileNames = multipartRequest.getFileNames();
-
-		while (fileNames.hasNext()) {
-			String fileName = fileNames.next();
-
-			MultipartFile mFile = multipartRequest.getFile(fileName);
-			String originalFileName = mFile.getOriginalFilename();
-			if (originalFileName != "" && originalFileName != null) {
-				fileList.add(originalFileName);
-
-				File file = new File(ARTICLE_IMAGE_REPO + "\\" + fileName);
-				if (mFile.getSize() != 0) {
-					if (!file.exists()) {
-						file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
-						mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName)); // 임시로
-						// 저장된 MultipartFile을 실제 파일로 전송
-					}
-				}
-
-			} else { // 첨부한 이미지가 없었을 경우
-				fileList.add(null);
-			}
-		}
-
-		return fileList;
-	}
+	
 
 	// 글삭제1
 	@Override
@@ -957,4 +959,6 @@ public class BoardControllerImpl implements BoardController {
 	         
 	      return "redirect:/board/community_detail2.do";
 	   }
+	   
+
 }
