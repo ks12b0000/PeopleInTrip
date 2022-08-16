@@ -49,10 +49,8 @@ public class TouristController {
 		model.addAttribute("wlist",wlist);
 		List<ApiDTO> mainlist = tourservice.jejutourist_main(apiDTO);
 		model.addAttribute("mainlist", mainlist);
-
 		
 		return "tourist/travel_page";
-
 	}
 	
 	//부산 메인화면   
@@ -63,18 +61,14 @@ public class TouristController {
 		model.addAttribute("wlist",wlist);
 		List<BusanApiDTO> mainlist = tourservice.busantourist_main(busanApiDTO);
 		model.addAttribute("mainlist", mainlist);
-
 		
 		return "tourist/busantravel_page";
-
 	}
 	   
 	// 관광지 api db에 저장용
 	@GetMapping("tourist/tourist_PageList12")
-	public String testList(Model model) throws Exception {
-			
-		String schAirportCode = "alltag";
-			
+	public String testList(Model model) throws Exception {			
+		String schAirportCode = "alltag";			
 		tourservice.parkApi(schAirportCode);
 
 		return "tourist/tourist_PageList12";
@@ -84,7 +78,7 @@ public class TouristController {
 	@GetMapping("tourist/tourist_PageList13")
 	public String busanApi() throws Exception {			
 		tourservice.busanApi(); // 여행지
-		
+	
 		return "tourist/tourist_PageList13";
 	}
 	
@@ -127,6 +121,7 @@ public class TouristController {
 		pagingDTO.setTotalRowCount(totalRowCount);
 		pagingDTO.pageSetting();
 		List<ApiDTO> plist = tourservice.jejufestival_list(pagingDTO);
+		
 		model.addAttribute("plist", plist);
 		return plist;
 	}
@@ -151,6 +146,7 @@ public class TouristController {
 		pagingDTO.pageSetting();
 		List<ApiDTO> plist = tourservice.jejuexhibition_list(pagingDTO);
 		model.addAttribute("plist", plist);
+		
 		return plist;
 	}
 	
@@ -167,6 +163,7 @@ public class TouristController {
 		commentpagingDTO.setTotalRowCount(totalRowCount);
 		commentpagingDTO.pageSetting();
 		List<JejuCommentDTO> replyList = tourservice.jejureadReply(commentpagingDTO);
+		
 		model.addAttribute("replyList", replyList);
 		return "tourist/tourist_View";
 	}
@@ -178,6 +175,7 @@ public class TouristController {
 		pagingDTO.setTotalRowCount(totalRowCount);
 		pagingDTO.pageSetting();
 		List<ApiDTO> plist = tourservice.jejutourist_Sort(pagingDTO, model, request);
+		
 		model.addAttribute("plist", plist);
 		return plist;		
 	}
@@ -195,6 +193,7 @@ public class TouristController {
 		commentpagingDTO.pageSetting();
 		List<BusanCommentDTO> replyList = tourservice.busanreadReply(commentpagingDTO);
 		model.addAttribute("replyList", replyList);
+		
 		return "tourist/busantourist_View";
 	}
 	
@@ -206,6 +205,7 @@ public class TouristController {
 		pagingDTO.pageSetting();
 		List<BusanApiDTO> plist = tourservice.busantourist_Sort(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
+		
 		return plist;		
 	}
 	
@@ -217,6 +217,7 @@ public class TouristController {
 		pagingDTO.pageSetting();
 		List<ApiDTO> plist = tourservice.jejufestival_Sort(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
+		
 		return plist;			
 	}
 	
@@ -233,6 +234,7 @@ public class TouristController {
 		commentpagingDTO.pageSetting();
 		List<BusanCommentDTO> replyList = tourservice.busanreadReply2(commentpagingDTO);
 		model.addAttribute("replyList", replyList);
+		
 		return "tourist/busanfestival_View";
 	}
 	
@@ -244,6 +246,7 @@ public class TouristController {
 		pagingDTO.pageSetting();
 		List<BusanApiDTO> plist = tourservice.busantourist_Sort2(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
+		
 		return plist;		
 	}
 	
@@ -255,6 +258,7 @@ public class TouristController {
 		pagingDTO.pageSetting();
 		List<ApiDTO> plist = tourservice.jejuexhibition_Sort(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
+		
 		return plist;			
 	}
 	
@@ -287,8 +291,7 @@ public class TouristController {
 	public String jejureplyUpdate(JejuCommentDTO jejuDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply Write");
 		
-		tourservice.jejumodify(jejuDTO);
-			
+		tourservice.jejumodify(jejuDTO);			
 		rttr.addAttribute("contentsid", jejuDTO.getContentsid());
 			
 		return "redirect:/tourist/tourist_View";
@@ -376,8 +379,7 @@ public class TouristController {
 	public String busanreplyUpdate(BusanCommentDTO busanCommentDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply Write");
 		
-		tourservice.busanmodify(busanCommentDTO);
-			
+		tourservice.busanmodify(busanCommentDTO);		
 		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
 			
 		return "redirect:/tourist/busantourist_View";
@@ -435,7 +437,7 @@ public class TouristController {
 		}
 		return suggestionCheck;
 	}
-	//
+
 	// 부산 축제 댓글 작성
 	@PostMapping("tourist/busanreplyWrite2")
 	public String busanreplyWrite2(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
@@ -465,8 +467,7 @@ public class TouristController {
 	public String busanreplyUpdate2(BusanCommentDTO busanCommentDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply Write");
 		
-		tourservice.busanmodify2(busanCommentDTO);
-			
+		tourservice.busanmodify2(busanCommentDTO);			
 		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
 			
 		return "redirect:/tourist/busanfestival_View";
@@ -524,6 +525,5 @@ public class TouristController {
 		}
 		return suggestionCheck;
 	}
-	//
 	
 }

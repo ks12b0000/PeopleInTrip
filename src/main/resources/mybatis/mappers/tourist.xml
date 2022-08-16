@@ -893,7 +893,6 @@
 		]]>
 	</select>
 	
-	<!--  -->
 	<!-- 부산 축제 댓글 총 개수 -->
 	<select id="busanCommentgetTotalRowCount2" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO" resultType="int">
 		<![CDATA[
@@ -1095,7 +1094,6 @@
 			where UC_SEQ = #{UC_SEQ} and id = #{id} 
 		]]>
 	</select>
-	<!--  -->
 	
 	<!-- 부산 축제 메인페이지 배너-->
 	<select id="busantouristmain" resultType="kr.co.intrip.tourist.dto.BusanApiDTO">

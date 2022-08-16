@@ -501,7 +501,6 @@ public class TouristDAO {
 		sqlSession.update("mapper.tourist.busanupdateSuggestionCheckCancel", map);
 	}
 	
-	//
 	// 부산 축제 댓글 수 증가
 	public int busancommentcount2(BusanApiDTO busanApiDTO) throws Exception {
 		return sqlSession.update("mapper.tourist.busancommentcount2", busanApiDTO);
@@ -641,7 +640,6 @@ public class TouristDAO {
 		map.put("UC_SEQ", UC_SEQ);
 		sqlSession.update("mapper.tourist.busanupdateSuggestionCheckCancel2", map);
 	}
-	//
 	
 	// 부산 축제 메인페이지 배너
 	public List<BusanApiDTO> busantouristmain(BusanApiDTO busanApiDTO) throws Exception {

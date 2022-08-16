@@ -231,7 +231,6 @@ public interface TouristService {
 	// 부산 여행지 추천 취소 시 delete
 	public void busandeleteSuggestion(int UC_SEQ, String id) throws Exception;
 	
-	//
 	// 부산 축제 댓글 수 증가
 	public int busancommentcount2(BusanApiDTO busanApiDTO) throws Exception;
 	
@@ -297,7 +296,6 @@ public interface TouristService {
 
 	// 부산 축제 추천 취소 시 delete
 	public void busandeleteSuggestion2(int UC_SEQ, String id) throws Exception;
-	//
 	
 	// 부산 여행지 메인페이지 배너
 	public List<BusanApiDTO> busantourist_main(BusanApiDTO busanApiDTO) throws Exception;

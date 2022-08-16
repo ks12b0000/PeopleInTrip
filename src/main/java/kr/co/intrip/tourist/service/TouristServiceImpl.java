@@ -46,6 +46,7 @@ public class TouristServiceImpl implements TouristService {
 	enum WeatherValue {
 		POP, PTY, PCP, REH, SNO, SKY, TMP, TMN, TMX, UUU, VVV, WAV, VEC, WSD
 	}
+	
 	@Autowired
 	private TouristDAO touristDAO;
 	
@@ -1038,144 +1039,142 @@ public class TouristServiceImpl implements TouristService {
 		touristDAO.busandeleteSuggestion(UC_SEQ, id);
 	}
 
-	//
-	// 부산 댓글 수 증가
+	// 부산 축제 댓글 수 증가
 	@Override
 	public int busancommentcount2(BusanApiDTO busanApiDTO) throws Exception {
 		return touristDAO.busancommentcount2(busanApiDTO);
 	}
 	
-	// 부산 댓글 수 감소
+	// 부산 축제 댓글 수 감소
 	@Override
 	public int busancommentcountminus2(BusanApiDTO busanApiDTO) throws Exception {
 		return touristDAO.busancommentcountminus2(busanApiDTO);
 	}
 	
-	// 부산 댓글 총 개수
+	// 부산 축제 댓글 총 개수
 	@Override
 	public int busangetCommentTotalRowCount2(CommentPagingDTO commentpagingDTO) throws Exception {
 		return touristDAO.busanCommentgetTotalRowCount2(commentpagingDTO);
 	}
 
-	// 부산 댓글 조회
+	// 부산 축제 댓글 조회
 	@Override
 	public List<BusanCommentDTO> busanreadReply2 (CommentPagingDTO commentpagingDTO) throws Exception {
 		return touristDAO.busanreadReply2(commentpagingDTO);
 	}
 	
-	// 부산 댓글 작성
+	// 부산 축제 댓글 작성
 	@Override
 	public void busanregister2(BusanCommentDTO busanCommentDTO) throws Exception {
 		touristDAO.busancreate2(busanCommentDTO);
 	}
 	
-	// 부산 댓글 수정
+	// 부산 축제 댓글 수정
 	@Override
 	public void busanmodify2(BusanCommentDTO busanCommentDTO) throws Exception {  
 		touristDAO.busanupdate2(busanCommentDTO);		
 	}
 	
-	// 부산 댓글 삭제
+	// 부산 축제 댓글 삭제
 	@Override
 	public void busanremove2(BusanCommentDTO busanCommentDTO) throws Exception {  
 		touristDAO.busandeleteReply2(busanCommentDTO);
 	}
 	
-	// 부산 선택된 댓글 조회
+	// 부산 축제 선택된 댓글 조회
 	@Override
 	public BusanCommentDTO busanselectReply2(int com_num) throws Exception {  
 		return touristDAO.busanselectReply2(com_num);
 	}
 	
-	// 부산 여행지 찜 중복방지 select문
+	// 부산 축제 찜 중복방지 select문
 	@Override
 	public int busansteamedCheck2(int UC_SEQ, String id) throws Exception {
 		return touristDAO.busanSteamedCheck2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 찜 시 steamed 테이블에 insert
+	// 부산 축제 찜 시 steamed 테이블에 insert
 	@Override
 	public void busaninsertSteamed2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busaninsertSteamed2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 찜 수
+	// 부산 축제 찜 수
 	@Override
 	public void busanupdateSteamed2(int UC_SEQ) throws Exception {
 		touristDAO.busanupdateSteamed2(UC_SEQ);
 	}
 
-	// 부산 여행지 찜 시 Check를 1로 만들어서 중복방지
+	// 부산 축제 찜 시 Check를 1로 만들어서 중복방지
 	@Override
 	public void busanupdateSteamedCheck2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busanupdateSteamedCheck2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 찜 취소 시 다시 0
+	// 부산 축제 찜 취소 시 다시 0
 	@Override
 	public void busanupdateSteamedCheckCancel2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busanupdateSteamedCheckCancel2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 찜 수 취소
+	// 부산 축제 찜 수 취소
 	@Override
 	public void busanupdateSteamedCancel2(int UC_SEQ) throws Exception {
 		touristDAO.busanupdateSteamedCancel2(UC_SEQ);
 	}
 
-	// 부산 여행지 찜 취소 시 delete
+	// 부산 축제 찜 취소 시 delete
 	@Override
 	public void busandeleteSteamed2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busandeleteSteamed2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 추천 중복방지 select문
+	// 부산 축제 추천 중복방지 select문
 	@Override
 	public int busanSuggestionCheck2(int UC_SEQ, String id) throws Exception {
 		return touristDAO.busanSuggestionCheck2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 추천 시 steamed 테이블에 insert
+	// 부산 축제 추천 시 steamed 테이블에 insert
 	@Override
 	public void busaninsertSuggestion2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busaninsertSuggestion2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 추천 수
+	// 부산 축제 추천 수
 	@Override
 	public void busanupdateSuggestion2(int UC_SEQ) throws Exception {
 		touristDAO.busanupdateSuggestion2(UC_SEQ);
 	}
 
-	// 부산 여행지 추천 시 Check를 1로 만들어서 중복방지
+	// 부산 축제 추천 시 Check를 1로 만들어서 중복방지
 	@Override
 	public void busanupdateSuggestionCheck2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busanupdateSuggestionCheck2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 추천 취소 시 다시 0
+	// 부산 축제 추천 취소 시 다시 0
 	@Override
 	public void busanupdateSuggestionCheckCancel2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busanupdateSuggestionCheckCancel2(UC_SEQ, id);
 	}
 
-	// 부산 여행지 추천 수 취소
+	// 부산 축제 추천 수 취소
 	@Override
 	public void busanupdateSuggestionCancel2(int UC_SEQ) throws Exception {
 		touristDAO.busanupdateSuggestionCancel2(UC_SEQ);
 	}
 
-	// 부산 여행지 추천 취소 시 delete
+	// 부산 축제 추천 취소 시 delete
 	@Override
 	public void busandeleteSuggestion2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busandeleteSuggestion2(UC_SEQ, id);
 	}
 	
-	// 부산 여행지 메인페이지 배너
+	// 부산 축제 메인페이지 배너
 	@Override
 	public List<BusanApiDTO> busantourist_main(BusanApiDTO busanApiDTO) throws Exception {
 		return touristDAO.busantouristmain(busanApiDTO);
 	}
-	//
 
 }
