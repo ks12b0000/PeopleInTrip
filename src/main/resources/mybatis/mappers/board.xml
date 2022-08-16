@@ -160,11 +160,26 @@
          SELECT nvl(MAX(imageFileNO),0) FROM P_imageFile
       ]]>
 	</select>
+	
+	<select id="selectNewImageFileNO1" resultType="int">
+      <![CDATA[   
+         SELECT nvl(MAX(imageFileNO),0) FROM P_imageFile1
+      ]]>
+	</select>
 
 	<select id="selectImageFileList" resultMap="imgResult"
 		parameterType="int">
       <![CDATA[
          SELECT * FROM P_imageFile
+         WHERE POST_NUM = #{post_num}
+         ORDER BY IMAGEFILENO      
+      ]]>
+	</select>
+	
+	<select id="selectImageFileList1" resultMap="imgResult"
+		parameterType="int">
+      <![CDATA[
+         SELECT * FROM P_imageFile1
          WHERE POST_NUM = #{post_num}
          ORDER BY IMAGEFILENO      
       ]]>
@@ -180,11 +195,30 @@
 			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
 		</foreach>
 	</insert>
+	
+	<!-- 한꺼번에 여러 개의 레코드 추가 -->
+	<insert id="insertNewImage1" parameterType="java.util.Map">
+		<foreach collection="list" item="item" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO P_imageFile1(imageFileNO, imageFileName,
+			post_num, regDate)
+			VALUES
+			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		</foreach>
+	</insert>
 
 	<select id="selectpost_num" resultType="boardDTO"
 		parameterType="int">
       <![CDATA[
          SELECT * FROM P_BOARD
+         WHERE POST_NUM = #{post_num}   
+      ]]>
+	</select>
+	
+	<select id="selectpost_num1" resultType="boardDTO"
+		parameterType="int">
+      <![CDATA[
+         SELECT * FROM P_BOARD1
          WHERE POST_NUM = #{post_num}   
       ]]>
 	</select>
@@ -227,11 +261,41 @@
 			</choose>
 		</foreach>
 	</update>
+	
+	<update id="updateImageFile1" parameterType="java.util.List">
+		<foreach collection="list" item="item" separator=";"
+			open="DECLARE BEGIN" close="; END;">
+			<choose>
+				<when test="item.imageFileName != null">
+					UPDATE P_imageFile1
+					SET IMAGEFILENAME =
+					#{item.imageFileName}
+					WHERE
+					POST_NUM = #{item.post_num}
+					AND
+					IMAGEFILENO = #{item.imageFileNO}
+				</when>
+				<otherwise></otherwise>
+			</choose>
+		</foreach>
+	</update>
+	
 	<!-- 이미지 추가 -->
 	<insert id="insertModNewImage" parameterType="java.util.Map">
 		<foreach collection="list" item="item" open="INSERT ALL"
 			separator=" " close="SELECT * FROM DUAL">
 			INTO P_imageFile (imageFileNO, imageFileName,
+			post_num, regDate)
+			VALUES
+			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		</foreach>
+	</insert>
+	
+	<!-- 이미지 추가 -->
+	<insert id="insertModNewImage1" parameterType="java.util.Map">
+		<foreach collection="list" item="item" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO P_imageFile1 (imageFileNO, imageFileName,
 			post_num, regDate)
 			VALUES
 			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
@@ -258,6 +322,15 @@
 	<delete id="deleteModImage" parameterType="imageDTO">
 		DELETE FROM
 		P_imageFile
+		WHERE POST_NUM = #{post_num}
+		AND IMAGEFILENO =
+		#{imageFileNO}
+	</delete>
+	
+	<!-- 이미지 삭제 -->
+	<delete id="deleteModImage1" parameterType="imageDTO">
+		DELETE FROM
+		P_imageFile1
 		WHERE POST_NUM = #{post_num}
 		AND IMAGEFILENO =
 		#{imageFileNO}
