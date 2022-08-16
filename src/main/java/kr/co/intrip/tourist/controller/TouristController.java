@@ -90,6 +90,14 @@ public class TouristController {
 		return "tourist/tourist_PageList14";
 	}
 	
+	// 부산 체험api db에 저장용
+	@GetMapping("tourist/tourist_PageList15")
+	public String busanApi3() throws Exception {			
+		tourservice.busanApi3();  // 축제
+		
+		return "tourist/tourist_PageList15";
+	}
+	
 	// 제주도 여행지 페이지 리스트
 	@GetMapping("tourist/tourist_PageList")
 	public List<ApiDTO> jejutourist_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
@@ -147,6 +155,18 @@ public class TouristController {
 		List<ApiDTO> plist = tourservice.jejuexhibition_list(pagingDTO);
 		model.addAttribute("plist", plist);
 		
+		return plist;
+	}
+	
+	// 부산 체험 페이지 리스트
+	@GetMapping("tourist/busanexperience_PageList")
+	public List<BusanApiDTO> busanexperience_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.busangetTotalRowCount3(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();		
+		List<BusanApiDTO> plist = tourservice.busantourist_list3(pagingDTO);
+		model.addAttribute("plist", plist);
+
 		return plist;
 	}
 	
@@ -260,6 +280,35 @@ public class TouristController {
 		model.addAttribute("plist", plist);
 		
 		return plist;			
+	}
+	
+	// 부산 체험 상세페이지 
+	@GetMapping("tourist/busanexperience_View")
+	public String busanexperience_detail(BusanApiDTO busanApiDTO, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {		
+		tourservice.busantourist_viewcount3(busanApiDTO);		
+		BusanApiDTO plist = tourservice.busantourist_detail3(busanApiDTO);		
+		model.addAttribute("plist", plist);
+		
+		
+		int totalRowCount = tourservice.busangetCommentTotalRowCount3(commentpagingDTO);
+		commentpagingDTO.setTotalRowCount(totalRowCount);
+		commentpagingDTO.pageSetting();
+		List<BusanCommentDTO> replyList = tourservice.busanreadReply3(commentpagingDTO);
+		model.addAttribute("replyList", replyList);
+		
+		return "tourist/busanexperience_View";
+	}
+	
+	// 부산 체험 페이지 리스트 Sorting 기능
+	@GetMapping("tourist/busanexperience_PageList_Sorting")
+	public List<BusanApiDTO> busanexperience_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.busangetTotalRowCount3(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<BusanApiDTO> plist = tourservice.busantourist_Sort3(pagingDTO, model, request);
+		model.addAttribute("plist", plist);
+		
+		return plist;		
 	}
 	
 	// 제주도 댓글 작성
@@ -522,6 +571,94 @@ public class TouristController {
 			tourservice.busanupdateSuggestionCheckCancel2(UC_SEQ, id); 
 			tourservice.busanupdateSuggestionCancel2(UC_SEQ); 
 			tourservice.busandeleteSuggestion2(UC_SEQ, id); 
+		}
+		return suggestionCheck;
+	}
+	
+	// 부산 체험 댓글 작성
+	@PostMapping("tourist/busanreplyWrite3")
+	public String busanreplyWrite3(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
+		log.info("reply write");
+		tourservice.busanregister3(busanCommentDTO);
+		tourservice.busancommentcount3(busanApiDTO);
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+		
+		return "redirect:/tourist/busanexperience_View";
+	}
+	
+	// 부산 체험 댓글 수정 페이지
+	@GetMapping("tourist/busanreplyUpdateView3")
+	public String busanreplyUpdateView3(BusanCommentDTO busanCommentDTO, PagingDTO pagingDTO, Model model) throws Exception {
+		log.info("reply write");
+			
+		BusanCommentDTO reply = tourservice.busanselectReply3(busanCommentDTO.getCom_num());
+		log.info("댓글번호 : " + reply.getCom_num());
+		model.addAttribute("replyUpdate", tourservice.busanselectReply3(busanCommentDTO.getCom_num()));
+		model.addAttribute("pagingDTO", pagingDTO);
+
+		return "tourist/busanreplyUpdateView3";
+	}
+		
+	// 부산 체험 댓글 수정 폼
+	@PostMapping("tourist/busanreplyUpdate3")
+	public String busanreplyUpdate3(BusanCommentDTO busanCommentDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
+		log.info("reply Write");
+		
+		tourservice.busanmodify3(busanCommentDTO);			
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+			
+		return "redirect:/tourist/busanexperience_View";
+	}
+	
+	// 부산 체험 댓글 삭제 폼
+	@PostMapping("tourist/busanreplyDelete3")
+	public String busanreplyDelete3(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO,Model model, RedirectAttributes rttr) throws Exception {
+		log.info("reply delete");
+
+		tourservice.busanremove3(busanCommentDTO);
+		tourservice.busancommentcountminus3(busanApiDTO);
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+			
+		return "redirect:/tourist/busanexperience_View";
+	}
+	
+	// 부산 체험 찜하기
+	@PostMapping("tourist/busanupdatesteamed3")
+	@ResponseBody
+	public int busanupdateSteamed3(int UC_SEQ,  String id)throws Exception{
+		
+		int steamedCheck = tourservice.busansteamedCheck3(UC_SEQ, id);
+
+		if(steamedCheck == 0) {
+			//좋아요 처음누름
+			tourservice.busaninsertSteamed3(UC_SEQ, id); //like테이블 삽입
+			tourservice.busanupdateSteamed3(UC_SEQ);	//게시판테이블 +1
+			tourservice.busanupdateSteamedCheck3(UC_SEQ, id);//like테이블 구분자 1
+		}
+		else if(steamedCheck == 1) {
+			tourservice.busanupdateSteamedCheckCancel3(UC_SEQ, id); //like테이블 구분자0
+			tourservice.busanupdateSteamedCancel3(UC_SEQ); //게시판테이블 - 1
+			tourservice.busandeleteSteamed3(UC_SEQ, id); //like테이블 삭제
+		}
+		return steamedCheck;
+	}
+	
+	// 부산 체험 추천기능
+	@PostMapping("tourist/busanupdateSuggestion3")
+	@ResponseBody
+	public int busanupdateSuggestion3(int UC_SEQ,  String id)throws Exception{			
+		int suggestionCheck = tourservice.busanSuggestionCheck3(UC_SEQ, id);
+
+		if(suggestionCheck == 0) {
+			//추천 처음누름
+			tourservice.busaninsertSuggestion3(UC_SEQ, id); 
+			tourservice.busanupdateSuggestion3(UC_SEQ);	
+			tourservice.busanupdateSuggestionCheck3(UC_SEQ, id);
+		}
+		else if(suggestionCheck == 1) {
+			tourservice.busanupdateSuggestionCheckCancel3(UC_SEQ, id); 
+			tourservice.busanupdateSuggestionCancel3(UC_SEQ); 
+			tourservice.busandeleteSuggestion3(UC_SEQ, id); 
 		}
 		return suggestionCheck;
 	}

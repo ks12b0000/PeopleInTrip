@@ -35,6 +35,11 @@ public class TouristDAO {
 	public void busantouristadd2(ArrayList<BusanApiDTO> list) throws Exception {
 		sqlSession.insert("mapper.tourist.busantouristadd2", list);		
 	}
+	
+	// 부산 체험 api db에 저장용
+	public void busantouristadd3(ArrayList<BusanApiDTO> list) throws Exception {
+		sqlSession.insert("mapper.tourist.busantouristadd3", list);		
+	}
 
 	// 제주도 여행지 총 개수
 	public int getTotalRowCount(PagingDTO pagingDTO) throws Exception {
@@ -56,16 +61,6 @@ public class TouristDAO {
 		return sqlSession.selectList("mapper.tourist.busantourist", pagingDTO);	 		
 	}
 	
-	// 부산 축제 총 개수
-	public int busangetTotalRowCount2(PagingDTO pagingDTO) throws Exception {
-		return sqlSession.selectOne("mapper.tourist.busangetTotalRowCount2");
-	}
-
-	// 부산 축제 페이지 리스트
-	public List<BusanApiDTO> busanfestival(PagingDTO pagingDTO) throws Exception {
-		return sqlSession.selectList("mapper.tourist.busanfestival", pagingDTO);	 		
-	}
-	
 	// 제주도 축제 총 개수
 	public int getTotalRowCount2(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectOne("mapper.tourist.getTotalRowCount2");
@@ -76,6 +71,16 @@ public class TouristDAO {
 		return sqlSession.selectList("mapper.tourist.jejufestival", pagingDTO);	
 	}
 	
+	// 부산 축제 총 개수
+	public int busangetTotalRowCount2(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.busangetTotalRowCount2");
+	}
+
+	// 부산 축제 페이지 리스트
+	public List<BusanApiDTO> busanfestival(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanfestival", pagingDTO);	 		
+	}
+	
 	// 제주도 전시관 총 개수
 	public int getTotalRowCount3(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectOne("mapper.tourist.getTotalRowCount3");
@@ -84,6 +89,16 @@ public class TouristDAO {
 	// 제주도 전시관 페이지 리스트
 	public List<ApiDTO> jejuexhibition(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejuexhibition", pagingDTO);
+	}
+	
+	// 부산 체험 총 개수
+	public int busangetTotalRowCount3(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.busangetTotalRowCount3");
+	}
+
+	// 부산 체험 페이지 리스트
+	public List<BusanApiDTO> busanexperience(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanexperience", pagingDTO);	 		
 	}
 
 	// 제주도 통합 상세페이지
@@ -134,6 +149,16 @@ public class TouristDAO {
 	// 부산 축제 상세페이지 조회수 증가
 	public int busanviewcount2(BusanApiDTO busanApiDTO) throws Exception {
 		return sqlSession.update("mapper.tourist.busanviewcount2", busanApiDTO);
+	}
+	
+	// 부산 체험 상세페이지
+	public BusanApiDTO busandetail3(BusanApiDTO busanApiDTO) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.busandetail3", busanApiDTO);
+	}
+	
+	// 부산 체험 상세페이지 조회수 증가
+	public int busanviewcount3(BusanApiDTO busanApiDTO) throws Exception {
+		return sqlSession.update("mapper.tourist.busanviewcount3", busanApiDTO);
 	}
 
 	// 부산 여행지 페이지 조회수별 리스트 Sorting 기능
@@ -194,6 +219,26 @@ public class TouristDAO {
 	// 부산 축제 페이지 추천수별 리스트 Sorting 기능
 	public List<BusanApiDTO> busantourist_SuggestionSort2(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.busanfestival_SuggestionSort", pagingDTO);
+	}
+	
+	// 부산 체험 페이지 조회수별 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_lookupSort3(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanexperience_lookupSort", pagingDTO);
+	}
+	
+	// 부산 체험 페이지 댓글수별 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_commentSort3(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanexperience_commentSort", pagingDTO);
+	}
+	
+	// 부산 체험 페이지 찜수별 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_steamedSort3(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanexperience_steamedSort", pagingDTO);
+	}
+	
+	// 부산 체험 페이지 추천수별 리스트 Sorting 기능
+	public List<BusanApiDTO> busantourist_SuggestionSort3(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanexperience_SuggestionSort", pagingDTO);
 	}
 		
 	// 제주도 전시관 페이지 조회수별 리스트 Sorting 기능
@@ -639,6 +684,146 @@ public class TouristDAO {
 		map.put("id", id);
 		map.put("UC_SEQ", UC_SEQ);
 		sqlSession.update("mapper.tourist.busanupdateSuggestionCheckCancel2", map);
+	}
+	
+	// 부산 체험 댓글 수 증가
+	public int busancommentcount3(BusanApiDTO busanApiDTO) throws Exception {
+		return sqlSession.update("mapper.tourist.busancommentcount3", busanApiDTO);
+	}
+	
+	// 부산 체험 댓글 수 감소
+	public int busancommentcountminus3(BusanApiDTO busanApiDTO) throws Exception {
+		return sqlSession.update("mapper.tourist.busancommentcountminus3", busanApiDTO);
+	}
+	
+	// 부산 체험 댓글 총 개수
+	public int busanCommentgetTotalRowCount3(CommentPagingDTO commentpagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.busanCommentgetTotalRowCount3", commentpagingDTO);
+	}
+
+	// 부산 체험 댓글 조회
+	public List<BusanCommentDTO> busanreadReply3(CommentPagingDTO commentpagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanCommentselect3", commentpagingDTO);
+	}
+	
+	// 부산 체험 댓글 작성
+	public void busancreate3(BusanCommentDTO busanCommentDTO) throws Exception {
+		sqlSession.insert("mapper.tourist.busanWriteReply3", busanCommentDTO);
+	}
+	
+	// 부산 체험 댓글 수정
+	public void busanupdate3(BusanCommentDTO busanCommentDTO) throws Exception {
+		sqlSession.update("mapper.tourist.busanupdateReply3", busanCommentDTO);
+	}
+	
+	// 부산 체험 댓글 삭제
+	public void busandeleteReply3(BusanCommentDTO busanCommentDTO) throws Exception {
+		sqlSession.delete("mapper.tourist.busandeleteReply3", busanCommentDTO);
+	}
+	
+	// 부산 체험 선택된 댓글 조회
+	public BusanCommentDTO busanselectReply3(int com_num) throws Exception { 
+		return sqlSession.selectOne("mapper.tourist.busanselectReply3", com_num);
+	}
+	
+	// 부산 체험 찜 수
+	public void busanupdateSteamed3(int UC_SEQ) throws Exception {
+		sqlSession.update("mapper.tourist.busanupdateSteamed3", UC_SEQ);
+	}
+	
+	// 부산 체험 찜 수 취소
+	public void busanupdateSteamedCancel3(int UC_SEQ) throws Exception {
+		sqlSession.update("mapper.tourist.busanupdateSteamedCancel3", UC_SEQ);
+	}
+
+	// 부산 체험 찜 시 steamed 테이블에 insert
+	public void busaninsertSteamed3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		sqlSession.insert("mapper.tourist.busaninsertSteamed3", map);
+	}
+
+	// 부산 체험 찜 취소 시 delete
+	public void busandeleteSteamed3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		sqlSession.delete("mapper.tourist.busandeleteSteamed3", map);
+	}
+
+	// 부산 체험 찜 중복방지 select문
+	public int busanSteamedCheck3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		return sqlSession.selectOne("mapper.tourist.busanSteamedCheck3", map);
+	}
+
+	// 부산 체험 찜 시 Check를 1로 만들어서 중복방지
+	public void busanupdateSteamedCheck3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		sqlSession.update("mapper.tourist.busanupdateSteamedCheck3", map);
+	}
+
+	// 부산 체험 찜 취소 시 다시 0 
+	public void busanupdateSteamedCheckCancel3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		sqlSession.update("mapper.tourist.busanupdateSteamedCheckCancel3", map);
+	}
+
+	// 부산 체험 추천 수
+	public void busanupdateSuggestion3(int UC_SEQ) throws Exception {
+		sqlSession.update("mapper.tourist.busanupdateSuggestion3", UC_SEQ);
+	}
+		
+	// 부산 체험 추천 수 취소
+	public void busanupdateSuggestionCancel3(int UC_SEQ) throws Exception {
+		sqlSession.update("mapper.tourist.busanupdateSuggestionCancel3", UC_SEQ);
+	}
+
+	// 부산 체험 추천 시 steamed 테이블에 insert
+	public void busaninsertSuggestion3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		sqlSession.insert("mapper.tourist.busaninsertSuggestion3", map);
+	}
+
+	// 부산 체험 추천 취소 시 delete
+	public void busandeleteSuggestion3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		sqlSession.delete("mapper.tourist.busandeleteSuggestion3", map);
+	}
+	
+	// 부산 체험 추천 중복방지 select문
+	public int busanSuggestionCheck3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		return sqlSession.selectOne("mapper.tourist.busanSuggestionCheck3", map);
+	}
+
+	// 부산 체험 추천 시 Check를 1로 만들어서 중복방지
+	public void busanupdateSuggestionCheck3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		sqlSession.update("mapper.tourist.busanupdateSuggestionCheck3", map);
+	}
+
+	// 부산 체험 추천 취소 시 다시 0 
+	public void busanupdateSuggestionCheckCancel3(int UC_SEQ, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("UC_SEQ", UC_SEQ);
+		sqlSession.update("mapper.tourist.busanupdateSuggestionCheckCancel3", map);
 	}
 	
 	// 부산 축제 메인페이지 배너

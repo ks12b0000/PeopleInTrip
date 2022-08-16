@@ -323,6 +323,91 @@ public class TouristServiceImpl implements TouristService {
 		touristDAO.busantouristadd2(list);
 	}
 	
+	// 부산 체험 api db에 저장용
+	@Override
+	public void busanApi3() throws Exception {
+		ArrayList<BusanApiDTO> list = new ArrayList<BusanApiDTO>();
+		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/6260000/MarintimeService/getMaritimeKr"); /*URL*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=6FKxrGLyiJy9V0QFz5JpDYNHcC7zcCTo5K%2F%2FqA3n9WRmWUHmqVDq%2B2B6JKG8iJ%2BConwMG8s0bZKflAN2kqhtCA%3D%3D"); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("34", "UTF-8")); /*한 페이지 결과 수*/
+        urlBuilder.append("&" + URLEncoder.encode("resultType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*JSON방식으로 호출 시 파라미터 resultType=json 입력*/
+        URL url = new URL(urlBuilder.toString());
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-type", "application/json");
+        System.out.println("Response code: " + conn.getResponseCode());
+        BufferedReader rd;
+        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        } else {
+            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+        }
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = rd.readLine()) != null) {
+            sb.append(line);
+        }
+        rd.close();
+        conn.disconnect();
+        //System.out.println(sb.toString());
+        
+        String jsonString = sb.toString();
+		// 가장 큰 JSONObject를 가져옵니다.
+		JSONObject jObject = new JSONObject(jsonString);
+
+		// (response) 0번째 JSONObject를 가져옵니다.
+		JSONObject responseObject = jObject.getJSONObject("getMaritimeKr");
+		JSONArray itemArray = (JSONArray) responseObject.get("item");
+
+		for (int i = 0; i < itemArray.length(); i++) {					
+			BusanApiDTO pvo1 = new BusanApiDTO();
+			JSONObject iobj = itemArray.getJSONObject(i);					
+				
+			if(!(itemArray.getJSONObject(i).isNull("LAT"))) {
+				pvo1.setLAT(iobj.getDouble("LAT"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("LNG"))) {
+				pvo1.setLNG(iobj.getDouble("LNG"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("UC_SEQ"))) {
+				pvo1.setUC_SEQ(iobj.getInt("UC_SEQ"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("PLACE"))) {
+				pvo1.setPLACE(iobj.getString("PLACE"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("ADDR1"))) {
+				pvo1.setADDR1(iobj.getString("ADDR1"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("CNTCT_TEL"))) {
+				pvo1.setCNTCT_TEL(iobj.getString("CNTCT_TEL"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("ITEMCNTNTS"))) {
+				pvo1.setITEMCNTNTS(iobj.getString("ITEMCNTNTS"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("MAIN_IMG_NORMAL"))) {
+				pvo1.setMAIN_IMG_NORMAL(iobj.getString("MAIN_IMG_NORMAL"));
+			}
+			
+			if(!(itemArray.getJSONObject(i).isNull("SUBTITLE"))) {
+				pvo1.setSUBTITLE(iobj.getString("SUBTITLE"));
+			}
+			
+			/* log.info(i + "번째 item: " + pvo1); */
+			list.add(pvo1);
+		}
+		/* System.out.println("list: " + list); */				
+		
+		touristDAO.busantouristadd3(list);
+	}
+	
 	// 제주도 날씨 정보 api
 	@Override
 	public weatherDTO weatherapi(String weather) throws Exception {
@@ -578,6 +663,17 @@ public class TouristServiceImpl implements TouristService {
 	public List<BusanApiDTO> busantourist_list(PagingDTO pagingDTO) throws Exception {
 		return touristDAO.busantourist(pagingDTO);		
 	}
+		
+	// 제주도 축제 총 개수
+	public int getTotalRowCount2(PagingDTO pagingDTO) throws Exception {
+		return touristDAO.getTotalRowCount2(pagingDTO);
+	}
+
+	// 제주도 축제 페이지 리스트
+	@Override
+	public List<ApiDTO> jejufestival_list(PagingDTO pagingDTO) throws Exception {
+		return touristDAO.jejufestival(pagingDTO);	
+	}
 	
 	// 부산 축제 총 개수
 	public int busangetTotalRowCount2(PagingDTO pagingDTO) throws Exception {
@@ -590,18 +686,7 @@ public class TouristServiceImpl implements TouristService {
 		return touristDAO.busanfestival(pagingDTO);		
 	}
 	
-	// 제주도 축제 총 개수
-	public int getTotalRowCount2(PagingDTO pagingDTO) throws Exception {
-		return touristDAO.getTotalRowCount2(pagingDTO);
-	}
-
-	// 제주도 축제 페이지 리스트
-	@Override
-	public List<ApiDTO> jejufestival_list(PagingDTO pagingDTO) throws Exception {
-		return touristDAO.jejufestival(pagingDTO);	
-	}
-	
-	// 제주도 여행지 총 개수
+	// 제주도 전시관 총 개수
 	public int getTotalRowCount3(PagingDTO pagingDTO) throws Exception {
 		return touristDAO.getTotalRowCount3(pagingDTO);
 	}
@@ -610,6 +695,17 @@ public class TouristServiceImpl implements TouristService {
 	@Override
 	public List<ApiDTO> jejuexhibition_list(PagingDTO pagingDTO) throws Exception {
 		return touristDAO.jejuexhibition(pagingDTO);
+	}
+	
+	// 부산 체험 총 개수
+	public int busangetTotalRowCount3(PagingDTO pagingDTO) throws Exception {
+		return touristDAO.busangetTotalRowCount3(pagingDTO);
+	}
+	
+	// 부산 체험 페이지 리스트
+	@Override
+	public List<BusanApiDTO> busantourist_list3(PagingDTO pagingDTO) throws Exception {
+		return touristDAO.busanexperience(pagingDTO);		
 	}
 
 	// 제주도 통합 상세페이지
@@ -671,6 +767,18 @@ public class TouristServiceImpl implements TouristService {
 	@Override
 	public int busantourist_viewcount2(BusanApiDTO busanApiDTO) throws Exception {
 		return touristDAO.busanviewcount2(busanApiDTO);
+	}
+	
+	// 부산 체험 상세페이지
+	@Override
+	public BusanApiDTO busantourist_detail3(BusanApiDTO busanApiDTO) throws Exception {   
+		return touristDAO.busandetail3(busanApiDTO);
+	}
+
+	// 부산 체험 상세페이지 조회수 증가
+	@Override
+	public int busantourist_viewcount3(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busanviewcount3(busanApiDTO);
 	}
 
 	// 부산 여행지 페이지 리스트 Sorting 기능
@@ -766,6 +874,30 @@ public class TouristServiceImpl implements TouristService {
 		}
 		else {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);		
+		}
+	}
+	
+	// 부산 체험 페이지 리스트 Sorting 기능
+	@Override
+	public List<BusanApiDTO> busantourist_Sort3(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception {
+		String value = request.getParameter("value");
+		model.addAttribute("value", value);
+		log.info("value = {}", value);
+		
+		if (value.equals("basic")) {
+			return touristDAO.busanexperience(pagingDTO);
+		}
+		else if (value.equals("lookup")) {
+			return touristDAO.busantourist_lookupSort3(pagingDTO);
+		}
+		else if (value.equals("comment")) {
+			return touristDAO.busantourist_commentSort3(pagingDTO);
+		}	
+		else if (value.equals("steamed")) {
+			return touristDAO.busantourist_steamedSort3(pagingDTO);
+		}
+		else {
+			return touristDAO.busantourist_SuggestionSort3(pagingDTO);		
 		}
 	}
 	
@@ -1169,6 +1301,138 @@ public class TouristServiceImpl implements TouristService {
 	@Override
 	public void busandeleteSuggestion2(int UC_SEQ, String id) throws Exception {
 		touristDAO.busandeleteSuggestion2(UC_SEQ, id);
+	}
+	
+	// 부산 체험 댓글 수 증가
+	@Override
+	public int busancommentcount3(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busancommentcount3(busanApiDTO);
+	}
+	
+	// 부산 체험 댓글 수 감소
+	@Override
+	public int busancommentcountminus3(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busancommentcountminus3(busanApiDTO);
+	}
+	
+	// 부산 체험 댓글 총 개수
+	@Override
+	public int busangetCommentTotalRowCount3(CommentPagingDTO commentpagingDTO) throws Exception {
+		return touristDAO.busanCommentgetTotalRowCount3(commentpagingDTO);
+	}
+
+	// 부산 체험 댓글 조회
+	@Override
+	public List<BusanCommentDTO> busanreadReply3 (CommentPagingDTO commentpagingDTO) throws Exception {
+		return touristDAO.busanreadReply3(commentpagingDTO);
+	}
+	
+	// 부산 체험 댓글 작성
+	@Override
+	public void busanregister3(BusanCommentDTO busanCommentDTO) throws Exception {
+		touristDAO.busancreate3(busanCommentDTO);
+	}
+	
+	// 부산 체험 댓글 수정
+	@Override
+	public void busanmodify3(BusanCommentDTO busanCommentDTO) throws Exception {  
+		touristDAO.busanupdate3(busanCommentDTO);		
+	}
+	
+	// 부산 체험 댓글 삭제
+	@Override
+	public void busanremove3(BusanCommentDTO busanCommentDTO) throws Exception {  
+		touristDAO.busandeleteReply3(busanCommentDTO);
+	}
+	
+	// 부산 체험 선택된 댓글 조회
+	@Override
+	public BusanCommentDTO busanselectReply3(int com_num) throws Exception {  
+		return touristDAO.busanselectReply3(com_num);
+	}
+	
+	// 부산 체험 찜 중복방지 select문
+	@Override
+	public int busansteamedCheck3(int UC_SEQ, String id) throws Exception {
+		return touristDAO.busanSteamedCheck3(UC_SEQ, id);
+	}
+
+	// 부산 체험 찜 시 steamed 테이블에 insert
+	@Override
+	public void busaninsertSteamed3(int UC_SEQ, String id) throws Exception {
+		touristDAO.busaninsertSteamed3(UC_SEQ, id);
+	}
+
+	// 부산 체험 찜 수
+	@Override
+	public void busanupdateSteamed3(int UC_SEQ) throws Exception {
+		touristDAO.busanupdateSteamed3(UC_SEQ);
+	}
+
+	// 부산 체험 찜 시 Check를 1로 만들어서 중복방지
+	@Override
+	public void busanupdateSteamedCheck3(int UC_SEQ, String id) throws Exception {
+		touristDAO.busanupdateSteamedCheck3(UC_SEQ, id);
+	}
+
+	// 부산 체험 찜 취소 시 다시 0
+	@Override
+	public void busanupdateSteamedCheckCancel3(int UC_SEQ, String id) throws Exception {
+		touristDAO.busanupdateSteamedCheckCancel3(UC_SEQ, id);
+	}
+
+	// 부산 체험 찜 수 취소
+	@Override
+	public void busanupdateSteamedCancel3(int UC_SEQ) throws Exception {
+		touristDAO.busanupdateSteamedCancel3(UC_SEQ);
+	}
+
+	// 부산 체험 찜 취소 시 delete
+	@Override
+	public void busandeleteSteamed3(int UC_SEQ, String id) throws Exception {
+		touristDAO.busandeleteSteamed3(UC_SEQ, id);
+	}
+
+	// 부산 체험 추천 중복방지 select문
+	@Override
+	public int busanSuggestionCheck3(int UC_SEQ, String id) throws Exception {
+		return touristDAO.busanSuggestionCheck3(UC_SEQ, id);
+	}
+
+	// 부산 체험 추천 시 steamed 테이블에 insert
+	@Override
+	public void busaninsertSuggestion3(int UC_SEQ, String id) throws Exception {
+		touristDAO.busaninsertSuggestion3(UC_SEQ, id);
+	}
+
+	// 부산 체험 추천 수
+	@Override
+	public void busanupdateSuggestion3(int UC_SEQ) throws Exception {
+		touristDAO.busanupdateSuggestion3(UC_SEQ);
+	}
+
+	// 부산 체험 추천 시 Check를 1로 만들어서 중복방지
+	@Override
+	public void busanupdateSuggestionCheck3(int UC_SEQ, String id) throws Exception {
+		touristDAO.busanupdateSuggestionCheck3(UC_SEQ, id);
+	}
+
+	// 부산 체험 추천 취소 시 다시 0
+	@Override
+	public void busanupdateSuggestionCheckCancel3(int UC_SEQ, String id) throws Exception {
+		touristDAO.busanupdateSuggestionCheckCancel3(UC_SEQ, id);
+	}
+
+	// 부산 체험 추천 수 취소
+	@Override
+	public void busanupdateSuggestionCancel3(int UC_SEQ) throws Exception {
+		touristDAO.busanupdateSuggestionCancel3(UC_SEQ);
+	}
+
+	// 부산 체험 추천 취소 시 delete
+	@Override
+	public void busandeleteSuggestion3(int UC_SEQ, String id) throws Exception {
+		touristDAO.busandeleteSuggestion3(UC_SEQ, id);
 	}
 	
 	// 부산 축제 메인페이지 배너

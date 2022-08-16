@@ -36,7 +36,7 @@
 				<li><a href="${contextPath}/tourist/busantravel_page"><strong>홈</strong></a></li>
 				<li><a href="${contextPath}/tourist/busantourist_PageList"><strong>여행지</strong></a></li>
 				<li><a href="${contextPath}/tourist/busanfestival_PageList"><strong>축제</strong></a></li>
-				<li><a href="${contextPath}/tourist/busanexhibition_PageList"><strong>전시관</strong></a></li>
+				<li><a href="${contextPath}/tourist/busanexperience_PageList"><strong>체험</strong></a></li>
 			</ul>
 		</nav>
 	</header>
@@ -77,7 +77,7 @@
     <table class="tg">
 	  <tr>
 	    <th class="tg-13ci" colspan="2"><strong>카테고리</strong></th>
-	    <td class="tg-wo29" colspan="1">관광지</td>
+	    <td class="tg-wo29" colspan="1">축제</td>
 	  </tr>	
 	  <tr>
 	    <th class="tg-13ci" colspan="2"><strong>주소</strong></th>

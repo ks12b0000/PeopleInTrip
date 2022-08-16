@@ -77,7 +77,7 @@
     <table class="tg">
 	  <tr>
 	    <th class="tg-13ci" colspan="2"><strong>카테고리</strong></th>
-	    <td class="tg-wo29" colspan="1">관광지</td>
+	    <td class="tg-wo29" colspan="1">체험</td>
 	  </tr>	
 	  <tr>
 	    <th class="tg-13ci" colspan="2"><strong>주소</strong></th>
@@ -118,7 +118,7 @@
 	   		
 		   		<c:if test="${replyList.id eq user.id}">
 			   		<button type="button" class="SBTN2" data-com_num="${replyList.com_num}"><strong>수정</strong></button>
-			   	<form action="${contextPath}/tourist/busanreplyDelete" method="post" name="deleteForm" id="deleteForm">
+			   	<form action="${contextPath}/tourist/busanreplyDelete3" method="post" name="deleteForm" id="deleteForm">
 			  	 	<input type="hidden" name="UC_SEQ" value="${plist.UC_SEQ }"/>
 			  	 	<input type="hidden" name="com_num" value="${replyList.com_num }"/>
 					<button type="button" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>	
@@ -126,7 +126,7 @@
 				</c:if>	        		
 		</c:forEach>
     	</div>        		
-    	<form action="${contextPath}/tourist/busanreplyWrite" method="post">
+    	<form action="${contextPath}/tourist/busanreplyWrite3" method="post">
 			<input type="hidden" name="UC_SEQ" value="${plist.UC_SEQ }"/>
 			<input type="hidden" name="id" value="${user.id}"/>
 			<c:choose>
@@ -144,18 +144,18 @@
 		</form>	
 		<div name="tour_div3" id="tour_div3" style="text-align: center;">
 				<c:if test="${commentpagingDTO.curPage > 1 }">
-					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
-					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+					<a href="${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+					<a href="${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
 				</c:if>
 					<c:forEach begin="${commentpagingDTO.firstPage }"  end="${commentpagingDTO.lastPage }" var="i"> &nbsp;
-	   					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=${i }" style="font-size: 18px; color:black;"  >  
+	   					<a href="${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}&curPage=${i }" style="font-size: 18px; color:black;"  >  
 	   						<c:if test="${i eq commentpagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
 	   						<c:if test="${i ne commentpagingDTO.curPage }">  ${i } </c:if> 
 	   					</a>
 					</c:forEach>&nbsp;
 				<c:if test="${commentpagingDTO.curPage < commentpagingDTO.totalPageCount }">
-					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
-					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+					<a href="${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+					<a href="${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 				</c:if>
 		</div>
 		<br><hr align="left" style="border: solid 3px #D8D8D8; width: 100%;"><br><br> 
@@ -208,7 +208,7 @@ $(function () {
 function createReply() {
 	$(".submit").on("click", function() {
 		var formObj = $("form[name='busanreplyForm']");
-		formObj.attr("action", "${contextPath}/tourist/busanreplyWrite");
+		formObj.attr("action", "${contextPath}/tourist/busanreplyWrite3");
 		formObj.submit();
 	});
 }
@@ -222,7 +222,7 @@ $(function () {
 
 function updateReply() {
 	$(".SBTN2").on("click", function(){
-		location.href = "${contextPath}/tourist/busanreplyUpdateView?UC_SEQ=${plist.UC_SEQ}"
+		location.href = "${contextPath}/tourist/busanreplyUpdateView3?UC_SEQ=${plist.UC_SEQ}"
 						+ "&com_num="+$(this).attr("data-com_num");
 	});
 }
@@ -233,7 +233,7 @@ function deleteReply() {
 		if(!confirm("댓글을 삭제하시겠습니까?")){		
 		}
 		else {
-			formObj.attr("action", "${contextPath}/tourist/busanreplyDelete");
+			formObj.attr("action", "${contextPath}/tourist/busanreplyDelete3");
 			formObj.submit();
 		}
 		
@@ -257,7 +257,7 @@ function deleteReply() {
 function updateSteamed(){ 
     $.ajax({
            type : 'post',  
-           url : "/intrip/tourist/busanupdatesteamed",   
+           url : "/intrip/tourist/busanupdatesteamed3",   
            dataType : "json",
            data : {"UC_SEQ" : ${plist.UC_SEQ}, "id" : "${user.id}" }, 
            error : function(){
@@ -266,11 +266,11 @@ function updateSteamed(){
 	            success : function(steamedCheck) {
                    if(steamedCheck == 0){
                    	alert("찜하기 완료.");
-                   	location.href = "${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}";
+                   	location.href = "${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}";
                    }
                    else if (steamedCheck == 1){
                     alert("찜하기 취소"); 
-                    location.href = "${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}";
+                    location.href = "${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}";
                }
            }
        });
@@ -283,7 +283,7 @@ function updateSteamed(){
 	function updateSuggestion(){ 
 	    $.ajax({
 	           type : 'post',  
-	           url : "/intrip/tourist/busanupdateSuggestion",   
+	           url : "/intrip/tourist/busanupdateSuggestion3",   
 	           dataType : "json",
 	           data : {"UC_SEQ" : ${plist.UC_SEQ}, "id" : "${user.id}" }, 
 	           error : function(){
@@ -292,11 +292,11 @@ function updateSteamed(){
 		            success : function(suggestionCheck) {
 	                   if(suggestionCheck == 0){
 	                   	alert("추천하기 완료.");
-	                   	location.href = "${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}";
+	                   	location.href = "${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}";
 	                   }
 	                   else if (suggestionCheck == 1){
 	                    alert("추천하기 취소"); 
-	                    location.href = "${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}";
+	                    location.href = "${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}";
 	               }
 	           }
 	       });

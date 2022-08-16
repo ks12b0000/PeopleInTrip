@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>    
 <meta charset="UTF-8">
-<title>부산 여행지 리스트</title>
+<title>부산 축제 리스트</title>
 </head>
 <body>
 	<jsp:include page="/header_lhj/header.jsp" flush="false" />
@@ -34,7 +34,7 @@
 		</nav>
 	</header>
 		<div id="tourPage_div">		
-			<form action="${contextPath}/tourist/busantourist_PageList_Sorting" method="get">
+			<form action="${contextPath}/tourist/busanexperience_PageList_Sorting" method="get">
 				<div name="tour_div1" id="tour_div1">
 				<Strong>정렬 </Strong> &nbsp;
 					<select id="tour_allign" name="value" onchange="Change(1)">
@@ -51,9 +51,9 @@
 			<c:forEach var="plist" items="${plist}">
 				<table>
 					<tr>
-						<td class="tb_td1"><a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}"><img src="${plist.MAIN_IMG_NORMAL}"/></a></td>
+						<td class="tb_td1"><a href="${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}"><img src="${plist.MAIN_IMG_NORMAL}"/></a></td>
 						<td class="tb_td2">
-							<span class="tourpost_title"><a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}">${plist.PLACE}</a></span> <br> <strong>🧡 ${plist.steamedhit}개 💬 ${plist.commentcount}개 👍️ ${plist.suggestionhit}개 👀 ${plist.viewcount}회</strong> <br/>
+							<span class="tourpost_title"><a href="${contextPath}/tourist/busanexperience_View?UC_SEQ=${plist.UC_SEQ}">${plist.PLACE}</a></span> <br> <strong>🧡 ${plist.steamedhit}개 💬 ${plist.commentcount}개 👍️ ${plist.suggestionhit}개 👀 ${plist.viewcount}회</strong> <br/>
 							<span class="tourpost_place">${plist.ADDR1 }</span>
 						</td>
 					</tr>					
@@ -62,18 +62,18 @@
 			</div>
 			<div name="tour_div3" id="tour_div3">
 				<c:if test="${pagingDTO.curPage > 1 }">
-					<a href="${contextPath}/tourist/busantourist_PageList_Sorting?value=${value}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
-					<a href="${contextPath}/tourist/busantourist_PageList_Sorting?value=${value}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+					<a href="${contextPath}/tourist/busanexperience_PageList_Sorting?value=${value}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+					<a href="${contextPath}/tourist/busanexperience_PageList_Sorting?value=${value}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
 				</c:if>
 					<c:forEach begin="${pagingDTO.firstPage }"  end="${pagingDTO.lastPage }" var="i"> &nbsp;
-	   					<a href="${contextPath}/tourist/busantourist_PageList_Sorting?value=${value}&curPage=${i }" style="font-size: 18px;"  >  
+	   					<a href="${contextPath}/tourist/busanexperience_PageList_Sorting?value=${value}&curPage=${i }" style="font-size: 18px;"  >  
 	   						<c:if test="${i eq pagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
 	   						<c:if test="${i ne pagingDTO.curPage }">  ${i } </c:if> 
 	   					</a>
 					</c:forEach>&nbsp;
 				<c:if test="${pagingDTO.curPage < pagingDTO.totalPageCount }">
-					<a href="${contextPath}/tourist/busantourist_PageList_Sorting?value=${value}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
-					<a href="${contextPath}/tourist/busantourist_PageList_Sorting?value=${value}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+					<a href="${contextPath}/tourist/busanexperience_PageList_Sorting?value=${value}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+					<a href="${contextPath}/tourist/busanexperience_PageList_Sorting?value=${value}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 				</c:if>
 			</div>
 		</div>

@@ -84,7 +84,7 @@
 				<li><a href="${contextPath}/tourist/busantravel_page"><strong>홈</strong></a></li>
 				<li><a href="${contextPath}/tourist/busantourist_PageList"><strong>여행지</strong></a></li>
 				<li><a href="${contextPath}/tourist/busanfestival_PageList"><strong>축제</strong></a></li>
-				<li><a href="${contextPath}/tourist/busanexhibition_PageList"><strong>전시관</strong></a></li>
+				<li><a href="${contextPath}/tourist/busanexperience_PageList"><strong>체험</strong></a></li>
 			</ul>
 		</nav>
 	</header>
