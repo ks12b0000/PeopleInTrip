@@ -109,7 +109,7 @@
 				<th><h3 style="text-align: center; margin-left: 70px; white-space: nowrap; font-size: 25px;">오늘의 날씨</h3></th>
 			</tr>
 			<tr>
-				<td><h3 style="text-align: left; margin-left: 70px; white-space: nowrap; font-size: 18px;">제주시 아라동 기준</h3></td>							
+				<td><h3 style="text-align: left; margin-left: 70px; white-space: nowrap; font-size: 18px;">중구 남포동 기준</h3></td>							
 			</tr>
 			<tr>
 				<td style="text-align: center;"><p style="margin-left:65px; margin-bottom: 15px;"><strong>${wlist.baseTime}시 기준</strong><p>
@@ -150,8 +150,8 @@
 <script type="text/javascript">
 	var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 	var options = { //지도를 생성할 때 필요한 기본 옵션
-		center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-		level: 11 //지도의 레벨(확대, 축소 정도)
+		center: new kakao.maps.LatLng(35.1795543, 129.0756416), //지도의 중심좌표.
+		level: 10 //지도의 레벨(확대, 축소 정도)
 	};
 	
 	var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴	

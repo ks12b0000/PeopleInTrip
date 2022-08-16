@@ -45,7 +45,7 @@ public class TouristController {
 	@GetMapping("tourist/travel_page")
 	public String travel_page (Model model,ApiDTO apiDTO) throws Exception {
 		String weather = "test";
-		weatherDTO wlist = tourservice.apitest2(weather);
+		weatherDTO wlist = tourservice.weatherapi(weather);
 		model.addAttribute("wlist",wlist);
 		List<ApiDTO> mainlist = tourservice.jejutourist_main(apiDTO);
 		model.addAttribute("mainlist", mainlist);
@@ -59,7 +59,7 @@ public class TouristController {
 	@GetMapping("tourist/busantravel_page")
 	public String busantravel_page (Model model,BusanApiDTO busanApiDTO) throws Exception {
 		String weather = "test";
-		weatherDTO wlist = tourservice.apitest2(weather);
+		weatherDTO wlist = tourservice.weatherapi2(weather);
 		model.addAttribute("wlist",wlist);
 		List<BusanApiDTO> mainlist = tourservice.busantourist_main(busanApiDTO);
 		model.addAttribute("mainlist", mainlist);
@@ -80,13 +80,22 @@ public class TouristController {
 		return "tourist/tourist_PageList12";
 	}
 	
-	// 부산 여행지 api db에 저장용
+	// 부산 여행지api db에 저장용
 	@GetMapping("tourist/tourist_PageList13")
 	public String busanApi() throws Exception {			
-		tourservice.busanApi();
+		tourservice.busanApi(); // 여행지
+		
 		return "tourist/tourist_PageList13";
 	}
-
+	
+	// 부산 축제api db에 저장용
+	@GetMapping("tourist/tourist_PageList14")
+	public String busanApi2() throws Exception {			
+		tourservice.busanApi2();  // 축제
+		
+		return "tourist/tourist_PageList14";
+	}
+	
 	// 제주도 여행지 페이지 리스트
 	@GetMapping("tourist/tourist_PageList")
 	public List<ApiDTO> jejutourist_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
@@ -119,6 +128,18 @@ public class TouristController {
 		pagingDTO.pageSetting();
 		List<ApiDTO> plist = tourservice.jejufestival_list(pagingDTO);
 		model.addAttribute("plist", plist);
+		return plist;
+	}
+	
+	// 부산 축제 페이지 리스트
+	@GetMapping("tourist/busanfestival_PageList")
+	public List<BusanApiDTO> busanfestival_List(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.busangetTotalRowCount2(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();		
+		List<BusanApiDTO> plist = tourservice.busantourist_list2(pagingDTO);
+		model.addAttribute("plist", plist);
+
 		return plist;
 	}
 	
@@ -197,6 +218,33 @@ public class TouristController {
 		List<ApiDTO> plist = tourservice.jejufestival_Sort(pagingDTO, model, request);
 		model.addAttribute("plist", plist);
 		return plist;			
+	}
+	
+	// 부산 축제 상세페이지 
+	@GetMapping("tourist/busanfestival_View")
+	public String busanfestival_detail(BusanApiDTO busanApiDTO, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {		
+		tourservice.busantourist_viewcount2(busanApiDTO);		
+		BusanApiDTO plist = tourservice.busantourist_detail2(busanApiDTO);		
+		model.addAttribute("plist", plist);
+		
+		
+		int totalRowCount = tourservice.busangetCommentTotalRowCount2(commentpagingDTO);
+		commentpagingDTO.setTotalRowCount(totalRowCount);
+		commentpagingDTO.pageSetting();
+		List<BusanCommentDTO> replyList = tourservice.busanreadReply2(commentpagingDTO);
+		model.addAttribute("replyList", replyList);
+		return "tourist/busanfestival_View";
+	}
+	
+	// 부산 축제 페이지 리스트 Sorting 기능
+	@GetMapping("tourist/busanfestival_PageList_Sorting")
+	public List<BusanApiDTO> busanfestival_Sort(Model model, HttpServletRequest request, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = tourservice.busangetTotalRowCount2(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<BusanApiDTO> plist = tourservice.busantourist_Sort2(pagingDTO, model, request);
+		model.addAttribute("plist", plist);
+		return plist;		
 	}
 	
 	// 제주도 전시관 페이지 리스트 Sorting 기능
@@ -299,7 +347,6 @@ public class TouristController {
 		return suggestionCheck;
 	}
 
-	//
 	// 부산 댓글 작성
 	@PostMapping("tourist/busanreplyWrite")
 	public String busanreplyWrite(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
@@ -389,6 +436,94 @@ public class TouristController {
 		return suggestionCheck;
 	}
 	//
+	// 부산 축제 댓글 작성
+	@PostMapping("tourist/busanreplyWrite2")
+	public String busanreplyWrite2(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
+		log.info("reply write");
+		tourservice.busanregister2(busanCommentDTO);
+		tourservice.busancommentcount2(busanApiDTO);
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+		
+		return "redirect:/tourist/busanfestival_View";
+	}
 	
+	// 부산 축제 댓글 수정 페이지
+	@GetMapping("tourist/busanreplyUpdateView2")
+	public String busanreplyUpdateView2(BusanCommentDTO busanCommentDTO, PagingDTO pagingDTO, Model model) throws Exception {
+		log.info("reply write");
+			
+		BusanCommentDTO reply = tourservice.busanselectReply2(busanCommentDTO.getCom_num());
+		log.info("댓글번호 : " + reply.getCom_num());
+		model.addAttribute("replyUpdate", tourservice.busanselectReply2(busanCommentDTO.getCom_num()));
+		model.addAttribute("pagingDTO", pagingDTO);
+
+		return "tourist/busanreplyUpdateView2";
+	}
+		
+	// 부산 축제 댓글 수정 폼
+	@PostMapping("tourist/busanreplyUpdate2")
+	public String busanreplyUpdate2(BusanCommentDTO busanCommentDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
+		log.info("reply Write");
+		
+		tourservice.busanmodify2(busanCommentDTO);
+			
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+			
+		return "redirect:/tourist/busanfestival_View";
+	}
+	
+	// 부산 축제 댓글 삭제 폼
+	@PostMapping("tourist/busanreplyDelete2")
+	public String busanreplyDelete2(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO,Model model, RedirectAttributes rttr) throws Exception {
+		log.info("reply delete");
+
+		tourservice.busanremove2(busanCommentDTO);
+		tourservice.busancommentcountminus2(busanApiDTO);
+		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
+			
+		return "redirect:/tourist/busanfestival_View";
+	}
+	
+	// 부산 축제 찜하기
+	@PostMapping("tourist/busanupdatesteamed2")
+	@ResponseBody
+	public int busanupdateSteamed2(int UC_SEQ,  String id)throws Exception{
+		
+		int steamedCheck = tourservice.busansteamedCheck2(UC_SEQ, id);
+
+		if(steamedCheck == 0) {
+			//좋아요 처음누름
+			tourservice.busaninsertSteamed2(UC_SEQ, id); //like테이블 삽입
+			tourservice.busanupdateSteamed2(UC_SEQ);	//게시판테이블 +1
+			tourservice.busanupdateSteamedCheck2(UC_SEQ, id);//like테이블 구분자 1
+		}
+		else if(steamedCheck == 1) {
+			tourservice.busanupdateSteamedCheckCancel2(UC_SEQ, id); //like테이블 구분자0
+			tourservice.busanupdateSteamedCancel2(UC_SEQ); //게시판테이블 - 1
+			tourservice.busandeleteSteamed2(UC_SEQ, id); //like테이블 삭제
+		}
+		return steamedCheck;
+	}
+	
+	// 부산 축제 추천기능
+	@PostMapping("tourist/busanupdateSuggestion2")
+	@ResponseBody
+	public int busanupdateSuggestion2(int UC_SEQ,  String id)throws Exception{			
+		int suggestionCheck = tourservice.busanSuggestionCheck2(UC_SEQ, id);
+
+		if(suggestionCheck == 0) {
+			//추천 처음누름
+			tourservice.busaninsertSuggestion2(UC_SEQ, id); 
+			tourservice.busanupdateSuggestion2(UC_SEQ);	
+			tourservice.busanupdateSuggestionCheck2(UC_SEQ, id);
+		}
+		else if(suggestionCheck == 1) {
+			tourservice.busanupdateSuggestionCheckCancel2(UC_SEQ, id); 
+			tourservice.busanupdateSuggestionCancel2(UC_SEQ); 
+			tourservice.busandeleteSuggestion2(UC_SEQ, id); 
+		}
+		return suggestionCheck;
+	}
+	//
 	
 }

@@ -124,7 +124,6 @@
 					<button type="button" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>	
 				</form>	
 				</c:if>	        		
-		        	<button onclick="updateDeclaration()" class="SBTN4">신고</button>
 		</c:forEach>
     	</div>        		
     	<form action="${contextPath}/tourist/jejureplyWrite" method="post">
