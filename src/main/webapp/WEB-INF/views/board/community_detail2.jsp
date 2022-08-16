@@ -426,7 +426,7 @@ request.setCharacterEncoding("UTF-8");
 	<div class="write-form">
 		<button class="btn313"
 			onclick="location.href='${contextPath}/board/community-info'">목록보기</button>
-		<c:if test="${user.id == board.id }">
+		<c:if test="${user.id == board.id || user.grade == '관리자'}">
 			<button type="button" class="btn313"
 				onclick="location.href='${contextPath}/board/modBoard1.do?post_num=${board.post_num }'">수정</button>
 			<button type="button" class="btn31"

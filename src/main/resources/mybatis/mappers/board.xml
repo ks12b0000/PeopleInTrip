@@ -45,10 +45,10 @@
  	<select id="listfind" resultType="boardDTO"
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
-		VISITCOUNT,likehit
+		VISITCOUNT,likehit,sinhit
 		from (
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID,
-		POST_DATE,likehit,
+		POST_DATE,likehit,sinhit,
 		VISITCOUNT,
 		row_number() over(order by POST_NUM desc)
 		as rNum
