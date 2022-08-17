@@ -24,6 +24,7 @@ public class CommentPagingDTO implements Serializable {
 	private int firstPage; 	         // 페이지 리스트에서 시작  페이지 번호 
 	private int lastPage;            // 페이지 리스트에서 마지막 페이지 번호 
 	private String contentsid;
+	private int UC_SEQ;
 
 	public void pageSetting() {
 		totalPageCount = (totalRowCount-1)/rowSizePerPage+ 1;

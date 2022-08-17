@@ -32,6 +32,32 @@
 				}
 			});
 		});
+    	
+    	function readURL(input,index) {
+			if (input.files && input.files[0]) {
+				let reader = new FileReader()
+				reader.onload = function(e) {
+					$('#preview0').attr('src', e.target.result)
+				}
+				reader.readAsDataURL(input.files[0])
+			}
+		}
+    	
+    	let cnt = 1
+		function fn_addFile() {
+			cnt++;
+			let innerHtml = "";
+			
+			innerHtml += '<tr width=100% align=center>'
+			
+			innerHtml += '<td>' +
+								"<input type=file name='file"+cnt+"' onchange='readURL(this, "+cnt+")' />" +
+						 '</td>'
+			
+
+			innerHtml += '</tr>'
+			$("#tb_newImage").append(innerHtml)
+		}
     </script>
 </head>
 <body>
@@ -50,8 +76,8 @@
 					<ul class="left-menu-ul">
 						<li class="menu-list"><a href=""><i
 								class="fa-solid fa-bullhorn fa-lg"></i>정보게시판</a></li>
-						<li class="menu-list" style="background-color: #9966ff;"><a href=""><i
-								class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
+						<li class="menu-list" style="background-color: #9966ff;"><a
+							href=""><i class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
 					</ul>
 				</div>
 
@@ -79,6 +105,11 @@
 								onclick="location.href='${contextPath}/board/community-acco.do'" />
 							<input type="submit" value="작성완료" />
 						</div>
+
+						<div>
+						 <br>
+						<input type="button" value="파일 추가하기" onclick="fn_addFile()" />
+						<div id="tb_newImage" />
 					</div>
 				</div>
 			</div>

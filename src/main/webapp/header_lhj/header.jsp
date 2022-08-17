@@ -29,7 +29,7 @@
                     <p>관광지</p>
                 </div>
                 <ul class="submenuitem">
-                    <li><a href="#">서울</a></li>
+                    <li><a href="${contextPath}/tourist/busantravel_page">부산</a></li>
                     <li><a href="${contextPath}/tourist/travel_page">제주도</a></li>
                 </ul>
             </div> 
@@ -43,8 +43,26 @@
                 </ul>
             </div>
     </div>
-        <div class="seacrh_container"><input type="text" placeholder="검색어를 입력해주세요!" ></div>
-        <c:choose>
+
+		<div class="seacrh_container">
+			<input type="text" placeholder="검색어를 입력해주세요!">
+		</div>
+
+		<c:if test="${user.grade  == '관리자' }">
+			<div class="container1">
+				<div class="menu" style="z-index: 1">
+					<div class="menuitem">
+						<p>게시판 관리</p>
+					</div>
+					<ul class="submenuitem">
+						<li><a href="${contextPath}/board/community-infomaster">정보게시판</a></li>
+						<li><a href="${contextPath}/board/community-accomaster">동행구해요</a></li>
+					</ul>
+				</div>
+			</div>
+		</c:if>
+		
+		<c:choose>           
         	<c:when test="${isLogIn==null}">
 		        <div class="container2">
 		            <div class="login"><a href="${contextPath}/login_signup/login">로그인</a></div>

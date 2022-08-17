@@ -58,6 +58,7 @@ public class BoardControllerImpl implements BoardController {
 	@Autowired
 	private BoardDTO boardDTO;
 	private static String ARTICLE_IMAGE_REPO = "D:\\workspace-spring\\imageRepo";
+	private static String ARTICLE_IMAGE_REPO1 = "D:\\workspace-spring\\imageRepo1";
 
 	// 상세보기
 	@Override
@@ -241,7 +242,7 @@ public class BoardControllerImpl implements BoardController {
 		boardMap.put("id", id);
 
 		// 업로드한 이미지 파일 이름을 가져옴
-		List<String> fileList = upload(multipartRequest);
+		List<String> fileList = upload1(multipartRequest);
 
 		List<ImageDTO> imageFileList = new ArrayList<>();
 		if (fileList != null && fileList.size() != 0) {
@@ -270,8 +271,8 @@ public class BoardControllerImpl implements BoardController {
 				for (ImageDTO imageDTO : imageFileList) {
 
 					imageFileName = imageDTO.getImageFileName();
-					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
-					File destFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
+					File srcFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + imageFileName);
+					File destFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num);
 					FileUtils.moveFileToDirectory(srcFile, destFile, true);
 				}
 			}
@@ -289,7 +290,7 @@ public class BoardControllerImpl implements BoardController {
 				// 오류 발생시 temp폴더의 이미지들 모두 삭제
 				for (ImageDTO imageDTO : imageFileList) {
 					imageFileName = imageDTO.getImageFileName();
-					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+					File srcFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + imageFileName);
 					srcFile.delete();
 				}
 			}
@@ -321,6 +322,30 @@ public class BoardControllerImpl implements BoardController {
 					if (!file.exists()) {
 						file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
 						mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFilename)); // 임시로
+						// 저장된 MultipartFile을 실제 파일로 전송
+					}
+				}
+			}
+		}
+
+		return fileList;
+	}
+	
+	private List<String> upload1(MultipartHttpServletRequest multipartRequest) throws ServletException, IOException {
+		List<String> fileList = new ArrayList<>();
+		Iterator<String> fileNames = multipartRequest.getFileNames();
+		while (fileNames.hasNext()) {
+			String fileName = fileNames.next();
+			MultipartFile mFile = multipartRequest.getFile(fileName);
+			String originalFilename = mFile.getOriginalFilename();
+
+			if (originalFilename != "" && originalFilename != null) {
+				fileList.add(originalFilename); // 첨부한 이미지 파일의 이름들을 차례대로 저장함
+				File file = new File(ARTICLE_IMAGE_REPO1 + "\\" + fileName);
+				if (mFile.getSize() != 0) {
+					if (!file.exists()) {
+						file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
+						mFile.transferTo(new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + originalFilename)); // 임시로
 						// 저장된 MultipartFile을 실제 파일로 전송
 					}
 				}
@@ -498,7 +523,7 @@ public class BoardControllerImpl implements BoardController {
 			}
 
 			message = "<script>";
-			message += " alert('오류가 발생했습니다. 다시 시도해 주세요.');";
+			
 			message += " location.href='" + multipartRequest.getContextPath() + "/board/community_detail.do?post_num="
 					+ post_num + "';";
 			message += "</script>";
@@ -509,6 +534,70 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
+	
+	// 수정시 다중 이미지 업로드하기
+		private List<String> uploadModImageFile(MultipartHttpServletRequest multipartRequest)
+				throws Exception, IOException {
+
+			List<String> fileList = new ArrayList<>();
+			Iterator<String> fileNames = multipartRequest.getFileNames();
+
+			while (fileNames.hasNext()) {
+				String fileName = fileNames.next();
+
+				MultipartFile mFile = multipartRequest.getFile(fileName);
+				String originalFileName = mFile.getOriginalFilename();
+				if (originalFileName != "" && originalFileName != null) {
+					fileList.add(originalFileName);
+
+					File file = new File(ARTICLE_IMAGE_REPO + "\\" + fileName);
+					if (mFile.getSize() != 0) {
+						if (!file.exists()) {
+							file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
+							mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName)); // 임시로
+							// 저장된 MultipartFile을 실제 파일로 전송
+						}
+					}
+
+				} else { // 첨부한 이미지가 없었을 경우
+					fileList.add(null);
+				}
+			}
+
+			return fileList;
+		}
+		
+		// 수정시 다중 이미지 업로드하기
+				private List<String> uploadModImageFile1(MultipartHttpServletRequest multipartRequest)
+						throws Exception, IOException {
+
+					List<String> fileList = new ArrayList<>();
+					Iterator<String> fileNames = multipartRequest.getFileNames();
+
+					while (fileNames.hasNext()) {
+						String fileName = fileNames.next();
+
+						MultipartFile mFile = multipartRequest.getFile(fileName);
+						String originalFileName = mFile.getOriginalFilename();
+						if (originalFileName != "" && originalFileName != null) {
+							fileList.add(originalFileName);
+
+							File file = new File(ARTICLE_IMAGE_REPO1 + "\\" + fileName);
+							if (mFile.getSize() != 0) {
+								if (!file.exists()) {
+									file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
+									mFile.transferTo(new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + originalFileName)); // 임시로
+									// 저장된 MultipartFile을 실제 파일로 전송
+								}
+							}
+
+						} else { // 첨부한 이미지가 없었을 경우
+							fileList.add(null);
+						}
+					}
+
+					return fileList;
+				}
 
 	// 글 수정하기
 	@Override
@@ -538,7 +627,7 @@ public class BoardControllerImpl implements BoardController {
 		}
 
 		// 수정한 이미지 파일을 업로드함
-		List<String> fileList = uploadModImageFile(multipartRequest);
+		List<String> fileList = uploadModImageFile1(multipartRequest);
 
 		// 수정시 새로 추가된 이미지 수
 		int added_img_num = Integer.parseInt((String) boardMap.get("added_img_num"));
@@ -584,20 +673,20 @@ public class BoardControllerImpl implements BoardController {
 
 					if (i < pre_img_num) {
 						if (fileName != null) {
-							File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileName);
-							File destFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
+							File srcFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + fileName);
+							File destFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num);
 							FileUtils.moveFileToDirectory(srcFile, destFile, true);
 
 							String[] oldName = (String[]) boardMap.get("oldFileName");
 							String oldFileName = oldName[i];
 
-							File oldFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num + "\\" + oldFileName);
+							File oldFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num + "\\" + oldFileName);
 							oldFile.delete();
 						}
 					} else {
 						if (fileName != null) {
-							File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileName);
-							File destFile = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
+							File srcFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + fileName);
+							File destFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num);
 							FileUtils.moveFileToDirectory(srcFile, destFile, true);
 						}
 					}
@@ -618,7 +707,7 @@ public class BoardControllerImpl implements BoardController {
 			if (fileList != null && fileList.size() != 0) {
 				// 오류 발생시 temp폴더의 이미지들 모두 삭제
 				for (int i = 0; i < fileList.size(); i++) {
-					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + fileList.get(i));
+					File srcFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + fileList.get(i));
 					srcFile.delete();
 				}
 			}
@@ -636,37 +725,7 @@ public class BoardControllerImpl implements BoardController {
 		return resEnt;
 	}
 
-	// 수정시 다중 이미지 업로드하기
-	private List<String> uploadModImageFile(MultipartHttpServletRequest multipartRequest)
-			throws Exception, IOException {
-
-		List<String> fileList = new ArrayList<>();
-		Iterator<String> fileNames = multipartRequest.getFileNames();
-
-		while (fileNames.hasNext()) {
-			String fileName = fileNames.next();
-
-			MultipartFile mFile = multipartRequest.getFile(fileName);
-			String originalFileName = mFile.getOriginalFilename();
-			if (originalFileName != "" && originalFileName != null) {
-				fileList.add(originalFileName);
-
-				File file = new File(ARTICLE_IMAGE_REPO + "\\" + fileName);
-				if (mFile.getSize() != 0) {
-					if (!file.exists()) {
-						file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
-						mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName)); // 임시로
-						// 저장된 MultipartFile을 실제 파일로 전송
-					}
-				}
-
-			} else { // 첨부한 이미지가 없었을 경우
-				fileList.add(null);
-			}
-		}
-
-		return fileList;
-	}
+	
 
 	// 글삭제1
 	@Override
@@ -727,7 +786,7 @@ public class BoardControllerImpl implements BoardController {
 		try {
 			boardService.removeBoard1(post_num); // 글번호 전달해서 글 삭제함
 
-			File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
+			File destDir = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num);
 			FileUtils.deleteDirectory(destDir); // 첨부된 이미지 파일이 저장된 폴더도 삭제함
 
 			message = "<script>";
@@ -777,6 +836,34 @@ public class BoardControllerImpl implements BoardController {
 		writer.print("success");
 
 	}
+	
+	// 글 이미지 삭제1
+		@Override
+		@RequestMapping(value = "/board/removeMod1.do", method = RequestMethod.POST)
+		public void removeMod1(HttpServletRequest request, HttpServletResponse response) throws Exception {
+			request.setCharacterEncoding("utf-8");
+			response.setContentType("text/html; charset=utf-8");
+			PrintWriter writer = response.getWriter();
+
+			String imageFileNO = request.getParameter("imageFileNO");
+			String imageFileName = request.getParameter("imageFileName");
+			String post_num = request.getParameter("post_num");
+
+			System.out.println("imageFileNO= " + imageFileNO);
+			System.out.println("post_num= " + post_num);
+
+			ImageDTO imageDTO = new ImageDTO();
+			imageDTO.setpost_num(Integer.parseInt(post_num));
+			imageDTO.setImageFileNO(Integer.parseInt(imageFileNO));
+
+			boardService.removeModImage1(imageDTO);
+
+			File oldFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num + "\\" + imageFileName);
+			oldFile.delete();
+
+			writer.print("success");
+
+		}
 
 	// 추천
 	@RequestMapping(value = "/board/updateLike", method = RequestMethod.POST)
@@ -957,4 +1044,6 @@ public class BoardControllerImpl implements BoardController {
 	         
 	      return "redirect:/board/community_detail2.do";
 	   }
+	   
+
 }

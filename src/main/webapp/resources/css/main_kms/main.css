@@ -15,11 +15,11 @@ body {
     max-width: 1000px;
     max-height: 300px;
     position: relative;
-    margin: auto;
+    margin: 15px auto auto auto;
 }
 
 .slideshow-container .mySlides img {
-    width: 1000px;
+    width: 100px;
     height: 300px;
 }
 
@@ -68,14 +68,23 @@ body {
 
 #title1 {
 	color: #9966FF;
+	margin-top: 30px;
+	margin-left: 30px;
+	font-size: 22px;
 }
 
 #title2 {
 	color: #9966FF;
+	margin-top: 30px;
+	margin-left: 30px;
+	font-size: 22px;
 }
 
 #title3 {
 	color: #9966FF;
+	margin-top: 30px;
+	margin-left:30px;
+	font-size: 22px;
 }
 
 .tb1btn {
@@ -141,7 +150,11 @@ td {
 }
 
 .besttable {
-	margin-left: 90px;
+	margin-left: 30px;
+	margin-top: 15px;
+	max-width: 1000px;
+    max-height: 300px;
+    width: 1000px;
 }
 
 /* 2번 배너 */

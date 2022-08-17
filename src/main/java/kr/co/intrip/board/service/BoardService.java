@@ -129,4 +129,8 @@ public interface BoardService {
 	public void boardremove2(boardCommentDTO boardCommentDTO) throws Exception;
 
 	public boardCommentDTO boardselectReply2(int com_num) throws Exception;
+
+
+	public void removeModImage1(ImageDTO imageDTO);
+	
 }

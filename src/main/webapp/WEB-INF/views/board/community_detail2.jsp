@@ -7,6 +7,9 @@
 request.setCharacterEncoding("UTF-8");
 %>
 <c:set var="board" value="${boardMap.board }" />
+<c:set var="imageFileList" value="${boardMap.imageFileList }" />
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +21,7 @@ request.setCharacterEncoding("UTF-8");
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 <link rel="stylesheet"
-	href="../resources/css/community/community_detail.css?ver=123" />
+	href="../resources/css/community/community_detail.css" />
 <style type="text/css">
 .btn313 {
 	background-color: #9966ff;
@@ -273,20 +276,26 @@ request.setCharacterEncoding("UTF-8");
 			<div>
 				<p class="write-detail">정보게시판 > 상세보기</p>
 			</div>
-			<div class="write-title">
-				<div class="write-titlemain" style="font-size: 17.5px;">${board.post_title }</div>
+				<div class="write-title">
+				<div class="write-titlemain">${board.post_title }</div>
 				<div class="write-titlesub">
 					${board.id } |
 					<fmt:formatDate value="${board.post_date }" />
-					| 👍️ : ${board.likehit} | 👀 : ${board.visitcount} | 🚨
-					:${board.sinhit}
+					| 👍️ : ${board.likehit} | 👀 : ${board.visitcount} | 🚨 :
+					${board.sinhit}
 				</div>
 			</div>
 			<div>
-				<p class="write-file">
-					첨부파일 : <img id="preview0" alt="이미지" src="#" width="440px"
-						height="280px">
-				</p>
+				<p class="write-file" style="padding-left: 265px;" > <c:set var="img_index" />
+			<c:choose>
+				<c:when test="${not empty imageFileList && imageFileList != 'null' }">
+					<c:forEach var="item" items="${imageFileList }" >					
+	<img alt="이미지" src="${contextPath}/download1.do?imageFileName=${item.imageFileName}&post_num=${item.post_num}"
+									id="preview${status.index }" width="250px" height="250px" ><br />
+					</c:forEach>
+				</c:when>
+				
+			</c:choose>	</p>
 			</div>
 			<div>
 				<p class="write-content">${board.post_content }</p>
@@ -417,7 +426,7 @@ request.setCharacterEncoding("UTF-8");
 	<div class="write-form">
 		<button class="btn313"
 			onclick="location.href='${contextPath}/board/community-info'">목록보기</button>
-		<c:if test="${user.id == board.id }">
+		<c:if test="${user.id == board.id || user.grade == '관리자'}">
 			<button type="button" class="btn313"
 				onclick="location.href='${contextPath}/board/modBoard1.do?post_num=${board.post_num }'">수정</button>
 			<button type="button" class="btn31"

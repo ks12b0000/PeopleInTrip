@@ -205,20 +205,6 @@ margin-top: 7%;
 .list > .SBTN2{
 	text-align: center;
 	display: flex;
-	margin-left: 860px;
-	margin-top: -30px;
-	width: 50px;
-	height: 30px;
-	background-color: white;
-	border: 2px solid #D8D8D8;
-	cursor: pointer;
-	padding-left: 9px;
-	padding-top: 3px;
-}
-
-.list > #deleteForm > .SBTN3{
-	text-align: center;
-	display: flex;
 	margin-left: 920px;
 	margin-top: -30px;
 	width: 50px;
@@ -230,7 +216,7 @@ margin-top: 7%;
 	padding-top: 3px;
 }
 
-.list > .SBTN4{
+.list > #deleteForm > .SBTN3{
 	text-align: center;
 	display: flex;
 	margin-left: 980px;

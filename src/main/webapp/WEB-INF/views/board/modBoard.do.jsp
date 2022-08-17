@@ -6,7 +6,7 @@
 <c:set var="board" value="${boardMap.board }" />
 <c:set var="imageFileList" value="${boardMap.imageFileList }" />
 <%
-	request.setCharacterEncoding("UTF-8");
+request.setCharacterEncoding("UTF-8");
 %>
 <!DOCTYPE html>
 <html>
@@ -34,9 +34,12 @@
 			});
 		});
     	
+    	let pre_img_num = 0;			//기존 이미지 갯수 (수정 이전의 이미지 갯수)
+		let img_index = 0;	
     	let isFirstAddImage = true
+    	
 		function fn_addModImage(_img_index) {
-			console.log("here!")
+			
 			if (isFirstAddImage == true) {
 				pre_img_num = _img_index
 				img_index = ++_img_index
@@ -53,14 +56,48 @@
 			innerHtml += '<td>' +
 								"<input type=file name='imageFileName"+img_index+"' onchange='readURL(this, "+img_index+")' />" +
 						 '</td>'
-			innerHtml += '<td>' +		
-								"<img id='preview"+img_index+"' width=640 height=480 />" +
-						 '</td>'
-
-			innerHtml += '</tr>'
+			
 			$("#td_addImage").append(innerHtml)		
 			$("#added_img_num").val(img_index);		//추가된 이미지수를 hidden 속성의 태그에 저장해서 컨트롤러에 보냄
+			console.log("here!")
 		}
+    	
+    	function fn_removeModImage(_imageFileNO, post_num, _imageFileName) {
+			
+			$.ajax({
+				type: "post",
+				url: "${contextPath}/board/removeMod.do",
+				dataType: "text",
+				data: {imageFileNO: _imageFileNO, post_num: post_num, imageFileName: _imageFileName},
+				success: function(result, textStatus) {
+					if (result == 'success') {
+						alert("이미지를 삭제했습니다.")
+						location.href="${contextPath}/board/modBoard.do?removeCompleted=true&post_num=" + post_num;
+						
+					}
+					else {
+						alert("다시 시도해 주세요.")
+					}
+				},
+				error: function(result, textStatus) {
+					alert("에러가 발했습니다.")
+				},
+				complete: function(result, textStatus) {
+				
+				}
+			})
+		}
+    	function readURL(input,index) {
+			if (input.files && input.files[0]) {
+				let reader = new FileReader()
+				reader.onload = function(e) {
+					$('#preview0').attr('src', e.target.result)
+				}
+				reader.readAsDataURL(input.files[0])
+			}
+		}
+    	
+    	
     </script>
 </head>
 <body>
@@ -108,54 +145,70 @@
 						<div class="bottom-btn">
 							<input type="button" value="취소"
 								onclick="location.href='${contextPath}/board/community-acco.do'" />
-							<input type="submit" value="수정하기"  />
+							<input type="submit" value="수정하기" />
+						</div>
+
+
+						<c:set var="img_index" />
+						<c:choose>
+							<c:when
+								test="${not empty imageFileList && imageFileList != 'null' }">
+								<c:forEach var="item" items="${imageFileList }"
+									varStatus="status">
+									<div id="tr_${status.count }">
+
+										<div>
+											<!-- 이미지 수정시 미리 원래 이미지 파일이름을 저장함 -->
+											<input type="hidden" name="oldFileName"
+												value="${item.imageFileName }" /> <input type="hidden"
+												name="imageFileNO" value="${item.imageFileNO }" />
+
+										</div>
+									</div>
+									<div class="tr_modEable" id="tr_sub${status.count }">
+										<br>
+
+										<div>
+											<input type="file" name="imageFileName${status.index }"
+												id="i_imageFileName${status.index }"
+												onchange="readURL(this, ${status.index})"><br>
+											<input type="button" value="이미지 삭제하기"
+												onclick="fn_removeModImage(${item.imageFileNO}, ${item.post_num }, '${item.imageFileName }')">
+										</div>
+									</div>
+									<br>
+
+									<c:if test="${status.last eq true}">
+										<c:set var="img_index" value="${status.count }" />
+										<input type="hidden" name="pre_img_num"
+											value="${status.count }" />
+										<!-- 기존의 이미지수 -->
+										<input type="hidden" name="added_img_num" id="added_img_num"
+											value="${status.count }" />
+										<!-- 수정시 새로 추가된 이미지수 -->
+									</c:if>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<c:set var="img_index" value="${0 }" />
+								<input type="hidden" name="pre_img_num" value="${0 }" />
+								<!-- 기존의 이미지수 -->
+								<input type="hidden" name="added_img_num" id="added_img_num"
+									value="${0 }" />
+								<!-- 수정시 새로 추가된 이미지수 -->
+							</c:otherwise>
+						</c:choose>
+
+						<div>
+							<input type="button" value="이미지 추가"
+								onclick="fn_addModImage(${img_index})" />
+							<table id="td_addImage" align="center">
+								<br>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<c:choose>
-			<c:when test="${not empty imageFileList && imageFileList != 'null' }">
-				<c:forEach var="item" items="${imageFileList }" varStatus="status">
-					<tr id="tr_${status.count }">
-						<td width="150" align="center" bgcolor="#add3f7">
-							이미지${status.count }</td>
-						<td>
-							<!-- 이미지 수정시 미리 원래 이미지 파일이름을 저장함 --> <input type="hidden"
-							name="oldFileName" value="${item.imageFileName }" /> <input
-							type="hidden" name="imageFileNO" value="${item.imageFileNO }" />
-							<img alt="이미지"
-							src="${contextPath}/download.do?imageFileName=${item.imageFileName}&post_num=${item.post_num}"
-							id="preview${status.index }" width="450px" height="450px"><br />
-						</td>
-					</tr>
-					<tr class="tr_modEable" id="tr_sub${status.count }">
-						<td></td>
-						<td><input type="file" name="imageFileName${status.index }"
-							id="i_imageFileName${status.index }"
-							onchange="readURL(this, ${status.index})"> <input
-							type="button" value="이미지 삭제하기" onclick=""></td>
-					</tr>
-
-					<c:if test="${status.last eq true}">
-						<c:set var="img_index" value="${status.count }" />
-						<input type="hidden" name="pre_img_num" value="${status.count }" />
-						<!-- 기존의 이미지수 -->
-						<input type="hidden" name="added_img_num" id="added_img_num"
-							value="${status.count }" />
-						<!-- 수정시 새로 추가된 이미지수 -->
-					</c:if>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<c:set var="img_index" value="${0 }" />
-				<input type="hidden" name="pre_img_num" value="${0 }" />
-				<!-- 기존의 이미지수 -->
-				<input type="hidden" name="added_img_num" id="added_img_num"
-					value="${0 }" />
-				<!-- 수정시 새로 추가된 이미지수 -->
-			</c:otherwise>
-		</c:choose>
 	</form>
 </body>
 </html>

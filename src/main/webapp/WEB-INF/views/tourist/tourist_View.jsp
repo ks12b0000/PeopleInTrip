@@ -124,7 +124,6 @@
 					<button type="button" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>	
 				</form>	
 				</c:if>	        		
-		        	<button onclick="updateDeclaration()" class="SBTN4">신고</button>
 		</c:forEach>
     	</div>        		
     	<form action="${contextPath}/tourist/jejureplyWrite" method="post">
@@ -211,6 +210,7 @@ function createReply() {
 		var formObj = $("form[name='jejureplyForm']");
 		formObj.attr("action", "${contextPath}/tourist/jejureplyWrite");
 		formObj.submit();
+		alert("댓글이 작성되었습니다.")
 	});
 }
 </script>

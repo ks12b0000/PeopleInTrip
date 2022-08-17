@@ -57,8 +57,13 @@ public class BoardServiceImpl implements BoardService {
 		Map<String, Object> boardMap = new HashMap<>();
 
 		BoardDTO boardDTO = boardDAO.selectBoard(post_num);
+		
+		//이미지 부분 정보 요청
+		List<ImageDTO> imageFileList = boardDAO.selectImageFileList(post_num);
 
 		boardMap.put("board", boardDTO);
+		boardMap.put("imageFileList", imageFileList);
+		
 		return boardMap;
 	}
 
@@ -68,8 +73,12 @@ public class BoardServiceImpl implements BoardService {
 		Map<String, Object> boardMap = new HashMap<>();
 
 		BoardDTO boardDTO = boardDAO.selectBoard1(post_num);
+		
+		//이미지 부분 정보 요청
+		List<ImageDTO> imageFileList = boardDAO.selectImageFileList1(post_num);
 
 		boardMap.put("board", boardDTO);
+		boardMap.put("imageFileList", imageFileList);
 		return boardMap;
 	}
 
@@ -83,7 +92,7 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.insertNewImage(boardMap); // 이미지 정보를 저장함
 
 		return post_num;
-	}
+	}	
 
 	// 글쓰기1
 	@Override
@@ -92,7 +101,7 @@ public class BoardServiceImpl implements BoardService {
 		int post_num = boardDAO.insertBoard1(boardMap); // 글 정보를 저장한 후 글번호를 가져옴.
 		boardMap.put("post_num", post_num);
 
-		boardDAO.insertNewImage(boardMap); // 이미지 정보를 저장함
+		boardDAO.insertNewImage1(boardMap); // 이미지 정보를 저장함
 
 		return post_num;
 
@@ -102,6 +111,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void modBoard(Map<String, Object> boardMap) throws Exception {
 		boardDAO.updateBoard(boardMap);
+
 
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
 		List<ImageDTO> modAddImageFileList = (List<ImageDTO>) boardMap.get("modAddImageFileList");
@@ -137,15 +147,15 @@ public class BoardServiceImpl implements BoardService {
 			int pre_img_num = Integer.parseInt((String) boardMap.get("pre_img_num"));
 
 			if (pre_img_num < added_img_num) { // 기존 이미지도 수정하고 새 이미지도 추가한 경우
-				boardDAO.updateImageFile(boardMap); // 기존 이미지 수정
-				boardDAO.insertModNewImage(boardMap); // 새 이미지 추가
+				boardDAO.updateImageFile1(boardMap); // 기존 이미지 수정
+				boardDAO.insertModNewImage1(boardMap); // 새 이미지 추가
 			} else { // 기존 이미지를 수정만 한 경우
-				boardDAO.updateImageFile(boardMap);
+				boardDAO.updateImageFile1(boardMap);
 			}
 		}
 		// 새 이미지를 추가한 경우
 		else if (modAddImageFileList != null && modAddImageFileList.size() != 0) {
-			boardDAO.insertModNewImage(boardMap);
+			boardDAO.insertModNewImage1(boardMap);
 		}
 
 	}
@@ -156,6 +166,13 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.deleteModImage(imageDTO);
 
 	}
+	
+	// 글이미지삭제
+		@Override
+		public void removeModImage1(ImageDTO imageDTO) {
+			boardDAO.deleteModImage1(imageDTO);
+
+		}
 
 	// 글삭제
 	@Override
@@ -200,6 +217,7 @@ public class BoardServiceImpl implements BoardService {
 	public void insertLike(int post_num, String id) throws Exception {
 		boardDAO.insertLike(post_num, id);
 	}
+	
 
 	@Override
 	public void deleteLike(int post_num, String id) throws Exception {
@@ -425,4 +443,8 @@ public class BoardServiceImpl implements BoardService {
 	public boardCommentDTO boardselectReply2(int com_num) throws Exception {
 		return boardDAO.boardselectReply2(com_num);
 	}
+
+
+
+	
 }

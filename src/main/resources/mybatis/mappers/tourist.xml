@@ -5,7 +5,7 @@
   
  <mapper namespace="mapper.tourist">
   	
-  	<!-- 관광지 api db에 저장용 -->
+  	<!-- 제주 관광지 api db에 저장용 -->
   	<insert id="touristadd">
 		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo">		
 			insert into P_tourist (alltag, label, label2, title, address, tag, introduction, imgpath, contentsid, phoneno, latitude, longitude)
@@ -13,6 +13,30 @@
 		</foreach>
 	</insert>
 	
+	<!-- 부산 여행지 api db에 저장용 -->
+  	<insert id="busantouristadd">
+		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo1">		
+			insert into P_busantourist (LAT, LNG, UC_SEQ, PLACE, ADDR1, CNTCT_TEL, ITEMCNTNTS, MAIN_IMG_NORMAL, SUBTITLE)
+			values (#{pvo1.LAT, jdbcType=VARCHAR}, #{pvo1.LNG, jdbcType=VARCHAR}, #{pvo1.UC_SEQ, jdbcType=VARCHAR}, #{pvo1.PLACE, jdbcType=VARCHAR}, #{pvo1.ADDR1, jdbcType=VARCHAR}, #{pvo1.CNTCT_TEL, jdbcType=VARCHAR}, #{pvo1.ITEMCNTNTS, jdbcType=VARCHAR}, #{pvo1.MAIN_IMG_NORMAL, jdbcType=VARCHAR}, #{pvo1.SUBTITLE, jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<!-- 부산 축제 api db에 저장용 -->
+  	<insert id="busantouristadd2">
+		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo1">		
+			insert into P_busanfestival (LAT, LNG, UC_SEQ, PLACE, ADDR1, CNTCT_TEL, ITEMCNTNTS, MAIN_IMG_NORMAL, SUBTITLE)
+			values (#{pvo1.LAT, jdbcType=VARCHAR}, #{pvo1.LNG, jdbcType=VARCHAR}, #{pvo1.UC_SEQ, jdbcType=VARCHAR}, #{pvo1.PLACE, jdbcType=VARCHAR}, #{pvo1.ADDR1, jdbcType=VARCHAR}, #{pvo1.CNTCT_TEL, jdbcType=VARCHAR}, #{pvo1.ITEMCNTNTS, jdbcType=VARCHAR}, #{pvo1.MAIN_IMG_NORMAL, jdbcType=VARCHAR}, #{pvo1.SUBTITLE, jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<!-- 부산 체험 api db에 저장용 -->
+  	<insert id="busantouristadd3">
+		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo1">		
+			insert into P_busanexperience (LAT, LNG, UC_SEQ, PLACE, ADDR1, CNTCT_TEL, ITEMCNTNTS, MAIN_IMG_NORMAL, SUBTITLE)
+			values (#{pvo1.LAT, jdbcType=VARCHAR}, #{pvo1.LNG, jdbcType=VARCHAR}, #{pvo1.UC_SEQ, jdbcType=VARCHAR}, #{pvo1.PLACE, jdbcType=VARCHAR}, #{pvo1.ADDR1, jdbcType=VARCHAR}, #{pvo1.CNTCT_TEL, jdbcType=VARCHAR}, #{pvo1.ITEMCNTNTS, jdbcType=VARCHAR}, #{pvo1.MAIN_IMG_NORMAL, jdbcType=VARCHAR}, #{pvo1.SUBTITLE, jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+
 	<!-- 제주도 여행지 총 개수 -->
 	<select id="getTotalRowCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
 		<![CDATA[
@@ -30,6 +54,26 @@
         	select pt.*, row_number() over(order by label desc) as rNum
         	from P_TOURIST pt 
         	WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}		
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 총 개수 -->
+	<select id="busangetTotalRowCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM P_busantourist
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 페이지 리스트  -->
+	<select id="busantourist" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by UC_SEQ desc) as rNum
+        	from P_busantourist pt 
         	) mb
    		 	where rNum between #{firstRow} and #{lastRow}		
 		]]>
@@ -57,6 +101,26 @@
 		]]>
 	</select>
 	
+	<!-- 부산 축제 총 개수 -->
+	<select id="busangetTotalRowCount2" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM P_busanfestival
+		]]>
+	</select>
+	
+	<!-- 부산 축제 페이지 리스트  -->
+	<select id="busanfestival" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by UC_SEQ desc) as rNum
+        	from P_busanfestival pt 
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}		
+		]]>
+	</select>
+	
 	<!-- 제주도 전시관 총 개수 -->
 	<select id="getTotalRowCount3" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
 		<![CDATA[
@@ -74,6 +138,26 @@
         	select pt.*, row_number() over(order by label desc) as rNum
         	from P_TOURIST pt 
         	WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}		
+		]]>
+	</select>
+	
+	<!-- 부산 체험 총 개수 -->
+	<select id="busangetTotalRowCount3" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM P_busanexperience
+		]]>
+	</select>
+	
+	<!-- 부산 체험 페이지 리스트  -->
+	<select id="busanexperience" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by UC_SEQ desc) as rNum
+        	from P_busanexperience pt 
         	) mb
    		 	where rNum between #{firstRow} and #{lastRow}		
 		]]>
@@ -156,6 +240,114 @@
 		]]>
 	</select>
 	
+	<!-- 부산 여행지 상세페이지  -->
+	<select id="busandetail" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="int">
+		<![CDATA[
+			SELECT * FROM P_busantourist 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 상세페이지 조회수 증가  -->
+	<update id="busanviewcount">
+		<![CDATA[
+			UPDATE P_busantourist
+			SET viewcount = viewcount + 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	
+	<!-- 부산 축제 상세페이지  -->
+	<select id="busandetail2" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="int">
+		<![CDATA[
+			SELECT * FROM P_busanfestival 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</select>
+	
+	<!-- 부산 축제 상세페이지 조회수 증가  -->
+	<update id="busanviewcount2">
+		<![CDATA[
+			UPDATE P_busanfestival
+			SET viewcount = viewcount + 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	
+	<!-- 부산 체험 상세페이지  -->
+	<select id="busandetail3" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="int">
+		<![CDATA[
+			SELECT * FROM P_busanexperience
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</select>
+	
+	<!-- 부산 체험 상세페이지 조회수 증가  -->
+	<update id="busanviewcount3">
+		<![CDATA[
+			UPDATE P_busanexperience
+			SET viewcount = viewcount + 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	
+	<!-- 부산 여행지 조회순 페이지 리스트  -->
+	<select id="busantourist_lookupSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by viewcount desc) as rNum
+        	from P_busantourist pt 
+        	ORDER by viewcount desc
+        	
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by viewcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 댓글순 페이지 리스트  -->
+	<select id="busantourist_commentSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by commentcount desc) as rNum
+        	from P_busantourist pt 
+        	ORDER by commentcount desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by commentcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 추천순 페이지 리스트  -->
+	<select id="busantourist_SuggestionSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_busantourist pt 
+        	ORDER by suggestionhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by suggestionhit desc		  		 	
+		]]>
+	</select>	
+	
+	<!-- 부산 여행지 찜순 페이지 리스트  -->
+	<select id="busantourist_steamedSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_busantourist pt 
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by steamedhit desc		  		 	
+		]]>
+	</select>
+	
 	<!-- 제주도 축제 조회순 페이지 리스트  -->
 	<select id="jejufestival_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
 		<![CDATA[
@@ -216,6 +408,62 @@
 		]]>
 	</select>	
 	
+	<!-- 부산 축제 조회순 페이지 리스트  -->
+	<select id="busanfestival_lookupSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by viewcount desc) as rNum
+        	from P_busanfestival pt 
+        	ORDER by viewcount desc        	
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by viewcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 부산 축제 댓글순 페이지 리스트  -->
+	<select id="busanfestival_commentSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by commentcount desc) as rNum
+        	from P_busanfestival pt 
+        	ORDER by commentcount desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by commentcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 부산 축제 추천순 페이지 리스트  -->
+	<select id="busanfestival_SuggestionSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_busanfestival pt 
+        	ORDER by suggestionhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by suggestionhit desc		  		 	
+		]]>
+	</select>	
+	
+	<!-- 부산 축제 찜순 페이지 리스트  -->
+	<select id="busanfestival_steamedSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_busanfestival pt 
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by steamedhit desc		  		 	
+		]]>
+	</select>
+	
 	<!-- 제주도 전시관 조회순 페이지 리스트  -->
 	<select id="jejuexhibition_lookupSort" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
 		<![CDATA[
@@ -273,6 +521,62 @@
         	) mb
    		 	where rNum between #{firstRow} and #{lastRow}	
    		 	ORDER by steamedhit desc
+		]]>
+	</select>
+	
+	<!-- 부산 체험 조회순 페이지 리스트  -->
+	<select id="busanexperience_lookupSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by viewcount desc) as rNum
+        	from P_busanexperience pt 
+        	ORDER by viewcount desc        	
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by viewcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 부산 체험 댓글순 페이지 리스트  -->
+	<select id="busanexperience_commentSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by commentcount desc) as rNum
+        	from P_busanexperience pt 
+        	ORDER by commentcount desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by commentcount desc		  		 	
+		]]>
+	</select>
+	
+	<!-- 부산 체험 추천순 페이지 리스트  -->
+	<select id="busanexperience_SuggestionSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+        	from P_busanexperience pt 
+        	ORDER by suggestionhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by suggestionhit desc		  		 	
+		]]>
+	</select>	
+	
+	<!-- 부산 체험 찜순 페이지 리스트  -->
+	<select id="busanexperience_steamedSort" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by steamedhit desc) as rNum
+        	from P_busanexperience pt 
+        	ORDER by steamedhit desc
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		 	ORDER by steamedhit desc		  		 	
 		]]>
 	</select>
 
@@ -482,11 +786,680 @@
 	<select id="jejutouristmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
 		<![CDATA[
 			select *
-   			 from (
-        	select pt.*, row_number() over(order by suggestionhit desc) as rNum
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
         	from P_TOURIST pt 
+        	WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
         	) mb
-   		 	where rNum between 1 AND 4	
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 제주도 축제 4개 가져오기-->
+	<select id="jejufestivalmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '%축제%'
+        	) mb
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 제주도 전시 4개 가져오기-->
+	<select id="jejuexhibitionmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
+        	) mb
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 부산 댓글 총 개수 -->
+	<select id="busanCommentgetTotalRowCount" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM P_BUSAN_COMMENT
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</select>
+
+	<!-- 부산 댓글 조회 -->
+   	<select id="busanCommentselect" resultType="kr.co.intrip.tourist.dto.BusanCommentDTO" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO">
+   		<![CDATA[
+	   		select *
+   			 from (
+        	select pt.*, row_number() over(order by com_date desc) as rNum
+        	from P_BUSAN_COMMENT pt 
+        	where UC_SEQ = #{UC_SEQ}
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		]]>
+   	</select>
+   	
+   	<!-- 부산 댓글 작성 -->
+	<insert id="busanWriteReply">
+			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
+				select busancom_num1.nextval from dual
+			</selectKey>
+			<![CDATA[
+			   	insert into P_BUSAN_COMMENT(COM_NUM, ID, UC_SEQ, COM_CONTENT)
+			  	values( #{com_num}, #{id}, #{UC_SEQ}, #{com_content})
+		  	]]>
+	</insert>
+	
+	<!-- 부산 댓글 수 증가  -->
+	<update id="busancommentcount">
+		<![CDATA[
+			UPDATE P_busantourist
+			SET commentcount = commentcount + 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	
+	<!-- 부산 댓글 수 감소 -->
+	<update id="busancommentcountminus">
+		<![CDATA[
+			UPDATE P_busantourist
+			SET commentcount = commentcount - 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	
+	<!-- 부산 댓글 수정 -->
+	<update id="busanupdateReply" parameterType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+		   	update P_BUSAN_COMMENT 
+		   	set COM_CONTENT = #{com_content}
+		   	where com_num = #{com_num}
+	   	]]>
+	</update>
+	   	
+	<!-- 부산 댓글 삭제 -->
+	<delete id="busandeleteReply" parameterType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+		   	delete
+		   	from P_BUSAN_COMMENT 
+		   	where com_num = #{com_num}
+		]]>
+	</delete>
+	
+	<!-- 부산 선택된 댓글 조회 -->
+	<select id="busanselectReply" resultType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+			select *
+			from P_BUSAN_COMMENT
+			where com_num = #{com_num}
+		]]>
+	</select>
+	
+	<!-- 부산 여행지 찜 수 -->
+	<update id="busanupdateSteamed" parameterType="int">
+		<![CDATA[
+			update P_busantourist 
+			set steamedhit = steamedhit + 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 여행지 찜 수 취소 -->
+	<update id="busanupdateSteamedCancel" parameterType="int">
+		<![CDATA[
+			update P_busantourist 
+			set steamedhit = steamedhit - 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 여행지 찜 시 steamed 테이블에 insert -->
+	<insert id="busaninsertSteamed" parameterType="java.util.Map">
+		<![CDATA[
+			insert into busantourist_steamed(steamedno , UC_SEQ , id) 
+			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM busantourist_steamed) ,#{UC_SEQ} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 부산 여행지 찜 취소 시 delete -->
+	<delete id="busandeleteSteamed">
+		<![CDATA[
+			delete 
+			from busantourist_steamed 
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 부산 여행지 찜 시 Check를 1로 만들어서 중복방지-->
+	<update id="busanupdateSteamedCheck">
+		<![CDATA[
+			update busantourist_steamed 
+			set STEAMEDCHECK = 1
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 여행지 찜 취소 시 다시 0  -->
+	<update id="busanupdateSteamedCheckCancel">
+		<![CDATA[
+			update busantourist_steamed 
+			set STEAMEDCHECK = 0
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 여행지 찜 중복방지 select문 -->
+	<select id="busanSteamedCheck" resultType="int" >
+		<![CDATA[
+			select count(*) 
+			from busantourist_steamed 
+			where UC_SEQ = #{UC_SEQ} and id = #{id} 
+		]]>
+	</select>
+
+	<!-- 부산 여행지 추천 수 -->
+	<update id="busanupdateSuggestion" parameterType="int">
+		<![CDATA[
+			update P_busantourist 
+			set suggestionhit = suggestionhit + 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 여행지 추천 수 취소 -->
+	<update id="busanupdateSuggestionCancel" parameterType="int">
+		<![CDATA[
+			update P_busantourist 
+			set suggestionhit = suggestionhit - 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 여행지 추천 시 steamed 테이블에 insert -->
+	<insert id="busaninsertSuggestion" parameterType="java.util.Map">
+		<![CDATA[
+			insert into busantourist_suggestion(suggestionno , UC_SEQ , id) 
+			values((SELECT NVL(MAX(suggestionno), 0) + 1 FROM busantourist_suggestion) ,#{UC_SEQ} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 부산 여행지 추천 취소 시 delete -->
+	<delete id="busandeleteSuggestion">
+		<![CDATA[
+			delete 
+			from busantourist_suggestion 
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 부산 여행지 추천 시 Check를 1로 만들어서 중복방지-->
+	<update id="busanupdateSuggestionCheck">
+		<![CDATA[
+			update busantourist_suggestion 
+			set suggestioncheck = 1
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 여행지 추천 취소 시 다시 0  -->
+	<update id="busanupdateSuggestionCheckCancel">
+		<![CDATA[
+			update busantourist_suggestion 
+			set suggestioncheck = 0
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 여행지 추천 중복방지 select문 -->
+	<select id="busanSuggestionCheck" resultType="int" >
+		<![CDATA[
+			select count(*) 
+			from busantourist_suggestion 
+			where UC_SEQ = #{UC_SEQ} and id = #{id} 
+		]]>
+	</select>
+	
+	<!-- 부산 축제 댓글 총 개수 -->
+	<select id="busanCommentgetTotalRowCount2" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM P_BUSANfestival_COMMENT
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</select>
+
+	<!-- 부산 축제 댓글 조회 -->
+   	<select id="busanCommentselect2" resultType="kr.co.intrip.tourist.dto.BusanCommentDTO" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO">
+   		<![CDATA[
+	   		select *
+   			 from (
+        	select pt.*, row_number() over(order by com_date desc) as rNum
+        	from P_BUSANfestival_COMMENT pt 
+        	where UC_SEQ = #{UC_SEQ}
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		]]>
+   	</select>
+   	
+   	<!-- 부산 축제 댓글 작성 -->
+	<insert id="busanWriteReply2">
+			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
+				select BusanfestivalCOM_NUM1.nextval from dual
+			</selectKey>
+			<![CDATA[
+			   	insert into P_BUSANfestival_COMMENT(COM_NUM, ID, UC_SEQ, COM_CONTENT)
+			  	values( #{com_num}, #{id}, #{UC_SEQ}, #{com_content})
+		  	]]>
+	</insert>
+	
+	<!-- 부산 축제 댓글 수 증가  -->
+	<update id="busancommentcount2">
+		<![CDATA[
+			UPDATE P_busanfestival
+			SET commentcount = commentcount + 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	 
+	<!-- 부산 축제 댓글 수 감소 -->
+	<update id="busancommentcountminus2">
+		<![CDATA[
+			UPDATE P_busanfestival
+			SET commentcount = commentcount - 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	
+	<!-- 부산 축제 댓글 수정 -->
+	<update id="busanupdateReply2" parameterType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+		   	update P_BUSANfestival_COMMENT 
+		   	set COM_CONTENT = #{com_content}
+		   	where com_num = #{com_num}
+	   	]]>
+	</update>
+	   	
+	<!-- 부산 축제 댓글 삭제 -->
+	<delete id="busandeleteReply2" parameterType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+		   	delete
+		   	from P_BUSANfestival_COMMENT 
+		   	where com_num = #{com_num}
+		]]>
+	</delete>
+	
+	<!-- 부산 축제 선택된 댓글 조회 -->
+	<select id="busanselectReply2" resultType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+			select *
+			from P_BUSANfestival_COMMENT
+			where com_num = #{com_num}
+		]]>
+	</select>
+	
+	<!-- 부산 축제 찜 수 -->
+	<update id="busanupdateSteamed2" parameterType="int">
+		<![CDATA[
+			update P_busanfestival 
+			set steamedhit = steamedhit + 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 축제 찜 수 취소 -->
+	<update id="busanupdateSteamedCancel2" parameterType="int">
+		<![CDATA[
+			update P_busanfestival 
+			set steamedhit = steamedhit - 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 축제 찜 시 steamed 테이블에 insert -->
+	<insert id="busaninsertSteamed2" parameterType="java.util.Map">
+		<![CDATA[
+			insert into busanfestival_steamed(steamedno , UC_SEQ , id) 
+			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM busanfestival_steamed) ,#{UC_SEQ} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 부산 축제 찜 취소 시 delete -->
+	<delete id="busandeleteSteamed2">
+		<![CDATA[
+			delete 
+			from busanfestival_steamed 
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 부산 축제 찜 시 Check를 1로 만들어서 중복방지-->
+	<update id="busanupdateSteamedCheck2">
+		<![CDATA[
+			update busanfestival_steamed 
+			set STEAMEDCHECK = 1
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 축제 찜 취소 시 다시 0  -->
+	<update id="busanupdateSteamedCheckCancel2">
+		<![CDATA[
+			update busanfestival_steamed 
+			set STEAMEDCHECK = 0
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 축제 찜 중복방지 select문 -->
+	<select id="busanSteamedCheck2" resultType="int" >
+		<![CDATA[
+			select count(*) 
+			from busanfestival_steamed 
+			where UC_SEQ = #{UC_SEQ} and id = #{id} 
+		]]>
+	</select>
+
+	<!-- 부산 축제 추천 수 -->
+	<update id="busanupdateSuggestion2" parameterType="int">
+		<![CDATA[
+			update P_busanfestival 
+			set suggestionhit = suggestionhit + 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 축제 추천 수 취소 -->
+	<update id="busanupdateSuggestionCancel2" parameterType="int">
+		<![CDATA[
+			update P_busanfestival 
+			set suggestionhit = suggestionhit - 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 축제 추천 시 steamed 테이블에 insert -->
+	<insert id="busaninsertSuggestion2" parameterType="java.util.Map">
+		<![CDATA[
+			insert into busanfestival_suggestion(suggestionno , UC_SEQ , id) 
+			values((SELECT NVL(MAX(suggestionno), 0) + 1 FROM busanfestival_suggestion) ,#{UC_SEQ} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 부산 축제 추천 취소 시 delete -->
+	<delete id="busandeleteSuggestion2">
+		<![CDATA[
+			delete 
+			from busanfestival_suggestion 
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 부산 축제 추천 시 Check를 1로 만들어서 중복방지-->
+	<update id="busanupdateSuggestionCheck2">
+		<![CDATA[
+			update busanfestival_suggestion 
+			set suggestioncheck = 1
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 축제 추천 취소 시 다시 0  -->
+	<update id="busanupdateSuggestionCheckCancel2">
+		<![CDATA[
+			update busanfestival_suggestion 
+			set suggestioncheck = 0
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 축제 추천 중복방지 select문 -->
+	<select id="busanSuggestionCheck2" resultType="int" >
+		<![CDATA[
+			select count(*) 
+			from busanfestival_suggestion 
+			where UC_SEQ = #{UC_SEQ} and id = #{id} 
+		]]>
+	</select>
+	
+	<!-- 부산 체험 댓글 총 개수 -->
+	<select id="busanCommentgetTotalRowCount3" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM P_BUSANexperience_COMMENT
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</select>
+
+	<!-- 부산 체험 댓글 조회 -->
+   	<select id="busanCommentselect3" resultType="kr.co.intrip.tourist.dto.BusanCommentDTO" parameterType="kr.co.intrip.tourist.dto.CommentPagingDTO">
+   		<![CDATA[
+	   		select *
+   			 from (
+        	select pt.*, row_number() over(order by com_date desc) as rNum
+        	from P_BUSANexperience_COMMENT pt 
+        	where UC_SEQ = #{UC_SEQ}
+        	) mb
+   		 	where rNum between #{firstRow} and #{lastRow}
+   		]]>
+   	</select>
+   	
+   	<!-- 부산 체험 댓글 작성 -->
+	<insert id="busanWriteReply3">
+			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
+				select BusanexperienceCOM_NUM1.nextval from dual
+			</selectKey>
+			<![CDATA[
+			   	insert into P_BUSANexperience_COMMENT(COM_NUM, ID, UC_SEQ, COM_CONTENT)
+			  	values( #{com_num}, #{id}, #{UC_SEQ}, #{com_content})
+		  	]]>
+	</insert>
+	
+	<!-- 부산 체험 댓글 수 증가  -->
+	<update id="busancommentcount3">
+		<![CDATA[
+			UPDATE P_busanexperience
+			SET commentcount = commentcount + 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	 
+	<!-- 부산 체험 댓글 수 감소 -->
+	<update id="busancommentcountminus3">
+		<![CDATA[
+			UPDATE P_busanexperience
+			SET commentcount = commentcount - 1 
+			WHERE UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+	
+	<!-- 부산 체험 댓글 수정 -->
+	<update id="busanupdateReply3" parameterType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+		   	update P_BUSANexperience_COMMENT 
+		   	set COM_CONTENT = #{com_content}
+		   	where com_num = #{com_num}
+	   	]]>
+	</update>
+	   	
+	<!-- 부산 체험 댓글 삭제 -->
+	<delete id="busandeleteReply3" parameterType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+		   	delete
+		   	from P_BUSANexperience_COMMENT 
+		   	where com_num = #{com_num}
+		]]>
+	</delete>
+	
+	<!-- 부산 체험 선택된 댓글 조회 -->
+	<select id="busanselectReply3" resultType="kr.co.intrip.tourist.dto.BusanCommentDTO">
+		<![CDATA[
+			select *
+			from P_BUSANexperience_COMMENT
+			where com_num = #{com_num}
+		]]>
+	</select>
+	
+	<!-- 부산 체험 찜 수 -->
+	<update id="busanupdateSteamed3" parameterType="int">
+		<![CDATA[
+			update P_busanexperience 
+			set steamedhit = steamedhit + 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 체험 찜 수 취소 -->
+	<update id="busanupdateSteamedCancel3" parameterType="int">
+		<![CDATA[
+			update P_busanexperience 
+			set steamedhit = steamedhit - 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 체험 찜 시 steamed 테이블에 insert -->
+	<insert id="busaninsertSteamed3" parameterType="java.util.Map">
+		<![CDATA[
+			insert into busanexperience_steamed(steamedno , UC_SEQ , id) 
+			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM busanexperience_steamed) ,#{UC_SEQ} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 부산 체험 찜 취소 시 delete -->
+	<delete id="busandeleteSteamed3">
+		<![CDATA[
+			delete 
+			from busanexperience_steamed 
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 부산 체험 찜 시 Check를 1로 만들어서 중복방지-->
+	<update id="busanupdateSteamedCheck3">
+		<![CDATA[
+			update busanexperience_steamed 
+			set STEAMEDCHECK = 1
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 체험 찜 취소 시 다시 0  -->
+	<update id="busanupdateSteamedCheckCancel3">
+		<![CDATA[
+			update busanexperience_steamed 
+			set STEAMEDCHECK = 0
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 체험 찜 중복방지 select문 -->
+	<select id="busanSteamedCheck3" resultType="int" >
+		<![CDATA[
+			select count(*) 
+			from busanexperience_steamed 
+			where UC_SEQ = #{UC_SEQ} and id = #{id} 
+		]]>
+	</select>
+
+	<!-- 부산 체험 추천 수 -->
+	<update id="busanupdateSuggestion3" parameterType="int">
+		<![CDATA[
+			update P_busanexperience 
+			set suggestionhit = suggestionhit + 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 체험 추천 수 취소 -->
+	<update id="busanupdateSuggestionCancel3" parameterType="int">
+		<![CDATA[
+			update P_busanexperience 
+			set suggestionhit = suggestionhit - 1
+			where UC_SEQ = #{UC_SEQ}
+		]]>
+	</update>
+
+	<!-- 부산 체험 추천 시 steamed 테이블에 insert -->
+	<insert id="busaninsertSuggestion3" parameterType="java.util.Map">
+		<![CDATA[
+			insert into busanexperience_suggestion(suggestionno , UC_SEQ , id) 
+			values((SELECT NVL(MAX(suggestionno), 0) + 1 FROM busanexperience_suggestion) ,#{UC_SEQ} ,#{id})
+		]]>
+	</insert>
+
+	<!-- 부산 체험 추천 취소 시 delete -->
+	<delete id="busandeleteSuggestion3">
+		<![CDATA[
+			delete 
+			from busanexperience_suggestion 
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</delete>
+
+	<!-- 부산 체험 추천 시 Check를 1로 만들어서 중복방지-->
+	<update id="busanupdateSuggestionCheck3">
+		<![CDATA[
+			update busanexperience_suggestion 
+			set suggestioncheck = 1
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 체험 추천 취소 시 다시 0  -->
+	<update id="busanupdateSuggestionCheckCancel3">
+		<![CDATA[
+			update busanexperience_suggestion 
+			set suggestioncheck = 0
+			where UC_SEQ = #{UC_SEQ} and id = #{id}
+		]]>
+	</update>
+
+	<!-- 부산 체험 추천 중복방지 select문 -->
+	<select id="busanSuggestionCheck3" resultType="int" >
+		<![CDATA[
+			select count(*) 
+			from busanexperience_suggestion 
+			where UC_SEQ = #{UC_SEQ} and id = #{id} 
+		]]>
+	</select>
+	
+	<!-- 부산 메인페이지 배너-->
+	<select id="busantouristmain" resultType="kr.co.intrip.tourist.dto.BusanApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_busantourist pt 
+        	) mb
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 부산 축제 4개 가져오기-->
+	<select id="busanfestivalmain" resultType="kr.co.intrip.tourist.dto.BusanApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_busanfestival pt 
+        	) mb
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 부산 체험 4개 가져오기-->
+	<select id="busanexperiencemain" resultType="kr.co.intrip.tourist.dto.BusanApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_busanexperience pt 
+        	) mb
+   		 	where rNum between 1 and 4
 		]]>
 	</select>
  </mapper>

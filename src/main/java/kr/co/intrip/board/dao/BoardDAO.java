@@ -141,4 +141,18 @@ public interface BoardDAO {
 	public void boarddeleteReply2(boardCommentDTO boardCommentDTO) throws Exception;
 
 	public boardCommentDTO boardselectReply2(int com_num) throws Exception;
+
+	public void insertNewImage1(Map boardMap);
+
+	public void updateImageFile1(Map<String, Object> boardMap) throws DataAccessException;
+
+	public void insertModNewImage1(Map<String, Object> boardMap) throws DataAccessException;
+
+	public List<ImageDTO> selectImageFileList1(int post_num) throws DataAccessException;
+
+	public void deleteModImage1(ImageDTO imageDTO);
+
+	public BoardDTO selectpost_num1(int post_num) throws DataAccessException;
+	
+	
 }
