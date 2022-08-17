@@ -9,17 +9,13 @@
 		<typeAlias type="kr.co.intrip.login_signup.dto.MemberDTO" alias="memberDTO"/>
 		<typeAlias type="kr.co.intrip.board.dto.BoardDTO" alias="boardDTO"/>
 		<typeAlias type="kr.co.intrip.main.dto.MainDTO" alias="mainDTO"/>
-		<typeAlias type="kr.co.intrip.board.dto.ImageDTO" alias="imageDTO"/>
-<<<<<<< HEAD
+		<typeAlias type="kr.co.intrip.board.dto.ImageDTO" alias="imageDTO"/> 
+		
+		<typeAlias type="kr.co.intrip.tourist.dto.ApiDTO" alias="apiDTO"/>
+		<typeAlias type="kr.co.intrip.tourist.dto.Tourlist_SteamedDTO" alias="tsDTO"/>
 
 		<typeAlias type="kr.co.intrip.mypage.dto.MyPageDTO" alias="mypageDTO"/>
 		<typeAlias type="kr.co.intrip.mypage.dto.MyBoardDTO" alias="myboardDTO"/>
 
-		<typeAlias type="kr.co.intrip.mypage.dto.MyPageDTO" alias="mypageDTO"/>	
-
-=======
-		<typeAlias type="kr.co.intrip.mypage.dto.MyBoardDTO" alias="myboardDTO"/>
-		<typeAlias type="kr.co.intrip.mypage.dto.MyPageDTO" alias="mypageDTO"/>	
->>>>>>> f9d73d06207f3bc967cc68f78de0b138e348ed1b
 	</typeAliases>
 </configuration>  

@@ -2,6 +2,7 @@ package kr.co.intrip.mypage.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +16,9 @@ import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
+import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.PagingDTO;
+import kr.co.intrip.tourist.dto.Tourlist_SteamedDTO;
 
 @Repository("mypageDAO")
 public class MyPageDAOImpl implements MyPageDAO {
@@ -54,30 +58,65 @@ public class MyPageDAOImpl implements MyPageDAO {
 		
 	}
 
-	// 내가 쓴 글 리스트
+	// 내가 쓴 동행글
 	@Override
-	public List<MyBoardDTO> selectMyBoard(String id) throws DataAccessException {
-		List<MyBoardDTO> boardsList = sqlSession.selectList("mapper.mypage.select_My_Board", id);
+	public List<MyBoardDTO> listfindcompany(SearchCriteria scri) throws Exception {
+		List<MyBoardDTO> boardsList = sqlSession.selectList("mapper.mypage.listfindcompany", scri);
 		return boardsList;
 	}
-
-	// 내가 쓴 글 보기1
+	// 내가 쓴 정보글
 	@Override
-	public MyBoardDTO selectMyBoardShow1(String post_title) throws DataAccessException {
-		return sqlSession.selectOne("mapper.mypage.select_My_Board_Show1", post_title);
+	public List<MyBoardDTO> listfindinformation(SearchCriteria scri) throws Exception {
+		List<MyBoardDTO> boardsList2 = sqlSession.selectList("mapper.mypage.listfindInformation", scri);
+		return boardsList2;
+	}
+	// 내가 쓴 동행글 검색어 갯수
+	@Override
+	public int findlistCompanyCount(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.mypage.findlistCompanyCount");
+	}
+	// 내가 쓴 정보글 검색어 갯수
+	@Override
+	public int findlistInfoCount(SearchCriteria scri2) throws Exception {
+		return sqlSession.selectOne("mapper.mypage.findlistInfoCount");
+	}
+
+	// 내가 찜 한 글
+	@Override
+	public List<ApiDTO> selectMyTour(String id) throws DataAccessException {
+		List<ApiDTO> selectMyTour = sqlSession.selectList("mapper.mypage.mySteamed", id);
+		return selectMyTour;
+	}
+
+	// 내가 찜한 글 총 개수
+	@Override
+	public int getTotalSteamedCount(SearchCriteria scri, String id) throws Exception {
+		System.out.println("들어온 totalCount : " + scri + "들어온 id : " + id);
+		 return  sqlSession.selectOne("mapper.mypage.getTotalSteamedCount");
+	}
+	@Override
+	public Tourlist_SteamedDTO getTotalSteamedId(String id) throws DataAccessException {
+		return sqlSession.selectOne("mapper.mypage.getTotalSteamedCount", id);
+		 
+	}
+
+	// 내가 찜한 제주여행지 페이징
+	@Override
+	public List<ApiDTO> mySteamedJeju(SearchCriteria scri) throws DataAccessException {
+		return sqlSession.selectList("mapper.mypage.mySteamedJeju", scri);
 	}
 
 
-	@Override
-	public List<MyBoardDTO> listfind(SearchCriteria scri) throws Exception {
-		List<MyBoardDTO> boardsList = sqlSession.selectList("mapper.mypage.listfind", scri);
-		return boardsList;
-	}
-	
-	// 게시물 갯수 검색
-	@Override
-	public int findlistCount(SearchCriteria scri) throws Exception {
-		return sqlSession.selectOne("mapper.mypage.findlistCount");
-	}
+
+
+
+
+
+
+
+
+
+
+
 
 }

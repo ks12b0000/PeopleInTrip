@@ -6,8 +6,18 @@ public class Criteria
  private int perPageNum;
  private int rowStart;
  private int rowEnd;
+ private String id;
  
- public Criteria()
+
+public String getId() {
+	return id;
+}
+
+public void setId(String id) {
+	this.id = id;
+}
+
+public Criteria()
  {
   this.page = 1;
   this.perPageNum = 10;

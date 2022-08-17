@@ -2,9 +2,12 @@ package kr.co.intrip.board.dto;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import kr.co.intrip.tourist.dto.ApiDTO;
 
 public class PageMaker extends Criteria{
 	private int totalCount;
@@ -13,22 +16,41 @@ public class PageMaker extends Criteria{
 	 private boolean prev;
 	 private boolean next;
 	 
-		
+	 private String id;
 	
-	
-	 
-	 private int displayPageNum = 10;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	private int displayPageNum = 10;
 
 	 private Criteria cri;
 	 
 	 public void setCri(Criteria cri) {
 	  this.cri = cri;
 	 }
+	
 
 	 public void setTotalCount(int totalCount) {
 	  this.totalCount = totalCount;
 	  calcData();
 	 }
+	 
+	 public void setTotalCount(String id) {
+		  this.id = id;
+		  calcData();
+		 }
+	 
+	 public void setTotalCount(int totalCount, String id) {
+		 System.out.println("들어온 totalCount : " + totalCount + "들어온 id : " + id);
+		  this.totalCount = totalCount;
+		  this.id = id;
+		  calcData();
+		 }
 
 	 public int getTotalCount() {
 	  return totalCount;
@@ -104,6 +126,8 @@ public class PageMaker extends Criteria{
 	  } catch(UnsupportedEncodingException e)
 	  { return ""; }
 	 }
+
+
 	
 		
 }
