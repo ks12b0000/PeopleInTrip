@@ -44,8 +44,7 @@ public class TouristController {
 	//제주도 메인화면   
 	@GetMapping("tourist/travel_page")
 	public String travel_page (Model model,ApiDTO apiDTO) throws Exception {
-		String weather = "test";
-		weatherDTO wlist = tourservice.weatherapi(weather);
+		weatherDTO wlist = tourservice.weatherapi();
 		model.addAttribute("wlist",wlist);
 		List<ApiDTO> mainlist = tourservice.jejutourist_main(apiDTO);
 		model.addAttribute("mainlist", mainlist);
@@ -56,8 +55,7 @@ public class TouristController {
 	//부산 메인화면   
 	@GetMapping("tourist/busantravel_page")
 	public String busantravel_page (Model model,BusanApiDTO busanApiDTO) throws Exception {
-		String weather = "test";
-		weatherDTO wlist = tourservice.weatherapi2(weather);
+		weatherDTO wlist = tourservice.weatherapi2();
 		model.addAttribute("wlist",wlist);
 		List<BusanApiDTO> mainlist = tourservice.busantourist_main(busanApiDTO);
 		model.addAttribute("mainlist", mainlist);

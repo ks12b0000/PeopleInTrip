@@ -31,10 +31,10 @@ public interface TouristService {
 	public void busanApi3() throws Exception;
 	
 	// 제주도 날씨 api
-	public weatherDTO weatherapi(String weather) throws Exception;
+	public weatherDTO weatherapi() throws Exception;
 	
 	// 부산 날씨 api
-	public weatherDTO weatherapi2(String weather) throws Exception;
+	public weatherDTO weatherapi2() throws Exception;
 
 	// 제주도 여행지 총 개수
 	public int getTotalRowCount(PagingDTO pagingDTO) throws Exception;
@@ -182,6 +182,12 @@ public interface TouristService {
 
 	// 제주도 여행지 메인페이지 배너
 	public List<ApiDTO> jejutourist_main(ApiDTO apiDTO) throws Exception;
+	
+	// 제주도 축제 4개 가져오기
+	public List<ApiDTO> jejufestivalmain(ApiDTO apiDTO) throws Exception;
+	
+	// 제주도 전시 4개 가져오기
+	public List<ApiDTO> jejuexhibitionmain(ApiDTO apiDTO) throws Exception;
 
 	// 부산 댓글 수 증가
 	public int busancommentcount(BusanApiDTO busanApiDTO) throws Exception;
@@ -381,7 +387,13 @@ public interface TouristService {
 	// 부산 체험 추천 취소 시 delete
 	public void busandeleteSuggestion3(int UC_SEQ, String id) throws Exception;
 	
-	// 부산 여행지 메인페이지 배너
+	// 부산 메인페이지 배너
 	public List<BusanApiDTO> busantourist_main(BusanApiDTO busanApiDTO) throws Exception;
+	
+	// 부산 축제 4개 가져오기
+	public List<BusanApiDTO> busanfestivalmain(BusanApiDTO busanApiDTO) throws Exception;
+	
+	// 부산 체험 4개 가져오기
+	public List<BusanApiDTO> busanexperiencemain(BusanApiDTO busanApiDTO) throws Exception;
 
 }

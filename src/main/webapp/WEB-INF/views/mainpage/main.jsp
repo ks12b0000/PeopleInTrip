@@ -9,7 +9,7 @@
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="${contextPath}/resources/css/main_kms/main.css">
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>People in Trip</title>
 </head>
 <body>
 <form action="${contextPath}/mainpage/main" method="get">
@@ -17,60 +17,58 @@
 		<jsp:include page="/header_lhj/header.jsp" flush="false" />
 	</header>
 	
-	<h3 id="title1">이달의 인기 여행지</h3>
+	<h3 id="title1">인기 여행지</h3>
 	<div class="slideshow-container" >
+	<c:forEach var="mainlist" items="${mainlist}">
         <div class="mySlides fade">
-            <img src="${contextPath}/resources/images/main/mainimg1.jpg" style="width: 100%;">
+            <a href="${contextPath}/tourist/tourist_View?contentsid=${mainlist.contentsid}"><img src="${mainlist.imgpath}" style="width: 100%;"></a> 
         </div>
-
+	</c:forEach>
+	<c:forEach var="mainlist5" items="${mainlist5}">
         <div class="mySlides fade">
-            <img src="${contextPath}/resources/images/main/mainimg2.jpg" style="width: 100%;">
+            <a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${mainlist5.UC_SEQ}"><img src="${mainlist5.MAIN_IMG_NORMAL}" style="width: 100%;"></a>            
         </div>
-
-        <div class="mySlides fade">
-            <img src="${contextPath}/resources/images/main/mainimg3.jpg" style="width: 100%;">
-        </div>
-
-        <div class="mySlides fade">
-            <img src="${contextPath}/resources/images/main/mainimg4.jpg"style="width: 100%;">
-        </div>
-
+	</c:forEach>
         <div style="text-align: center">
             <span class="dot" onclick="currentSlide(0)"></span>
             <span class="dot" onclick="currentSlide(1)"></span>
             <span class="dot" onclick="currentSlide(2)"></span>
             <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
+            <span class="dot" onclick="currentSlide(7)"></span>
         </div>
 	</div>
 	
 	<br/>
 	
-	<h3 id="title2">이달의 추천 공연/전시/축제</h3>
+	<h3 id="title2">인기 축제/전시/체험</h3>
 	
-	<table class="besttable" bgcolor="#6799FF" align="center" id="table1" >
-		<tr>
-			<th colspan="5" align="left">
-				<input type="button" value="공연" class="tb1btn" onclick="pfBtn1()">
-				<input type="button" value="전시" class="tb1btn" onclick="pfBtn2()">
-				<input type="button" value="축제" class="tb1btn" onclick="pfBtn3()"> 
-			</th>
-		</tr>
-		<tr>
+	<table class="besttable" bgcolor="#f8f8f8" align="center" id="table1" >
+		<tr style="border:#9966ff;">
 			<td rowspan="2" width="50" height="30">
 				<div class="prev"><img src="${contextPath}/resources/images/main/left.png" width="50" height="50"></div>
 			</td>
 			<td rowspan="3">	
-                <div class="slide_wrapper">
-                    <ul class="slides">
-                        <li><img id="bestImg1" src="${contextPath}/resources/images/main/performance1.jpg" width="180" height="200"></li>
-                        <li><img id="bestImg2" src="${contextPath}/resources/images/main/performance2.jpg" width="180" height="200"></li>
-                        <li><img id="bestImg3" src="${contextPath}/resources/images/main/performance3.jpg" width="180" height="200"></li>
-                        <li><img id="bestImg4" src="${contextPath}/resources/images/main/performance4.jpg" width="180" height="200"></li>
-                        <li><img id="bestImg5" src="${contextPath}/resources/images/main/performance5.jpg" width="180" height="200"></li>
-                        <li><img id="bestImg6" src="${contextPath}/resources/images/main/performance6.jpg" width="180" height="200"></li>
-                        <li><img id="bestImg7" src="${contextPath}/resources/images/main/performance7.jpg" width="180" height="200"></li>
-                        <li><img id="bestImg8" src="${contextPath}/resources/images/main/performance8.jpg" width="180" height="200"></li>
-                    </ul>
+                <div class="slide_wrapper">               
+                    <ul class="slides">     
+                     <c:forEach var="festivalmain" items="${festivalmain}">          
+                        <li><a href="${contextPath}/tourist/tourist_View?contentsid=${festivalmain.contentsid}"><img id="bestImg1" src="${festivalmain.imgpath}" width="180" height="200"></a></li>                       
+                     </c:forEach>
+                     
+                      <c:forEach var="festivalmain2" items="${festivalmain2}">          
+                        <li><a href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${festivalmain2.UC_SEQ}"><img id="bestImg1" src="${festivalmain2.MAIN_IMG_NORMAL}" width="180" height="200"></a></li>
+                     </c:forEach>
+                     
+                     <c:forEach var="exhibitionmain" items="${exhibitionmain}">          
+                        <li><a href="${contextPath}/tourist/tourist_View?contentsid=${exhibitionmain.contentsid}"><img id="bestImg1" src="${exhibitionmain.imgpath}" width="180" height="200"></a></li>
+                     </c:forEach>
+                     
+                     <c:forEach var="experiencemain" items="${experiencemain}">          
+                        <li><a href="${contextPath}/tourist/busanexperience_View?UC_SEQ=${experiencemain.UC_SEQ}"><img id="bestImg1" src="${experiencemain.MAIN_IMG_NORMAL}" width="180" height="200"></a></li>
+                     </c:forEach>
+                    </ul>            
                 </div>
             </td>
 			<td colspan="2" width="50" height="30">
@@ -82,12 +80,12 @@
 	<br/>
 	
 	<h3 id="title3">게시판</h3>
-    <div class="boardmain">
+    <div class="boardmain" style="width: 1000px; margin-left: 30px;">
         <div class="titlefont board">
 
             <img src="${contextPath}/resources/images/main/Loudspeaker.png" width="30" height="30" align="left" style="padding-bottom: 5px;"/>
             <span class="main3">여행 정보 공유해요~</span>
-            <span class="sub1"><a href="${contextPath}/board/community-info">더보기 +</a></span>
+            <span class="sub1"><a href="${contextPath}/board/community-info" style="text-decoration: none;">더보기 +</a></span>
             <div>
                 <table class="tableboard">
                     <thead>
@@ -99,7 +97,7 @@
                     <tbody>
 	                    <c:forEach var="main1" items="${mainsList1}" begin="0" end="3">
 	                    	<tr>
-		                    	<td>${main1.post_title}</td>
+		                    	<td><a href="${contextPath}//board/community_detail2.do?post_num=${main1.post_num}" style="color:#9966ff; text-decoration: none;">${main1.post_title}</a></td>
 		                    	<td>${main1.visitcount }</td>
 	                    	</tr>
 	                    </c:forEach>
@@ -109,11 +107,11 @@
         </div>
 
         <div class="titlefont board">
-            <img src="${contextPath}/resources/images/main/people.png" width="30" height="30" align="left" style="padding-bottom: 5px;"/>
+            <img src="${contextPath}/resources/images/main/people.png" width="30" height="30" align="left" style="padding-bottom: 5px; margin-left: 10px;"/>
 
             <span class="main4">동행구해요!</span>
 
-            <span class="sub2"><a href="${contextPath}/board/community-acco">더보기 +</a></span>
+            <span class="sub2"><a href="${contextPath}/board/community-acco" style="text-decoration: none;">더보기 +</a></span>
             <div>
                 <table class="tableboard" style="margin-left: 5px;">
                     <thead>
@@ -125,7 +123,7 @@
                     <tbody>
                     <c:forEach var="main" items="${mainsList}" begin="0" end="3">
                     	<tr>
-	                    	<td>${main.post_title}</td>
+	                    	<td><a href="${contextPath}/board/community_detail.do?post_num=${main.post_num}" style="color:#9966ff; text-decoration: none;">${main.post_title}</a></td>
 	                    	<td>${main.visitcount }</td>
                     	</tr>
                     </c:forEach>
@@ -211,37 +209,6 @@
 				}
 				
 			});
-
-		function pfBtn1() {
-			document.getElementById("bestImg1").src="${contextPath}/resources/images/main/performance1.jpg";
-			document.getElementById("bestImg2").src="${contextPath}/resources/images/main/performance2.jpg";
-			document.getElementById("bestImg3").src="${contextPath}/resources/images/main/performance3.jpg";
-			document.getElementById("bestImg4").src="${contextPath}/resources/images/main/performance4.jpg";
-			document.getElementById("bestImg5").src="${contextPath}/resources/images/main/performance5.jpg";
-			document.getElementById("bestImg6").src="${contextPath}/resources/images/main/performance6.jpg";
-			document.getElementById("bestImg7").src="${contextPath}/resources/images/main/performance7.jpg";
-			document.getElementById("bestImg8").src="${contextPath}/resources/images/main/performance8.jpg";
-		}
-		function pfBtn2() {
-			document.getElementById("bestImg1").src="${contextPath}/resources/images/main/exhibition1.jpg";
-			document.getElementById("bestImg2").src="${contextPath}/resources/images/main/exhibition2.jpg";
-			document.getElementById("bestImg3").src="${contextPath}/resources/images/main/exhibition3.jpg";
-			document.getElementById("bestImg4").src="${contextPath}/resources/images/main/exhibition4.jpg";
-			document.getElementById("bestImg5").src="${contextPath}/resources/images/main/exhibition5.jpg";
-			document.getElementById("bestImg6").src="${contextPath}/resources/images/main/exhibition6.jpg";
-			document.getElementById("bestImg7").src="${contextPath}/resources/images/main/exhibition7.jpg";
-			document.getElementById("bestImg8").src="${contextPath}/resources/images/main/exhibition8.jpg";
-		}
-		function pfBtn3() {
-			document.getElementById("bestImg1").src="${contextPath}/resources/images/main/festival1.jpg";
-			document.getElementById("bestImg2").src="${contextPath}/resources/images/main/festival2.jpg";
-			document.getElementById("bestImg3").src="${contextPath}/resources/images/main/festival3.jpg";
-			document.getElementById("bestImg4").src="${contextPath}/resources/images/main/festival4.jpg";
-			document.getElementById("bestImg5").src="${contextPath}/resources/images/main/festival5.jpg";
-			document.getElementById("bestImg6").src="${contextPath}/resources/images/main/festival6.jpg";
-			document.getElementById("bestImg7").src="${contextPath}/resources/images/main/festival7.jpg";
-			document.getElementById("bestImg8").src="${contextPath}/resources/images/main/festival8.jpg";
-		}
 	</script>
 </form>
 </body>
