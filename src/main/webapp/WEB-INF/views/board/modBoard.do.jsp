@@ -6,7 +6,7 @@
 <c:set var="board" value="${boardMap.board }" />
 <c:set var="imageFileList" value="${boardMap.imageFileList }" />
 <%
-	request.setCharacterEncoding("UTF-8");
+request.setCharacterEncoding("UTF-8");
 %>
 <!DOCTYPE html>
 <html>
@@ -136,7 +136,7 @@
 						<span class="small-title"><b>제목</b></span><br> <input
 							class="text-box" type="text" placeholder="제목을 입력해 주세요!"
 							name="post_title" value="${board.post_title }" />
-					
+
 						<textarea id="textarea-box" class="textarea-box"
 							placeholder="내용을 입력해 주세요!" name="post_content">${board.post_content }</textarea>
 						<div id="textarea-cnt">(0 / 200)</div>
@@ -145,55 +145,70 @@
 						<div class="bottom-btn">
 							<input type="button" value="취소"
 								onclick="location.href='${contextPath}/board/community-acco.do'" />
-							<input type="submit" value="수정하기"  />
+							<input type="submit" value="수정하기" />
 						</div>
-						
-						
+
+
 						<c:set var="img_index" />
-			<c:choose>
-				<c:when test="${not empty imageFileList && imageFileList != 'null' }">
-					<c:forEach var="item" items="${imageFileList }" varStatus="status">
-						<div id="tr_${status.count }">
-							
-							<div>
-								<!-- 이미지 수정시 미리 원래 이미지 파일이름을 저장함 -->
-								<input type="hidden" name="oldFileName" value="${item.imageFileName }" />
-								<input type="hidden" name="imageFileNO" value="${item.imageFileNO }" />
-						
-							</div>
-						</div>
-						<div class="tr_modEable" id="tr_sub${status.count }"><br>
-						
-							<div>
-								<input type="file" name="imageFileName${status.index }" id="i_imageFileName${status.index }" onchange="readURL(this, ${status.index})"><br>
-								<input type="button" value="이미지 삭제하기" 
-										onclick="fn_removeModImage(${item.imageFileNO}, ${item.post_num }, '${item.imageFileName }')">
-							</div>
-						</div> <br>
-						
-						<c:if test="${status.last eq true}">
-							<c:set var="img_index" value="${status.count }" />
-							<input type="hidden" name="pre_img_num"  value="${status.count }"/>	<!-- 기존의 이미지수 -->
-							<input type="hidden" name="added_img_num"  id="added_img_num"  value="${status.count }"/>	<!-- 수정시 새로 추가된 이미지수 -->
-						</c:if>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<c:set var="img_index" value="${0 }" />
-					<input type="hidden" name="pre_img_num"  value="${0 }"/>	<!-- 기존의 이미지수 -->
-						<input type="hidden" name="added_img_num" id="added_img_num"  value="${0 }"/>	<!-- 수정시 새로 추가된 이미지수 -->					
-				</c:otherwise>	
-			</c:choose>
-						
+						<c:choose>
+							<c:when
+								test="${not empty imageFileList && imageFileList != 'null' }">
+								<c:forEach var="item" items="${imageFileList }"
+									varStatus="status">
+									<div id="tr_${status.count }">
+
+										<div>
+											<!-- 이미지 수정시 미리 원래 이미지 파일이름을 저장함 -->
+											<input type="hidden" name="oldFileName"
+												value="${item.imageFileName }" /> <input type="hidden"
+												name="imageFileNO" value="${item.imageFileNO }" />
+
+										</div>
+									</div>
+									<div class="tr_modEable" id="tr_sub${status.count }">
+										<br>
+
+										<div>
+											<input type="file" name="imageFileName${status.index }"
+												id="i_imageFileName${status.index }"
+												onchange="readURL(this, ${status.index})"><br>
+											<input type="button" value="이미지 삭제하기"
+												onclick="fn_removeModImage(${item.imageFileNO}, ${item.post_num }, '${item.imageFileName }')">
+										</div>
+									</div>
+									<br>
+
+									<c:if test="${status.last eq true}">
+										<c:set var="img_index" value="${status.count }" />
+										<input type="hidden" name="pre_img_num"
+											value="${status.count }" />
+										<!-- 기존의 이미지수 -->
+										<input type="hidden" name="added_img_num" id="added_img_num"
+											value="${status.count }" />
+										<!-- 수정시 새로 추가된 이미지수 -->
+									</c:if>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<c:set var="img_index" value="${0 }" />
+								<input type="hidden" name="pre_img_num" value="${0 }" />
+								<!-- 기존의 이미지수 -->
+								<input type="hidden" name="added_img_num" id="added_img_num"
+									value="${0 }" />
+								<!-- 수정시 새로 추가된 이미지수 -->
+							</c:otherwise>
+						</c:choose>
+
 						<div>
-							<input type="button" value="이미지 추가" onclick="fn_addModImage(${img_index})" />
-							<div id="td_addImage" align="center">	<br>
+							<input type="button" value="이미지 추가"
+								onclick="fn_addModImage(${img_index})" />
+							<table id="td_addImage" align="center">
+								<br>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		
 	</form>
 </body>
 </html>

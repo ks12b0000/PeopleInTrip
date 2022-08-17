@@ -130,6 +130,7 @@ public interface BoardService {
 
 	public boardCommentDTO boardselectReply2(int com_num) throws Exception;
 
-	public void insertimg(Map boardMap) throws Exception;
+
+	public void removeModImage1(ImageDTO imageDTO);
 	
 }
