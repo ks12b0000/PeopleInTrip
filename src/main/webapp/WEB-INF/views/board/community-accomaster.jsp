@@ -108,7 +108,7 @@ request.setCharacterEncoding("UTF-8");
 					</tr>
 				</c:when>
 
-				<c:when test="${!empty boardsList }">
+				<c:when test="${!empty boardsList  }">
 					<c:forEach var="boards" items="${boardsList}" varStatus="boardsNum">
 						<c:if test="${boards.sinhit >= 1 }">
 							<tbody>
@@ -120,7 +120,7 @@ request.setCharacterEncoding("UTF-8");
 									</a></td>
 									<td>${boards.id }</td>
 									<td><fmt:formatDate value="${boards.post_date }" /></td>
-									<td>${boards.sihit }</td>
+									<td>${boards.sinhit }</td>
 									<td>${boards.visitcount }</td>
 								</tr>
 							</tbody>
@@ -147,32 +147,38 @@ request.setCharacterEncoding("UTF-8");
 		</div>
 		<div style="text-align: center; font-size: 18px;">
 			<ul>
-				<a href="${contextPath}/board/community-acco?page=1"
+				<a href="${contextPath}/board/community-accomaster?page=1"
 					style="color: #9966ff; font-size: 25px;">&laquo;</a>
 				<c:if test="${pageMaker.prev}">
 					<a
-						href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
+						href="${contextPath}/board/community-accomaster${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
 				</c:if>
 
 				<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 					var="idx"> &nbsp;
-   <a
-						href="${contextPath}/board/community-acco${pageMaker.makeSearch(idx)}">${idx}</a> &nbsp;
+  				<a href="${contextPath}/board/community-accomaster${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+							test="${idx == pageMaker.cri.page }">
+							<span style="text-decoration:none; color: red;"> ${idx} </span>
+						</c:if></a>
+					<a href="${contextPath}/board/community-accomaster${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+							test="${idx != pageMaker.cri.page }">
+							<span style=" text-decoration:none; color: black"> ${idx} </span>
+						</c:if></a>
   </c:forEach>
 
 				<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 					<a
-						href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a>
+						href="${contextPath}/board/community-accomaster${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a>
 				</c:if>
 				<c:choose>
 					<c:when test="${pageMaker.displayPageNum % 2 == 1 }">
 						<a
-							href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.totalCount/10 ) }"
+							href="${contextPath}/board/community-accomaster${pageMaker.makeSearch(pageMaker.totalCount/10 ) }"
 							style="color: #9966ff; font-size: 25px;">&raquo;</a>
 					</c:when>
 					<c:when test="${pageMaker.displayPageNum % 2 == 0 }">
 						<a
-							href="${contextPath}/board/community-acco${pageMaker.makeSearch(pageMaker.totalCount/10 +1  ) }"
+							href="${contextPath}/board/community-accomaster${pageMaker.makeSearch(pageMaker.totalCount/10 +1  ) }"
 							style="color: #9966ff; font-size: 25px;">&raquo;</a>
 					</c:when>
 				</c:choose>

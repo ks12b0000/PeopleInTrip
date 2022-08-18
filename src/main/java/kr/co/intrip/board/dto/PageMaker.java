@@ -7,7 +7,11 @@ import java.util.List;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+<<<<<<< HEAD
+import lombok.Data;
+=======
 import kr.co.intrip.tourist.dto.ApiDTO;
+>>>>>>> c7bc6a222746d510815dffee2706005483d0d697
 
 public class PageMaker extends Criteria{
 	private int totalCount;

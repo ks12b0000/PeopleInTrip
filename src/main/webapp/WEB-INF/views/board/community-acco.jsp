@@ -154,9 +154,17 @@ request.setCharacterEncoding("UTF-8");
 
 				<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 					var="idx"> &nbsp;
-   <a
-						href="${contextPath}/board/community-acco${pageMaker.makeSearch(idx)}">${idx}</a> &nbsp;
-  </c:forEach>
+					 
+   					<a href="${contextPath}/board/community-acco${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+							test="${idx == pageMaker.cri.page }">
+							<span style="text-decoration:none; color: red;"> ${idx} </span>
+						</c:if></a>
+					<a href="${contextPath}/board/community-acco${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+							test="${idx != pageMaker.cri.page }">
+							<span style=" text-decoration:none; color: black"> ${idx} </span>
+						</c:if></a>&nbsp;
+
+				</c:forEach>
 
 				<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 					<a
