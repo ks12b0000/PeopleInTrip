@@ -156,9 +156,16 @@ request.setCharacterEncoding("UTF-8");
 
 				<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 					var="idx">&nbsp;
-   <a
-						href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}">${idx}</a>&nbsp;
-  </c:forEach>
+  					 <a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+							test="${idx == pageMaker.cri.page }">
+							<span style="color: red;"> ${idx} </span>
+						</c:if></a>
+				   	<a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+							test="${idx != pageMaker.cri.page }">
+							<span style="color: black"> ${idx}
+							</span>
+						</c:if></a>&nbsp;
+				</c:forEach>
 
 
 				<c:if test="${pageMaker.next && pageMaker.endPage > 0}">

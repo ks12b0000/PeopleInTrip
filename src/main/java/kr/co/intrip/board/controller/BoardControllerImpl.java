@@ -1045,5 +1045,31 @@ public class BoardControllerImpl implements BoardController {
 	      return "redirect:/board/community_detail2.do";
 	   }
 	   
+	// 페이징 검색
+		@RequestMapping(value = "/board/community-accomaster", method = RequestMethod.GET)
+		public void listPagemaster(@ModelAttribute("scri") SearchCriteria scri, Model model) throws Exception {
+
+			List<BoardDTO> boardsList = boardService.listfind(scri);
+			model.addAttribute("boardsList", boardsList);
+
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(scri);
+			pageMaker.setTotalCount(boardService.findlistCount(scri));
+			model.addAttribute("pageMaker", pageMaker);
+		}
+
+		// 페이징 검색1
+		@RequestMapping(value = "/board/community-infomaster", method = RequestMethod.GET)
+		public void listPage1master(@ModelAttribute("scri") SearchCriteria scri, Model model) throws Exception {
+
+			List<BoardDTO> boardsList = boardService.listfind1(scri);
+			model.addAttribute("boardsList", boardsList);
+
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(scri);
+			pageMaker.setTotalCount(boardService.findlistCount1(scri));
+			model.addAttribute("pageMaker", pageMaker);
+		}
+	   
 
 }
