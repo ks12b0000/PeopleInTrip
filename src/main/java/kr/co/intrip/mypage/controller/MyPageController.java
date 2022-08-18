@@ -26,6 +26,7 @@ import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.PageMaker;
 import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.board.service.BoardService;
+import kr.co.intrip.login_signup.dto.MemberDTO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.mypage.service.MyPageService;
@@ -110,10 +111,10 @@ public class MyPageController {
 	
 	// 회원 탈퇴
 	@RequestMapping(value = "mypage/delteMember", method = RequestMethod.POST)
-	public String deleteMember(MyPageDTO dto, HttpSession session, RedirectAttributes rttr) throws Exception {
+	public String deleteMember(MemberDTO dto, HttpSession session, RedirectAttributes rttr) throws Exception {
 		
 		// 세션에 있는 user를 가져와 user 변수에 넣어준다.
-		MyPageDTO user = (MyPageDTO) session.getAttribute("user");
+		MemberDTO user = (MemberDTO) session.getAttribute("user");
 		
 		// 세션에 있는 비밀번호
 		String sessionPass = user.getPwd();
@@ -212,10 +213,10 @@ public class MyPageController {
 		List<ApiDTO> boardsTour2 = mypageService.mySteamedJeju(scri);
 		model.addAttribute("boardsTour", boardsTour2);
 		
-//		Tourlist_SteamedDTO tsDTO = new Tourlist_SteamedDTO();
-//		tsDTO.setId(id);
-//		mypageService.getTotalSteamedId(id);
-//		model.addAttribute("id", id);
+		Tourlist_SteamedDTO tsDTO = new Tourlist_SteamedDTO();
+		tsDTO.setId(id);
+		mypageService.getTotalSteamedId(id);
+		model.addAttribute("id", id);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(scri);

@@ -184,13 +184,13 @@
 	</sql>
 	
 	<!-- 내가 찜한 글 총 개수 -->
-	<select id="getTotalSteamedCount" parameterType="kr.co.intrip.board.dto.Criteria" resultType="int">
+	<select id="getTotalSteamedCount" parameterType="java.util.HashMap" resultType="kr.co.intrip.board.dto.Criteria">
 		SELECT COUNT(*)  
 		FROM TOURIST_STEAMED b
 		INNER JOIN P_TOURIST a
 		ON b.CONTENTSID = a.CONTENTSID 
 		WHERE STEAMEDNO > 0
-		and b.ID = #{id}
+		and b.ID = #{id, jdbcType=VARCHAR}
 		<include refid="jejusearch"></include>
 	</select> 
 	

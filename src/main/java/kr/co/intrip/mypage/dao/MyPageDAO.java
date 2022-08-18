@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.login_signup.dto.MemberDTO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 
 import kr.co.intrip.mypage.dto.MyPageDTO;
@@ -33,7 +34,7 @@ public interface MyPageDAO {
 	public int selectNickChk(MyPageDTO mypageDTO) throws DataAccessException;
 	
 	// 회원 탈퇴
-	public void deleteMember(MyPageDTO mypageDTO) throws DataAccessException;
+	public void deleteMember(MemberDTO memberDTO) throws DataAccessException;
 	
 	// 내가 쓴 동행글
 	public List<MyBoardDTO> listfindcompany(SearchCriteria scri) throws Exception;
@@ -53,6 +54,7 @@ public interface MyPageDAO {
 	
 	// 내가 찜한 제주여행지 페이징
 	public List<ApiDTO> mySteamedJeju(SearchCriteria scri) throws DataAccessException;
+
 	
 
 }
