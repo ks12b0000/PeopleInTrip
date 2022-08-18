@@ -26,6 +26,32 @@
 		<result property="visitcount" column="visitcount" />
 		<result property="count_comment" column="count_comment" />
 	</resultMap>
+	
+	<resultMap type="kr.co.intrip.tourist.dto.Tourlist_SteamedDTO" id="tsDTO">
+		<result property="steamedno" column="steamedno"/>
+		<result property="contentsid" column="contentsid"/>
+		<result property="id" column="id"/>
+		<result property="steamedcheck" column="steamedcheck"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.intrip.tourist.dto.ApiDTO" id="apiDTO">
+		<result property="alltag" column="alltag"/>
+		<result property="label" column="label"/>
+		<result property="label2" column="label2"/>
+		<result property="title" column="title"/>
+		<result property="address" column="address"/>
+		<result property="tag" column="tag"/>
+		<result property="introduction" column="introduction"/>
+		<result property="imgpath" column="imgpath"/>
+		<result property="contentsid" column="contentsid"/>
+		<result property="phoneno" column="phoneno"/>
+		<result property="latitude" column="latitude"/>
+		<result property="longitude" column="longitude"/>
+		<result property="viewcount" column="viewcount"/>
+		<result property="commentcount" column="commentcount"/>
+		<result property="steamedhit" column="steamedhit"/>
+		<result property="suggestionhit" column="suggestionhit"/>
+	</resultMap>
 
 	<!-- 마이페이지 정보 조회 -->
 	<select id="selectMemberMyPage" resultMap="mypageResult">
@@ -76,45 +102,10 @@
 		]]>
 	</delete>
 	
-	<!-- 내가 쓴 글 -->
-	<select id="select_My_Board" resultMap="myBoardResult">
-		<![CDATA[
-			SELECT P_BOARD.POST_NUM      ,
-			       P_BOARD.id          ,
-			       P_BOARD.POST_TITLE    ,
-			       P_BOARD.POST_DATE	,
-			       P_BOARD.VISITCOUNT
-			FROM P_BOARD
-			WHERE P_BOARD.id = #{id}
-			UNION
-			SELECT P_BOARD1.POST_NUM      ,
-			       P_BOARD1.id          ,
-			       P_BOARD1.POST_TITLE    ,
-			       P_BOARD1.POST_DATE,
-			       P_BOARD1.VISITCOUNT
-			FROM P_BOARD1
-			WHERE P_BOARD1.id = #{id}
-			ORDER by 1
-		]]>
-	</select>
+	<!-- 내가쓴 글 수정 -->
 	
-	
-	<!-- 내가 쓴 글 보기1 -->
-	<select id="select_My_Board_Show1" resultType="myboardDTO">
-		<![CDATA[
-			SELECT P_BOARD.*
-			FROM P_BOARD
-			WHERE P_BOARD.POST_TITLE = #{POST_TITLE}
-			UNION
-			SELECT P_BOARD1.*
-			FROM P_BOARD1
-			WHERE P_BOARD1.POST_TITLE = #{POST_TITLE}
-			ORDER by 1
-		]]>
-	</select>
-	
-	<!-- 페이징 검색1 -->
-	<select id="listfind" resultType="myboardDTO"
+	<!-- 내가 쓴 동행글 -->
+	<select id="listfindcompany" resultType="myboardDTO"
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
 		from (
@@ -127,21 +118,43 @@
 		ORDER by 1
 		) mb
 		where rNum between #{rowStart} and #{rowEnd}
-		union
+		order by POST_NUM DESC
+	</select>
+	
+	<!-- 내가 쓴 동행글 검색어 갯수 -->
+	<select id="findlistCompanyCount" resultType="int"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select count(post_num)
+		from p_board
+		where post_num > 0
+		<include refid="search"></include>
+	</select>
+	
+	<!-- 내가 쓴 정보글 -->
+	<select id="listfindInformation" resultType="myboardDTO"
+		parameterType="kr.co.intrip.board.dto.Criteria">
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
 		from (
-			select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
-			VISITCOUNT,
-			row_number() over(order by POST_NUM desc) as rNum
-			from
-			P_BOARD1
-			where id = #{id}
-			<include refid="search"></include>
-			ORDER by 1
+				select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
+				VISITCOUNT,
+		row_number() over(order by POST_NUM desc) as rNum
+		from P_BOARD1
+		where id = #{id}
+		<include refid="search"></include>
+		ORDER by 1
 		) mb
 		where rNum between #{rowStart} and #{rowEnd}
 		order by POST_NUM DESC
-	</select>	
+	</select>
+
+	<!-- 내가 쓴 정보글 검색어 갯수 -->
+	<select id="findlistInfoCount" resultType="int"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select count(post_num)
+		from p_board1
+		where post_num > 0
+		<include refid="search"></include>
+	</select>			
 	
 	<!-- 검색 -->
 	<sql id="search">
@@ -152,34 +165,51 @@
 		</if>
 	</sql>
 	
-	<!--검색어 갯수 -->
-	<select id="findlistCount" resultType="int"
-		parameterType="kr.co.intrip.board.dto.Criteria">
-		select count(post_num)
-		from p_board
-		<include refid="search"></include>
-		where post_num > 0
+	<!-- 내가 찜한글 조회 -->
+	<select id="mySteamed" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.Tourlist_SteamedDTO">		
+		SELECT a.IMGPATH, a.TITLE, a.CONTENTSID 
+		FROM P_TOURIST a
+		INNER JOIN TOURIST_STEAMED b
+		ON a.CONTENTSID = b.CONTENTSID
+		WHERE b.ID = #{id}
+		AND b.STEAMEDCHECK = '1'
 	</select>
 	
-	<!-- 페이징 -->
-<!--  	<select id="my_Board_List" resultType="boardDTO"
-	parameterType="kr.co.intrip.board.dto.Criteria">
-	   select POST_NUM, POST_TITLE, ID, POST_DATE, VISITCOUNT
-    from (
-        select POST_NUM, POST_TITLE, ID, POST_DATE, VISITCOUNT,
-            row_number() over(order by POST_NUM desc) as rNum
-        from P_BOARD
-        ) mb
-   		 where rNum between #{rowStart} and #{rowEnd}
-        order by POST_NUM desc
-   </select> -->
-
-	<!-- 게시물 갯수 -->
-<!--  	<select id="my_List_Count" resultType="int">
-		<![CDATA[
-			select count(post_num)
-			from p_board
-			where post_num > 0
-		]]>
-	</select> -->
+	<sql id="jejusearch">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">and b.TITLE LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%'</if>
+			<if test="searchType == 'c'.toString()">and b.LABEL LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%'</if>
+			<if test="searchType == 'w'.toString()">and b.LABEL2 LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%'</if>
+		</if>
+	</sql>
+	
+	<!-- 내가 찜한 글 총 개수 -->
+	<select id="getTotalSteamedCount" parameterType="kr.co.intrip.board.dto.Criteria" resultType="int">
+		SELECT COUNT(*)  
+		FROM TOURIST_STEAMED b
+		INNER JOIN P_TOURIST a
+		ON b.CONTENTSID = a.CONTENTSID 
+		WHERE STEAMEDNO > 0
+		and b.ID = #{id}
+		<include refid="jejusearch"></include>
+	</select> 
+	
+	<!--내가 찜한 글 페이징 -->
+	<select id="mySteamedJeju" resultType="kr.co.intrip.tourist.dto.ApiDTO"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		SELECT mb.IMGPATH, mb.title, mb.CONTENTSID
+		from (
+				select a.IMGPATH, a.title, a.CONTENTSID ,
+					   row_number() over(order by b.STEAMEDNO  desc) as rNum
+				from P_TOURIST a
+				inner join TOURIST_STEAMED b
+				on a.CONTENTSID = b.CONTENTSID 
+				where b.ID = #{id}
+				<include refid="jejusearch"></include>
+				AND a.STEAMEDHIT = '1'
+				order by 1
+				) mb
+		where rNum between #{rowStart} and #{rowEnd}
+	</select> 
+	
 </mapper>

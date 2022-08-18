@@ -23,6 +23,8 @@ public class PagingDTO implements Serializable {
 	private int totalPageCount;      // 총 페이지 건수
 	private int firstPage; 	         // 페이지 리스트에서 시작  페이지 번호 
 	private int lastPage;            // 페이지 리스트에서 마지막 페이지 번호 
+	
+	
 		
 
 	public void pageSetting() {

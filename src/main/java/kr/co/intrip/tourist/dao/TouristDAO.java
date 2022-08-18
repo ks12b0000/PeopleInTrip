@@ -405,6 +405,16 @@ public class TouristDAO {
 	public List<ApiDTO> jejutouristmain(ApiDTO apiDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.jejutouristmain", apiDTO);	 		
 	}
+	
+	// 제주도 축제 4개 가져오기
+	public List<ApiDTO> jejufestivalmain(ApiDTO apiDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejufestivalmain", apiDTO);	 		
+	}
+	
+	// 제주도 축제 4개 가져오기
+	public List<ApiDTO> jejuexhibitionmain(ApiDTO apiDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejuexhibitionmain", apiDTO);	 		
+	}
 
 	// 부산 댓글 수 증가
 	public int busancommentcount(BusanApiDTO busanApiDTO) throws Exception {
@@ -826,9 +836,19 @@ public class TouristDAO {
 		sqlSession.update("mapper.tourist.busanupdateSuggestionCheckCancel3", map);
 	}
 	
-	// 부산 축제 메인페이지 배너
+	// 부산 메인페이지 배너
 	public List<BusanApiDTO> busantouristmain(BusanApiDTO busanApiDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.busantouristmain", busanApiDTO);	 		
+	}
+	
+	// 부산 축제 4개 가져오기 
+	public List<BusanApiDTO> busanfestivalmain(BusanApiDTO busanApiDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanfestivalmain", busanApiDTO);	 		
+	}
+	
+	// 부산 체험 4개 가져오기 
+	public List<BusanApiDTO> busanexperiencemain(BusanApiDTO busanApiDTO) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busanexperiencemain", busanApiDTO);	 		
 	}
 	
 }

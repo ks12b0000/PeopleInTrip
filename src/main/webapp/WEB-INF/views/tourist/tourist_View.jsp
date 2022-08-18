@@ -210,6 +210,7 @@ function createReply() {
 		var formObj = $("form[name='jejureplyForm']");
 		formObj.attr("action", "${contextPath}/tourist/jejureplyWrite");
 		formObj.submit();
+		alert("댓글이 작성되었습니다.")
 	});
 }
 </script>

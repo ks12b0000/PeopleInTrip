@@ -15,6 +15,9 @@ import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.mypage.dao.MyPageDAO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
+import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.PagingDTO;
+import kr.co.intrip.tourist.dto.Tourlist_SteamedDTO;
 
 @Service("mypageService")
 public class MyPageServiceImpl implements MyPageService {
@@ -52,53 +55,64 @@ public class MyPageServiceImpl implements MyPageService {
 		mypageDAO.deleteMember(myPageDTO);
 		
 	}
-
-	// 내가 쓴 글
+	
+	// 내가 쓴 동행글
 	@Override
-	public List<MyBoardDTO> listArticles(String id) throws Exception {
-		List<MyBoardDTO> boardsList = mypageDAO.selectMyBoard(id);
+	public List<MyBoardDTO> listfindcompany(SearchCriteria scri) throws Exception {
+		List<MyBoardDTO> boardsList = mypageDAO.listfindcompany(scri);
 		return boardsList;
 	}
-
-	// 내가 쓴 글 보기1
+	// 내가 쓴 정보글
 	@Override
-	public Map<String, Object> showMyBoard1(String post_title) throws Exception {
-		Map<String, Object> boardMap = new HashMap<>();
-		
-		MyBoardDTO myboardDTO = mypageDAO.selectMyBoardShow1(post_title);
-		
-		boardMap.put("board", myboardDTO);
-		
-		return boardMap;
+	public List<MyBoardDTO> listfindinformation(SearchCriteria scri) throws Exception {
+		List<MyBoardDTO> boardsList2 = mypageDAO.listfindinformation(scri);
+		return boardsList2;
 	}
-	
-	// 페이징 검색
+	// 내가 쓴 동행글 검색어 갯수
 	@Override
-	public List<MyBoardDTO> listfind(SearchCriteria scri) throws Exception {
-		List<MyBoardDTO> boardsList = mypageDAO.listfind(scri);
-		return boardsList;
+	public int findlistCompanyCount(SearchCriteria scri) throws Exception {
+		return mypageDAO.findlistCompanyCount(scri);
 	}
-	
-	// 게시물 갯수 검색
+	// 내가 쓴 정보글 검색어 갯수
 	@Override
-	public int findlistCount(SearchCriteria scri) throws Exception {
-		return mypageDAO.findlistCount(scri);
+	public int findlistInfoCount(SearchCriteria scri2) throws Exception {
+		return mypageDAO.findlistInfoCount(scri2);
 	}
 
-//	// 페이징
+	@Override
+	public List<ApiDTO> listMyTour(String id) throws Exception {
+		List<ApiDTO> boardsTour = mypageDAO.selectMyTour(id);
+		return boardsTour;
+	}
+
+	@Override
+	public int getTotalSteamedCount(SearchCriteria scri, String id) throws Exception {
+		System.out.println("들어온 totalCount : " + scri + "들어온 id : " + id);
+		 return mypageDAO.getTotalSteamedCount(scri, id);
+	}
+	@Override
+	public Tourlist_SteamedDTO getTotalSteamedId(String id) throws Exception {
+		return mypageDAO.getTotalSteamedId(id);
+		
+	}
 //	@Override
-//	public List<MyBoardDTO> list(Criteria cri) throws Exception {
-//		List<MyBoardDTO> boardsList = mypageDAO.list(cri);
-//		return boardsList;
+//	public HashMap<String, Object> getTotalSteamedCount(String id) throws Exception {
+//		return mypageDAO.getTotalSteamedCount(id);
 //	}
-//
-//	// 게시물 갯수
-//	@Override
-//	public int listCount() throws Exception {
-//		return mypageDAO.listCount();
-//	}
-	
-	
+
+
+	@Override
+	public List<ApiDTO> mySteamedJeju(SearchCriteria scri) throws Exception {
+		return mypageDAO.mySteamedJeju(scri);
+	}
+
+
+
+
+
+
+
+
 
 
 

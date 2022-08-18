@@ -785,10 +785,39 @@
 	<!-- 제주도 여행지 메인페이지 배너-->
 	<select id="jejutouristmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
 		<![CDATA[
-			SELECT *
-   		 	FROM P_TOURIST 
-   		 	WHERE SUGGESTIONHIT BETWEEN 1 AND 4
-   		 	ORDER BY SUGGESTIONHIT desc	
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '관광지' AND ALLTAG  NOT LIKE '%전시%'
+        	) mb
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 제주도 축제 4개 가져오기-->
+	<select id="jejufestivalmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE label LIKE '%축제%'
+        	) mb
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 제주도 전시 4개 가져오기-->
+	<select id="jejuexhibitionmain" resultType="kr.co.intrip.tourist.dto.ApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_TOURIST pt 
+        	WHERE alltag LIKE '%전시%' AND label LIKE '관광지'
+        	) mb
+   		 	where rNum between 1 and 4
 		]]>
 	</select>
 	
@@ -1401,10 +1430,36 @@
 	<!-- 부산 메인페이지 배너-->
 	<select id="busantouristmain" resultType="kr.co.intrip.tourist.dto.BusanApiDTO">
 		<![CDATA[
-			SELECT *
-   		 	FROM P_busantourist 
-   		 	WHERE SUGGESTIONHIT BETWEEN 1 AND 4
-   		 	ORDER BY SUGGESTIONHIT desc	
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_busantourist pt 
+        	) mb
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 부산 축제 4개 가져오기-->
+	<select id="busanfestivalmain" resultType="kr.co.intrip.tourist.dto.BusanApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_busanfestival pt 
+        	) mb
+   		 	where rNum between 1 and 4
+		]]>
+	</select>
+	
+	<!-- 부산 체험 4개 가져오기-->
+	<select id="busanexperiencemain" resultType="kr.co.intrip.tourist.dto.BusanApiDTO">
+		<![CDATA[
+			select *
+   			from (
+        	select pt.*, row_number() over(order by SUGGESTIONHIT desc) as rNum
+        	from P_busanexperience pt 
+        	) mb
+   		 	where rNum between 1 and 4
 		]]>
 	</select>
  </mapper>

@@ -410,7 +410,7 @@ public class TouristServiceImpl implements TouristService {
 	
 	// 제주도 날씨 정보 api
 	@Override
-	public weatherDTO weatherapi(String weather) throws Exception {
+	public weatherDTO weatherapi() throws Exception {
 		weatherDTO wDTO = new weatherDTO();
 		Date date = new Date();        
 		String thistime = DateFormatUtils.format(date, "yyyyMMdd"); // 현재 날짜
@@ -527,7 +527,7 @@ public class TouristServiceImpl implements TouristService {
 	
 	// 부산 날씨 정보 api
 	@Override
-	public weatherDTO weatherapi2(String weather) throws Exception {
+	public weatherDTO weatherapi2() throws Exception {
 		weatherDTO wDTO = new weatherDTO();
 		Date date = new Date();        
 		String thistime = DateFormatUtils.format(date, "yyyyMMdd"); // 현재 날짜
@@ -1038,6 +1038,18 @@ public class TouristServiceImpl implements TouristService {
 	public List<ApiDTO> jejutourist_main(ApiDTO apiDTO) throws Exception {
 		return touristDAO.jejutouristmain(apiDTO);
 	}
+	
+	// 제주도 축제 4개 가져오기
+	@Override
+	public List<ApiDTO> jejufestivalmain(ApiDTO apiDTO) throws Exception {
+		return touristDAO.jejufestivalmain(apiDTO);
+	}
+	
+	// 제주도 전시 4개 가져오기
+	@Override
+	public List<ApiDTO> jejuexhibitionmain(ApiDTO apiDTO) throws Exception {
+		return touristDAO.jejuexhibitionmain(apiDTO);
+	}
 
 	// 부산 댓글 수 증가
 	@Override
@@ -1435,10 +1447,22 @@ public class TouristServiceImpl implements TouristService {
 		touristDAO.busandeleteSuggestion3(UC_SEQ, id);
 	}
 	
-	// 부산 축제 메인페이지 배너
+	// 부산 메인페이지 배너
 	@Override
 	public List<BusanApiDTO> busantourist_main(BusanApiDTO busanApiDTO) throws Exception {
 		return touristDAO.busantouristmain(busanApiDTO);
+	}
+	
+	// 부산 축제 4개 가져오기
+	@Override
+	public List<BusanApiDTO> busanfestivalmain(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busanfestivalmain(busanApiDTO);
+	}
+	
+	// 부산 체험 4개 가져오기
+	@Override
+	public List<BusanApiDTO> busanexperiencemain(BusanApiDTO busanApiDTO) throws Exception {
+		return touristDAO.busanexperiencemain(busanApiDTO);
 	}
 
 }

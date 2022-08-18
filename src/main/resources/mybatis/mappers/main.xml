@@ -18,7 +18,8 @@
 	<select id="selectBoardList" resultMap="mainResult">
 		<![CDATA[
 			SELECT  POST_TITLE 	,
-				   VISITCOUNT
+				   VISITCOUNT ,
+				   POST_NUM
 			FROM P_BOARD 
 			ORDER by VISITCOUNT desc		
 		]]>
@@ -27,7 +28,8 @@
 	<select id="selectBoardList1" resultMap="mainResult">
 		<![CDATA[
 			SELECT  POST_TITLE 	,
-				   VISITCOUNT
+				   VISITCOUNT ,
+				   POST_NUM
 			FROM P_BOARD1 
 			ORDER by VISITCOUNT desc		
 		]]>
