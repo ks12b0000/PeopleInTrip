@@ -29,6 +29,9 @@ import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.mypage.service.MyPageService;
+import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.PagingDTO;
+import kr.co.intrip.tourist.dto.Tourlist_SteamedDTO;
 import lombok.extern.java.Log;
 
 @Controller
@@ -128,11 +131,6 @@ public class MyPageController {
 		return "redirect:/mainpage/main";
 	}
 	
-	@GetMapping("mypage/mypage_renewal_test.do")
-	public String showMyBoard() {
-		return "mypage/mypage_renewal_test";
-	}
-	
 	 //내가 쓴 글
 	@RequestMapping(value = "mypage/mypage_renewal", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView listArticles(@RequestParam(value = "id", defaultValue = "", required = false) String id,
@@ -145,30 +143,87 @@ public class MyPageController {
 //		mav.addObject("myboardsList", boardsList);
 		
 		System.out.println("들어온 scri : " + scri);
-		List<MyBoardDTO> boardsList2 = mypageService.listfind(scri);
-		model.addAttribute("myboardsList", boardsList2);
+		List<MyBoardDTO> boardsList = mypageService.listfindcompany(scri);
+		model.addAttribute("myboardsList", boardsList);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(scri);
-		pageMaker.setTotalCount(mypageService.findlistCount(scri));
+		pageMaker.setTotalCount(mypageService.findlistCompanyCount(scri));
 		model.addAttribute("pageMaker", pageMaker);
 		
 		return mav;
 	}
 	
-	// 내가 쓴 글 보기1
-	@RequestMapping(value = "mypage/myview_detail", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView viewMyBoard1(@RequestParam(value = "post_title") String post_title,
+	 //내가 쓴 글2
+	@RequestMapping(value = "mypage/mypage_renewal2", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView listArticles2(@RequestParam(value = "id", defaultValue = "", required = false) String id,
+						@ModelAttribute("scri2") SearchCriteria scri2, Model model,
+						HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("들어온 id : " + id);
+		String viewName = (String) request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView(viewName);
+//		List<MyBoardDTO> boardsList =  mypageService.listArticles(id);
+//		mav.addObject("myboardsList", boardsList);
+		
+		System.out.println("들어온 scri2 : " + scri2);
+		List<MyBoardDTO> boardsList2 = mypageService.listfindinformation(scri2);
+		model.addAttribute("myboardsList2", boardsList2);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri2);
+		pageMaker.setTotalCount(mypageService.findlistInfoCount(scri2));
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return mav;
+	}
+	
+	@GetMapping("mypage/mypage_steamed_jeju.do")
+	public String showMySteamed() {
+		return "mypage/member_delete";
+	}
+	
+//	@RequestMapping(value = "mypage/mypage_steamed_jeju", method = {RequestMethod.GET, RequestMethod.POST})
+//	public ModelAndView showMySteamed(@RequestParam(value = "id") String id,
+//						HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		
+//		String viewName = (String) request.getAttribute("viewName");
+//		ModelAndView mav = new ModelAndView(viewName);
+//		
+//		System.out.println("들어온 id : " + id);
+//		List<ApiDTO> boardsTour = mypageService.listMyTour(id);
+//		mav.addObject("boardsTour", boardsTour);
+//		
+//		return mav;
+//	}
+	
+	@RequestMapping(value = "mypage/mypage_steamed_jeju", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView showMySteamed(@ModelAttribute("id") String id,
+									@ModelAttribute("scri") SearchCriteria scri, Model model,
 						HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		System.out.println("들어온 post_num1 : " + post_title);
-		
 		String viewName = (String) request.getAttribute("viewName");
-		
-		Map<String, Object> boardMap = mypageService.showMyBoard1(post_title);
-		
 		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("boardMap", boardMap);
+		
+		System.out.println("들어온 id : " + id);
+//		List<ApiDTO> boardsTour = mypageService.listMyTour(id);
+//		mav.addObject("boardsTour", boardsTour);
+		
+		System.out.println("들어온 scri : " + scri);
+		List<ApiDTO> boardsTour2 = mypageService.mySteamedJeju(scri);
+		model.addAttribute("boardsTour", boardsTour2);
+		
+//		Tourlist_SteamedDTO tsDTO = new Tourlist_SteamedDTO();
+//		tsDTO.setId(id);
+//		mypageService.getTotalSteamedId(id);
+//		model.addAttribute("id", id);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri);
+		pageMaker.setId(id);
+//		pageMaker.setTotalCount(mypageService.getTotalSteamedCount(scri, id));
+		pageMaker.setTotalCount(mypageService.getTotalSteamedCount(scri, id), id);
+		model.addAttribute("pageMaker", pageMaker);
+		System.out.println("pageMaker : " + pageMaker);
 		
 		return mav;
 	}

@@ -104,7 +104,7 @@
         }
 
         .test li{
-    	    display: inline;
+        	display: inline;
         	background-color: #9966ff;
         	color: white;
         	border-radius: 5px;
@@ -117,14 +117,14 @@
 	<script type="text/javascript">
 	$(function(){
 		  $('#searchBtn').click(function() {
-		   self.location = "${contextPath}/mypage/mypage_renewal?id=${user.id}"
+		   self.location = "${contextPath}/mypage/mypage_renewal2?id=${user.id}&"
 		     + '${pageMaker.makeQuery(1)}'
 		     + "&searchType="
 		     + $("select option:selected").val()
 		     + "&keyword="
 		     + encodeURIComponent($('#keywordInput').val());
 		    });
-		 });
+		 });  
 	</script>
 
 </head>
@@ -160,10 +160,10 @@
     </div>
     <br/><br/>
     <p class="cls1">내가 쓴 글</p><!-- <b class="cls1left" onclick="return myboardListClick()">조회하기</b> -->
-    <br/>
-	<ul class="test">
-		<li>동행</li>
-		<li><a href="${contextPath}/mypage/mypage_renewal2?id=${user.id}">정보</a></li>
+    	<br/>
+   	<ul class="test">
+		<li><a href="${contextPath}/mypage/mypage_renewal?id=${user.id}">동행</a></li>
+		<li>정보</li>
 	</ul>
 	<br/>
     <hr/>
@@ -178,43 +178,43 @@
 	                <td width="5%">추천</td>
 	                <td width="5%">조회수</td>
 	            </tr>
-	            <c:forEach var="myboardsList" items="${myboardsList}" begin="0" end="9" varStatus="myboardsListNum">
-		            <tr id="company" class="company" align="center">
-		                <td>${myboardsListNum.count }</td>
+	            <c:forEach var="myboardsList2" items="${myboardsList2}" begin="0" end="9" varStatus="myboardsListNum">
+	            	<tr id="information" class="information" align="center" >
+        				<td>${myboardsListNum.count }</td>
 		                <td><a 
-		                	href="${contextPath}/board/community_detail.do?post_num=${myboardsList.post_num}">
-		                	${myboardsList.post_title }</a></td>
-		                <td>${myboardsList.id }</td>
-		                <td>${myboardsList.post_date }</td>
-		                <td>${myboardsList.likehit }</td>
-		                <td>${myboardsList.visitcount }</td>
-		            </tr>
+		                	href="${contextPath}/board/community_detail2.do?post_num=${myboardsList2.post_num}">
+		                	${myboardsList2.post_title }</a></td>
+		                <td>${myboardsList2.id }</td>
+		                <td>${myboardsList2.post_date }</td>
+		                <td>${myboardsList2.likehit }</td>
+		                <td>${myboardsList2.visitcount }</td>
+	            	</tr>
 	            </c:forEach>
 	        </table>
     	</form>
 			<div style="text-align: center; font-size: 18px;">		
 				 <ul>
 				 <!-- << -->
-				  <a href="${contextPath}/mypage/mypage_renewal?page=1&id=${user.id}" style="color: #9966ff; font-size: 25px;">&laquo;</a> 
+				  <a href="${contextPath}/mypage/mypage_renewal2?page=1&id=${user.id}" style="color: #9966ff; font-size: 25px;">&laquo;</a> 
 				  <c:if test="${pageMaker.prev}">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeSearch(pageMaker.startPage - 1)}&id=${user.id}">이전</a>
+				   <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeSearch(pageMaker.startPage - 1)}&id=${user.id}">이전</a>
 				  </c:if> 
 				  
 				  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> &nbsp;
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeSearch(idx)}&id=${user.id}">${idx}</a> &nbsp;
+				   <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeSearch(idx)}&id=${user.id}">${idx}</a> &nbsp;
 				  </c:forEach>
 				  
 				  <!-- >> -->   
 				  <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeSearch(pageMaker.endPage + 1)}&id=${user.id}">다음</a> 
+				   <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeSearch(pageMaker.endPage + 1)}&id=${user.id}">다음</a> 
 				  </c:if>
 				  
 				 <c:choose>
 				   <c:when test= "${pageMaker.displayPageNum % 2 == 1 }">
-				   <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeSearch(pageMaker.totalCount/10 ) }&id=${user.id}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+				   <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeSearch(pageMaker.totalCount/10 ) }&id=${user.id}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 					</c:when>
 					<c:when test= "${pageMaker.displayPageNum % 2 == 0 }">
-					 <a href="${contextPath}/mypage/mypage_renewal${pageMaker.makeSearch(pageMaker.totalCount/10 +1  ) }&id=${user.id}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+					 <a href="${contextPath}/mypage/mypage_renewal2${pageMaker.makeSearch(pageMaker.totalCount/10 +1  ) }&id=${user.id}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 					</c:when>
 					</c:choose>
 				 </ul>
@@ -222,15 +222,15 @@
         <div class="search">
 			<select name="searchType">
 				<option value="n"
-					<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
+					<c:out value="${scri2.searchType == null ? 'selected' : ''}"/>>-----</option>
 				<option value="t"
-					<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
+					<c:out value="${scri2.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
 				<option value="c"
-					<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
+					<c:out value="${scri2.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
 				<option value="w"
-					<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
+					<c:out value="${scri2.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
 			</select> <input type="text" name="keyword" id="keywordInput"
-				value="${scri.keyword}" />
+				value="${scri2.keyword}" />
 	
 			<button id="searchBtn" type="button">검색</button>
         </div>
