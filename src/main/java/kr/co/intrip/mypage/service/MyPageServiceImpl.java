@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.login_signup.dto.MemberDTO;
 import kr.co.intrip.mypage.dao.MyPageDAO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
@@ -51,8 +52,8 @@ public class MyPageServiceImpl implements MyPageService {
 
 	// 회원 탈퇴
 	@Override
-	public void deleteMember(MyPageDTO myPageDTO) throws Exception {
-		mypageDAO.deleteMember(myPageDTO);
+	public void deleteMember(MemberDTO memberDTO) throws Exception {
+		mypageDAO.deleteMember(memberDTO);
 		
 	}
 	

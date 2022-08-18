@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.login_signup.dto.MemberDTO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.tourist.dto.ApiDTO;
@@ -52,9 +53,8 @@ public class MyPageDAOImpl implements MyPageDAO {
 	}
 
 	// 회원 탈퇴
-	@Override
-	public void deleteMember(MyPageDTO mypageDTO) throws DataAccessException {
-		sqlSession.delete("mapper.mypage.deleteMember", mypageDTO);
+	public void deleteMember(MemberDTO memberDTO) throws DataAccessException {
+		sqlSession.delete("mapper.mypage.deleteMember", memberDTO);
 		
 	}
 

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.login_signup.dto.MemberDTO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.tourist.dto.ApiDTO;
@@ -29,7 +30,7 @@ public interface MyPageService {
 	public int selectNickChk(MyPageDTO mypageDTO) throws Exception;
 	
 	// 회원 탈퇴
-	public void deleteMember(MyPageDTO myPageDTO) throws Exception;
+	public void deleteMember(MemberDTO memberDTO) throws Exception;
 	
 	// 내가 쓴 동행글
 	public List<MyBoardDTO> listfindcompany(SearchCriteria scri) throws Exception;

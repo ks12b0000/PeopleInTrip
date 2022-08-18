@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class FileDownloadController {
 	//파일 저장 위치 지정
-	private static final String CURR_IMAGE_PEPO_PATH = "D:\\workspace-spring\\imageRepo";
-	private static final String CURR_IMAGE_PEPO_PATH1 = "D:\\workspace-spring\\imageRepo1";
+	private static final String CURR_IMAGE_PEPO_PATH = "C:\\workspace-spring\\imageRepo";
+	private static final String CURR_IMAGE_PEPO_PATH1 = "C:\\workspace-spring\\imageRepo1";
 	
 	@RequestMapping("/download.do")		//다운로드할 이미지 파일 이름을 전달함
 	public void download(@RequestParam("imageFileName") String imageFileName,
