@@ -130,7 +130,14 @@ public interface BoardService {
 
 	public boardCommentDTO boardselectReply2(int com_num) throws Exception;
 
-
 	public void removeModImage1(ImageDTO imageDTO);
+	
+	public List<BoardDTO> listfindmaster(SearchCriteria scri) throws Exception;
+	
+	public List<BoardDTO> listfindmaster1(SearchCriteria scri) throws Exception;
+
+	public int findlistCountmaster(SearchCriteria scri) throws Exception;
+	
+	public int findlistCountmaster1(SearchCriteria scri) throws Exception;
 	
 }

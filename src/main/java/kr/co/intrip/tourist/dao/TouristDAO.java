@@ -15,6 +15,7 @@ import kr.co.intrip.tourist.dto.CommentPagingDTO;
 import kr.co.intrip.tourist.dto.JejuCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 
+
 @Repository
 public class TouristDAO {
 

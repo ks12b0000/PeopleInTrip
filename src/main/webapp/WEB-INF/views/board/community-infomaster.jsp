@@ -105,7 +105,7 @@ request.setCharacterEncoding("UTF-8");
 					<tr height="10">
 						<td colspan="6">
 							<p>
-								<b><span style="font-size: 9pt;">등록된 글이 없습니다.</span></b>
+								<b><span style="font-size: 9pt;">신고 당한 글이 없습니다.</span></b>
 							</p>
 						</td>
 					</tr>
@@ -113,7 +113,7 @@ request.setCharacterEncoding("UTF-8");
 
 				<c:when test="${!empty boardsList }">
 					<c:forEach var="boards" items="${boardsList}" varStatus="boardsNum">
-					<c:if test="${boards.sinhit >= 1 }">
+
 						<tbody>
 							<tr>
 								<td>${boards.post_num }</td>
@@ -125,15 +125,15 @@ request.setCharacterEncoding("UTF-8");
 								<td><fmt:formatDate value="${boards.post_date }" /></td>
 								<td>${boards.sinhit}</td>
 								<td>${boards.visitcount}</td>
-							</tr>						
+							</tr>
 						</tbody>
-							</c:if>
+
 					</c:forEach>
 				</c:when>
 			</c:choose>
-
 		</table>
 		<hr />
+
 		<div class="text-lg-end text-end">
 			<c:choose>
 				<c:when test="${!empty user.id}">
@@ -148,69 +148,43 @@ request.setCharacterEncoding("UTF-8");
 			</c:choose>
 		</div>
 		<div style="text-align: center; font-size: 18px;">
-			<ul>
-				<a href="${contextPath}/board/community-info?page=1"
-					style="color: #9966ff; font-size: 25px;">&laquo;</a>
-				<c:if test="${pageMaker.prev}">
-					<a
-						href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
-				</c:if>
+         <ul>
+            <c:if test="${pageMaker.cri.page > 1 }">
+            <a href="${contextPath}/board/community-infomaster?page=1&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}"
+               style="color: #9966ff; font-size: 25px;">&laquo;</a>   
+               <a href="${contextPath}/board/community-infomaster?&page=${pageMaker.cri.page-1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&lt;</a>
+               
+            </c:if>      
 
-				<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
-					var="idx">&nbsp;
- 				 <a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
-							test="${idx == pageMaker.cri.page }">
-							<span style="color: red;"> ${idx} </span>
-						</c:if></a>
-				   	<a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
-							test="${idx != pageMaker.cri.page }">
-							<span style="color: black"> ${idx}
-							</span>
-						</c:if></a>
-  </c:forEach>
+            <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+               var="idx"> &nbsp;
+                
+                  <a href="${contextPath}/board/community-infomaster${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+                     test="${idx == pageMaker.cri.page }">
+                     <span style="text-decoration:none; color: red;"> ${idx} </span>
+                  </c:if></a>
+               <a href="${contextPath}/board/community-infomaster${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+                     test="${idx != pageMaker.cri.page }">
+                     <span style=" text-decoration:none; color: black"> ${idx} </span>
+                  </c:if></a>&nbsp;
+
+            </c:forEach>
+
+            <c:if test="${pageMaker.cri.page < pageMaker.endPage}">
+               <a href="${contextPath}/board/community-infomaster?&page=${pageMaker.cri.page+1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&gt;</a>
+               <a href="${contextPath}/board/community-infomaster?&page=${pageMaker.endPage}&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+            </c:if>
+         </ul>
+      </div>
 
 
-				<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-					<a
-						href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a>
-				</c:if>
-				<c:choose>
-					<c:when test="${pageMaker.displayPageNum % 2 == 1 }">
-						<a
-							href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 ) }"
-							style="color: #9966ff; font-size: 25px;">&raquo;</a>
-					</c:when>
-					<c:when test="${pageMaker.displayPageNum % 2 == 0 }">
-						<a
-							href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 + 1 ) }"
-							style="color: #9966ff; font-size: 25px;">&raquo;</a>
-					</c:when>
-				</c:choose>
-			</ul>
-		</div>
-
-		<div class="search">
-			<select name="searchType">
-				<option value="n"
-					<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
-				<option value="t"
-					<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
-				<option value="c"
-					<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
-				<option value="w"
-					<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
-			</select> <input type="text" name="keyword" id="keywordInput"
-				value="${scri.keyword}" />
-
-			<button id="searchBtn" type="button">검색</button>
-
-			<script
-				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-				integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-				crossorigin="anonymous"></script>
-			<script
-				src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-				integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-				crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+			integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+			integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+			crossorigin="anonymous"></script>
 </body>
 </html>

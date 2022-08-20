@@ -57,13 +57,13 @@ public class BoardServiceImpl implements BoardService {
 		Map<String, Object> boardMap = new HashMap<>();
 
 		BoardDTO boardDTO = boardDAO.selectBoard(post_num);
-		
-		//이미지 부분 정보 요청
+
+		// 이미지 부분 정보 요청
 		List<ImageDTO> imageFileList = boardDAO.selectImageFileList(post_num);
 
 		boardMap.put("board", boardDTO);
 		boardMap.put("imageFileList", imageFileList);
-		
+
 		return boardMap;
 	}
 
@@ -73,8 +73,8 @@ public class BoardServiceImpl implements BoardService {
 		Map<String, Object> boardMap = new HashMap<>();
 
 		BoardDTO boardDTO = boardDAO.selectBoard1(post_num);
-		
-		//이미지 부분 정보 요청
+
+		// 이미지 부분 정보 요청
 		List<ImageDTO> imageFileList = boardDAO.selectImageFileList1(post_num);
 
 		boardMap.put("board", boardDTO);
@@ -92,7 +92,7 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.insertNewImage(boardMap); // 이미지 정보를 저장함
 
 		return post_num;
-	}	
+	}
 
 	// 글쓰기1
 	@Override
@@ -111,7 +111,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void modBoard(Map<String, Object> boardMap) throws Exception {
 		boardDAO.updateBoard(boardMap);
-
 
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
 		List<ImageDTO> modAddImageFileList = (List<ImageDTO>) boardMap.get("modAddImageFileList");
@@ -166,13 +165,13 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.deleteModImage(imageDTO);
 
 	}
-	
-	// 글이미지삭제
-		@Override
-		public void removeModImage1(ImageDTO imageDTO) {
-			boardDAO.deleteModImage1(imageDTO);
 
-		}
+	// 글이미지삭제
+	@Override
+	public void removeModImage1(ImageDTO imageDTO) {
+		boardDAO.deleteModImage1(imageDTO);
+
+	}
 
 	// 글삭제
 	@Override
@@ -217,7 +216,6 @@ public class BoardServiceImpl implements BoardService {
 	public void insertLike(int post_num, String id) throws Exception {
 		boardDAO.insertLike(post_num, id);
 	}
-	
 
 	@Override
 	public void deleteLike(int post_num, String id) throws Exception {
@@ -444,7 +442,30 @@ public class BoardServiceImpl implements BoardService {
 		return boardDAO.boardselectReply2(com_num);
 	}
 
+	// 관리자 페이지
+	@Override
+	public List<BoardDTO> listfindmaster(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = boardDAO.listfindmaster(scri);
+		return boardsList;
+	}
 
+	// 관리자 페이지
+	@Override
+	public List<BoardDTO> listfindmaster1(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = boardDAO.listfindmaster1(scri);
+		return boardsList;
+	}
 
-	
+	// 신고 갯수 검색(관리자)
+	@Override
+	public int findlistCountmaster(SearchCriteria scri) throws Exception {
+		return boardDAO.findlistCountmaster(scri);
+	}
+
+	// 신고 갯수 검색1(관리자)
+	@Override
+	public int findlistCountmaster1(SearchCriteria scri) throws Exception {
+		return boardDAO.findlistCountmaster1(scri);
+	}
+
 }

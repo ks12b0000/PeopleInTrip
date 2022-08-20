@@ -129,9 +129,9 @@ request.setCharacterEncoding("UTF-8");
 					</c:forEach>
 				</c:when>
 			</c:choose>
-
 		</table>
 		<hr />
+		
 		<div class="text-lg-end text-end">
 			<c:choose>
 				<c:when test="${!empty user.id}">
@@ -146,46 +146,34 @@ request.setCharacterEncoding("UTF-8");
 			</c:choose>
 		</div>
 		<div style="text-align: center; font-size: 18px;">
-			<ul>
-				<a href="${contextPath}/board/community-info?page=1"
-					style="color: #9966ff; font-size: 25px;">&laquo;</a>
-				<c:if test="${pageMaker.prev}">
-					<a
-						href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a>
-				</c:if>
+         <ul>
+            <c:if test="${pageMaker.cri.page > 1 }">
+            <a href="${contextPath}/board/community-info?page=1&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}"
+               style="color: #9966ff; font-size: 25px;">&laquo;</a>   
+               <a href="${contextPath}/board/community-info?&page=${pageMaker.cri.page-1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&lt;</a>
+               
+            </c:if>      
 
-				<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
-					var="idx">&nbsp;
-  					 <a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
-							test="${idx == pageMaker.cri.page }">
-							<span style="color: red;"> ${idx} </span>
-						</c:if></a>
-				   	<a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
-							test="${idx != pageMaker.cri.page }">
-							<span style="color: black"> ${idx}
-							</span>
-						</c:if></a>&nbsp;
-				</c:forEach>
+            <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+               var="idx"> &nbsp;
+                
+                  <a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+                     test="${idx == pageMaker.cri.page }">
+                     <span style="text-decoration:none; color: red;"> ${idx} </span>
+                  </c:if></a>
+               <a href="${contextPath}/board/community-info${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+                     test="${idx != pageMaker.cri.page }">
+                     <span style=" text-decoration:none; color: black"> ${idx} </span>
+                  </c:if></a>&nbsp;
 
+            </c:forEach>
 
-				<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-					<a
-						href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a>
-				</c:if>
-				<c:choose>
-					<c:when test="${pageMaker.displayPageNum % 2 == 1 }">
-						<a
-							href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 ) }"
-							style="color: #9966ff; font-size: 25px;">&raquo;</a>
-					</c:when>
-					<c:when test="${pageMaker.displayPageNum % 2 == 0 }">
-						<a
-							href="${contextPath}/board/community-info${pageMaker.makeSearch(pageMaker.totalCount/10 + 1 ) }"
-							style="color: #9966ff; font-size: 25px;">&raquo;</a>
-					</c:when>
-				</c:choose>
-			</ul>
-		</div>
+            <c:if test="${pageMaker.cri.page < pageMaker.endPage}">
+               <a href="${contextPath}/board/community-info?&page=${pageMaker.cri.page+1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&gt;</a>
+               <a href="${contextPath}/board/community-info?&page=${pageMaker.endPage}&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+            </c:if>
+         </ul>
+      </div>
 
 		<div class="search">
 			<select name="searchType">

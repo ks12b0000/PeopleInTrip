@@ -101,7 +101,7 @@
 .list>.SBTN2 {
 	text-align: center;
 	display: flex;
-	margin-left: 580px;
+	margin-left: 650px;
 	margin-top: -30px;
 	width: 50px;
 	height: 30px;
@@ -115,7 +115,7 @@
 .list>#deleteForm>.SBTN3 {
 	text-align: center;
 	display: flex;
-	margin-left: 640px;
+	margin-left: 715px;
 	margin-top: -30px;
 	width: 50px;
 	height: 30px;
@@ -126,19 +126,7 @@
 	padding-top: 3px;
 }
 
-.list>.SBTN4 {
-	text-align: center;
-	display: flex;
-	margin-left: 700px;
-	margin-top: -30px;
-	width: 50px;
-	height: 30px;
-	background-color: white;
-	border: 2px solid #D8D8D8;
-	cursor: pointer;
-	padding-left: 9px;
-	padding-top: 3px;
-}
+
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -331,7 +319,7 @@
 				<div class="list">
 					<c:forEach items="${replyList}" var="replyList">
 						<p class="name"
-							style="word-break: normal; font-size: 20px; display: inline-block; margin-left: -620px;">
+							style="word-break: break-all; font-size: 20px; display: inline-block; margin-left: -600px; ">
 							<strong>${replyList.id}</strong>
 						</p>
 						<p class="wdate" style="font-size: 10px; display: inline-block">
@@ -362,9 +350,7 @@
 								</button>
 							</form>
 						</c:if>
-						<button type="button" class="SBTN4">
-							<strong>신고</strong>
-						</button>
+						
 
 					</c:forEach>
 				</div>
