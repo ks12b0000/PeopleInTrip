@@ -18,6 +18,7 @@ import kr.co.intrip.login_signup.dto.MemberDTO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.dto.Tourlist_SteamedDTO;
 
@@ -60,51 +61,112 @@ public class MyPageDAOImpl implements MyPageDAO {
 
 	// 내가 쓴 동행글
 	@Override
-	public List<MyBoardDTO> listfindcompany(SearchCriteria scri) throws Exception {
-		List<MyBoardDTO> boardsList = sqlSession.selectList("mapper.mypage.listfindcompany", scri);
-		return boardsList;
-	}
-	// 내가 쓴 정보글
-	@Override
-	public List<MyBoardDTO> listfindinformation(SearchCriteria scri) throws Exception {
-		List<MyBoardDTO> boardsList2 = sqlSession.selectList("mapper.mypage.listfindInformation", scri);
-		return boardsList2;
+	public List<BoardDTO> listfindcompany(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectList("mapper.mypage.listfindcompany", pagingDTO);
 	}
 	// 내가 쓴 동행글 검색어 갯수
 	@Override
-	public int findlistCompanyCount(SearchCriteria scri) throws Exception {
-		return sqlSession.selectOne("mapper.mypage.findlistCompanyCount");
+	public int findlistCompanyCount(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectOne("mapper.mypage.findlistCompanyCount", pagingDTO);
+	}
+	
+	
+	// 내가 쓴 정보글
+	@Override
+	public List<MyBoardDTO> listfindinformation(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.mypage.listfindInformation", pagingDTO);
 	}
 	// 내가 쓴 정보글 검색어 갯수
 	@Override
-	public int findlistInfoCount(SearchCriteria scri2) throws Exception {
-		return sqlSession.selectOne("mapper.mypage.findlistInfoCount");
+	public int findlistInfoCount(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.mypage.findlistInfoCount", pagingDTO);
 	}
+	
+	
+	@Override
+	public List<MyBoardDTO> listfindInformationSearch(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectList("mapper.mypage.listfindInformationSearch", pagingDTO);
+	}
+	@Override
+	public int findlistInfoSearchCount(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.mypage.findlistInfoSearchCount", scri);
+	}
+	
 
-	// 내가 찜 한 글
+	// 내가 찜한 제주글 총 개수
 	@Override
-	public List<ApiDTO> selectMyTour(String id) throws DataAccessException {
-		List<ApiDTO> selectMyTour = sqlSession.selectList("mapper.mypage.mySteamed", id);
-		return selectMyTour;
-	}
-
-	// 내가 찜한 글 총 개수
-	@Override
-	public int getTotalSteamedCount(SearchCriteria scri, String id) throws Exception {
-		System.out.println("들어온 totalCount : " + scri + "들어온 id : " + id);
-		 return  sqlSession.selectOne("mapper.mypage.getTotalSteamedCount");
-	}
-	@Override
-	public Tourlist_SteamedDTO getTotalSteamedId(String id) throws DataAccessException {
-		return sqlSession.selectOne("mapper.mypage.getTotalSteamedCount", id);
-		 
+	public int getTotalSteamedCount(PagingDTO pagingDTO) throws Exception {
+		 return  sqlSession.selectOne("mapper.mypage.getTotalSteamedCount", pagingDTO);
 	}
 
 	// 내가 찜한 제주여행지 페이징
 	@Override
-	public List<ApiDTO> mySteamedJeju(SearchCriteria scri) throws DataAccessException {
-		return sqlSession.selectList("mapper.mypage.mySteamedJeju", scri);
+	public List<ApiDTO> mySteamedJeju(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectList("mapper.mypage.mySteamedJeju", pagingDTO);
 	}
+	
+	// 내가 찜한 제주축제 개수
+	@Override
+	public int getTotalSteamedFestivalCount(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.mypage.getTotalSteamedFestivalCount", pagingDTO);
+	}
+	// 내가 찜한 제주축제 페이징
+	@Override
+	public List<ApiDTO> mySteamedJejuFestival(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectList("mapper.mypage.mySteamedJejuFestival", pagingDTO);
+	}
+	
+	
+	// 내가 찜한 제주전시회 개수
+	@Override
+	public int getTotalSteamedExhibitionCount(PagingDTO pagingDTO) throws Exception {
+		return sqlSession.selectOne("mapper.mypage.getTotalSteamedExhibitionCount", pagingDTO);
+	}
+	// 내가 찜한 제주전시회 페이징
+	@Override
+	public List<ApiDTO> mySteamedJejuExhibition(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectList("mapper.mypage.mySteamedJejuExhibition", pagingDTO);
+	}
+
+	
+	// 내가 찜한 부산 여행지 개수
+	@Override
+	public int getTotalSteamedCountBusanTravel(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectOne("mapper.mypage.getTotalTravelSteamedCount", pagingDTO);
+	}
+	// 내가 찜한 부산 여행지 페이징
+	@Override
+	public List<BusanApiDTO> mySteamedBusanTravel(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectList("mapper.mypage.mySteamedBusanTravel", pagingDTO);
+	}
+	
+
+	// 내가 찜한 부산 체험지 개수
+	@Override
+	public int getTotalSteamedCountBusanExperience(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectOne("mapper.mypage.getTotalExperienceSteamedCount", pagingDTO);
+	}
+	// 내가 찜한 부산 체험지 페이징
+	@Override
+	public List<BusanApiDTO> mySteamedBusanExperience(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectList("mapper.mypage.mySteamedBusanExperience", pagingDTO);
+	}
+	
+	
+	// 내가 찜한 부산 축제 개수
+	@Override
+	public int getTotalSteamedCountBusanFestival(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectOne("mapper.mypage.getTotalFestivalSteamedCount", pagingDTO);
+	}
+	// 내가 찜한 부산 축제 페이징
+	@Override
+	public List<BusanApiDTO> mySteamedBusanFestival(PagingDTO pagingDTO) throws DataAccessException {
+		return sqlSession.selectList("mapper.mypage.mySteamedBusanFestival", pagingDTO);
+	}
+
+
+
+
 
 
 

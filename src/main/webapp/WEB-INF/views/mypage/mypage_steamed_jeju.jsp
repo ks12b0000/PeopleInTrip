@@ -90,6 +90,17 @@
             justify-content: flex-end;
             flex-grow: 1; 
         }
+        
+        .category a{
+            display: inline;
+            justify-content: flex-end;
+            flex-grow: 1; 
+            background-color: #9966ff;
+            text-align: center;
+        	color: white;
+        	text-decoration: none;
+        	padding: 3px 12px;
+        }
 
         .like td{
             padding: 10px 35px;
@@ -103,27 +114,43 @@
             opacity: 0.8;
         }
 
-		.title a {
-			vlink: white;
+        .test li{
+    	    display: inline;
+        	background-color: #9966ff;
+        	color: white;
+        	border-radius: 5px;
+        	text-decoration: none;
+        	padding: 3px 12px;
+        }
+        
+        h1 > a {
+			color: #9966ff;
+			font-family: Pacifico;
+			font-size: 45px;
+			margin-bottom: 10px;
 		}
 
     </style>
 	<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
+	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' />
 	<script type="text/javascript">
-/* 	$(function(){
+/*  	$(function(){
 		  $('#searchBtn').click(function() {
-		   self.location = "${contextPath}/mypage/mypage_renewal?id=${user.id}&"
+		   self.location = "${contextPath}/mypage/mypage_steamed_jeju?id=${user.id}&"
 		     + '${pageMaker.makeQuery(1)}'
 		     + "&searchType="
 		     + $("select option:selected").val()
 		     + "&keyword="
 		     + encodeURIComponent($('#keywordInput').val());
 		    });
-		 });   */
+		 });    */
 	</script>
 
 </head>
 <body>
+	<h1 style="text-align: center;">
+		<a href="${contextPath}/mainpage/main" style="text-decoration: none;">People in Trip</a>
+	</h1>
     <p class="cls1">마이페이지</p>
     <hr/><br/><br/>
     <div class="cls2">
@@ -148,24 +175,27 @@
     </div>
     <div class="cls3">
         <div>
+        	<a href="${contextPath}/mypage/mypage_renewal?id=${user.id}">내가 쓴 글</a>
             <a href="${contextPath}/mypage/modify_info?id=${user.id}">내 정보 수정</a>
             <a href="${contextPath}/mypage/member_delete.do?id=${user.id}">회원 탈퇴</a>
         </div>
     </div>
     <br/><br/>
     <p class="cls1">찜한 내역(제주)</p>
+     <br/>
+   	<ul class="test">
+		<li>제주</li>
+		<li><a href="${contextPath}/mypage/mypage_steamed_BusanTravel?id=${user.id}">부산</a></li>
+	</ul>
+	 <br/>
     <hr/>
     <form action="${contextPath}/mypage/mypage_steamed_jeju?id=${user.id}" method="post" name="show_MyTour_Steamed">
+        <div class="category">
+            <a href="${contextPath}/mypage/mypage_steamed_jeju?id=${user.id}">여행지</a>
+           	<a href="${contextPath}/mypage/mypage_steamed_jeju_festival?id=${user.id}">축제</a>
+           	<a href="${contextPath}/mypage/mypage_steamed_jeju_Exhibition?id=${user.id}">전시관</a>
+        </div>
 	    <div>
-	        <div class="category">
-	            <select>
-	                <option>전체</option>
-	                <option>관광지</option>
-	                <option>축제</option>
-	                <option>공연</option>
-	                <option>전시</option>
-	            </select>
-	        </div>
 	        <div align="center">
 	            <table align="center" class="like">
 	                <tr align="center">
@@ -219,48 +249,24 @@
 	            </table>
 	        </div>
 	    </div>
-    </form>
-    			<div style="text-align: center; font-size: 18px;">		
-				 <ul>
-				 <!-- << -->
-				  <a href="${contextPath}/mypage/mypage_steamed_jeju?page=1&id=${user.id}" style="color: #9966ff; font-size: 25px;">&laquo;</a> 
-				  <c:if test="${pageMaker.prev}">
-				   <a href="${contextPath}/mypage/mypage_steamed_jeju${pageMaker.makeSearch(pageMaker.startPage - 1)}&id=${user.id}">이전</a>
-				  </c:if> 
-				  
-				  <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> &nbsp;
-				   <a href="${contextPath}/mypage/mypage_steamed_jeju${pageMaker.makeSearch(idx)}&id=${user.id}">${idx}</a> &nbsp;
-				  </c:forEach>
-				  
-				  <!-- >> -->   
-				  <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				   <a href="${contextPath}/mypage/mypage_steamed_jejul${pageMaker.makeSearch(pageMaker.endPage + 1)}&id=${user.id}">다음</a> 
-				  </c:if>
-				  
-				 <c:choose>
-				   <c:when test= "${pageMaker.displayPageNum % 2 == 1 }">
-				   <a href="${contextPath}/mypage/mypage_steamed_jeju${pageMaker.makeSearch(pageMaker.totalCount/10 ) }&id=${user.id}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
-					</c:when>
-					<c:when test= "${pageMaker.displayPageNum % 2 == 0 }">
-					 <a href="${contextPath}/mypage/mypage_steamed_jeju${pageMaker.makeSearch(pageMaker.totalCount/10 +1  ) }&id=${user.id}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
-					</c:when>
-					</c:choose>
-				 </ul>
-			</div>
-        <div class="search">
-			<select name="searchType">
-				<option value="n"
-					<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
-				<option value="t"
-					<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
-				<option value="c"
-					<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
-				<option value="w"
-					<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
-			</select> <input type="text" name="keyword" id="keywordInput"
-				value="${scri.keyword}" />
-	
-			<button id="searchBtn" type="button">검색</button>
-        </div>
+     </form>
+	    
+  	<div style="text-align: center; font-size: 18px;">		
+		<c:if test="${pagingDTO.curPage > 1 }">
+			<a href="${contextPath}/mypage/mypage_steamed_jeju?id=${pagingDTO.id}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+			<a href="${contextPath}/mypage/mypage_steamed_jeju?id=${pagingDTO.id}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+		</c:if>
+		<c:forEach begin="${pagingDTO.firstPage }"  end="${pagingDTO.lastPage }" var="i"> &nbsp;
+	   		<a href="${contextPath}/mypage/mypage_steamed_jeju?id=${pagingDTO.id}&curPage=${i }" style="font-size: 18px;">   
+	   			<c:if test="${i eq pagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
+	   			<c:if test="${i ne pagingDTO.curPage }">  ${i } </c:if> 
+	   		</a>
+		</c:forEach>&nbsp;
+		<c:if test="${pagingDTO.curPage < pagingDTO.totalPageCount }">
+			<a href="${contextPath}/mypage/mypage_steamed_jeju?id=${pagingDTO.id}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+			<a href="${contextPath}/mypage/mypage_steamed_jeju?id=${pagingDTO.id}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+		</c:if>
+	</div>
+
 </body>
 </html>

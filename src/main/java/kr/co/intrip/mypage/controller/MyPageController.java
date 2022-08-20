@@ -1,5 +1,6 @@
 package kr.co.intrip.mypage.controller;
 
+import java.net.http.HttpRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.PageMaker;
 import kr.co.intrip.board.dto.SearchCriteria;
@@ -31,6 +35,7 @@ import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.mypage.service.MyPageService;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.dto.Tourlist_SteamedDTO;
 import lombok.extern.java.Log;
@@ -50,10 +55,10 @@ public class MyPageController {
 	@Autowired
 	BoardService boardService;
 	
-	@GetMapping("mypage/mypage_renewal.do")
-	public String myboardtest() {
-		return "mypage/mypage_renewal";
-	}
+//	@GetMapping("mypage/mypage_renewal.do")
+//	public String myboardtest() {
+//		return "mypage/mypage_renewal";
+//	}
 	
 	@RequestMapping(value = "mypage/modify_info")
 	public ModelAndView modify_info (HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -69,7 +74,7 @@ public class MyPageController {
 	
 	@RequestMapping(value = "mypage/update_modify_info", method = RequestMethod.POST)
 	public String mypageUpdatePwAction(@RequestParam(value= "id",defaultValue = "", required = false)
-				 String id, String pwd) throws Exception {
+					String id, String pwd) throws Exception {
 		mypageDTO.setId(id);
 		mypageDTO.setPwd(pwd);
 		mypageService.update_MyPage_Pw(mypageDTO);
@@ -77,7 +82,7 @@ public class MyPageController {
 		return "mypage/modify_info";
 	}
 	
-	@RequestMapping(value = "mypage/update_mypage_nick_nm", method = RequestMethod.POST)
+	@RequestMapping(value = "mypage/update_mypage_nick_nm", method = RequestMethod.POST)	
 	public String mypageUpdateNickAction(@RequestParam(value= "id", defaultValue = "", required = false)
 					String id, String nick_nm) throws Exception {
 		mypageDTO.setId(id);
@@ -86,9 +91,9 @@ public class MyPageController {
 		System.out.println("ID : " + id);
 		System.out.println("nick_nm : " + nick_nm);
 		
-		mypageService.update_MyPage_nick_nm(mypageDTO);
+		mypageService.update_MyPage_nick_nm(mypageDTO);		
 		
-		return "mypage/modify_info";
+		return "login_signup/login";
 	}
 	
 	// 닉네임 검사
@@ -132,101 +137,131 @@ public class MyPageController {
 		return "redirect:/mainpage/main";
 	}
 	
-	 //내가 쓴 글
+	
+	 //내가 쓴 글 동행
 	@RequestMapping(value = "mypage/mypage_renewal", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView listArticles(@RequestParam(value = "id", defaultValue = "", required = false) String id,
-						@ModelAttribute("scri") SearchCriteria scri, Model model,
-						HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("들어온 id : " + id);
-		String viewName = (String) request.getAttribute("viewName");
-		ModelAndView mav = new ModelAndView(viewName);
-//		List<MyBoardDTO> boardsList =  mypageService.listArticles(id);
-//		mav.addObject("myboardsList", boardsList);
+	public List<BoardDTO> showMycompany(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = mypageService.findlistCompanyCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<BoardDTO> myboardsList = mypageService.listfindcompany(pagingDTO);
+		model.addAttribute("myboardsList", myboardsList);
 		
-		System.out.println("들어온 scri : " + scri);
-		List<MyBoardDTO> boardsList = mypageService.listfindcompany(scri);
-		model.addAttribute("myboardsList", boardsList);
+		System.out.println(totalRowCount);
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(scri);
-		pageMaker.setTotalCount(mypageService.findlistCompanyCount(scri));
-		model.addAttribute("pageMaker", pageMaker);
-		
-		return mav;
+		return myboardsList;
 	}
 	
-	 //내가 쓴 글2
-	@RequestMapping(value = "mypage/mypage_renewal2", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView listArticles2(@RequestParam(value = "id", defaultValue = "", required = false) String id,
-						@ModelAttribute("scri2") SearchCriteria scri2, Model model,
-						HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("들어온 id : " + id);
-		String viewName = (String) request.getAttribute("viewName");
-		ModelAndView mav = new ModelAndView(viewName);
-//		List<MyBoardDTO> boardsList =  mypageService.listArticles(id);
-//		mav.addObject("myboardsList", boardsList);
+	
+	 //내가 쓴 글 정보
+	@RequestMapping(value = "mypage/mypage_renewal_Info", method = {RequestMethod.GET, RequestMethod.POST})
+	public List<MyBoardDTO> showMyInfo(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = mypageService.findlistInfoCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<MyBoardDTO> myboardsList = mypageService.listfindinformation(pagingDTO);
+		model.addAttribute("myboardsList", myboardsList);
 		
-		System.out.println("들어온 scri2 : " + scri2);
-		List<MyBoardDTO> boardsList2 = mypageService.listfindinformation(scri2);
-		model.addAttribute("myboardsList2", boardsList2);
+		System.out.println(totalRowCount);
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(scri2);
-		pageMaker.setTotalCount(mypageService.findlistInfoCount(scri2));
-		model.addAttribute("pageMaker", pageMaker);
-		
-		return mav;
+		return myboardsList;
 	}
 	
-	@GetMapping("mypage/mypage_steamed_jeju.do")
-	public String showMySteamed() {
-		return "mypage/member_delete";
+	
+	@RequestMapping(value = "mypage/mypage_renewal_Info_Search", method = {RequestMethod.GET, RequestMethod.POST})
+	public List<MyBoardDTO> showMySearchInfo(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO,
+							@ModelAttribute("scri") SearchCriteria scri) throws Exception {
+		int totalRowCount = mypageService.findlistInfoSearchCount(scri);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		
+		
+		
+		List<MyBoardDTO> myboardsList = mypageService.listfindInformationSearch(pagingDTO);
+		model.addAttribute("myboardsList", myboardsList);
+		
+		System.out.println(totalRowCount);
+		
+		return myboardsList;
 	}
 	
-//	@RequestMapping(value = "mypage/mypage_steamed_jeju", method = {RequestMethod.GET, RequestMethod.POST})
-//	public ModelAndView showMySteamed(@RequestParam(value = "id") String id,
-//						HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		
-//		String viewName = (String) request.getAttribute("viewName");
-//		ModelAndView mav = new ModelAndView(viewName);
-//		
-//		System.out.println("들어온 id : " + id);
-//		List<ApiDTO> boardsTour = mypageService.listMyTour(id);
-//		mav.addObject("boardsTour", boardsTour);
-//		
-//		return mav;
-//	}
 	
-	@RequestMapping(value = "mypage/mypage_steamed_jeju", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView showMySteamed(@ModelAttribute("id") String id,
-									@ModelAttribute("scri") SearchCriteria scri, Model model,
-						HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "mypage/mypage_steamed_jeju", method = RequestMethod.GET)
+	public List<ApiDTO> showMySteamed(Model model,@ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = mypageService.getTotalSteamedCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();		
+		List<ApiDTO> boardsTour = mypageService.mySteamedJeju(pagingDTO);
+		model.addAttribute("boardsTour", boardsTour);
+
+		System.out.println(totalRowCount);
 		
-		String viewName = (String) request.getAttribute("viewName");
-		ModelAndView mav = new ModelAndView(viewName);
+		return boardsTour;
+	}
+	
+	@RequestMapping(value = "mypage/mypage_steamed_jeju_festival", method = RequestMethod.GET)
+	public List<ApiDTO> showMySteamedFestival(Model model,@ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = mypageService.getTotalSteamedFestivalCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();		
+		List<ApiDTO> boardsTour = mypageService.mySteamedJejuFestival(pagingDTO);
+		model.addAttribute("boardsTour", boardsTour);
+
+		System.out.println(totalRowCount);
 		
-		System.out.println("들어온 id : " + id);
-//		List<ApiDTO> boardsTour = mypageService.listMyTour(id);
-//		mav.addObject("boardsTour", boardsTour);
+		return boardsTour;
+	}
+	
+	@RequestMapping(value = "mypage/mypage_steamed_jeju_Exhibition", method = RequestMethod.GET)
+	public List<ApiDTO> showMySteamedExhibition(Model model,@ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = mypageService.getTotalSteamedExhibitionCount(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();		
+		List<ApiDTO> boardsTour = mypageService.mySteamedJejuExhibition(pagingDTO);
+		model.addAttribute("boardsTour", boardsTour);
+
+		System.out.println(totalRowCount);
 		
-		System.out.println("들어온 scri : " + scri);
-		List<ApiDTO> boardsTour2 = mypageService.mySteamedJeju(scri);
-		model.addAttribute("boardsTour", boardsTour2);
+		return boardsTour;
+	}
+	
+	@RequestMapping(value = "mypage/mypage_steamed_BusanTravel", method = RequestMethod.GET)
+	public List<BusanApiDTO> showMySteamedBusanTravel(Model model, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = mypageService.getTotalSteamedCountBusanTravel(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<BusanApiDTO> boardsTour = mypageService.mySteamedBusanTravel(pagingDTO);
+		model.addAttribute("boardsTour", boardsTour);
 		
-		Tourlist_SteamedDTO tsDTO = new Tourlist_SteamedDTO();
-		tsDTO.setId(id);
-		mypageService.getTotalSteamedId(id);
-		model.addAttribute("id", id);
+		System.out.println(totalRowCount);
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(scri);
-		pageMaker.setId(id);
-//		pageMaker.setTotalCount(mypageService.getTotalSteamedCount(scri, id));
-		pageMaker.setTotalCount(mypageService.getTotalSteamedCount(scri, id), id);
-		model.addAttribute("pageMaker", pageMaker);
-		System.out.println("pageMaker : " + pageMaker);
+		return boardsTour;
+	}
+	
+	@RequestMapping(value = "mypage/mypage_steamed_BusanExperience", method = RequestMethod.GET)
+	public List<BusanApiDTO> showMySteamedBusanExperience(Model model, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = mypageService.getTotalSteamedCountBusanExperience(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<BusanApiDTO> boardsTour = mypageService.mySteamedBusanExperience(pagingDTO);
+		model.addAttribute("boardsTour", boardsTour);
 		
-		return mav;
+		System.out.println(totalRowCount);
+		
+		return boardsTour;
+	}
+	
+	@RequestMapping(value = "mypage/mypage_steamed_BusanFestival", method = RequestMethod.GET)
+	public List<BusanApiDTO> showMySteamedBusanFestival(Model model, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
+		int totalRowCount = mypageService.getTotalSteamedCountBusanFestival(pagingDTO);
+		pagingDTO.setTotalRowCount(totalRowCount);
+		pagingDTO.pageSetting();
+		List<BusanApiDTO> boardsTour = mypageService.mySteamedBusanFestival(pagingDTO);
+		model.addAttribute("boardsTour", boardsTour);
+		
+		System.out.println(totalRowCount);
+		
+		return boardsTour;
 	}
 	
 }
