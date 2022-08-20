@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>제주도 댓글 수정</title>
+<title>댓글 수정</title>
 </head>
 <body>
 	<div id="comment-count" style=" text-align: center; margin-top: 30px; font-size: 24px; color: #9966ff"><strong>댓글 수정하기</strong></div>

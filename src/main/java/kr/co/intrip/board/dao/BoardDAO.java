@@ -153,6 +153,14 @@ public interface BoardDAO {
 	public void deleteModImage1(ImageDTO imageDTO);
 
 	public BoardDTO selectpost_num1(int post_num) throws DataAccessException;
+
+	public List<BoardDTO> listfindmaster(SearchCriteria scri) throws Exception;
+	
+	public List<BoardDTO> listfindmaster1(SearchCriteria scri) throws Exception;
+
+	public int findlistCountmaster(SearchCriteria scri) throws Exception;
+	
+	public int findlistCountmaster1(SearchCriteria scri) throws Exception;
 	
 	
 }

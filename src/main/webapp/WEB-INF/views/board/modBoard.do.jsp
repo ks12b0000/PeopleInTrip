@@ -91,10 +91,10 @@ request.setCharacterEncoding("UTF-8");
 			if (input.files && input.files[0]) {
 				let reader = new FileReader()
 				reader.onload = function(e) {
-					$('#preview0').attr('src', e.target.result)
+					$('#preview'+index).attr('src', e.target.result)
 				}
 				reader.readAsDataURL(input.files[0])
-			}
+			}	
 		}
     	
     	
@@ -158,20 +158,21 @@ request.setCharacterEncoding("UTF-8");
 									<div id="tr_${status.count }">
 
 										<div>
-											<!-- 이미지 수정시 미리 원래 이미지 파일이름을 저장함 -->
+											<!-- 이미지 수정시 미리 원래 이미지 파일이름을 저장함 -->			
 											<input type="hidden" name="oldFileName"
 												value="${item.imageFileName }" /> <input type="hidden"
 												name="imageFileNO" value="${item.imageFileNO }" />
-
-										</div>
+											<img alt="이미지" src="${contextPath}/download.do?imageFileName=${item.imageFileName}&post_num=${item.post_num}"
+										id="preview${status.index }" width="100px" height="50px"><br />수정할 이미지 선택<br>
+										</div> 
 									</div>
 									<div class="tr_modEable" id="tr_sub${status.count }">
 										<br>
 
 										<div>
 											<input type="file" name="imageFileName${status.index }"
-												id="i_imageFileName${status.index }"
-												onchange="readURL(this, ${status.index})"><br>
+												id="imageFileName${status.index }"
+												onchange="readURL(this, ${status.index})" ><br>
 											<input type="button" value="이미지 삭제하기"
 												onclick="fn_removeModImage(${item.imageFileNO}, ${item.post_num }, '${item.imageFileName }')">
 										</div>

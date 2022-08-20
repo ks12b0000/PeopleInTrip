@@ -100,7 +100,7 @@ request.setCharacterEncoding("UTF-8");
 .list>.SBTN2 {
 	text-align: center;
 	display: flex;
-	margin-left: 580px;
+	margin-left: 650px;
 	margin-top: -30px;
 	width: 50px;
 	height: 30px;
@@ -114,21 +114,7 @@ request.setCharacterEncoding("UTF-8");
 .list>#deleteForm>.SBTN3 {
 	text-align: center;
 	display: flex;
-	margin-left: 640px;
-	margin-top: -30px;
-	width: 50px;
-	height: 30px;
-	background-color: white;
-	border: 2px solid #D8D8D8;
-	cursor: pointer;
-	padding-left: 9px;
-	padding-top: 3px;
-}
-
-.list>.SBTN4 {
-	text-align: center;
-	display: flex;
-	margin-left: 700px;
+	margin-left: 715px;
 	margin-top: -30px;
 	width: 50px;
 	height: 30px;
@@ -142,9 +128,7 @@ request.setCharacterEncoding("UTF-8");
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
-	function singo() {
-		alert("댓글이 신고되었습니다");
-	}
+	
 	
 	function btnbtn() {
 		if ($("#comment_input").val() == "") {
@@ -358,9 +342,7 @@ request.setCharacterEncoding("UTF-8");
 								</button>
 							</form>
 						</c:if>
-						<button type="button" class="SBTN4">
-							<strong>신고</strong>
-						</button>
+						
 					</c:forEach>
 					
 				</div>

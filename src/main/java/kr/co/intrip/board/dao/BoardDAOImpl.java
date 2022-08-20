@@ -106,7 +106,7 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlSession.selectOne("mapper.board.selectNewpost_num1");
 	}
 
-	//이미지 추가
+	// 이미지 추가
 	@Override
 	public void insertNewImage(Map boardMap) {
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
@@ -121,43 +121,40 @@ public class BoardDAOImpl implements BoardDAO {
 				imageDTO.setpost_num(post_num);
 			}
 
-			
 			sqlSession.insert("mapper.board.insertNewImage", imageFileList);
 		}
 
 	}
-	
-	//이미지 추가
-		@Override
-		public void insertNewImage1(Map boardMap) {
-			List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
-			int post_num = (Integer) boardMap.get("post_num"); // boardMap이 글 번호를 가져옴
 
-			int imageFileNO = selectNewImageFileNO1(); // 이미지 번호를 가져옴
+	// 이미지 추가
+	@Override
+	public void insertNewImage1(Map boardMap) {
+		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
+		int post_num = (Integer) boardMap.get("post_num"); // boardMap이 글 번호를 가져옴
 
-			if (imageFileList != null && imageFileList.size() != 0) {
-				// ImageDTO 객체를 차례대로 가져와 이미지번호와 글번호 속성을 설정함
-				for (ImageDTO imageDTO : imageFileList) {
-					imageDTO.setImageFileNO(++imageFileNO);
-					imageDTO.setpost_num(post_num);
-				}
+		int imageFileNO = selectNewImageFileNO1(); // 이미지 번호를 가져옴
 
-				
-				sqlSession.insert("mapper.board.insertNewImage1", imageFileList);
+		if (imageFileList != null && imageFileList.size() != 0) {
+			// ImageDTO 객체를 차례대로 가져와 이미지번호와 글번호 속성을 설정함
+			for (ImageDTO imageDTO : imageFileList) {
+				imageDTO.setImageFileNO(++imageFileNO);
+				imageDTO.setpost_num(post_num);
 			}
 
+			sqlSession.insert("mapper.board.insertNewImage1", imageFileList);
 		}
-	
-	
-	//새 이미지파일 번호 추가
+
+	}
+
+	// 새 이미지파일 번호 추가
 	private int selectNewImageFileNO() {
 		return sqlSession.selectOne("mapper.board.selectNewImageFileNO");
 	}
-	
-	//새 이미지파일 번호 추가
-		private int selectNewImageFileNO1() {
-			return sqlSession.selectOne("mapper.board.selectNewImageFileNO1");
-		}
+
+	// 새 이미지파일 번호 추가
+	private int selectNewImageFileNO1() {
+		return sqlSession.selectOne("mapper.board.selectNewImageFileNO1");
+	}
 
 	@Override
 	public BoardDTO selectpost_num(int post_num) throws DataAccessException {
@@ -170,7 +167,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 		return sqlSession.selectOne("mapper.board.selectpost_num1", post_num);
 	}
-	
+
 	@Override
 	public List<ImageDTO> selectImageFileList(int post_num) throws DataAccessException {
 
@@ -178,7 +175,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 		return imageFileList;
 	}
-	
+
 	@Override
 	public List<ImageDTO> selectImageFileList1(int post_num) throws DataAccessException {
 
@@ -207,7 +204,7 @@ public class BoardDAOImpl implements BoardDAO {
 		}
 
 	}
-	
+
 	@Override
 	public void updateImageFile1(Map<String, Object> boardMap) throws DataAccessException {
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
@@ -246,24 +243,24 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("mapper.board.insertModNewImage", modAddImageFileList);
 
 	}
-	
+
 	// 새 이미지 추가
-		@Override
-		public void insertModNewImage1(Map<String, Object> boardMap) throws DataAccessException {
+	@Override
+	public void insertModNewImage1(Map<String, Object> boardMap) throws DataAccessException {
 
-			List<ImageDTO> modAddImageFileList = (List<ImageDTO>) boardMap.get("modAddImageFileList");
-			int post_num = Integer.parseInt((String) boardMap.get("post_num"));
+		List<ImageDTO> modAddImageFileList = (List<ImageDTO>) boardMap.get("modAddImageFileList");
+		int post_num = Integer.parseInt((String) boardMap.get("post_num"));
 
-			int imageFileNO = selectNewImageFileNO1();
+		int imageFileNO = selectNewImageFileNO1();
 
-			for (ImageDTO imageDTO : modAddImageFileList) {
-				imageDTO.setpost_num(post_num);
-				imageDTO.setImageFileNO(++imageFileNO);
-			}
-
-			sqlSession.insert("mapper.board.insertModNewImage1", modAddImageFileList);
-
+		for (ImageDTO imageDTO : modAddImageFileList) {
+			imageDTO.setpost_num(post_num);
+			imageDTO.setImageFileNO(++imageFileNO);
 		}
+
+		sqlSession.insert("mapper.board.insertModNewImage1", modAddImageFileList);
+
+	}
 
 	// 글 수정
 	@Override
@@ -285,13 +282,13 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.delete("mapper.board.deleteModImage", imageDTO);
 
 	}
-	
-	// 글 이미지 삭제
-		@Override
-		public void deleteModImage1(ImageDTO imageDTO) {
-			sqlSession.delete("mapper.board.deleteModImage1", imageDTO);
 
-		}
+	// 글 이미지 삭제
+	@Override
+	public void deleteModImage1(ImageDTO imageDTO) {
+		sqlSession.delete("mapper.board.deleteModImage1", imageDTO);
+
+	}
 
 	// 글삭제
 	@Override
@@ -615,5 +612,31 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public boardCommentDTO boardselectReply2(int com_num) throws Exception {
 		return sqlSession.selectOne("mapper.board.boardselectReply2", com_num);
+	}
+
+	// 관리자 페이지
+	@Override
+	public List<BoardDTO> listfindmaster(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = sqlSession.selectList("mapper.board.listfindmaster", scri);
+		return boardsList;
+	}
+
+	// 관리자 페이지
+	@Override
+	public List<BoardDTO> listfindmaster1(SearchCriteria scri) throws Exception {
+		List<BoardDTO> boardsList = sqlSession.selectList("mapper.board.listfindmaster1", scri);
+		return boardsList;
+	}
+
+	// 신고 갯수 검색(관리자)
+	@Override
+	public int findlistCountmaster(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.board.findlistCountmaster");
+	}
+
+	// 신고 갯수 검색1(관리자)
+	@Override
+	public int findlistCountmaster1(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.board.findlistCountmaster1");
 	}
 }

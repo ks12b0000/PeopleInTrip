@@ -42,15 +42,17 @@
 	</update>
 
 	<!-- 페이징 검색 -->
- 	<select id="listfind" resultType="boardDTO"
+	<select id="listfind" resultType="boardDTO"
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
 		VISITCOUNT,likehit,sinhit
 		from (
-		select POST_NUM, POST_TITLE, POST_CONTENT, ID,
+		select POST_NUM, POST_TITLE,
+		POST_CONTENT, ID,
 		POST_DATE,likehit,sinhit,
 		VISITCOUNT,
-		row_number() over(order by POST_NUM desc)
+		row_number()
+		over(order by POST_NUM desc)
 		as rNum
 		from
 		P_BOARD
@@ -66,10 +68,12 @@
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
 		VISITCOUNT,likehit,sinhit
 		from (
-		select POST_NUM, POST_TITLE, POST_CONTENT, ID,
+		select POST_NUM, POST_TITLE,
+		POST_CONTENT, ID,
 		POST_DATE,likehit,sinhit,
 		VISITCOUNT,
-		row_number() over(order by POST_NUM desc)
+		row_number()
+		over(order by POST_NUM desc)
 		as rNum
 		from
 		P_BOARD1
@@ -89,12 +93,11 @@
 	</sql>
 
 	<!--검색어 갯수 -->
-	<select id="findlistCount" resultType="int"
-		parameterType="kr.co.intrip.board.dto.Criteria">
-		select count(post_num)
-		from p_board
-		<include refid="search"></include>
-		where post_num > 0
+	<select id="findlistCount" resultType="int" >
+	select count(post_num)
+	from p_board
+	<include refid="search"/> 	
+	where post_num > 0	
 	</select>
 
 	<!--검색어 갯수 -->
@@ -102,8 +105,8 @@
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select count(post_num)
 		from p_board1
-		<include refid="search"></include>
-		where post_num > 0
+		<include refid="search"/>
+		where post_num > 0		
 	</select>
 
 	<!-- 상세보기 -->
@@ -160,7 +163,7 @@
          SELECT nvl(MAX(imageFileNO),0) FROM P_imageFile
       ]]>
 	</select>
-	
+
 	<select id="selectNewImageFileNO1" resultType="int">
       <![CDATA[   
          SELECT nvl(MAX(imageFileNO),0) FROM P_imageFile1
@@ -175,7 +178,7 @@
          ORDER BY IMAGEFILENO      
       ]]>
 	</select>
-	
+
 	<select id="selectImageFileList1" resultMap="imgResult"
 		parameterType="int">
       <![CDATA[
@@ -195,7 +198,7 @@
 			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
 		</foreach>
 	</insert>
-	
+
 	<!-- 한꺼번에 여러 개의 레코드 추가 -->
 	<insert id="insertNewImage1" parameterType="java.util.Map">
 		<foreach collection="list" item="item" open="INSERT ALL"
@@ -214,7 +217,7 @@
          WHERE POST_NUM = #{post_num}   
       ]]>
 	</select>
-	
+
 	<select id="selectpost_num1" resultType="boardDTO"
 		parameterType="int">
       <![CDATA[
@@ -261,7 +264,7 @@
 			</choose>
 		</foreach>
 	</update>
-	
+
 	<update id="updateImageFile1" parameterType="java.util.List">
 		<foreach collection="list" item="item" separator=";"
 			open="DECLARE BEGIN" close="; END;">
@@ -279,7 +282,7 @@
 			</choose>
 		</foreach>
 	</update>
-	
+
 	<!-- 이미지 추가 -->
 	<insert id="insertModNewImage" parameterType="java.util.Map">
 		<foreach collection="list" item="item" open="INSERT ALL"
@@ -290,7 +293,7 @@
 			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
 		</foreach>
 	</insert>
-	
+
 	<!-- 이미지 추가 -->
 	<insert id="insertModNewImage1" parameterType="java.util.Map">
 		<foreach collection="list" item="item" open="INSERT ALL"
@@ -326,7 +329,7 @@
 		AND IMAGEFILENO =
 		#{imageFileNO}
 	</delete>
-	
+
 	<!-- 이미지 삭제 -->
 	<delete id="deleteModImage1" parameterType="imageDTO">
 		DELETE FROM
@@ -339,7 +342,8 @@
 	<!-- 게시글 추천수 -->
 	<update id="updateLike" parameterType="int">
 		update p_board set
-		LIKEHIT = LIKEHIT+1
+		LIKEHIT
+		= LIKEHIT+1
 		where POST_NUM = #{POST_NUM}
 	</update>
 
@@ -352,30 +356,36 @@
 
 	<!-- 게시글 추천 시 Like 테이블에 insert -->
 	<insert id="insertLike" parameterType="java.util.Map">
-		insert into l_board(LIKENO , POST_NUM , id)
-		values((SELECT NVL(MAX(likeno), 0) + 1 FROM l_board) ,#{post_num} ,#{id})
+		insert into l_board(LIKENO
+		, POST_NUM , id)
+		values((SELECT NVL(MAX(likeno), 0) + 1 FROM l_board)
+		,#{post_num} ,#{id})
 	</insert>
 
 	<!-- 게시글 추천취소 시 delete -->
 	<delete id="deleteLike">
-		delete from l_board where post_num = #{post_num} and id = #{id}
+		delete from l_board where post_num = #{post_num} and
+		id = #{id}
 	</delete>
 
 	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지 -->
 	<update id="updateLikeCheck">
 		update l_board set LIKECHECK = 1
-		where post_num = #{post_num} and id = #{id}
+		where post_num =
+		#{post_num} and id = #{id}
 	</update>
 
 	<!-- 게시글 추천취소 시 다시 0 -->
 	<update id="updateLikeCheckCancel">
 		update l_board set LIKECHECK = 0
-		where post_num = #{post_num} and id = #{id}
+		where post_num =
+		#{post_num} and id = #{id}
 	</update>
 
 	<!-- 게시글 추천 중복방지 select문 -->
 	<select id="likeCheck" resultType="int">
-		select count(*) from l_board where post_num = #{post_num} and id = #{id}
+		select count(*) from l_board
+		where post_num = #{post_num} and id = #{id}
 	</select>
 
 	<!-- 추천1 -->
@@ -395,37 +405,44 @@
 
 	<!-- 게시글 추천 시 Like 테이블에 insert -->
 	<insert id="insertLike1" parameterType="java.util.Map">
-		insert into l_board1(LIKENO1 , POST_NUM , id)
-		values((SELECT NVL(MAX(likeno1), 0) + 1 FROM l_board1) ,#{post_num} ,#{id})
+		insert into
+		l_board1(LIKENO1 , POST_NUM , id)
+		values((SELECT NVL(MAX(likeno1), 0) +
+		1 FROM l_board1) ,#{post_num} ,#{id})
 	</insert>
 
 	<!-- 게시글 추천취소 시 delete -->
 	<delete id="deleteLike1">
-		delete from l_board1 where post_num = #{post_num} and id = #{id}
+		delete from l_board1 where post_num = #{post_num} and
+		id = #{id}
 	</delete>
 
 	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지 -->
 	<update id="updateLikeCheck1">
 		update l_board1 set LIKECHECK = 1
-		where post_num = #{post_num} and id = #{id}
+		where post_num =
+		#{post_num} and id = #{id}
 	</update>
 
 	<!-- 게시글 추천취소 시 다시 0 -->
 	<update id="updateLikeCheckCancel1">
 		update l_board1 set LIKECHECK = 0
-		where post_num = #{post_num} and id = #{id}
+		where post_num =
+		#{post_num} and id = #{id}
 	</update>
 
 	<!-- 게시글 추천 중복방지 select문 -->
 	<select id="likeCheck1" resultType="int">
-		select count(*) from l_board1 where post_num = #{post_num} and id = #{id}
+		select count(*) from l_board1
+		where post_num = #{post_num} and id = #{id}
 	</select>
 
 	<!-- 신고 -->
 	<!-- 신고수 -->
 	<update id="updatesin" parameterType="int">
 		update p_board set
-		SINHIT = SINHIT+1
+		SINHIT =
+		SINHIT+1
 		where POST_NUM = #{POST_NUM}
 	</update>
 
@@ -438,36 +455,43 @@
 
 	<!-- 신고시 신고 테이블에 insert -->
 	<insert id="insertsin" parameterType="java.util.Map">
-		insert into s_board(SNO , POST_NUM , id)
-		values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board) ,#{post_num} ,#{id})
+		insert into s_board(SNO ,
+		POST_NUM , id)
+		values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board)
+		,#{post_num} ,#{id})
 	</insert>
 
 	<!-- 신고 취소 시 delete -->
 	<delete id="deletesin">
-		delete from s_board where post_num = #{post_num} and id = #{id}
+		delete from s_board where post_num = #{post_num} and
+		id = #{id}
 	</delete>
 
 	<!-- 신고시 Check를 1로 만들어서 중복방지 -->
 	<update id="updatesinCheck">
 		update s_board set SCHECK = 1
-		where post_num = #{post_num} and id = #{id}
+		where post_num =
+		#{post_num} and id = #{id}
 	</update>
 
 	<!-- 신고시 다시 0 -->
 	<update id="updatesinCheckCancel">
 		update s_board set SCHECK = 0
-		where post_num = #{post_num} and id = #{id}
+		where post_num =
+		#{post_num} and id = #{id}
 	</update>
 
 	<!-- 신고 중복방지 select문 -->
 	<select id="sinCheck" resultType="int">
-		select count(*) from s_board where post_num = #{post_num} and id = #{id}
+		select count(*) from s_board
+		where post_num = #{post_num} and id = #{id}
 	</select>
 
 	<!-- 신고1 -->
 	<update id="updatesin1" parameterType="int">
 		update p_board1 set
-		SINHIT = SINHIT+1
+		SINHIT
+		= SINHIT+1
 		where POST_NUM = #{POST_NUM}
 	</update>
 
@@ -480,30 +504,36 @@
 
 	<!-- 신고시 신고 테이블에 insert -->
 	<insert id="insertsin1" parameterType="java.util.Map">
-		insert into s_board1(SNO , POST_NUM , id)
-		values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board1) ,#{post_num} ,#{id})
+		insert into s_board1(SNO ,
+		POST_NUM , id)
+		values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board1)
+		,#{post_num} ,#{id})
 	</insert>
 
 	<!-- 신고 취소 시 delete -->
 	<delete id="deletesin1">
-		delete from s_board1 where post_num = #{post_num} and id = #{id}
+		delete from s_board1 where post_num = #{post_num} and
+		id = #{id}
 	</delete>
 
 	<!-- 신고시 Check를 1로 만들어서 중복방지 -->
 	<update id="updatesinCheck1">
 		update s_board1 set SCHECK = 1
-		where post_num = #{post_num} and id = #{id}
+		where post_num =
+		#{post_num} and id = #{id}
 	</update>
 
 	<!-- 신고시 다시 0 -->
 	<update id="updatesinCheckCancel1">
 		update s_board1 set SCHECK = 0
-		where post_num = #{post_num} and id = #{id}
+		where post_num =
+		#{post_num} and id = #{id}
 	</update>
 
 	<!-- 신고 중복방지 select문 -->
 	<select id="sinCheck1" resultType="int">
-		select count(*) from s_board1 where post_num = #{post_num} and id = #{id}
+		select count(*) from s_board1
+		where post_num = #{post_num} and id = #{id}
 	</select>
 
 	<!-- 댓글 총 개수 -->
@@ -674,6 +704,69 @@
          where com_num = #{com_num}
       ]]>
 	</select>
-	
+
+
+	<!-- 관리자 페이지 -->
+	<select id="listfindmaster" resultType="boardDTO"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID,
+		POST_DATE,
+		VISITCOUNT,likehit,sinhit
+		from (
+		select POST_NUM, POST_TITLE,
+		POST_CONTENT, ID,
+		POST_DATE,likehit,sinhit,
+		VISITCOUNT,
+		row_number()
+		over(order by POST_NUM desc)
+		as rNum
+		from
+		P_BOARD
+		where sinhit>=1
+		) mb
+		where rNum between #{rowStart} and #{rowEnd}
+		order by POST_NUM desc
+	</select>
+
+
+	<!-- 관리자 페이지1 -->
+	<select id="listfindmaster1" resultType="boardDTO"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select POST_NUM, POST_TITLE, POST_CONTENT, ID,
+		POST_DATE,
+		VISITCOUNT,likehit,sinhit
+		from (
+		select POST_NUM, POST_TITLE,
+		POST_CONTENT, ID,
+		POST_DATE,likehit,sinhit,
+		VISITCOUNT,
+		row_number()
+		over(order by POST_NUM desc)
+		as rNum
+		from
+		P_BOARD1
+		where sinhit>=1
+		) mb
+		where rNum between #{rowStart} and #{rowEnd}
+		order by POST_NUM desc
+	</select>
+
+	<!--관리자 검색어 갯수 -->
+	<select id="findlistCountmaster" resultType="int"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select count(post_num)
+		from p_board
+		<include refid="search"></include>
+		where post_num > 0 AND SINHIT >=1
+	</select>
+
+	<!--관리자 검색어 갯수 -->
+	<select id="findlistCountmaster1" resultType="int"
+		parameterType="kr.co.intrip.board.dto.Criteria">
+		select count(post_num)
+		from p_board1
+		<include refid="search"></include>
+		where post_num > 0 AND SINHIT >=1
+	</select>
 
 </mapper>

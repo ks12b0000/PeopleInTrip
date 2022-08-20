@@ -64,7 +64,8 @@ public class BoardControllerImpl implements BoardController {
 	@Override
 	@RequestMapping(value = "/board/community_detail.do", method = RequestMethod.GET)
 	public ModelAndView viewdetail(@RequestParam(value = "post_num") int post_num, // 조회할 글 번호를 가져옴
-			HttpServletRequest request, HttpServletResponse response, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {
+			HttpServletRequest request, HttpServletResponse response, Model model,
+			@ModelAttribute("commentpagingDTO") CommentPagingDTO commentpagingDTO) throws Exception {
 
 		// 조회수 증가
 		boardService.visitcount(post_num);
@@ -74,22 +75,23 @@ public class BoardControllerImpl implements BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		mav.addObject("boardMap", boardMap);
-		
+
 		int totalRowCount = boardService.getboardCommentTotalRowCount(commentpagingDTO);
-	      commentpagingDTO.setTotalRowCount(totalRowCount);
-	      commentpagingDTO.pageSetting();
-	      List<boardCommentDTO> replyList = boardService.boardreadReply(commentpagingDTO);
-	      model.addAttribute("replyList", replyList);
+		commentpagingDTO.setTotalRowCount(totalRowCount);
+		commentpagingDTO.pageSetting();
+		List<boardCommentDTO> replyList = boardService.boardreadReply(commentpagingDTO);
+		model.addAttribute("replyList", replyList);
 
 		return mav;
-		
+
 	}
 
 	// 상세보기1
 	@Override
 	@RequestMapping(value = "/board/community_detail2.do", method = RequestMethod.GET)
 	public ModelAndView viewdetail1(@RequestParam(value = "post_num") int post_num, // 조회할 글 번호를 가져옴
-			HttpServletRequest request, HttpServletResponse response, Model model, @ModelAttribute("commentpagingDTO")CommentPagingDTO commentpagingDTO) throws Exception {
+			HttpServletRequest request, HttpServletResponse response, Model model,
+			@ModelAttribute("commentpagingDTO") CommentPagingDTO commentpagingDTO) throws Exception {
 
 		// 조회수 증가
 		boardService.visitcount1(post_num);
@@ -100,13 +102,12 @@ public class BoardControllerImpl implements BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		mav.addObject("boardMap", boardMap);
-		
-		int totalRowCount = boardService.getboardCommentTotalRowCount2(commentpagingDTO);
-	      commentpagingDTO.setTotalRowCount(totalRowCount);
-	      commentpagingDTO.pageSetting();
-	      List<boardCommentDTO> replyList = boardService.boardreadReply2(commentpagingDTO);
-	      model.addAttribute("replyList", replyList);
 
+		int totalRowCount = boardService.getboardCommentTotalRowCount2(commentpagingDTO);
+		commentpagingDTO.setTotalRowCount(totalRowCount);
+		commentpagingDTO.pageSetting();
+		List<boardCommentDTO> replyList = boardService.boardreadReply2(commentpagingDTO);
+		model.addAttribute("replyList", replyList);
 
 		return mav;
 	}
@@ -330,7 +331,7 @@ public class BoardControllerImpl implements BoardController {
 
 		return fileList;
 	}
-	
+
 	private List<String> upload1(MultipartHttpServletRequest multipartRequest) throws ServletException, IOException {
 		List<String> fileList = new ArrayList<>();
 		Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -523,7 +524,7 @@ public class BoardControllerImpl implements BoardController {
 			}
 
 			message = "<script>";
-			
+
 			message += " location.href='" + multipartRequest.getContextPath() + "/board/community_detail.do?post_num="
 					+ post_num + "';";
 			message += "</script>";
@@ -534,70 +535,70 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
-	
+
 	// 수정시 다중 이미지 업로드하기
-		private List<String> uploadModImageFile(MultipartHttpServletRequest multipartRequest)
-				throws Exception, IOException {
+	private List<String> uploadModImageFile(MultipartHttpServletRequest multipartRequest)
+			throws Exception, IOException {
 
-			List<String> fileList = new ArrayList<>();
-			Iterator<String> fileNames = multipartRequest.getFileNames();
+		List<String> fileList = new ArrayList<>();
+		Iterator<String> fileNames = multipartRequest.getFileNames();
 
-			while (fileNames.hasNext()) {
-				String fileName = fileNames.next();
+		while (fileNames.hasNext()) {
+			String fileName = fileNames.next();
 
-				MultipartFile mFile = multipartRequest.getFile(fileName);
-				String originalFileName = mFile.getOriginalFilename();
-				if (originalFileName != "" && originalFileName != null) {
-					fileList.add(originalFileName);
+			MultipartFile mFile = multipartRequest.getFile(fileName);
+			String originalFileName = mFile.getOriginalFilename();
+			if (originalFileName != "" && originalFileName != null) {
+				fileList.add(originalFileName);
 
-					File file = new File(ARTICLE_IMAGE_REPO + "\\" + fileName);
-					if (mFile.getSize() != 0) {
-						if (!file.exists()) {
-							file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
-							mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName)); // 임시로
-							// 저장된 MultipartFile을 실제 파일로 전송
-						}
+				File file = new File(ARTICLE_IMAGE_REPO + "\\" + fileName);
+				if (mFile.getSize() != 0) {
+					if (!file.exists()) {
+						file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
+						mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + originalFileName)); // 임시로
+						// 저장된 MultipartFile을 실제 파일로 전송
 					}
-
-				} else { // 첨부한 이미지가 없었을 경우
-					fileList.add(null);
 				}
+
+			} else { // 첨부한 이미지가 없었을 경우
+				fileList.add(null);
 			}
-
-			return fileList;
 		}
-		
-		// 수정시 다중 이미지 업로드하기
-				private List<String> uploadModImageFile1(MultipartHttpServletRequest multipartRequest)
-						throws Exception, IOException {
 
-					List<String> fileList = new ArrayList<>();
-					Iterator<String> fileNames = multipartRequest.getFileNames();
+		return fileList;
+	}
 
-					while (fileNames.hasNext()) {
-						String fileName = fileNames.next();
+	// 수정시 다중 이미지 업로드하기
+	private List<String> uploadModImageFile1(MultipartHttpServletRequest multipartRequest)
+			throws Exception, IOException {
 
-						MultipartFile mFile = multipartRequest.getFile(fileName);
-						String originalFileName = mFile.getOriginalFilename();
-						if (originalFileName != "" && originalFileName != null) {
-							fileList.add(originalFileName);
+		List<String> fileList = new ArrayList<>();
+		Iterator<String> fileNames = multipartRequest.getFileNames();
 
-							File file = new File(ARTICLE_IMAGE_REPO1 + "\\" + fileName);
-							if (mFile.getSize() != 0) {
-								if (!file.exists()) {
-									file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
-									mFile.transferTo(new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + originalFileName)); // 임시로
-									// 저장된 MultipartFile을 실제 파일로 전송
-								}
-							}
+		while (fileNames.hasNext()) {
+			String fileName = fileNames.next();
 
-						} else { // 첨부한 이미지가 없었을 경우
-							fileList.add(null);
-						}
+			MultipartFile mFile = multipartRequest.getFile(fileName);
+			String originalFileName = mFile.getOriginalFilename();
+			if (originalFileName != "" && originalFileName != null) {
+				fileList.add(originalFileName);
+
+				File file = new File(ARTICLE_IMAGE_REPO1 + "\\" + fileName);
+				if (mFile.getSize() != 0) {
+					if (!file.exists()) {
+						file.getParentFile().mkdirs(); // 경로에 해당하는 디렉토리들 생성
+						mFile.transferTo(new File(ARTICLE_IMAGE_REPO1 + "\\" + "temp" + "\\" + originalFileName)); // 임시로
+						// 저장된 MultipartFile을 실제 파일로 전송
 					}
-
-					return fileList;
 				}
+
+			} else { // 첨부한 이미지가 없었을 경우
+				fileList.add(null);
+			}
+		}
+
+		return fileList;
+	}
 
 	// 글 수정하기
 	@Override
@@ -725,8 +726,6 @@ public class BoardControllerImpl implements BoardController {
 		return resEnt;
 	}
 
-	
-
 	// 글삭제1
 	@Override
 	@RequestMapping(value = "/board/removeBoard.do", method = RequestMethod.GET)
@@ -836,34 +835,34 @@ public class BoardControllerImpl implements BoardController {
 		writer.print("success");
 
 	}
-	
+
 	// 글 이미지 삭제1
-		@Override
-		@RequestMapping(value = "/board/removeMod1.do", method = RequestMethod.POST)
-		public void removeMod1(HttpServletRequest request, HttpServletResponse response) throws Exception {
-			request.setCharacterEncoding("utf-8");
-			response.setContentType("text/html; charset=utf-8");
-			PrintWriter writer = response.getWriter();
+	@Override
+	@RequestMapping(value = "/board/removeMod1.do", method = RequestMethod.POST)
+	public void removeMod1(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter writer = response.getWriter();
 
-			String imageFileNO = request.getParameter("imageFileNO");
-			String imageFileName = request.getParameter("imageFileName");
-			String post_num = request.getParameter("post_num");
+		String imageFileNO = request.getParameter("imageFileNO");
+		String imageFileName = request.getParameter("imageFileName");
+		String post_num = request.getParameter("post_num");
 
-			System.out.println("imageFileNO= " + imageFileNO);
-			System.out.println("post_num= " + post_num);
+		System.out.println("imageFileNO= " + imageFileNO);
+		System.out.println("post_num= " + post_num);
 
-			ImageDTO imageDTO = new ImageDTO();
-			imageDTO.setpost_num(Integer.parseInt(post_num));
-			imageDTO.setImageFileNO(Integer.parseInt(imageFileNO));
+		ImageDTO imageDTO = new ImageDTO();
+		imageDTO.setpost_num(Integer.parseInt(post_num));
+		imageDTO.setImageFileNO(Integer.parseInt(imageFileNO));
 
-			boardService.removeModImage1(imageDTO);
+		boardService.removeModImage1(imageDTO);
 
-			File oldFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num + "\\" + imageFileName);
-			oldFile.delete();
+		File oldFile = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num + "\\" + imageFileName);
+		oldFile.delete();
 
-			writer.print("success");
+		writer.print("success");
 
-		}
+	}
 
 	// 추천
 	@RequestMapping(value = "/board/updateLike", method = RequestMethod.POST)
@@ -946,130 +945,134 @@ public class BoardControllerImpl implements BoardController {
 		}
 		return sinCheck;
 	}
-	
+
 	// 댓글 작성
-	   @PostMapping("board/boardreplyWrite")
-	   public String boardreplyWrite(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
-	      log.info("reply write");
-	      boardService.boardregister(boardCommentDTO);
-	      boardService.boardcommentcount(boardDTO);
-	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
-	      
-	      return "redirect:/board/community_detail.do";
-	   }
+	@PostMapping("board/boardreplyWrite")
+	public String boardreplyWrite(boardCommentDTO boardCommentDTO, BoardDTO boardDTO, Criteria cri,
+			RedirectAttributes rttr) throws Exception {
+		log.info("reply write");
+		boardService.boardregister(boardCommentDTO);
+		boardService.boardcommentcount(boardDTO);
+		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+
+		return "redirect:/board/community_detail.do";
+	}
 
 	// 댓글 수정 페이지
-	   @GetMapping("board/boardreplyUpdateView")
-	   public String boardreplyUpdateView(boardCommentDTO boardCommentDTO, Criteria cri, Model model) throws Exception {
-	      log.info("reply write");
-	         
-	      boardCommentDTO reply = boardService.boardselectReply(boardCommentDTO.getCom_num());
-	      log.info("댓글번호 : " + reply.getCom_num());
-	      model.addAttribute("replyUpdate", boardService.boardselectReply(boardCommentDTO.getCom_num()));
-	      model.addAttribute("cri", cri);
+	@GetMapping("board/boardreplyUpdateView")
+	public String boardreplyUpdateView(boardCommentDTO boardCommentDTO, Criteria cri, Model model) throws Exception {
+		log.info("reply write");
 
-	      return "board/boardreplyUpdateView";
-	   }
-	      
-	   // 댓글 수정 폼
-	   @PostMapping("board/boardreplyUpdate")
-	   public String boardreplyUpdate(boardCommentDTO boardCommentDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
-	      log.info("reply Write");
-	      
-	      boardService.boardmodify(boardCommentDTO);
-	         
-	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
-	         
-	      return "redirect:/board/community_detail.do";
-	   }
-	   
-	   // 댓글 삭제 폼
-	   @PostMapping("board/boardreplyDelete")
-	   public String boardreplyDelete(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri,Model model, RedirectAttributes rttr) throws Exception {
-	      log.info("reply delete");
+		boardCommentDTO reply = boardService.boardselectReply(boardCommentDTO.getCom_num());
+		log.info("댓글번호 : " + reply.getCom_num());
+		model.addAttribute("replyUpdate", boardService.boardselectReply(boardCommentDTO.getCom_num()));
+		model.addAttribute("cri", cri);
 
-	      boardService.boardremove(boardCommentDTO);
-	      boardService.boardcommentcountminus(boardDTO);
-	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
-	         
-	      return "redirect:/board/community_detail.do";
-	   }
-	   
-	   
-	   //댓글2
+		return "board/boardreplyUpdateView";
+	}
+
+	// 댓글 수정 폼
+	@PostMapping("board/boardreplyUpdate")
+	public String boardreplyUpdate(boardCommentDTO boardCommentDTO, Criteria cri, RedirectAttributes rttr)
+			throws Exception {
+		log.info("reply Write");
+
+		boardService.boardmodify(boardCommentDTO);
+
+		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+
+		return "redirect:/board/community_detail.do";
+	}
+
+	// 댓글 삭제 폼
+	@PostMapping("board/boardreplyDelete")
+	public String boardreplyDelete(boardCommentDTO boardCommentDTO, BoardDTO boardDTO, Criteria cri, Model model,
+			RedirectAttributes rttr) throws Exception {
+		log.info("reply delete");
+
+		boardService.boardremove(boardCommentDTO);
+		boardService.boardcommentcountminus(boardDTO);
+		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+
+		return "redirect:/board/community_detail.do";
+	}
+
+	// 댓글2
 	// 댓글 작성
-	   @PostMapping("board/boardreplyWrite2")
-	   public String boardreplyWrite2(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
-	      log.info("reply write2");
-	      boardService.boardregister2(boardCommentDTO);
-	      boardService.boardcommentcount2(boardDTO);
-	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
-	      
-	      return "redirect:/board/community_detail2.do";
-	   }
+	@PostMapping("board/boardreplyWrite2")
+	public String boardreplyWrite2(boardCommentDTO boardCommentDTO, BoardDTO boardDTO, Criteria cri,
+			RedirectAttributes rttr) throws Exception {
+		log.info("reply write2");
+		boardService.boardregister2(boardCommentDTO);
+		boardService.boardcommentcount2(boardDTO);
+		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+
+		return "redirect:/board/community_detail2.do";
+	}
 
 	// 댓글 수정 페이지
-	   @GetMapping("board/boardreplyUpdateView2")
-	   public String boardreplyUpdateView2(boardCommentDTO boardCommentDTO, Criteria cri, Model model) throws Exception {
-	      log.info("reply write2");
-	         
-	      boardCommentDTO reply = boardService.boardselectReply2(boardCommentDTO.getCom_num());
-	      log.info("댓글번호 : " + reply.getCom_num());
-	      model.addAttribute("replyUpdate", boardService.boardselectReply2(boardCommentDTO.getCom_num()));
-	      model.addAttribute("cri", cri);
+	@GetMapping("board/boardreplyUpdateView2")
+	public String boardreplyUpdateView2(boardCommentDTO boardCommentDTO, Criteria cri, Model model) throws Exception {
+		log.info("reply write2");
 
-	      return "board/boardreplyUpdateView2";
-	   }
-	      
-	   // 댓글 수정 폼
-	   @PostMapping("board/boardreplyUpdate2")
-	   public String boardreplyUpdate2(boardCommentDTO boardCommentDTO, Criteria cri, RedirectAttributes rttr) throws Exception {
-	      log.info("reply Write2");
-	      
-	      boardService.boardmodify2(boardCommentDTO);
-	         
-	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
-	         
-	      return "redirect:/board/community_detail2.do";
-	   }
-	   
-	   //댓글 삭제 폼
-	   @PostMapping("board/boardreplyDelete2")
-	   public String boardreplyDelete2(boardCommentDTO boardCommentDTO,BoardDTO boardDTO, Criteria cri,Model model, RedirectAttributes rttr) throws Exception {
-	      log.info("reply delete");
+		boardCommentDTO reply = boardService.boardselectReply2(boardCommentDTO.getCom_num());
+		log.info("댓글번호 : " + reply.getCom_num());
+		model.addAttribute("replyUpdate", boardService.boardselectReply2(boardCommentDTO.getCom_num()));
+		model.addAttribute("cri", cri);
 
-	      boardService.boardremove2(boardCommentDTO);
-	      boardService.boardcommentcountminus2(boardDTO);
-	      rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
-	         
-	      return "redirect:/board/community_detail2.do";
-	   }
-	   
+		return "board/boardreplyUpdateView2";
+	}
+
+	// 댓글 수정 폼
+	@PostMapping("board/boardreplyUpdate2")
+	public String boardreplyUpdate2(boardCommentDTO boardCommentDTO, Criteria cri, RedirectAttributes rttr)
+			throws Exception {
+		log.info("reply Write2");
+
+		boardService.boardmodify2(boardCommentDTO);
+
+		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+
+		return "redirect:/board/community_detail2.do";
+	}
+
+	// 댓글 삭제 폼
+	@PostMapping("board/boardreplyDelete2")
+	public String boardreplyDelete2(boardCommentDTO boardCommentDTO, BoardDTO boardDTO, Criteria cri, Model model,
+			RedirectAttributes rttr) throws Exception {
+		log.info("reply delete");
+
+		boardService.boardremove2(boardCommentDTO);
+		boardService.boardcommentcountminus2(boardDTO);
+		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
+
+		return "redirect:/board/community_detail2.do";
+	}
+
 	// 페이징 검색
-		@RequestMapping(value = "/board/community-accomaster", method = RequestMethod.GET)
-		public void listPagemaster(@ModelAttribute("scri") SearchCriteria scri, Model model) throws Exception {
+	@RequestMapping(value = "/board/community-accomaster", method = RequestMethod.GET)
+	public void listPagemaster(@ModelAttribute("scri") SearchCriteria scri, Model model) throws Exception {
 
-			List<BoardDTO> boardsList = boardService.listfind(scri);
-			model.addAttribute("boardsList", boardsList);
+		List<BoardDTO> boardsList = boardService.listfindmaster(scri);
+		model.addAttribute("boardsList", boardsList);
 
-			PageMaker pageMaker = new PageMaker();
-			pageMaker.setCri(scri);
-			pageMaker.setTotalCount(boardService.findlistCount(scri));
-			model.addAttribute("pageMaker", pageMaker);
-		}
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri);
+		pageMaker.setTotalCount(boardService.findlistCountmaster(scri));
+		model.addAttribute("pageMaker", pageMaker);
+	}
 
-		// 페이징 검색1
-		@RequestMapping(value = "/board/community-infomaster", method = RequestMethod.GET)
-		public void listPage1master(@ModelAttribute("scri") SearchCriteria scri, Model model) throws Exception {
+	// 페이징 검색1
+	@RequestMapping(value = "/board/community-infomaster", method = RequestMethod.GET)
+	public void listPage1master(@ModelAttribute("scri") SearchCriteria scri, Model model) throws Exception {
 
-			List<BoardDTO> boardsList = boardService.listfind1(scri);
-			model.addAttribute("boardsList", boardsList);
+		List<BoardDTO> boardsList = boardService.listfindmaster1(scri);
+		model.addAttribute("boardsList", boardsList);
 
-			PageMaker pageMaker = new PageMaker();
-			pageMaker.setCri(scri);
-			pageMaker.setTotalCount(boardService.findlistCount1(scri));
-			model.addAttribute("pageMaker", pageMaker);
-		}
-	   
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri);
+		pageMaker.setTotalCount(boardService.findlistCountmaster1(scri));
+		model.addAttribute("pageMaker", pageMaker);
+	}
 
 }

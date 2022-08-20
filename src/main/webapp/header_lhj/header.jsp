@@ -11,8 +11,18 @@
 <meta charset="UTF-8">
 <title>Header</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-	<script type="text/javascript" src="../resources/js/header_lhj/header.js"></script>
- 	<link rel="stylesheet" href="../resources/css/header_lhj/header.css" />
+	<script type="text/javascript">
+	$(document).ready(function() { 
+		$(".submenuitem").hide()
+	    $("div.menuitem").bind('click', function () {
+	    	if ($(this).next().css('display') == 'none') {
+	        	$('.submenuitem').slideUp();
+			}
+	        $(this).next().slideDown()
+		})
+	}) 
+	</script>
+ 	<link rel="stylesheet" href="../resources/css/header_lhj/header.css?ver123" />
     <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
 </head>
 <body>
@@ -43,11 +53,11 @@
                 </ul>
             </div>
     </div>
-
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<div class="seacrh_container">
 			<input type="text" placeholder="검색어를 입력해주세요!">
 		</div>
-
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<c:if test="${user.grade  == '관리자' }">
 			<div class="container1">
 				<div class="menu" style="z-index: 1">
@@ -72,7 +82,7 @@
         	<c:otherwise>
 		        <div class="container2">
         			<div class="login"><a href="${contextPath}/mypage/mypage_renewal?id=${user.id}">마이페이지</a></div>
-        			<div class="login"><a href="${contextPath}[쪽지함 경로]">쪽지함</a></div>
+        			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         			<div class="login"><a href="${contextPath}/logout">로그아웃</a></div>
         		</div>
         	</c:otherwise>

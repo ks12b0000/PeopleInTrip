@@ -91,7 +91,7 @@ request.setCharacterEncoding("UTF-8");
 			if (input.files && input.files[0]) {
 				let reader = new FileReader()
 				reader.onload = function(e) {
-					$('#preview0').attr('src', e.target.result)
+					$('#preview'+index).attr('src', e.target.result)
 				}
 				reader.readAsDataURL(input.files[0])
 			}
@@ -159,7 +159,8 @@ request.setCharacterEncoding("UTF-8");
 											<input type="hidden" name="oldFileName"
 												value="${item.imageFileName }" /> <input type="hidden"
 												name="imageFileNO" value="${item.imageFileNO }" />
-
+										<img alt="이미지" src="${contextPath}/download1.do?imageFileName=${item.imageFileName}&post_num=${item.post_num}"
+										id="preview${status.index }" width="100px" height="50px"><br />수정할 이미지 선택<br>
 										</div>
 									</div>
 									<div class="tr_modEable" id="tr_sub${status.count }">
