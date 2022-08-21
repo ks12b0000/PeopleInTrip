@@ -54,6 +54,7 @@ public class MainControllerImpl implements MainController {
 		mav.addObject("mainsList", mainsList);
 		mav.addObject("mainsList1", mainsList1);
 		return mav;
+		
 	}
 	
 

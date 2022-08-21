@@ -46,6 +46,7 @@ import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.board.dto.boardCommentDTO;
 import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.login_signup.dto.MemberDTO;
+import kr.co.intrip.tourist.dto.ApiDTO;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
@@ -1075,4 +1076,6 @@ public class BoardControllerImpl implements BoardController {
 		model.addAttribute("pageMaker", pageMaker);
 	}
 
+	
+	
 }

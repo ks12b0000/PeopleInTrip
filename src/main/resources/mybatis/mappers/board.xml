@@ -83,31 +83,28 @@
 		order by POST_NUM desc
 	</select>
 
+	<!--검색어 갯수 -->
+	<select id="findlistCount" resultType="int" >
+	SELECT count(*)
+	FROM P_BOARD
+	<include refid="search"></include>	
+	</select>
+
+	<!--검색어 갯수 -->
+	<select id="findlistCount1" resultType="int">
+		SELECT count(*)
+		FROM P_BOARD1
+		<include refid="search"></include>	
+	</select>
+	
 	<!-- 검색 -->
 	<sql id="search">
 		<if test="searchType != null">
-			<if test="searchType == 't'.toString()">where POST_TITLE LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 't'.toString()">where post_title like '%' || #{keyword} || '%'</if>
 			<if test="searchType == 'c'.toString()">where POST_CONTENT LIKE '%' || #{keyword} || '%'</if>
 			<if test="searchType == 'w'.toString()">where ID LIKE '%' || #{keyword} || '%'</if>
 		</if>
 	</sql>
-
-	<!--검색어 갯수 -->
-	<select id="findlistCount" resultType="int" >
-	select count(post_num)
-	from p_board
-	<include refid="search"/> 	
-	where post_num > 0	
-	</select>
-
-	<!--검색어 갯수 -->
-	<select id="findlistCount1" resultType="int"
-		parameterType="kr.co.intrip.board.dto.Criteria">
-		select count(post_num)
-		from p_board1
-		<include refid="search"/>
-		where post_num > 0		
-	</select>
 
 	<!-- 상세보기 -->
 	<select id="selectBoard" parameterType="java.lang.Integer"
@@ -768,5 +765,6 @@
 		<include refid="search"></include>
 		where post_num > 0 AND SINHIT >=1
 	</select>
-
+	
+	
 </mapper>

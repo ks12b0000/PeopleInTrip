@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Header</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 	<script type="text/javascript">
 	$(document).ready(function() { 
 		$(".submenuitem").hide()
@@ -21,6 +21,25 @@
 	        $(this).next().slideDown()
 		})
 	}) 
+	
+	$(function(){
+  $('#searchBtn').click(function() {
+	  var result = $('#selectBox option:selected').val();
+   if(result == "t"){
+	  location.href = "${contextPath}/tourist/tourist_PageList11?"
+     + '${pageMaker.makeQuery(1)}'
+     + "&searchType=t"
+     + "&keyword="
+     + encodeURIComponent($('#keywordInput').val());
+   }if(result == "b"){
+	   location.href = "${contextPath}/tourist/busanfestival_PageList11?"
+		     + '${pageMaker.makeQuery(1)}'
+		     + "&searchType=b"
+		     + "&keyword="
+		     + encodeURIComponent($('#keywordInput').val());
+   }
+    });
+ });   
 	</script>
  	<link rel="stylesheet" href="../resources/css/header_lhj/header.css?ver123" />
     <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
@@ -54,9 +73,20 @@
             </div>
     </div>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<div class="seacrh_container">
-			<input type="text" placeholder="검색어를 입력해주세요!">
-		</div>
+	
+		<div class="search">
+ <select name="searchType" id="selectBox">
+  <option  value="t"<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제주</option>
+   <option value="b"<c:out value="${scri.searchType eq 'b' ? 'selected' : ''}"/>>부산</option>
+ </select>
+ 
+ <input type="text" name="keyword" id="keywordInput" value="${scri.keyword}"/>
+
+ <button type="button" id="searchBtn">검색</button>
+ 
+ 
+</div>
+
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<c:if test="${user.grade  == '관리자' }">
 			<div class="container1">

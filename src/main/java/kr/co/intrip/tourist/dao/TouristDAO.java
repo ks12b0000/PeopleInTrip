@@ -8,6 +8,8 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.BusanCommentDTO;
@@ -850,6 +852,18 @@ public class TouristDAO {
 	// 부산 체험 4개 가져오기 
 	public List<BusanApiDTO> busanexperiencemain(BusanApiDTO busanApiDTO) throws Exception {
 		return sqlSession.selectList("mapper.tourist.busanexperiencemain", busanApiDTO);	 		
+	}
+	//제주
+	public List<ApiDTO> listPage(SearchCriteria scri) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejutourist11",scri);
+	}
+
+	public int countsearch(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.getTotalRowCount11",scri);
+	}
+	//부산
+	public List<BusanApiDTO> listPage1(SearchCriteria scri) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist11",scri);
 	}
 	
 }

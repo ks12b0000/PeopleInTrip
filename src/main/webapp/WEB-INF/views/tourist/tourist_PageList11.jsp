@@ -34,19 +34,8 @@
 		</nav>
 	</header>
 		<div id="tourPage_div">		
-			<form action="${contextPath}/tourist/tourist_PageList_Sorting" method="get">
-				<div name="tour_div1" id="tour_div1">
-				<Strong>정렬 </Strong> &nbsp;
-					<select id="tour_allign" name="value" onchange="Change(1)">
-						<option value="basic" selected>기본순↓</option>
-						<option value="lookup" <c:if test="${value.equals('lookup')}">selected="selected"</c:if>>조회순↓</option>
-						<option value="comment" <c:if test="${value.equals('comment')}">selected="selected"</c:if>>댓글순↓</option>
-						<option value="steamed" <c:if test="${value.equals('steamed')}">selected="selected"</c:if>>찜순↓</option>
-						<option value="suggestion" <c:if test="${value.equals('suggestion')}">selected="selected"</c:if>>추천순↓</option>
-					</select>
-					<input type="submit" value="검색" style="background-color: #9966ff; border:1px solid #9966ff; width: 60px; height: 30px; font-size: 16px; cursor: pointer; color: white;  " />
-				</div>	
-			</form>
+			
+			
 			<div name="tour_div2" id="tour_div2">
 			<c:forEach var="plist" items="${plist}">
 				<table>
@@ -60,22 +49,36 @@
 				</table>
 			</c:forEach>
 			</div>
-			<div name="tour_div3" id="tour_div3">
-				<c:if test="${pagingDTO.curPage > 1 }">
-					<a href="${contextPath}/tourist/tourist_PageList?value=${value}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
-					<a href="${contextPath}/tourist/tourist_PageList?value=${value}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
-				</c:if>
-					<c:forEach begin="${pagingDTO.firstPage }"  end="${pagingDTO.lastPage }" var="i"> &nbsp;
-	   					<a href="${contextPath}/tourist/tourist_PageList?value=${value}&curPage=${i }" style="font-size: 18px;"  >  
-	   						<c:if test="${i eq pagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
-	   						<c:if test="${i ne pagingDTO.curPage }">  ${i } </c:if> 
-	   					</a>
-					</c:forEach>&nbsp;
-				<c:if test="${pagingDTO.curPage < pagingDTO.totalPageCount }">
-					<a href="${contextPath}/tourist/tourist_PageList?value=${value}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
-					<a href="${contextPath}/tourist/tourist_PageList?value=${value}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
-				</c:if>
-			</div>
-		</div>	
-</body>
-</html>
+			<div style="text-align: center; font-size: 18px;">
+         <ul>
+            <c:if test="${pageMaker.cri.page > 1 }">
+            <a href="${contextPath}/tourist/tourist_PageList11?page=1&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}"
+               style="color: #9966ff; font-size: 25px;">&laquo;</a>   
+               <a href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker.cri.page-1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&lt;</a>
+               
+            </c:if>      
+
+            <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+               var="idx"> &nbsp;
+                
+                  <a href="${contextPath}/tourist/tourist_PageList11${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+                     test="${idx == pageMaker.cri.page }">
+                     <span style="text-decoration:none; color: red;"> ${idx} </span>
+                  </c:if></a>
+               <a href="${contextPath}/tourist/tourist_PageList11${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+                     test="${idx != pageMaker.cri.page }">
+                     <span style=" text-decoration:none; color: black"> ${idx} </span>
+                  </c:if></a>&nbsp;
+
+            </c:forEach>
+
+            <c:if test="${pageMaker.cri.page < pageMaker.endPage}">
+               <a href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker.cri.page+1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&gt;</a>
+               <a href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker.endPage}&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+            </c:if>
+         </ul>
+      </div>
+      
+	
+
+</div>

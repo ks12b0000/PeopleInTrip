@@ -15,6 +15,7 @@ import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.board.dto.boardCommentDTO;
+import kr.co.intrip.tourist.dto.ApiDTO;
 
 @Repository("boardDAO")
 public class BoardDAOImpl implements BoardDAO {
@@ -639,4 +640,6 @@ public class BoardDAOImpl implements BoardDAO {
 	public int findlistCountmaster1(SearchCriteria scri) throws Exception {
 		return sqlSession.selectOne("mapper.board.findlistCountmaster1");
 	}
+
+	
 }

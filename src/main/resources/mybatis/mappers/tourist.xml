@@ -1462,4 +1462,52 @@
    		 	where rNum between 1 and 4
 		]]>
 	</select>
+	
+	<!-- 제주도 여행지 페이지 검색  -->
+	<select id="jejutourist11" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.board.dto.Criteria">
+   		select *
+		from (
+		select pt.*,row_number() over(order by contentsid desc) as rNum
+		from P_TOURIST pt 
+		<include refid="search"></include>
+		) mb
+		where rNum between #{rowStart} and #{rowEnd}
+	</select>
+
+	<!-- 제주도 총 개수 -->
+	<select id="getTotalRowCount11" resultType="int">
+			SELECT count(*)
+			FROM P_TOURIST
+			<include refid="search"></include>
+	</select>
+	
+	<!-- 부산 여행지 페이지 리스트 검색 -->
+	<select id="busantourist11" resultType="kr.co.intrip.tourist.dto.BusanApiDTO" parameterType="kr.co.intrip.board.dto.Criteria">
+			select *
+   			 from (
+        	select pt.*, row_number() over(order by UC_SEQ desc) as rNum
+        	from P_busantourist pt 
+        	<include refid="search1"></include>
+        	) mb
+   		 	where rNum between #{rowStart} and #{rowEnd}		
+	</select>
+	
+	<!-- 부산 총 개수 -->
+	<select id="busangetTotalRowCount11" parameterType="kr.co.intrip.board.dto.Criteria" resultType="int">
+			SELECT count(*)
+			FROM P_busantourist
+			<include refid="search1"></include>
+	</select>
+	
+	<sql id="search">
+ <if test="searchType != null">
+  <if test="searchType == 't'.toString()">where title like '%' || #{keyword} || '%'</if>
+ </if>
+</sql>
+
+<sql id="search1">
+ <if test="searchType != null">
+  <if test="searchType == 'b'.toString()">where place like '%' || #{keyword} || '%'</if>
+ </if>
+</sql>
  </mapper>

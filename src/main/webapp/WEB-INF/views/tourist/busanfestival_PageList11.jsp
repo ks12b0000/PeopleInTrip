@@ -59,44 +59,37 @@
 					</tr>					
 				</table>
 			</c:forEach>
-			</div>
-			<div name="tour_div3" id="tour_div3">
-				<c:if test="${pagingDTO.curPage > 1 }">
-					<a href="${contextPath}/tourist/busanfestival_PageList?value=${value}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
-					<a href="${contextPath}/tourist/busanfestival_PageList?value=${value}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
-				</c:if>
-					<c:forEach begin="${pagingDTO.firstPage }"  end="${pagingDTO.lastPage }" var="i"> &nbsp;
-	   					<a href="${contextPath}/tourist/busanfestival_PageList?value=${value}&curPage=${i }" style="font-size: 18px;"  >  
-	   						<c:if test="${i eq pagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
-	   						<c:if test="${i ne pagingDTO.curPage }">  ${i } </c:if> 
-	   					</a>
-					</c:forEach>&nbsp;
-				<c:if test="${pagingDTO.curPage < pagingDTO.totalPageCount }">
-					<a href="${contextPath}/tourist/busanfestival_PageList?value=${value}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
-					<a href="${contextPath}/tourist/busanfestival_PageList?value=${value}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
-				</c:if>
-			</div>
-		</div>
-				<div class="search">
- <select name="searchType">
-  <option value="t"<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
- </select>
- 
- <input type="text" name="keyword" id="keywordInput" value="${scri.keyword}"/>
+				</div>
+			<div style="text-align: center; font-size: 18px;">
+         <ul>
+            <c:if test="${pageMaker.cri.page > 1 }">
+            <a href="${contextPath}/tourist/busanfestival_PageList11?page=1&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}"
+               style="color: #9966ff; font-size: 25px;">&laquo;</a>   
+               <a href="${contextPath}/tourist/busanfestival_PageList11?&page=${pageMaker.cri.page-1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&lt;</a>
+               
+            </c:if>      
 
- <button type="button" id="searchBtn">검색</button>
+            <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+               var="idx"> &nbsp;
+                
+                  <a href="${contextPath}/tourist/busanfestival_PageList11${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+                     test="${idx == pageMaker.cri.page }">
+                     <span style="text-decoration:none; color: red;"> ${idx} </span>
+                  </c:if></a>
+               <a href="${contextPath}/tourist/busanfestival_PageList11${pageMaker.makeSearch(idx)}" style="text-decoration: none;"><c:if
+                     test="${idx != pageMaker.cri.page }">
+                     <span style=" text-decoration:none; color: black"> ${idx} </span>
+                  </c:if></a>&nbsp;
+
+            </c:forEach>
+
+            <c:if test="${pageMaker.cri.page < pageMaker.endPage}">
+               <a href="${contextPath}/tourist/busanfestival_PageList11?&page=${pageMaker.cri.page+1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&gt;</a>
+               <a href="${contextPath}/tourist/busanfestival_PageList11?&page=${pageMaker.endPage}&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+            </c:if>
+         </ul>
+      </div>
  
- <script>
- $(function(){
-  $('#searchBtn').click(function() {
-   self.location = "${contextPath}/tourist/busanfestival_PageList11"
-     + '${pageMaker.makeQuery(1)}'
-     + "&searchType=t"
-     + "&keyword="
-     + encodeURIComponent($('#keywordInput').val());
-    });
- });   
- </script>
 </div>
 </body>
 </html>

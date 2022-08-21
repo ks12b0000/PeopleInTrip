@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.BusanCommentDTO;
@@ -395,5 +396,11 @@ public interface TouristService {
 	
 	// 부산 체험 4개 가져오기
 	public List<BusanApiDTO> busanexperiencemain(BusanApiDTO busanApiDTO) throws Exception;
+	
+	public List<ApiDTO> listPage(SearchCriteria scri) throws Exception;
+	
+	public int countSearch(SearchCriteria scri) throws Exception;
+	
+	public List<BusanApiDTO> listPage1(SearchCriteria scri) throws Exception;
 
 }

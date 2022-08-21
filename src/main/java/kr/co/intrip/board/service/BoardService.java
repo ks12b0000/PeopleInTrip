@@ -9,6 +9,7 @@ import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.board.dto.boardCommentDTO;
+import kr.co.intrip.tourist.dto.ApiDTO;
 
 public interface BoardService {
 
@@ -139,5 +140,7 @@ public interface BoardService {
 	public int findlistCountmaster(SearchCriteria scri) throws Exception;
 	
 	public int findlistCountmaster1(SearchCriteria scri) throws Exception;
+	
+	
 	
 }

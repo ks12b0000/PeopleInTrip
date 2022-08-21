@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.intrip.board.dto.SearchCriteria;
 import kr.co.intrip.tourist.controller.TouristController;
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
@@ -1463,6 +1464,21 @@ public class TouristServiceImpl implements TouristService {
 	@Override
 	public List<BusanApiDTO> busanexperiencemain(BusanApiDTO busanApiDTO) throws Exception {
 		return touristDAO.busanexperiencemain(busanApiDTO);
+	}
+	//제주
+	@Override
+	public List<ApiDTO> listPage(SearchCriteria scri) throws Exception {
+		return touristDAO.listPage(scri);
+	}
+
+	@Override
+	public int countSearch(SearchCriteria scri) throws Exception {
+		return touristDAO.countsearch(scri);
+	}
+	//부산
+	@Override
+	public List<BusanApiDTO> listPage1(SearchCriteria scri) throws Exception {
+		return touristDAO.listPage1(scri);
 	}
 
 }
