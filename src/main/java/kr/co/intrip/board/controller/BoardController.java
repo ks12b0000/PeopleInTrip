@@ -36,6 +36,10 @@ public interface BoardController {
 	public ModelAndView viewdetail(int post_num, HttpServletRequest request, HttpServletResponse response,Model model, CommentPagingDTO commentpagingDTO)
 			throws Exception;
 	public void removeMod1(HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ResponseEntity removeBoard2(int post_num, HttpServletRequest request, HttpServletResponse response)
+			throws Exception;
+	public ResponseEntity removeBoard3(int post_num, HttpServletRequest request, HttpServletResponse response)
+			throws Exception;
 	
 
 	

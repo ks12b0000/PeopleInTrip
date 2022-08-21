@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.intrip.board.dto.BoardDTO;
+import kr.co.intrip.board.dto.PageMaker;
+import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.login_signup.service.MemberService;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
@@ -661,4 +665,35 @@ public class TouristController {
 		return suggestionCheck;
 	}
 	
+	// 제주 페이징 검색
+	@RequestMapping(value = "/tourist/tourist_PageList11", method = RequestMethod.GET)
+	public void listPage12(@ModelAttribute("scri2") SearchCriteria2 scri2, Model model) throws Exception {
+		List<ApiDTO> plist = tourservice.listPage(scri2);
+		model.addAttribute("plist", plist);
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri2);
+		pageMaker.setTotalCount(tourservice.countSearch(scri2));
+		model.addAttribute("pageMaker", pageMaker);
+
+	}
+
+	// 부산 페이징 검색
+	@RequestMapping(value = "/tourist/busanfestival_PageList11", method = RequestMethod.GET)
+	public void listPage123(@ModelAttribute("scri2") SearchCriteria2 scri2, Model model) throws Exception {
+
+		List<BusanApiDTO> plist = tourservice.listPage1(scri2);
+		List<BusanApiDTO> plist2 = tourservice.listPage12(scri2);
+		List<BusanApiDTO> plist3 = tourservice.listPage13(scri2);
+
+		model.addAttribute("plist", plist);
+		model.addAttribute("plist2", plist2);
+		model.addAttribute("plist3", plist3);
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri2);
+		pageMaker.setTotalCount(tourservice.countSearch1(scri2));
+		model.addAttribute("pageMaker", pageMaker);
+	}
+
 }

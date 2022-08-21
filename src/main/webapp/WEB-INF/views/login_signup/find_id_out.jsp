@@ -12,7 +12,7 @@ request.setCharacterEncoding("UTF-8");
 <title>idSearchOutPut</title>
 <link href='https://fonts.googleapis.com/css?family=Pacifico'
 	rel='stylesheet'>
-<link rel="stylesheet" href="../resources/css/login_signup/idSearch.css">
+<link rel="stylesheet" href="../resources/css/login_signup/idSearch.css?ver123">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
@@ -23,7 +23,7 @@ request.setCharacterEncoding("UTF-8");
 </head>
 <body>
 	<div class="SEARCH_FORM">
-		<h1>People in trip</h1>
+		<h1><a href="${contextPath}/mainpage/main" style="text-decoration: none;">People in Trip</a></h1>
 		<h5>아이디찾기</h5>
 	<form action="${contextPath}/login_signup/find_id" name="find_id"
 			method="post">

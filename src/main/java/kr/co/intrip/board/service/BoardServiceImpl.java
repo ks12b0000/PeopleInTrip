@@ -15,8 +15,10 @@ import kr.co.intrip.board.dto.CommentPagingDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.board.dto.boardCommentDTO;
 import kr.co.intrip.login_signup.dto.MemberDTO;
+import kr.co.intrip.tourist.dto.ApiDTO;
 
 @Service("boardService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -467,5 +469,7 @@ public class BoardServiceImpl implements BoardService {
 	public int findlistCountmaster1(SearchCriteria scri) throws Exception {
 		return boardDAO.findlistCountmaster1(scri);
 	}
+
+	
 
 }

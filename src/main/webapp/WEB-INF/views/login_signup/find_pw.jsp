@@ -14,7 +14,7 @@ request.setCharacterEncoding("UTF-8");
 <title>pw_search</title>
 <link href='https://fonts.googleapis.com/css?family=Pacifico'
 	rel='stylesheet'>
-<link rel="stylesheet" href="../resources/css/login_signup/idSearch.css">
+<link rel="stylesheet" href="../resources/css/login_signup/idSearch.css?ver123">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -76,7 +76,7 @@ request.setCharacterEncoding("UTF-8");
 	<form action="${contextPath}/login_signup/find_pw" name="find_pw"
 		method="post">
 		<div class="SEARCH_FORM">
-			<h1>People in trip</h1>
+			<h1><a href="${contextPath}/mainpage/main" style="text-decoration: none;">People in Trip</a></h1>
 			<h5>비밀번호 찾기</h5>
 			<input id="SID_IN" name="id" type="text"
 				onfocus="this.placeholder='';" onblur="this.placeholder='아이디 입력'"

@@ -76,6 +76,6 @@
 					<a href="${contextPath}/tourist/tourist_PageList?value=${value}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 				</c:if>
 			</div>
-		</div>
+		</div>	
 </body>
 </html>

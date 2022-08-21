@@ -74,10 +74,10 @@
 			<div>
 				<div class="left-menu">
 					<ul class="left-menu-ul">
-						<li class="menu-list"><a href=""><i
+						<li class="menu-list"><a href="${contextPath }/board/community-info"><i
 								class="fa-solid fa-bullhorn fa-lg"></i>정보게시판</a></li>
 						<li class="menu-list" style="background-color: #9966ff;"><a
-							href=""><i class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
+							href="${contextPath }/board/community-acco"><i class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
 					</ul>
 				</div>
 
@@ -108,7 +108,8 @@
 
 						<div>
 						 <br>
-						<input type="button" value="파일 추가하기" onclick="fn_addFile()" />
+						<input type="button" value="파일 추가하기" onclick="fn_addFile()"  
+						style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #9966ff; outline: none; cursor: pointer; font-size: 11px;"/>
 						<div id="tb_newImage" />
 					</div>
 				</div>
