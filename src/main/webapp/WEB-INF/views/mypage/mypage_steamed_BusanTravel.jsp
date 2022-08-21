@@ -113,6 +113,11 @@
             opacity: 0.8;
         }
         
+        a {
+        	text-decoration: none;
+        }
+        
+        
         a.link {
         	text-decoration: none;
         	color: white;
@@ -189,7 +194,7 @@
         </div>
     </div>
     <br/><br/>
-    <p class="cls1">찜한 내역(제주)</p>
+    <p class="cls1">찜한 내역(부산)</p>
     <br/>
    	<ul class="test">
 		<li><a href="${contextPath}/mypage/mypage_steamed_jeju?id=${user.id}">제주</a></li>
@@ -215,7 +220,7 @@
 		                        	</a>
 		                        </div>
 		                        <div class="title">
-		                        	<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${boardsTour.UC_SEQ}">
+		                        	<a class="link" href="${contextPath}/tourist/busantourist_View?UC_SEQ=${boardsTour.UC_SEQ}">
 		                        		${boardsTour.PLACE }
 		                        	</a>
 		                        </div>
@@ -231,7 +236,7 @@
 		                        	</a>
 		                        </div>
 		                        <div class="title">
-		                        	<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${boardsTour.UC_SEQ}">
+		                        	<a class="link" href="${contextPath}/tourist/busantourist_View?UC_SEQ=${boardsTour.UC_SEQ}">
 		                        		${boardsTour.PLACE }
 		                        	</a>
 		                        </div>

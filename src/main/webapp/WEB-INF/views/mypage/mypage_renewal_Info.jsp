@@ -113,7 +113,6 @@
         }
         
         a {
-        	color : whwite;
         	text-decoration: none;
         }
         
