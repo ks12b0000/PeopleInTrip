@@ -83,7 +83,7 @@
 		order by POST_NUM desc
 	</select>
 
-	<!--검색어 갯수 -->
+	<!--검색어 갯수 --> <!-- include가 기능을 못함 -->
 	<select id="findlistCount" resultType="int" >
 	SELECT count(*)
 	FROM P_BOARD
@@ -761,8 +761,7 @@
 	<select id="findlistCountmaster" resultType="int"
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select count(post_num)
-		from p_board
-		<include refid="search"></include>
+		from p_board	
 		where post_num > 0 AND SINHIT >=1
 	</select>
 
@@ -770,8 +769,7 @@
 	<select id="findlistCountmaster1" resultType="int"
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select count(post_num)
-		from p_board1
-		<include refid="search"></include>
+		from p_board1	
 		where post_num > 0 AND SINHIT >=1
 	</select>
 	

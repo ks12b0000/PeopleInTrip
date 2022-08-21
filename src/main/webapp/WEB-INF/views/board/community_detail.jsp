@@ -255,10 +255,10 @@
 		<!-- 왼쪽 메뉴바 -->
 		<div class="left-menu">
 			<ul class="left-menu-ul">
-				<li class="menu-list"><a href=""><i
+				<li class="menu-list"><a href="${contextPath }/board/community-info"><i
 						class="fa-solid fa-bullhorn fa-lg"></i>정보게시판</a></li>
 				<li class="menu-list" style="background-color: #9966ff;"><a
-					href=""><i class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
+					href="${contextPath }/board/community-acco"><i class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
 			</ul>
 		</div>
 		<!-- 정보게시판 본문 -->
