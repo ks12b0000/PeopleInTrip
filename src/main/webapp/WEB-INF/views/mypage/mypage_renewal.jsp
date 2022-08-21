@@ -112,6 +112,11 @@
         	padding: 3px 12px;
         }
         
+        a {
+        	color : whwite;
+        	text-decoration: none;
+        }
+        
         h1 > a {
 			color: #9966ff;
 			font-family: Pacifico;
@@ -124,18 +129,8 @@
 	<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' />
 	<script type="text/javascript">
-/* 	
-	$(function(){
-		  $('#searchBtn').click(function() {
-		   self.location = "${contextPath}/mypage/mypage_renewal?id=${user.id}"
-		     + '${pageMaker.makeQuery(1)}'
-		     + "&searchType="
-		     + $("select option:selected").val()
-		     + "&keyword="
-		     + encodeURIComponent($('#keywordInput').val());
-		    });
-		 });
-	 */
+ 	
+	 
 	</script>
 
 </head>
@@ -223,22 +218,5 @@
 			<a href="${contextPath}/mypage/mypage_renewal?id=${pagingDTO.id}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 		</c:if>
 	</div>
-<%-- 	
-        <div class="search">
-			<select name="searchType">
-				<option value="n"
-					<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
-				<option value="t"
-					<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
-				<option value="c"
-					<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
-				<option value="w"
-					<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
-			</select> <input type="text" name="keyword" id="keywordInput"
-				value="${scri.keyword}" />
-	
-			<button id="searchBtn" type="button">검색</button>
-        </div>
-         --%>
 </body>
 </html>
