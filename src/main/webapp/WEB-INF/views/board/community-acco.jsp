@@ -11,12 +11,12 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <style type="text/css">
-.search {
+.search12 {
 	text-align: center;
 	margin-top: 2%;
 }
 
-#searchBtn {
+#searchBtn12 {
 	background-color: #9966ff;
 	width: 60px;
 	height: 30px;
@@ -29,11 +29,12 @@ request.setCharacterEncoding("UTF-8");
 	cursor: pointer;
 	font-size: 15px;
 }
+
 </style>
 <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 <script type="text/javascript">
 	$(function() {
-		$('#searchBtn').click(
+		$('#searchBtn12').click(
 				function() {
 					self.location = "${contextPath}/board/community-acco"
 							+ '${pageMaker.makeQuery(1)}' + "&searchType="
@@ -52,7 +53,7 @@ request.setCharacterEncoding("UTF-8");
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <title>Community</title>
 
@@ -64,10 +65,11 @@ request.setCharacterEncoding("UTF-8");
 }
 </style>
 </head>
-<body>
-	<header>
-		<jsp:include page="/header_lhj/header.jsp" flush="false" />
+<header>
+		<jsp:include page="/header_lhj/header2.jsp" flush="false" />
 	</header>
+<body>
+	
 	<div class="container">
 		<div>
 			<br> <br>
@@ -174,7 +176,8 @@ request.setCharacterEncoding("UTF-8");
          </ul>
       </div>
 
-		<div class="search">
+	<form action="${contextPath}/board/community-acco">
+		<div class="search12">
 			<select name="searchType">
 				<option value="n"
 					<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
@@ -187,16 +190,9 @@ request.setCharacterEncoding("UTF-8");
 			</select> <input type="text" name="keyword" id="keywordInput"
 				value="${scri.keyword}" />
 
-			<button id="searchBtn" type="button">검색</button>
+			<button id="searchBtn12" type="submit">검색</button>
+	</form>
 
-
-			<script
-				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-				integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-				crossorigin="anonymous"></script>
-			<script
-				src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-				integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-				crossorigin="anonymous"></script>
+	
 </body>
 </html>

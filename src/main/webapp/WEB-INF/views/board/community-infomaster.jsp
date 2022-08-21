@@ -66,7 +66,7 @@ request.setCharacterEncoding("UTF-8");
 
 <body>
 	<header>
-		<jsp:include page="/header_lhj/header.jsp" flush="false" />
+		<jsp:include page="/header_lhj/header2.jsp" flush="false" />
 	</header>
 	<div class="container">
 		<div>
@@ -134,19 +134,7 @@ request.setCharacterEncoding("UTF-8");
 		</table>
 		<hr />
 
-		<div class="text-lg-end text-end">
-			<c:choose>
-				<c:when test="${!empty user.id}">
-					<button type="button" class="btn text-white"
-						style="background-color: #9966ff;"
-						onclick="location.href='${contextPath}/board/community_writeInfo.do'">글쓰기</button>
-				</c:when>
-				<c:otherwise>
-					<button type="button" class="btn text-white"
-						style="background-color: #9966ff;" onclick="logingo()">글쓰기</button>
-				</c:otherwise>
-			</c:choose>
-		</div>
+		
 		<div style="text-align: center; font-size: 18px;">
          <ul>
             <c:if test="${pageMaker.cri.page > 1 }">

@@ -94,11 +94,20 @@
 	<select id="findlistCount1" resultType="int">
 		SELECT count(*)
 		FROM P_BOARD1
-		<include refid="search"></include>	
+		<include refid="search1"></include>	
 	</select>
 	
 	<!-- 검색 -->
 	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">where post_title like '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">where POST_CONTENT LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">where ID LIKE '%' || #{keyword} || '%'</if>
+		</if>
+	</sql>
+	
+	<!-- 검색 -->
+	<sql id="search1">
 		<if test="searchType != null">
 			<if test="searchType == 't'.toString()">where post_title like '%' || #{keyword} || '%'</if>
 			<if test="searchType == 'c'.toString()">where POST_CONTENT LIKE '%' || #{keyword} || '%'</if>

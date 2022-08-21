@@ -110,7 +110,7 @@
 						</div>
 						
 						<div>
-							<input type="button" value="파일 추가하기" onclick="fn_addFile()" />
+							<input type="button" value="파일 추가하기" onclick="fn_addFile()" style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #9966ff; outline: none; cursor: pointer; font-size: 11px;"/>
 						<div id="tb_newImage" />
 							
 						</div>

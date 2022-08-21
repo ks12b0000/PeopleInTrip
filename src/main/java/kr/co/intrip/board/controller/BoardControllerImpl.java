@@ -43,6 +43,7 @@ import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.PageMaker;
 import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.board.dto.boardCommentDTO;
 import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.login_signup.dto.MemberDTO;
@@ -767,6 +768,46 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
+	// 글삭제 마스터
+		@Override
+		@RequestMapping(value = "/board/removeBoard2.do", method = RequestMethod.GET)
+		@ResponseBody
+		public ResponseEntity removeBoard2(@RequestParam("post_num") int post_num, // 삭제할 글번호 가져옴
+				HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+			response.setContentType("text/html; charset=utf-8");
+
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+
+			String message;
+			ResponseEntity resEnt = null;
+
+			try {
+				boardService.removeBoard(post_num); // 글번호 전달해서 글 삭제함
+
+				File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + post_num);
+				FileUtils.deleteDirectory(destDir); // 첨부된 이미지 파일이 저장된 폴더도 삭제함
+
+				message = "<script>";
+				message += " alert('글을 삭제했습니다.');";
+				message += " location.href='" + request.getContextPath() + "/board/community-accomaster.do';";
+				message += "</script>";
+
+				// 글 삭제 후 메시지를 전달함
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			} catch (Exception e) {
+				message = "<script>";
+				message += " alert('글을 삭제하는 중 오류가 발생했습니다. 다시 시도해 주세요.');";
+				message += " location.href='" + request.getContextPath() + "/board/community-accomaster.do';";
+				message += "</script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+
+				e.printStackTrace();
+			}
+
+			return resEnt;
+		}
 
 	// 글삭제2
 	@Override
@@ -808,6 +849,46 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
+	// 글삭제2
+		@Override
+		@RequestMapping(value = "/board/removeBoard3.do", method = RequestMethod.GET)
+		@ResponseBody
+		public ResponseEntity removeBoard3(@RequestParam("post_num") int post_num, // 삭제할 글번호 가져옴
+				HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+			response.setContentType("text/html; charset=utf-8");
+
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+
+			String message;
+			ResponseEntity resEnt = null;
+
+			try {
+				boardService.removeBoard1(post_num); // 글번호 전달해서 글 삭제함
+
+				File destDir = new File(ARTICLE_IMAGE_REPO1 + "\\" + post_num);
+				FileUtils.deleteDirectory(destDir); // 첨부된 이미지 파일이 저장된 폴더도 삭제함
+
+				message = "<script>";
+				message += " alert('글을 삭제했습니다.');";
+				message += " location.href='" + request.getContextPath() + "/board/community-infomaster.do';";
+				message += "</script>";
+
+				// 글 삭제 후 메시지를 전달함
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			} catch (Exception e) {
+				message = "<script>";
+				message += " alert('글을 삭제하는 중 오류가 발생했습니다. 다시 시도해 주세요.');";
+				message += " location.href='" + request.getContextPath() + "/board/community-infomaster.do';";
+				message += "</script>";
+				resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+
+				e.printStackTrace();
+			}
+
+			return resEnt;
+		}
 
 	// 글 이미지 삭제
 	@Override

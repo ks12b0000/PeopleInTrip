@@ -10,12 +10,12 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <style type="text/css">
-.search {
+.search12 {
 	text-align: center;
 	margin-top: 2%;
 }
 
-#searchBtn {
+#searchBtn12{
 	background-color: #9966ff;
 	width: 60px;
 	height: 30px;
@@ -32,7 +32,7 @@ request.setCharacterEncoding("UTF-8");
 <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 <script type="text/javascript">
 	$(function() {
-		$('#searchBtn').click(
+		$('#searchBtn12').click(
 				function() {
 					self.location = "${contextPath}/board/community-info"
 							+ '${pageMaker.makeQuery(1)}' + "&searchType="
@@ -66,7 +66,7 @@ request.setCharacterEncoding("UTF-8");
 
 <body>
 	<header>
-		<jsp:include page="/header_lhj/header.jsp" flush="false" />
+		<jsp:include page="/header_lhj/header2.jsp" flush="false" />
 	</header>
 	<div class="container">
 		<div>
@@ -174,8 +174,8 @@ request.setCharacterEncoding("UTF-8");
             </c:if>
          </ul>
       </div>
-
-		<div class="search">
+	<form action="${contextPath}/board/community-info">
+		<div class="search12">
 			<select name="searchType">
 				<option value="n"
 					<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
@@ -188,8 +188,8 @@ request.setCharacterEncoding("UTF-8");
 			</select> <input type="text" name="keyword" id="keywordInput"
 				value="${scri.keyword}" />
 
-			<button id="searchBtn" type="button">검색</button>
-
+			<button id="searchBtn12" type="submit">검색</button>
+	</form>
 			<script
 				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
 				integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
