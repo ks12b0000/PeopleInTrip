@@ -104,7 +104,7 @@
         }
 
         .test li{
-    	    display: inline;
+        	display: inline;
         	background-color: #9966ff;
         	color: white;
         	border-radius: 5px;
@@ -118,24 +118,21 @@
 			font-size: 45px;
 			margin-bottom: 10px;
 		}
-        
 
     </style>
 	<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' />
 	<script type="text/javascript">
-/* 	
 	$(function(){
-		  $('#searchBtn').click(function() {
-		   self.location = "${contextPath}/mypage/mypage_renewal?id=${user.id}"
+ 		  $('#searchBtn').click(function() {
+		   self.location = "${contextPath}/mypage/mypage_renewal_Info_Search?id=${user.id}"
 		     + '${pageMaker.makeQuery(1)}'
 		     + "&searchType="
 		     + $("select option:selected").val()
 		     + "&keyword="
 		     + encodeURIComponent($('#keywordInput').val());
 		    });
-		 });
-	 */
+		 });   
 	</script>
 
 </head>
@@ -174,15 +171,15 @@
     </div>
     <br/><br/>
     <p class="cls1">내가 쓴 글</p><!-- <b class="cls1left" onclick="return myboardListClick()">조회하기</b> -->
-    <br/>
-	<ul class="test">
-		<li>동행</li>
-		<li><a href="${contextPath}/mypage/mypage_renewal_Info?id=${user.id}">정보</a></li>
+    	<br/>
+   	<ul class="test">
+		<li><a href="${contextPath}/mypage/mypage_renewal?id=${user.id}">동행</a></li>
+		<li>정보</li>
 	</ul>
 	<br/>
     <hr/>
-    <form action="${contextPath }/mypage/mypage_renewal?id=${user.id}" method="POST" name="show_My_boards_List"> 
- 	   <div class="article_box">
+    <form action="${contextPath }/mypage/mypage_renewal_Info?id=${user.id}" method="POST" name="show_My_boards_List"> 
+    <div class="article_box">	
 	        <table align="center" class="articles">
 	            <tr align="center">
 	                <td width="5%">번호</td>
@@ -193,37 +190,38 @@
 	                <td width="5%">조회수</td>
 	            </tr>
 	            <c:forEach var="myboardsList" items="${myboardsList}" begin="0" end="9" varStatus="myboardsListNum">
-		            <tr id="company" class="company" align="center">
-		                <td>${myboardsListNum.count }</td>
+	            	<tr id="information" class="information" align="center" >
+        				<td>${myboardsListNum.count }</td>
 		                <td><a 
-		                	href="${contextPath}/board/community_detail.do?post_num=${myboardsList.post_num}">
+		                	href="${contextPath}/board/community_detail2.do?post_num=${myboardsList.post_num}">
 		                	${myboardsList.post_title }</a></td>
 		                <td>${myboardsList.id }</td>
 		                <td>${myboardsList.post_date }</td>
 		                <td>${myboardsList.likehit }</td>
 		                <td>${myboardsList.visitcount }</td>
-		            </tr>
+	            	</tr>
 	            </c:forEach>
 	        </table>
-	     </div>
-    </form>
+	      </div>
+    	</form>
+    	
   	<div style="text-align: center; font-size: 18px;">		
 		<c:if test="${pagingDTO.curPage > 1 }">
-			<a href="${contextPath}/mypage/mypage_renewal?id=${pagingDTO.id}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
-			<a href="${contextPath}/mypage/mypage_renewal?id=${pagingDTO.id}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+			<a href="${contextPath}/mypage/mypage_renewal_Info?id=${pagingDTO.id}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+			<a href="${contextPath}/mypage/mypage_renewal_Info?id=${pagingDTO.id}&curPage=${pagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
 		</c:if>
 		<c:forEach begin="${pagingDTO.firstPage }"  end="${pagingDTO.lastPage }" var="i"> &nbsp;
-	   		<a href="${contextPath}/mypage/mypage_renewal?id=${pagingDTO.id}&curPage=${i }" style="font-size: 18px;">   
+	   		<a href="${contextPath}/mypage/mypage_renewal_Info?id=${pagingDTO.id}&curPage=${i }" style="font-size: 18px;">   
 	   			<c:if test="${i eq pagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
 	   			<c:if test="${i ne pagingDTO.curPage }">  ${i } </c:if> 
 	   		</a>
 		</c:forEach>&nbsp;
 		<c:if test="${pagingDTO.curPage < pagingDTO.totalPageCount }">
-			<a href="${contextPath}/mmypage/mypage_renewal?id=${pagingDTO.id}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
-			<a href="${contextPath}/mypage/mypage_renewal?id=${pagingDTO.id}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+			<a href="${contextPath}/mypage/mypage_renewal_Info?id=${pagingDTO.id}&curPage=${pagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+			<a href="${contextPath}/mypage/mypage_renewal_Info?id=${pagingDTO.id}&curPage=${pagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 		</c:if>
 	</div>
-<%-- 	
+ 	
         <div class="search">
 			<select name="searchType">
 				<option value="n"
@@ -238,7 +236,8 @@
 				value="${scri.keyword}" />
 	
 			<button id="searchBtn" type="button">검색</button>
-        </div>
-         --%>
+        </div>  
+
+    </div>
 </body>
 </html>

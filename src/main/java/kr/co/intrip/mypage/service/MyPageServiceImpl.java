@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.login.AccountException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import kr.co.intrip.mypage.dao.MyPageDAO;
 import kr.co.intrip.mypage.dto.MyBoardDTO;
 import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.tourist.dto.ApiDTO;
+import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.dto.Tourlist_SteamedDTO;
 
@@ -57,55 +59,114 @@ public class MyPageServiceImpl implements MyPageService {
 		
 	}
 	
-	// 내가 쓴 동행글
+	
+	// 내가 쓴 동행글 페이징
 	@Override
-	public List<MyBoardDTO> listfindcompany(SearchCriteria scri) throws Exception {
-		List<MyBoardDTO> boardsList = mypageDAO.listfindcompany(scri);
-		return boardsList;
-	}
-	// 내가 쓴 정보글
-	@Override
-	public List<MyBoardDTO> listfindinformation(SearchCriteria scri) throws Exception {
-		List<MyBoardDTO> boardsList2 = mypageDAO.listfindinformation(scri);
-		return boardsList2;
+	public List<BoardDTO> listfindcompany(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.listfindcompany(pagingDTO);
 	}
 	// 내가 쓴 동행글 검색어 갯수
 	@Override
-	public int findlistCompanyCount(SearchCriteria scri) throws Exception {
-		return mypageDAO.findlistCompanyCount(scri);
+	public int findlistCompanyCount(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.findlistCompanyCount(pagingDTO);
+	}
+	
+	
+	// 내가 쓴 정보글
+	@Override
+	public List<MyBoardDTO> listfindinformation(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.listfindinformation(pagingDTO);
 	}
 	// 내가 쓴 정보글 검색어 갯수
 	@Override
-	public int findlistInfoCount(SearchCriteria scri2) throws Exception {
-		return mypageDAO.findlistInfoCount(scri2);
+	public int findlistInfoCount(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.findlistInfoCount(pagingDTO);
 	}
-
+	
+	
 	@Override
-	public List<ApiDTO> listMyTour(String id) throws Exception {
-		List<ApiDTO> boardsTour = mypageDAO.selectMyTour(id);
-		return boardsTour;
-	}
-
-	@Override
-	public int getTotalSteamedCount(SearchCriteria scri, String id) throws Exception {
-		System.out.println("들어온 totalCount : " + scri + "들어온 id : " + id);
-		 return mypageDAO.getTotalSteamedCount(scri, id);
+	public int findlistInfoSearchCount(SearchCriteria scri) throws Exception {
+		return mypageDAO.findlistInfoSearchCount(scri);
 	}
 	@Override
-	public Tourlist_SteamedDTO getTotalSteamedId(String id) throws Exception {
-		return mypageDAO.getTotalSteamedId(id);
-		
+	public List<MyBoardDTO> listfindInformationSearch(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.listfindInformationSearch(pagingDTO);
 	}
-//	@Override
-//	public HashMap<String, Object> getTotalSteamedCount(String id) throws Exception {
-//		return mypageDAO.getTotalSteamedCount(id);
-//	}
-
-
+	
+	
+	// 내가 찜한 제주 여행지 카운트
 	@Override
-	public List<ApiDTO> mySteamedJeju(SearchCriteria scri) throws Exception {
-		return mypageDAO.mySteamedJeju(scri);
+	public int getTotalSteamedCount(PagingDTO pagingDTO) throws Exception {
+		 return mypageDAO.getTotalSteamedCount(pagingDTO);
 	}
+	// 내가 찜한 제주 여행지 페이징
+	@Override
+	public List<ApiDTO> mySteamedJeju(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.mySteamedJeju(pagingDTO);
+	}
+	
+	
+	// 내가 찜한 제주 페스티벌 페이징
+	@Override
+	public List<ApiDTO> mySteamedJejuFestival(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.mySteamedJejuFestival(pagingDTO);
+	}
+	// 내가 찜한 제주 페스티벌 총 개수
+	@Override
+	public int getTotalSteamedFestivalCount(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.getTotalSteamedFestivalCount(pagingDTO);
+	}
+	
+	
+	// 내가 찜한 제주 전시회 총 개수
+	@Override
+	public int getTotalSteamedExhibitionCount(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.getTotalSteamedExhibitionCount(pagingDTO);
+	}
+	// 내가 찜한 제주 전시회 페이징
+	@Override
+	public List<ApiDTO> mySteamedJejuExhibition(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.mySteamedJejuExhibition(pagingDTO);
+	}
+
+
+	// 내가 찜한 부산 여행지 페이징
+	@Override
+	public List<BusanApiDTO> mySteamedBusanTravel(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.mySteamedBusanTravel(pagingDTO);
+	}
+	// 내가 찜한 부산 여행지 개수
+	@Override
+	public int getTotalSteamedCountBusanTravel(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.getTotalSteamedCountBusanTravel(pagingDTO);
+	}
+
+	
+	// 내가 찜한 부산 체험지 페이징
+	@Override
+	public List<BusanApiDTO> mySteamedBusanExperience(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.mySteamedBusanExperience(pagingDTO);
+	}
+	// 내가 찜한 부산 체험지 개수
+	@Override
+	public int getTotalSteamedCountBusanExperience(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.getTotalSteamedCountBusanExperience(pagingDTO);
+	}
+
+	
+	// 내가 찜한 부산 축제 페이징
+	@Override
+	public List<BusanApiDTO> mySteamedBusanFestival(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.mySteamedBusanFestival(pagingDTO);
+	}
+	// 내가 찜한 부산 축제 개수
+	@Override
+	public int getTotalSteamedCountBusanFestival(PagingDTO pagingDTO) throws Exception {
+		return mypageDAO.getTotalSteamedCountBusanFestival(pagingDTO);
+	}
+
+
+
 
 
 

@@ -105,56 +105,97 @@
 	<!-- 내가쓴 글 수정 -->
 	
 	<!-- 내가 쓴 동행글 -->
-	<select id="listfindcompany" resultType="myboardDTO"
-		parameterType="kr.co.intrip.board.dto.Criteria">
-		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
-		from (
-				select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
-				VISITCOUNT,
-		row_number() over(order by POST_NUM desc) as rNum
-		from P_BOARD
-		where id = #{id}
-		<include refid="search"></include>
-		ORDER by 1
-		) mb
-		where rNum between #{rowStart} and #{rowEnd}
-		order by POST_NUM DESC
+	<select id="listfindcompany" resultType="kr.co.intrip.board.dto.BoardDTO"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
+			from (
+					select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
+					VISITCOUNT,
+			row_number() over(order by POST_NUM desc) as rNum
+			from P_BOARD
+			where id = #{id, jdbcType=VARCHAR}
+			ORDER by 1
+			) mb
+			where rNum between #{firstRow} and #{lastRow}
+			order by POST_NUM DESC
+		]]>
 	</select>
 	
 	<!-- 내가 쓴 동행글 검색어 갯수 -->
 	<select id="findlistCompanyCount" resultType="int"
-		parameterType="kr.co.intrip.board.dto.Criteria">
-		select count(post_num)
-		from p_board
-		where post_num > 0
-		<include refid="search"></include>
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select COUNT(*)  
+			from p_board
+			where post_num > 0
+			and id = #{id, jdbcType=VARCHAR}
+		]]>
 	</select>
 	
 	<!-- 내가 쓴 정보글 -->
 	<select id="listfindInformation" resultType="myboardDTO"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
+			from (
+					select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
+					VISITCOUNT,
+			row_number() over(order by POST_NUM desc) as rNum
+			from P_BOARD1
+			where id = #{id, jdbcType=VARCHAR}
+			ORDER by 1
+			) mb
+			where rNum between #{firstRow} and #{lastRow}
+			order by POST_NUM DESC
+		]]>
+	</select>
+	
+	<!-- 내가 쓴 정보글 검색어 갯수 -->
+	<select id="findlistInfoCount" resultType="int"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+			select count(post_num)
+			from p_board1
+			where post_num > 0
+			and id = #{id, jdbcType=VARCHAR}
+		]]>
+	</select>
+	
+	
+	<!-- 내가 쓴 정보글 검색어 갯수 -->
+	<select id="findlistInfoSearchCount" resultType="int"
 		parameterType="kr.co.intrip.board.dto.Criteria">
+		select count(post_num)
+		from p_board1
+		where post_num > 0
+		and id = #{id, jdbcType=VARCHAR}
+		<include refid="Infosearch"></include>
+	</select>
+	
+	<!-- 내가 쓴 정보검색 -->
+	<select id="listfindInformationSearch" resultType="myboardDTO"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
 		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
 		from (
 				select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
 				VISITCOUNT,
 		row_number() over(order by POST_NUM desc) as rNum
 		from P_BOARD1
-		where id = #{id}
-		<include refid="search"></include>
+		where id = #{id, jdbcType=VARCHAR}
+		<include refid="Infosearch"></include>
 		ORDER by 1
 		) mb
-		where rNum between #{rowStart} and #{rowEnd}
+		where rNum between #{firstRow} and #{lastRow}
 		order by POST_NUM DESC
 	</select>
-
-	<!-- 내가 쓴 정보글 검색어 갯수 -->
-	<select id="findlistInfoCount" resultType="int"
-		parameterType="kr.co.intrip.board.dto.Criteria">
-		select count(post_num)
-		from p_board1
-		where post_num > 0
-		<include refid="search"></include>
-	</select>			
+	
+	
+	<sql id="Infosearch">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">and POST_TITLE LIKE '%' || #{POST_TITLE, jdbcType=VARCHAR} || '%'</if>
+		</if>
+	</sql>			
 	
 	<!-- 검색 -->
 	<sql id="search">
@@ -165,16 +206,6 @@
 		</if>
 	</sql>
 	
-	<!-- 내가 찜한글 조회 -->
-	<select id="mySteamed" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.tourist.dto.Tourlist_SteamedDTO">		
-		SELECT a.IMGPATH, a.TITLE, a.CONTENTSID 
-		FROM P_TOURIST a
-		INNER JOIN TOURIST_STEAMED b
-		ON a.CONTENTSID = b.CONTENTSID
-		WHERE b.ID = #{id}
-		AND b.STEAMEDCHECK = '1'
-	</select>
-	
 	<sql id="jejusearch">
 		<if test="searchType != null">
 			<if test="searchType == 't'.toString()">and b.TITLE LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%'</if>
@@ -183,33 +214,179 @@
 		</if>
 	</sql>
 	
-	<!-- 내가 찜한 글 총 개수 -->
-	<select id="getTotalSteamedCount" parameterType="java.util.HashMap" resultType="kr.co.intrip.board.dto.Criteria">
+	<!-- 내가 찜한 여행지 총 개수 -->
+	<select id="getTotalSteamedCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+	<![CDATA[
 		SELECT COUNT(*)  
-		FROM TOURIST_STEAMED b
-		INNER JOIN P_TOURIST a
-		ON b.CONTENTSID = a.CONTENTSID 
-		WHERE STEAMEDNO > 0
-		and b.ID = #{id, jdbcType=VARCHAR}
-		<include refid="jejusearch"></include>
+		FROM TOURIST_STEAMED a 
+		INNER JOIN P_TOURIST b
+		ON a.CONTENTSID = b.CONTENTSID 
+		WHERE ID = #{id, jdbcType=VARCHAR}
+		AND b.LABEL LIKE '%관광지%' AND b.ALLTAG NOT LIKE '%전시%'
+	]]>
 	</select> 
 	
-	<!--내가 찜한 글 페이징 -->
+	<!--내가 찜한 여행지 페이징 -->
 	<select id="mySteamedJeju" resultType="kr.co.intrip.tourist.dto.ApiDTO"
-		parameterType="kr.co.intrip.board.dto.Criteria">
-		SELECT mb.IMGPATH, mb.title, mb.CONTENTSID
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+		SELECT *
 		from (
-				select a.IMGPATH, a.title, a.CONTENTSID ,
+				select a.*,
 					   row_number() over(order by b.STEAMEDNO  desc) as rNum
 				from P_TOURIST a
 				inner join TOURIST_STEAMED b
 				on a.CONTENTSID = b.CONTENTSID 
-				where b.ID = #{id}
-				<include refid="jejusearch"></include>
-				AND a.STEAMEDHIT = '1'
-				order by 1
+				where b.ID = #{id, jdbcType=VARCHAR}
+				AND b.STEAMEDCHECK = 1
+				AND a.label LIKE '%관광지%' AND a.ALLTAG NOT LIKE '%전시%'
+				order by b.STEAMEDNO desc
 				) mb
-		where rNum between #{rowStart} and #{rowEnd}
+			where rNum between #{firstRow} and #{lastRow}
+		]]>
+	</select>
+	
+	<!-- 내가 찜한 제주 페스티벌 총 개수 -->
+	<select id="getTotalSteamedFestivalCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)  
+		FROM TOURIST_STEAMED a 
+		INNER JOIN P_TOURIST b
+		ON a.CONTENTSID = b.CONTENTSID 
+		WHERE ID = #{id, jdbcType=VARCHAR}
+		AND b.LABEL LIKE '%축제%'
+	]]>
 	</select> 
+	
+	<!--내가 찜한 제주 전시회 페이징 -->
+	<select id="mySteamedJejuExhibition" resultType="kr.co.intrip.tourist.dto.ApiDTO"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+		SELECT *
+		from (
+				select a.*,
+					   row_number() over(order by b.STEAMEDNO  desc) as rNum
+				from P_TOURIST a
+				inner join TOURIST_STEAMED b
+				on a.CONTENTSID = b.CONTENTSID 
+				where b.ID = #{id, jdbcType=VARCHAR}
+				AND b.STEAMEDCHECK = 1
+				AND a.ALLTAG LIKE '%전시%'
+				AND a.LABEL LIKE '%관광지%'
+				order by b.STEAMEDNO desc
+				) mb
+			where rNum between #{firstRow} and #{lastRow}
+		]]>
+	</select>
+	
+	<!-- 내가 찜한 제주 전시회 총 개수 -->
+	<select id="getTotalSteamedExhibitionCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)  
+		FROM TOURIST_STEAMED a 
+		INNER JOIN P_TOURIST b
+		ON a.CONTENTSID = b.CONTENTSID 
+		WHERE ID = #{id, jdbcType=VARCHAR}
+		AND b.ALLTAG LIKE '%전시%' AND b.LABEL LIKE '%관광지%'
+	]]>
+	</select> 
+	
+	<!--내가 찜한 제주 페스티벌 페이징 -->
+	<select id="mySteamedJejuFestival" resultType="kr.co.intrip.tourist.dto.ApiDTO"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		<![CDATA[
+		SELECT *
+		from (
+				select a.*,
+					   row_number() over(order by b.STEAMEDNO  desc) as rNum
+				from P_TOURIST a
+				inner join TOURIST_STEAMED b
+				on a.CONTENTSID = b.CONTENTSID 
+				where b.ID = #{id, jdbcType=VARCHAR}
+				AND b.STEAMEDCHECK = 1
+				AND a.LABEL LIKE '%축제%'
+				order by b.STEAMEDNO desc
+				) mb
+			where rNum between #{firstRow} and #{lastRow}
+		]]>
+	</select>    
+	
+	<!-- 부산 내가 찜한 여행글 총 개수 -->
+	<select id="getTotalTravelSteamedCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+		SELECT COUNT(*)  
+		FROM BUSANTOURIST_STEAMED b
+		INNER JOIN P_BUSANTOURIST a
+		ON b.UC_SEQ = a.UC_SEQ 
+		WHERE ID = #{id, jdbcType=VARCHAR}
+	</select> 
+	
+	<!-- 부산 찜한 여행글 페이징 -->
+	<select id="mySteamedBusanTravel" resultType="kr.co.intrip.tourist.dto.BusanApiDTO"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		SELECT mb.MAIN_IMG_NORMAL, mb.PLACE, mb.UC_SEQ
+		from (
+			select a.MAIN_IMG_NORMAL, a.PLACE, a.UC_SEQ ,
+				   row_number() over(order by a.UC_SEQ   desc) as rNum
+			from P_BUSANTOURIST a
+			inner join BUSANTOURIST_STEAMED b
+			on a.UC_SEQ = b.UC_SEQ 
+			where b.ID = #{id}
+			AND a.STEAMEDHIT = 1
+			order by b.STEAMEDNO desc
+			) mb
+			where rNum between #{firstRow} and #{lastRow}
+	</select>
+	
+	<!-- 부산 내가 찜한 체험글 총 개수 -->
+	<select id="getTotalExperienceSteamedCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+		SELECT COUNT(*)  
+		FROM BUSANEXPERIENCE_STEAMED b
+		INNER JOIN P_BUSANEXPERIENCE a
+		ON b.UC_SEQ = a.UC_SEQ  
+		WHERE ID = #{id, jdbcType=VARCHAR}
+	</select> 
+	
+	<!-- 부산 찜한 체험글 페이징 -->
+	<select id="mySteamedBusanExperience" resultType="kr.co.intrip.tourist.dto.BusanApiDTO"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		SELECT mb.MAIN_IMG_NORMAL, mb.PLACE, mb.UC_SEQ
+		from (
+			select a.MAIN_IMG_NORMAL, a.PLACE, a.UC_SEQ ,
+				   row_number() over(order by a.UC_SEQ   desc) as rNum
+			from P_BUSANEXPERIENCE a
+			inner join BUSANEXPERIENCE_STEAMED b
+			on a.UC_SEQ = b.UC_SEQ 
+			where b.ID = #{id}
+			AND a.STEAMEDHIT = 1
+			order by b.STEAMEDNO desc
+			) mb
+			where rNum between #{firstRow} and #{lastRow}
+	</select>
+	
+	<!-- 부산 내가 찜한 축제글 총 개수 -->
+	<select id="getTotalFestivalSteamedCount" parameterType="kr.co.intrip.tourist.dto.PagingDTO" resultType="int">
+		SELECT COUNT(*)  
+		FROM BUSANFESTIVAL_STEAMED b
+		INNER JOIN P_BUSANFESTIVAL a
+		ON b.UC_SEQ = a.UC_SEQ  
+		WHERE ID = #{id, jdbcType=VARCHAR}
+	</select> 
+	
+	<!-- 부산 찜한 축제글 페이징 -->
+	<select id="mySteamedBusanFestival" resultType="kr.co.intrip.tourist.dto.BusanApiDTO"
+		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
+		SELECT mb.MAIN_IMG_NORMAL, mb.PLACE, mb.UC_SEQ
+		from (
+			select a.MAIN_IMG_NORMAL, a.PLACE, a.UC_SEQ ,
+				   row_number() over(order by a.UC_SEQ   desc) as rNum
+			from P_BUSANFESTIVAL a
+			inner join BUSANFESTIVAL_STEAMED b
+			on a.UC_SEQ = b.UC_SEQ 
+			where b.ID = #{id}
+			AND a.STEAMEDHIT = 1
+			order by b.STEAMEDNO desc
+			) mb
+			where rNum between #{firstRow} and #{lastRow}
+	</select>
 	
 </mapper>
