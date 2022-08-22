@@ -40,21 +40,15 @@ public interface MyPageService {
 	
 	// 내가 쓴 동행글
 	public List<BoardDTO> listfindcompany(PagingDTO pagingDTO) throws Exception;
-	// 내가 쓴 동행글 검색어 갯수
+	// 내가 쓴 동행글 갯수
 	public int findlistCompanyCount(PagingDTO pagingDTO) throws Exception;
 	
 	
 	// 내가 쓴 정보글
 	public List<MyBoardDTO> listfindinformation(PagingDTO pagingDTO) throws Exception;
-	// 내가 쓴 정보글 검색어 갯수
+	// 내가 쓴 정보글 갯수
 	public int findlistInfoCount(PagingDTO pagingDTO) throws Exception;
-	
-	
-	// 내가 쓴 동행글 검색어 갯수
-	public int findlistInfoSearchCount(SearchCriteria scri) throws Exception;
-	// 내가 쓴 정보글 검색어 갯수
-	public List<MyBoardDTO> listfindInformationSearch(PagingDTO pagingDTO) throws Exception;
-	
+		
 	
 	// 내가 찜한 글 총 개수
 	public int getTotalSteamedCount(PagingDTO pagingDTO) throws Exception;

@@ -98,6 +98,19 @@ request.setCharacterEncoding("UTF-8");
 		}
 		
     </script>
+<style type="text/css">
+input[type=file]::file-selector-button {
+	background-color: #9966ff;
+	width: 80px;
+	height: 25px;
+	border-radius: 5px;
+	color: white;
+	border: 2px solid #ffffff;
+	outline: none;
+	cursor: pointer;
+	font-size: 10px;
+}
+</style>
 </head>
 <body>
 	<form action="${contextPath}/board/modBoard1.do" method="post"
@@ -114,9 +127,11 @@ request.setCharacterEncoding("UTF-8");
 			<div>
 				<div class="left-menu">
 					<ul class="left-menu-ul">
-						<li class="menu-list"><a href=""><i
+						<li class="menu-list" style="background-color: #9966ff;"><a
+							href="${contextPath }/board/community-info"><i
 								class="fa-solid fa-bullhorn fa-lg"></i>정보게시판</a></li>
-						<li class="menu-list"><a href=""><i
+						<li class="menu-list"><a
+							href="${contextPath }/board/community-acco"><i
 								class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
 					</ul>
 				</div>
@@ -158,20 +173,24 @@ request.setCharacterEncoding("UTF-8");
 											<!-- 이미지 수정시 미리 원래 이미지 파일이름을 저장함 -->
 											<input type="hidden" name="oldFileName"
 												value="${item.imageFileName }" /> <input type="hidden"
-												name="imageFileNO" value="${item.imageFileNO }" />
-										<img alt="이미지" src="${contextPath}/download1.do?imageFileName=${item.imageFileName}&post_num=${item.post_num}"
-										id="preview${status.index }" width="100px" height="50px"><br />수정할 이미지 선택<br>
+												name="imageFileNO" value="${item.imageFileNO }" /> <img
+												alt="이미지"
+												src="${contextPath}/download1.do?imageFileName=${item.imageFileName}&post_num=${item.post_num}"
+												id="preview${status.index }" width="70px" height="70px"><br />수정할
+											이미지 선택<br>
 										</div>
 									</div>
 									<div class="tr_modEable" id="tr_sub${status.count }">
 										<br>
 
 										<div>
+
 											<input type="file" name="imageFileName${status.index }"
 												id="i_imageFileName${status.index }"
 												onchange="readURL(this, ${status.index})"><br>
 											<input type="button" value="이미지 삭제하기"
-												onclick="fn_removeModImage(${item.imageFileNO}, ${item.post_num }, '${item.imageFileName }')">
+												onclick="fn_removeModImage(${item.imageFileNO}, ${item.post_num }, '${item.imageFileName }')"
+												style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #ffffff; outline: none; cursor: pointer; font-size: 10px;">
 										</div>
 									</div>
 									<br>
@@ -199,7 +218,8 @@ request.setCharacterEncoding("UTF-8");
 
 						<div>
 							<input type="button" value="이미지 추가"
-								onclick="fn_addModImage(${img_index})" />
+								onclick="fn_addModImage(${img_index})"
+								style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #ffffff; outline: none; cursor: pointer; font-size: 10px;" />
 							<table id="td_addImage" align="center">
 								<br>
 							</table>

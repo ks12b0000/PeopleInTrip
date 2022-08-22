@@ -76,22 +76,12 @@ public class MyPageDAOImpl implements MyPageDAO {
 	public List<MyBoardDTO> listfindinformation(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectList("mapper.mypage.listfindInformation", pagingDTO);
 	}
-	// 내가 쓴 정보글 검색어 갯수
+	// 내가 쓴 정보글 갯수
 	@Override
 	public int findlistInfoCount(PagingDTO pagingDTO) throws Exception {
 		return sqlSession.selectOne("mapper.mypage.findlistInfoCount", pagingDTO);
 	}
-	
-	
-	@Override
-	public List<MyBoardDTO> listfindInformationSearch(PagingDTO pagingDTO) throws Exception {
-		return sqlSession.selectList("mapper.mypage.listfindInformationSearch", pagingDTO);
-	}
-	@Override
-	public int findlistInfoSearchCount(SearchCriteria scri) throws Exception {
-		return sqlSession.selectOne("mapper.mypage.findlistInfoSearchCount", scri);
-	}
-	
+
 
 	// 내가 찜한 제주글 총 개수
 	@Override
@@ -163,6 +153,7 @@ public class MyPageDAOImpl implements MyPageDAO {
 	public List<BusanApiDTO> mySteamedBusanFestival(PagingDTO pagingDTO) throws DataAccessException {
 		return sqlSession.selectList("mapper.mypage.mySteamedBusanFestival", pagingDTO);
 	}
+
 
 
 

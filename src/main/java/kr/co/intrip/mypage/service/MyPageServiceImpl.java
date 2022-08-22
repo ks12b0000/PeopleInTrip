@@ -33,12 +33,14 @@ public class MyPageServiceImpl implements MyPageService {
 		return mypageDAO.MyPage(mypageDTO, session);
 	}
 
+	// 비밀번호 변경
 	@Override
 	public void update_MyPage_Pw(MyPageDTO mypageDTO) throws Exception {
 		mypageDAO.update_MyPage_Pw(mypageDTO);
 		
 	}
 
+	// 닉네임 변경
 	@Override
 	public void update_MyPage_nick_nm(MyPageDTO mypageDTO) throws Exception {
 		mypageDAO.update_MyPage_nick_nm(mypageDTO);
@@ -65,7 +67,7 @@ public class MyPageServiceImpl implements MyPageService {
 	public List<BoardDTO> listfindcompany(PagingDTO pagingDTO) throws Exception {
 		return mypageDAO.listfindcompany(pagingDTO);
 	}
-	// 내가 쓴 동행글 검색어 갯수
+	// 내가 쓴 동행글 갯수
 	@Override
 	public int findlistCompanyCount(PagingDTO pagingDTO) throws Exception {
 		return mypageDAO.findlistCompanyCount(pagingDTO);
@@ -77,20 +79,10 @@ public class MyPageServiceImpl implements MyPageService {
 	public List<MyBoardDTO> listfindinformation(PagingDTO pagingDTO) throws Exception {
 		return mypageDAO.listfindinformation(pagingDTO);
 	}
-	// 내가 쓴 정보글 검색어 갯수
+	// 내가 쓴 정보글 갯수
 	@Override
 	public int findlistInfoCount(PagingDTO pagingDTO) throws Exception {
 		return mypageDAO.findlistInfoCount(pagingDTO);
-	}
-	
-	
-	@Override
-	public int findlistInfoSearchCount(SearchCriteria scri) throws Exception {
-		return mypageDAO.findlistInfoSearchCount(scri);
-	}
-	@Override
-	public List<MyBoardDTO> listfindInformationSearch(PagingDTO pagingDTO) throws Exception {
-		return mypageDAO.listfindInformationSearch(pagingDTO);
 	}
 	
 	

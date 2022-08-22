@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+import kr.co.intrip.board.dto.SearchCriteria;
+import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.BusanCommentDTO;
@@ -20,19 +22,19 @@ public interface TouristService {
 
 	// 관광지 api db에 저장용
 	public void parkApi(String schAirportCode) throws Exception;
-	
+
 	// 부산 여행지 api db에 저장
 	public void busanApi() throws Exception;
-	
+
 	// 부산 축제 api db에 저장
 	public void busanApi2() throws Exception;
-	
+
 	// 부산 체험 api db에 저장
 	public void busanApi3() throws Exception;
-	
+
 	// 제주도 날씨 api
 	public weatherDTO weatherapi() throws Exception;
-	
+
 	// 부산 날씨 api
 	public weatherDTO weatherapi2() throws Exception;
 
@@ -41,16 +43,16 @@ public interface TouristService {
 
 	// 제주도 여행지 페이지 리스트
 	public List<ApiDTO> jejutourist_list(PagingDTO pagingDTO) throws Exception;
-	
+
 	// 부산 여행지 총 개수
 	public int busangetTotalRowCount(PagingDTO pagingDTO) throws Exception;
 
 	// 부산 여행지 페이지 리스트
 	public List<BusanApiDTO> busantourist_list(PagingDTO pagingDTO) throws Exception;
-	
+
 	// 제주도 축제 총 개수
 	public int getTotalRowCount2(PagingDTO pagingDTO) throws Exception;
-	
+
 	// 제주도 축제 페이지 리스트
 	public List<ApiDTO> jejufestival_list(PagingDTO pagingDTO) throws Exception;
 
@@ -59,13 +61,13 @@ public interface TouristService {
 
 	// 부산 축제 페이지 리스트
 	public List<BusanApiDTO> busantourist_list2(PagingDTO pagingDTO) throws Exception;
-	
+
 	// 제주도 전시관 총 개수
 	public int getTotalRowCount3(PagingDTO pagingDTO) throws Exception;
-	
+
 	// 제주도 전시관 페이지 리스트
 	public List<ApiDTO> jejuexhibition_list(PagingDTO pagingDTO) throws Exception;
-	
+
 	// 부산 체험 총 개수
 	public int busangetTotalRowCount3(PagingDTO pagingDTO) throws Exception;
 
@@ -82,23 +84,25 @@ public interface TouristService {
 	public List<ApiDTO> jejutourist_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
 
 	// 제주도 축제 페이지 리스트 Sorting 기능
-	public List<ApiDTO> jejufestival_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
+	public List<ApiDTO> jejufestival_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request)
+			throws Exception;
 
 	// 제주도 전시관 페이지 리스트 Sorting 기능
-	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
-	
+	public List<ApiDTO> jejuexhibition_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request)
+			throws Exception;
+
 	// 부산 여행지 상세페이지
 	public BusanApiDTO busantourist_detail(BusanApiDTO busanApiDTO) throws Exception;
 
 	// 부산 여행지 상세페이지 조회수 증가
 	public int busantourist_viewcount(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 축제 상세페이지
 	public BusanApiDTO busantourist_detail2(BusanApiDTO busanApiDTO) throws Exception;
 
 	// 부산 축제 상세페이지 조회수 증가
 	public int busantourist_viewcount2(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 체험 상세페이지
 	public BusanApiDTO busantourist_detail3(BusanApiDTO busanApiDTO) throws Exception;
 
@@ -106,23 +110,26 @@ public interface TouristService {
 	public int busantourist_viewcount3(BusanApiDTO busanApiDTO) throws Exception;
 
 	// 부산 여행지 페이지 리스트 Sorting 기능
-	public List<BusanApiDTO> busantourist_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
-	
+	public List<BusanApiDTO> busantourist_Sort(PagingDTO pagingDTO, Model model, HttpServletRequest request)
+			throws Exception;
+
 	// 부산 축제 페이지 리스트 Sorting 기능
-	public List<BusanApiDTO> busantourist_Sort2(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
-	
+	public List<BusanApiDTO> busantourist_Sort2(PagingDTO pagingDTO, Model model, HttpServletRequest request)
+			throws Exception;
+
 	// 부산 체험 페이지 리스트 Sorting 기능
-	public List<BusanApiDTO> busantourist_Sort3(PagingDTO pagingDTO, Model model, HttpServletRequest request) throws Exception;
-	
+	public List<BusanApiDTO> busantourist_Sort3(PagingDTO pagingDTO, Model model, HttpServletRequest request)
+			throws Exception;
+
 	// 제주도 댓글 수 증가
 	public int jejucommentcount(ApiDTO apiDTO) throws Exception;
-	
+
 	// 제주도 댓글 수 감소
 	public int jejucommentcountminus(ApiDTO apiDTO) throws Exception;
-	
+
 	// 제주도 댓글 총 개수
 	public int getCommentTotalRowCount(CommentPagingDTO commentpaging) throws Exception;
-	
+
 	// 제주도 댓글 조회
 	public List<JejuCommentDTO> jejureadReply(CommentPagingDTO commentpaging) throws Exception;
 
@@ -130,11 +137,11 @@ public interface TouristService {
 	public void jejuregister(JejuCommentDTO jejuDTO) throws Exception;
 
 	// 제주도 댓글 수정
-	public void jejumodify(JejuCommentDTO jejuDTO) throws Exception; 
-	
+	public void jejumodify(JejuCommentDTO jejuDTO) throws Exception;
+
 	// 제주도 댓글 삭제
 	public void jejuremove(JejuCommentDTO jejuDTO) throws Exception;
-	
+
 	// 제주도 선택된 댓글 조회
 	public JejuCommentDTO jejuselectReply(int com_num) throws Exception;
 
@@ -161,12 +168,12 @@ public interface TouristService {
 
 	// 제주도 여행지 추천 중복방지 select문
 	public String SuggestionCheck(String contentsid, String id) throws Exception;
-	
+
 	// 제주도 여행지 추천 시 steamed 테이블에 insert
-	public void insertSuggestion(String contentsid, String id) throws Exception;		
+	public void insertSuggestion(String contentsid, String id) throws Exception;
 
 	// 제주도 여행지 추천 수
-	public void updateSuggestion(String contentsid) throws Exception;	
+	public void updateSuggestion(String contentsid) throws Exception;
 
 	// 제주도 여행지 추천 시 Check를 1로 만들어서 중복방지
 	public void updateSuggestionCheck(String contentsid, String id) throws Exception;
@@ -182,22 +189,22 @@ public interface TouristService {
 
 	// 제주도 여행지 메인페이지 배너
 	public List<ApiDTO> jejutourist_main(ApiDTO apiDTO) throws Exception;
-	
+
 	// 제주도 축제 4개 가져오기
 	public List<ApiDTO> jejufestivalmain(ApiDTO apiDTO) throws Exception;
-	
+
 	// 제주도 전시 4개 가져오기
 	public List<ApiDTO> jejuexhibitionmain(ApiDTO apiDTO) throws Exception;
 
 	// 부산 댓글 수 증가
 	public int busancommentcount(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 댓글 수 감소
 	public int busancommentcountminus(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 댓글 총 개수
 	public int busangetCommentTotalRowCount(CommentPagingDTO commentpaging) throws Exception;
-	
+
 	// 부산 댓글 조회
 	public List<BusanCommentDTO> busanreadReply(CommentPagingDTO commentpaging) throws Exception;
 
@@ -205,11 +212,11 @@ public interface TouristService {
 	public void busanregister(BusanCommentDTO busanCommentDTO) throws Exception;
 
 	// 부산 댓글 수정
-	public void busanmodify(BusanCommentDTO busanCommentDTO) throws Exception; 
-	
+	public void busanmodify(BusanCommentDTO busanCommentDTO) throws Exception;
+
 	// 부산 댓글 삭제
 	public void busanremove(BusanCommentDTO busanCommentDTO) throws Exception;
-	
+
 	// 부산 선택된 댓글 조회
 	public BusanCommentDTO busanselectReply(int com_num) throws Exception;
 
@@ -236,12 +243,12 @@ public interface TouristService {
 
 	// 부산 여행지 추천 중복방지 select문
 	public int busanSuggestionCheck(int UC_SEQ, String id) throws Exception;
-	
+
 	// 부산 여행지 추천 시 steamed 테이블에 insert
-	public void busaninsertSuggestion(int UC_SEQ, String id) throws Exception;		
+	public void busaninsertSuggestion(int UC_SEQ, String id) throws Exception;
 
 	// 부산 여행지 추천 수
-	public void busanupdateSuggestion(int UC_SEQ) throws Exception;	
+	public void busanupdateSuggestion(int UC_SEQ) throws Exception;
 
 	// 부산 여행지 추천 시 Check를 1로 만들어서 중복방지
 	public void busanupdateSuggestionCheck(int UC_SEQ, String id) throws Exception;
@@ -254,16 +261,16 @@ public interface TouristService {
 
 	// 부산 여행지 추천 취소 시 delete
 	public void busandeleteSuggestion(int UC_SEQ, String id) throws Exception;
-	
+
 	// 부산 축제 댓글 수 증가
 	public int busancommentcount2(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 축제 댓글 수 감소
 	public int busancommentcountminus2(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 축제 댓글 총 개수
 	public int busangetCommentTotalRowCount2(CommentPagingDTO commentpaging) throws Exception;
-	
+
 	// 부산 축제 댓글 조회
 	public List<BusanCommentDTO> busanreadReply2(CommentPagingDTO commentpaging) throws Exception;
 
@@ -271,11 +278,11 @@ public interface TouristService {
 	public void busanregister2(BusanCommentDTO busanCommentDTO) throws Exception;
 
 	// 부산 축제 댓글 수정
-	public void busanmodify2(BusanCommentDTO busanCommentDTO) throws Exception; 
-	
+	public void busanmodify2(BusanCommentDTO busanCommentDTO) throws Exception;
+
 	// 부산 축제 댓글 삭제
 	public void busanremove2(BusanCommentDTO busanCommentDTO) throws Exception;
-	
+
 	// 부산 축제 선택된 댓글 조회
 	public BusanCommentDTO busanselectReply2(int com_num) throws Exception;
 
@@ -302,12 +309,12 @@ public interface TouristService {
 
 	// 부산 축제 추천 중복방지 select문
 	public int busanSuggestionCheck2(int UC_SEQ, String id) throws Exception;
-	
+
 	// 부산 축제 추천 시 steamed 테이블에 insert
-	public void busaninsertSuggestion2(int UC_SEQ, String id) throws Exception;		
+	public void busaninsertSuggestion2(int UC_SEQ, String id) throws Exception;
 
 	// 부산 축제 추천 수
-	public void busanupdateSuggestion2(int UC_SEQ) throws Exception;	
+	public void busanupdateSuggestion2(int UC_SEQ) throws Exception;
 
 	// 부산 축제 추천 시 Check를 1로 만들어서 중복방지
 	public void busanupdateSuggestionCheck2(int UC_SEQ, String id) throws Exception;
@@ -320,16 +327,16 @@ public interface TouristService {
 
 	// 부산 축제 추천 취소 시 delete
 	public void busandeleteSuggestion2(int UC_SEQ, String id) throws Exception;
-	
+
 	// 부산 체험 댓글 수 증가
 	public int busancommentcount3(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 체험 댓글 수 감소
 	public int busancommentcountminus3(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 체험 댓글 총 개수
 	public int busangetCommentTotalRowCount3(CommentPagingDTO commentpaging) throws Exception;
-	
+
 	// 부산 체험 댓글 조회
 	public List<BusanCommentDTO> busanreadReply3(CommentPagingDTO commentpaging) throws Exception;
 
@@ -337,11 +344,11 @@ public interface TouristService {
 	public void busanregister3(BusanCommentDTO busanCommentDTO) throws Exception;
 
 	// 부산 체험 댓글 수정
-	public void busanmodify3(BusanCommentDTO busanCommentDTO) throws Exception; 
-	
+	public void busanmodify3(BusanCommentDTO busanCommentDTO) throws Exception;
+
 	// 부산 체험 댓글 삭제
 	public void busanremove3(BusanCommentDTO busanCommentDTO) throws Exception;
-	
+
 	// 부산 체험 선택된 댓글 조회
 	public BusanCommentDTO busanselectReply3(int com_num) throws Exception;
 
@@ -368,12 +375,12 @@ public interface TouristService {
 
 	// 부산 체험 추천 중복방지 select문
 	public int busanSuggestionCheck3(int UC_SEQ, String id) throws Exception;
-	
+
 	// 부산 체험 추천 시 steamed 테이블에 insert
-	public void busaninsertSuggestion3(int UC_SEQ, String id) throws Exception;		
+	public void busaninsertSuggestion3(int UC_SEQ, String id) throws Exception;
 
 	// 부산 체험 추천 수
-	public void busanupdateSuggestion3(int UC_SEQ) throws Exception;	
+	public void busanupdateSuggestion3(int UC_SEQ) throws Exception;
 
 	// 부산 체험 추천 시 Check를 1로 만들어서 중복방지
 	public void busanupdateSuggestionCheck3(int UC_SEQ, String id) throws Exception;
@@ -386,14 +393,31 @@ public interface TouristService {
 
 	// 부산 체험 추천 취소 시 delete
 	public void busandeleteSuggestion3(int UC_SEQ, String id) throws Exception;
-	
+
 	// 부산 메인페이지 배너
 	public List<BusanApiDTO> busantourist_main(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 축제 4개 가져오기
 	public List<BusanApiDTO> busanfestivalmain(BusanApiDTO busanApiDTO) throws Exception;
-	
+
 	// 부산 체험 4개 가져오기
 	public List<BusanApiDTO> busanexperiencemain(BusanApiDTO busanApiDTO) throws Exception;
 
+	// 제주 페이징 검색
+	public List<ApiDTO> listPage(SearchCriteria2 scri2) throws Exception;
+
+	// 제주 총 갯수
+	public int countSearch(SearchCriteria2 scri2) throws Exception;
+
+	// 부산 페이징 검색 1
+	public List<BusanApiDTO> listPage1(SearchCriteria2 scri2) throws Exception;
+
+	// 부산 페이징 검색 2
+	public List<BusanApiDTO> listPage12(SearchCriteria2 scri2) throws Exception;
+
+	// 부산 페이징 검색 3
+	public List<BusanApiDTO> listPage13(SearchCriteria2 scri2) throws Exception;
+
+	// 제주 총 갯수
+	public int countSearch1(SearchCriteria2 scri2) throws Exception;
 }
