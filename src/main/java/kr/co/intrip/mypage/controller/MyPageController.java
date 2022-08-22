@@ -72,6 +72,7 @@ public class MyPageController {
 		return mav;
 	}
 	
+	// 비밀번호 변경
 	@RequestMapping(value = "mypage/update_modify_info", method = RequestMethod.POST)
 	public String mypageUpdatePwAction(@RequestParam(value= "id",defaultValue = "", required = false)
 					String id, String pwd) throws Exception {
@@ -82,6 +83,7 @@ public class MyPageController {
 		return "mypage/modify_info";
 	}
 	
+	// 닉네임 변경
 	@RequestMapping(value = "mypage/update_mypage_nick_nm", method = RequestMethod.POST)	
 	public String mypageUpdateNickAction(@RequestParam(value= "id", defaultValue = "", required = false)
 					String id, String nick_nm) throws Exception {
@@ -156,9 +158,11 @@ public class MyPageController {
 	 //내가 쓴 글 정보
 	@RequestMapping(value = "mypage/mypage_renewal_Info", method = {RequestMethod.GET, RequestMethod.POST})
 	public List<MyBoardDTO> showMyInfo(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO) throws Exception {
+		
 		int totalRowCount = mypageService.findlistInfoCount(pagingDTO);
 		pagingDTO.setTotalRowCount(totalRowCount);
 		pagingDTO.pageSetting();
+		
 		List<MyBoardDTO> myboardsList = mypageService.listfindinformation(pagingDTO);
 		model.addAttribute("myboardsList", myboardsList);
 		
@@ -168,24 +172,7 @@ public class MyPageController {
 	}
 	
 	
-	@RequestMapping(value = "mypage/mypage_renewal_Info_Search", method = {RequestMethod.GET, RequestMethod.POST})
-	public List<MyBoardDTO> showMySearchInfo(Model model, @ModelAttribute("pagingDTO") PagingDTO pagingDTO,
-							@ModelAttribute("scri") SearchCriteria scri) throws Exception {
-		int totalRowCount = mypageService.findlistInfoSearchCount(scri);
-		pagingDTO.setTotalRowCount(totalRowCount);
-		pagingDTO.pageSetting();
-		
-		
-		
-		List<MyBoardDTO> myboardsList = mypageService.listfindInformationSearch(pagingDTO);
-		model.addAttribute("myboardsList", myboardsList);
-		
-		System.out.println(totalRowCount);
-		
-		return myboardsList;
-	}
-	
-	
+	// 내가 찜한 제주 여행지
 	@RequestMapping(value = "mypage/mypage_steamed_jeju", method = RequestMethod.GET)
 	public List<ApiDTO> showMySteamed(Model model,@ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = mypageService.getTotalSteamedCount(pagingDTO);
@@ -199,6 +186,7 @@ public class MyPageController {
 		return boardsTour;
 	}
 	
+	// 내가 찜한 제주 축제
 	@RequestMapping(value = "mypage/mypage_steamed_jeju_festival", method = RequestMethod.GET)
 	public List<ApiDTO> showMySteamedFestival(Model model,@ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = mypageService.getTotalSteamedFestivalCount(pagingDTO);
@@ -212,6 +200,7 @@ public class MyPageController {
 		return boardsTour;
 	}
 	
+	// 내가 찜한 제주 전시회
 	@RequestMapping(value = "mypage/mypage_steamed_jeju_Exhibition", method = RequestMethod.GET)
 	public List<ApiDTO> showMySteamedExhibition(Model model,@ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = mypageService.getTotalSteamedExhibitionCount(pagingDTO);
@@ -225,6 +214,7 @@ public class MyPageController {
 		return boardsTour;
 	}
 	
+	// 내가 찜한 부산 여행
 	@RequestMapping(value = "mypage/mypage_steamed_BusanTravel", method = RequestMethod.GET)
 	public List<BusanApiDTO> showMySteamedBusanTravel(Model model, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = mypageService.getTotalSteamedCountBusanTravel(pagingDTO);
@@ -238,6 +228,7 @@ public class MyPageController {
 		return boardsTour;
 	}
 	
+	// 내가 찜한 부산 체험
 	@RequestMapping(value = "mypage/mypage_steamed_BusanExperience", method = RequestMethod.GET)
 	public List<BusanApiDTO> showMySteamedBusanExperience(Model model, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = mypageService.getTotalSteamedCountBusanExperience(pagingDTO);
@@ -251,6 +242,7 @@ public class MyPageController {
 		return boardsTour;
 	}
 	
+	// 내가 찜한 부산 축제
 	@RequestMapping(value = "mypage/mypage_steamed_BusanFestival", method = RequestMethod.GET)
 	public List<BusanApiDTO> showMySteamedBusanFestival(Model model, @ModelAttribute("pagingDTO")PagingDTO pagingDTO) throws Exception {
 		int totalRowCount = mypageService.getTotalSteamedCountBusanFestival(pagingDTO);

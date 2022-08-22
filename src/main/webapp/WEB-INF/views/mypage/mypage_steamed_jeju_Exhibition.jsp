@@ -103,7 +103,7 @@
         }
 
         .like td{
-            padding: 10px 35px;
+            padding: 10px 5px;
         }
 
         .title {
@@ -112,6 +112,15 @@
             background-color: black;
             color: white;
             opacity: 0.8;
+        }
+        
+        a.link {
+        	text-decoration: none;
+        	color: white;
+        }
+        
+        a {
+        	text-decoration: none;
         }
 
         .test li{
@@ -199,7 +208,7 @@
 	        <div align="center">
 	            <table align="center" class="like">
 	                <tr align="center">
-	                	<c:forEach var="boardsTour" items="${boardsTour}" begin="0" end="3">
+	                	<c:forEach var="boardsTour" items="${boardsTour}" begin="0" end="4">
 		                    <td>
 		                        <div>
 		                        	<a href="${contextPath}/tourist/tourist_View?contentsid=${boardsTour.contentsid}">
@@ -215,23 +224,7 @@
 	                    </c:forEach>
 	               </tr>
 	               <tr align="center">
-    	                <c:forEach var="boardsTour" items="${boardsTour}" begin="4" end="7">
-		                    <td>
-		                        <div>
-		                        	<a href="${contextPath}/tourist/tourist_View?contentsid=${boardsTour.contentsid}">
-		                        		<img src="${boardsTour.imgpath }" width="200px" height="120px">
-		                        	</a>
-		                        </div>
-		                        <div class="title">
-		                        	<a class="link" href="${contextPath}/tourist/tourist_View?contentsid=${boardsTour.contentsid}" >
-		                        		${boardsTour.title }
-		                        	</a>
-		                        </div>
-		                    </td>
-	                    </c:forEach>
-  				   </tr>
-	               <tr align="center">
-    	                <c:forEach var="boardsTour" items="${boardsTour}" begin="8" end="11">
+    	                <c:forEach var="boardsTour" items="${boardsTour}" begin="5" end="9">
 		                    <td>
 		                        <div>
 		                        	<a href="${contextPath}/tourist/tourist_View?contentsid=${boardsTour.contentsid}">

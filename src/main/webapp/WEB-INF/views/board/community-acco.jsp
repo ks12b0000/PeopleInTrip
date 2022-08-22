@@ -16,7 +16,28 @@ request.setCharacterEncoding("UTF-8");
 	margin-top: 2%;
 }
 
+<<<<<<< HEAD
+ .seacrh_container {
+     align-items: center;
+     width: 300px;
+     height: 40px;
+     margin-left: 10px;
+ }
+
+ .seacrh_container > input {
+     width: 100%;
+     height: 100%;
+     font-size: 15px;
+     color: #a6a6a6;
+     border: solid 1px #bfbfbf;
+     border-radius: 10px;
+     padding: 0px 24px;
+ }
+
+#searchBtn {
+=======
 #searchBtn12 {
+>>>>>>> 8b2bf3b7af5e6a3a6941b5c5b2bfde26ff243223
 	background-color: #9966ff;
 	width: 60px;
 	height: 30px;

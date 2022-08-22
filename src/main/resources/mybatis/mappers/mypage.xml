@@ -151,7 +151,7 @@
 		]]>
 	</select>
 	
-	<!-- 내가 쓴 정보글 검색어 갯수 -->
+	<!-- 내가 쓴 정보글 갯수 -->
 	<select id="findlistInfoCount" resultType="int"
 		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
 		<![CDATA[
@@ -160,34 +160,6 @@
 			where post_num > 0
 			and id = #{id, jdbcType=VARCHAR}
 		]]>
-	</select>
-	
-	
-	<!-- 내가 쓴 정보글 검색어 갯수 -->
-	<select id="findlistInfoSearchCount" resultType="int"
-		parameterType="kr.co.intrip.board.dto.Criteria">
-		select count(post_num)
-		from p_board1
-		where post_num > 0
-		and id = #{id, jdbcType=VARCHAR}
-		<include refid="Infosearch"></include>
-	</select>
-	
-	<!-- 내가 쓴 정보검색 -->
-	<select id="listfindInformationSearch" resultType="myboardDTO"
-		parameterType="kr.co.intrip.tourist.dto.PagingDTO">
-		select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE, VISITCOUNT
-		from (
-				select POST_NUM, POST_TITLE, POST_CONTENT, ID, POST_DATE,
-				VISITCOUNT,
-		row_number() over(order by POST_NUM desc) as rNum
-		from P_BOARD1
-		where id = #{id, jdbcType=VARCHAR}
-		<include refid="Infosearch"></include>
-		ORDER by 1
-		) mb
-		where rNum between #{firstRow} and #{lastRow}
-		order by POST_NUM DESC
 	</select>
 	
 	
@@ -331,7 +303,7 @@
 			inner join BUSANTOURIST_STEAMED b
 			on a.UC_SEQ = b.UC_SEQ 
 			where b.ID = #{id}
-			AND a.STEAMEDHIT = 1
+			AND b.STEAMEDCHECK = 1
 			order by b.STEAMEDNO desc
 			) mb
 			where rNum between #{firstRow} and #{lastRow}
@@ -357,7 +329,7 @@
 			inner join BUSANEXPERIENCE_STEAMED b
 			on a.UC_SEQ = b.UC_SEQ 
 			where b.ID = #{id}
-			AND a.STEAMEDHIT = 1
+			AND b.STEAMEDCHECK = 1
 			order by b.STEAMEDNO desc
 			) mb
 			where rNum between #{firstRow} and #{lastRow}
@@ -383,7 +355,7 @@
 			inner join BUSANFESTIVAL_STEAMED b
 			on a.UC_SEQ = b.UC_SEQ 
 			where b.ID = #{id}
-			AND a.STEAMEDHIT = 1
+			AND b.STEAMEDCHECK = 1
 			order by b.STEAMEDNO desc
 			) mb
 			where rNum between #{firstRow} and #{lastRow}

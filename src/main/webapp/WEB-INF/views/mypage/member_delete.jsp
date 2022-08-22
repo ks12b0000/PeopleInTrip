@@ -36,6 +36,9 @@
 				<input type="text" placeholder="아이디" id="delete_id" name="id" onfocus="this.placeholder='';" onblur="this.placeholder='아이디'" /><br>
 				<input type="password" placeholder="비밀번호" id="delete_pw" name="pwd" onfocus="this.placeholder='';" onblur="this.placeholder='비밀번호'" /><br>
 				<button type="submit" id="delete_bt" onclick="delete_Btn()"><strong>회원탈퇴</strong></button>
+				<br/>
+				<br/>
+				<b>즐거운 여행 하셨나요? <br/> 피플 인 트립을 이용해 주셔서 감사합니다 여행의 설렘을 찾고 싶으시면 또 와주세요.</b>
 			</div>
 		</form>
 		<div>
