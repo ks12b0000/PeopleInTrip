@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
 <%
-	request.setCharacterEncoding("UTF-8");
+request.setCharacterEncoding("UTF-8");
 %>
 <c:set var="board" value="${boardMap.board }" />
 <!DOCTYPE html>
@@ -22,45 +22,54 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
-    	$(document).ready(function() {
-			$('#textarea-box').on('keyup', function() {
-				$('#textarea-cnt').html("(" + $(this).val().length + " / 200)");
-				
-				if($(this).val().length > 200) {
-					$(this).val($(this).val().substring(0, 200));
-					$('#textarea-cnt').html("(200 / 200)");
-				}
-			});
-		});   
-    	
-    	function readURL(input,index) {
-			if (input.files && input.files[0]) {
-				let reader = new FileReader()
-				reader.onload = function(e) {
-					$('#preview0').attr('src', e.target.result)
-				}
-				reader.readAsDataURL(input.files[0])
-			}
-		}
-    	
-    	let cnt = 1
-		function fn_addFile() {
-			cnt++;
-			let innerHtml = "";
-			
-			innerHtml += '<tr width=100% align=center>'
-			
-			innerHtml += '<td>' +
-								"<input type=file name='file"+cnt+"' onchange='readURL(this, "+cnt+")' />" +
-						 '</td>'
-			
+	$(document).ready(function() {
+		$('#textarea-box').on('keyup', function() {
+			$('#textarea-cnt').html("(" + $(this).val().length + " / 200)");
 
-			innerHtml += '</tr>'
-			$("#tb_newImage").append(innerHtml)
+			if ($(this).val().length > 200) {
+				$(this).val($(this).val().substring(0, 200));
+				$('#textarea-cnt').html("(200 / 200)");
+			}
+		});
+	});
+
+	function readURL(input, index) {
+		if (input.files && input.files[0]) {
+			let reader = new FileReader()
+			reader.onload = function(e) {
+				$('#preview0').attr('src', e.target.result)
+			}
+			reader.readAsDataURL(input.files[0])
 		}
-    	
-    
-    </script>
+	}
+
+	let cnt = 1
+	function fn_addFile() {
+		cnt++;
+		let innerHtml = "";
+
+		innerHtml += '<tr width=100% align=center>'
+
+		innerHtml += '<td>' + "<input type=file name='file" + cnt
+				+ "' onchange='readURL(this, " + cnt + ")' />" + '</td>'
+
+		innerHtml += '</tr>'
+		$("#tb_newImage").append(innerHtml)
+	}
+</script>
+<style type="text/css">
+input[type=file]::file-selector-button {
+	background-color: #9966ff;
+	width: 80px;
+	height: 25px;
+	border-radius: 5px;
+	color: white;
+	border: 2px solid #ffffff;
+	outline: none;
+	cursor: pointer;
+	font-size: 10px;
+}
+</style>
 </head>
 <body>
 	<!-- 헤더 -->
@@ -76,9 +85,11 @@
 			<div>
 				<div class="left-menu">
 					<ul class="left-menu-ul">
-						<li class="menu-list" style="background-color: #9966ff;"><a href="${contextPath }/board/community-info"><i
+						<li class="menu-list" style="background-color: #9966ff;"><a
+							href="${contextPath }/board/community-info"><i
 								class="fa-solid fa-bullhorn fa-lg"></i>정보게시판</a></li>
-						<li class="menu-list" ><a href="${contextPath }/board/community-acco"><i
+						<li class="menu-list"><a
+							href="${contextPath }/board/community-acco"><i
 								class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
 
 					</ul>
@@ -108,11 +119,12 @@
 								onclick="location.href='${contextPath}/board/community-info.do'" />
 							<input type="submit" value="작성완료" />
 						</div>
-						
+
 						<div>
-							<input type="button" value="파일 추가하기" onclick="fn_addFile()" style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #9966ff; outline: none; cursor: pointer; font-size: 11px;"/>
-						<div id="tb_newImage" />
-							
+							<input type="button" value="파일 추가하기" onclick="fn_addFile()"
+								style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #9966ff; outline: none; cursor: pointer; font-size: 11px;" />
+							<div id="tb_newImage" />
+
 						</div>
 
 					</div>

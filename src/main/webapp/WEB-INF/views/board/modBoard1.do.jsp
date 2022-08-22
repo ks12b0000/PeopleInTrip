@@ -98,6 +98,19 @@ request.setCharacterEncoding("UTF-8");
 		}
 		
     </script>
+<style type="text/css">
+input[type=file]::file-selector-button {
+	background-color: #9966ff;
+	width: 80px;
+	height: 25px;
+	border-radius: 5px;
+	color: white;
+	border: 2px solid #ffffff;
+	outline: none;
+	cursor: pointer;
+	font-size: 10px;
+}
+</style>
 </head>
 <body>
 	<form action="${contextPath}/board/modBoard1.do" method="post"
@@ -115,8 +128,10 @@ request.setCharacterEncoding("UTF-8");
 				<div class="left-menu">
 					<ul class="left-menu-ul">
 						<li class="menu-list" style="background-color: #9966ff;"><a
-							href="${contextPath }/board/community-info"><i class="fa-solid fa-bullhorn fa-lg"></i>정보게시판</a></li>
-						<li class="menu-list"><a href="${contextPath }/board/community-acco"><i
+							href="${contextPath }/board/community-info"><i
+								class="fa-solid fa-bullhorn fa-lg"></i>정보게시판</a></li>
+						<li class="menu-list"><a
+							href="${contextPath }/board/community-acco"><i
 								class="fa-solid fa-people-robbery fa-lg"></i>동행구해요</a></li>
 					</ul>
 				</div>
@@ -169,11 +184,13 @@ request.setCharacterEncoding("UTF-8");
 										<br>
 
 										<div>
+
 											<input type="file" name="imageFileName${status.index }"
 												id="i_imageFileName${status.index }"
 												onchange="readURL(this, ${status.index})"><br>
 											<input type="button" value="이미지 삭제하기"
-												onclick="fn_removeModImage(${item.imageFileNO}, ${item.post_num }, '${item.imageFileName }')">
+												onclick="fn_removeModImage(${item.imageFileNO}, ${item.post_num }, '${item.imageFileName }')"
+												style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #ffffff; outline: none; cursor: pointer; font-size: 10px;">
 										</div>
 									</div>
 									<br>
@@ -202,7 +219,7 @@ request.setCharacterEncoding("UTF-8");
 						<div>
 							<input type="button" value="이미지 추가"
 								onclick="fn_addModImage(${img_index})"
-								style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #9966ff; outline: none; cursor: pointer; font-size: 10px;" />
+								style="background-color: #9966ff; width: 80px; height: 25px; border-radius: 5px; color: white; border: 2px solid #ffffff; outline: none; cursor: pointer; font-size: 10px;" />
 							<table id="td_addImage" align="center">
 								<br>
 							</table>

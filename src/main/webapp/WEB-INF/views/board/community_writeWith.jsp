@@ -59,6 +59,19 @@
 			$("#tb_newImage").append(innerHtml)
 		}
     </script>
+    <style type="text/css">
+input[type=file]::file-selector-button {
+	background-color: #9966ff;
+	width: 80px;
+	height: 25px;
+	border-radius: 5px;
+	color: white;
+	border: 2px solid #ffffff;
+	outline: none;
+	cursor: pointer;
+	font-size: 10px;
+}
+</style>
 </head>
 <body>
 	<!-- 헤더 -->

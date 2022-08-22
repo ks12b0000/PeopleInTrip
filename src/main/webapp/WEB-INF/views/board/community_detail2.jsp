@@ -412,7 +412,7 @@ request.setCharacterEncoding("UTF-8");
 			<button type="button" class="btn313"
 				onclick="location.href='${contextPath}/board/modBoard1.do?post_num=${board.post_num }'">수정</button>
 		</c:if>
-		<c:if test="${user.id == board.id}">
+		<c:if test="${user.id == board.id and user.grade == '일반회원'}">
 			<button type="button" class="btn31"
 				onclick="location.href='${contextPath}/board/removeBoard1.do?post_num=${board.post_num }'">삭제</button>
 		</c:if>
