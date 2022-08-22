@@ -7,14 +7,14 @@
 <head>
 	<link rel="shortcut icon" href="/favicon.ico" type="../WEB-INF/views/images/main/mainimg1.jpg">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="${contextPath}/resources/css/main_kms/main.css">
+	<link rel="stylesheet" href="${contextPath}/resources/css/main/main.css">
 <meta charset="UTF-8">
 <title>People in Trip</title>
 </head>
 <body>
 <form action="${contextPath}/mainpage/main" method="get">
 	<header>
-		<jsp:include page="/header_lhj/header.jsp" flush="false" />
+		<jsp:include page="/header/header.jsp" flush="false" />
 	</header>
 	
 	<h3 id="title1">인기 여행지</h3>

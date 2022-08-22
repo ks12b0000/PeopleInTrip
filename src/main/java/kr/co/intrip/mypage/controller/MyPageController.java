@@ -55,11 +55,7 @@ public class MyPageController {
 	@Autowired
 	BoardService boardService;
 	
-//	@GetMapping("mypage/mypage_renewal.do")
-//	public String myboardtest() {
-//		return "mypage/mypage_renewal";
-//	}
-	
+	// 회원정보 수정
 	@RequestMapping(value = "mypage/modify_info")
 	public ModelAndView modify_info (HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -111,6 +107,7 @@ public class MyPageController {
 		return result;
 	}
 	
+	// 회원 탈퇴
 	@GetMapping("mypage/member_delete.do")
 	public String showDeleteMember() {
 		return "mypage/member_delete";

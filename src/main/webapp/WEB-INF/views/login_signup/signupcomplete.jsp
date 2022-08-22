@@ -16,7 +16,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
 </head>
 <body>	
-	<jsp:include page="/header_lhj/header.jsp" flush="false" />
+	<jsp:include page="/header/header.jsp" flush="false" />
 		<aside class="signup_leftside">
 			<div id="aside_box1">정보<br>입력</div>
 			<div id="aside_box2">가입<br>완료</div>

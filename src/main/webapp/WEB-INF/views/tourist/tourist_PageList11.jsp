@@ -23,7 +23,7 @@
 <title>제주도 여행지 리스트</title>
 </head>
 <body>
-	<jsp:include page="/header_lhj/header.jsp" flush="false" />
+	<jsp:include page="/header/header.jsp" flush="false" />
 
 	<header>
 		<div class="title">
@@ -64,41 +64,41 @@
 		</div>
 		<div style="text-align: center; font-size: 18px;">
 			<ul>
-				<c:if test="${pageMaker2.cri.page > 1 }">
+				<c:if test="${pageMaker.cri.page > 1 }">
 					<a
-						href="${contextPath}/tourist/tourist_PageList11?page=1&searchType=${pageMaker2.cri.searchType }&keyword=${pageMaker2.cri.keyword}"
+						href="${contextPath}/tourist/tourist_PageList11?page=1&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}"
 						style="color: #9966ff; font-size: 25px;">&laquo;</a>
 					<a
-						href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker2.cri.page-1 }&searchType=${pageMaker2.cri.searchType }&keyword=${pageMaker2.cri.keyword}"
+						href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker.cri.page-1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}"
 						style="color: #9966ff; font-size: 25px;">&lt;</a>
 
 				</c:if>
 
-				<c:forEach begin="${pageMaker2.startPage}"
-					end="${pageMaker2.endPage}" var="idx"> &nbsp;
+				<c:forEach begin="${pageMaker.startPage}"
+					end="${pageMaker.endPage}" var="idx"> &nbsp;
                 
                   <a
-						href="${contextPath}/tourist/tourist_PageList11${pageMaker2.makeSearch(idx)}"
+						href="${contextPath}/tourist/tourist_PageList11${pageMaker.makeSearch(idx)}"
 						style="text-decoration: none;"><c:if
-							test="${idx == pageMaker2.cri.page }">
+							test="${idx == pageMaker.cri.page }">
 							<span style="text-decoration: none; color: red;"> ${idx} </span>
 						</c:if></a>
 					<a
-						href="${contextPath}/tourist/tourist_PageList11${pageMaker2.makeSearch(idx)}"
+						href="${contextPath}/tourist/tourist_PageList11${pageMaker.makeSearch(idx)}"
 						style="text-decoration: none;"><c:if
-							test="${idx != pageMaker2.cri.page }">
+							test="${idx != pageMaker.cri.page }">
 							<span style="text-decoration: none; color: black"> ${idx}
 							</span>
 						</c:if></a>&nbsp;
 
             </c:forEach>
 
-				<c:if test="${pageMaker2.cri.page < pageMaker2.endPage}">
+				<c:if test="${pageMaker.cri.page < pageMaker.endPage}">
 					<a
-						href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker2.cri.page+1 }&searchType=${pageMaker2.cri.searchType }&keyword=${pageMaker.cri.keyword}"
+						href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker.cri.page+1 }&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}"
 						style="color: #9966ff; font-size: 25px;">&gt;</a>
 					<a
-						href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker2.endPage}&searchType=${pageMaker2.cri.searchType }&keyword=${pageMaker.cri.keyword}"
+						href="${contextPath}/tourist/tourist_PageList11?&page=${pageMaker.endPage}&searchType=${pageMaker.cri.searchType }&keyword=${pageMaker.cri.keyword}"
 						style="color: #9966ff; font-size: 25px;">&raquo;</a>
 				</c:if>
 			</ul>

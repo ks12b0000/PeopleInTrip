@@ -15,7 +15,6 @@ import kr.co.intrip.board.dto.CommentPagingDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
-import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.board.dto.boardCommentDTO;
 import kr.co.intrip.login_signup.dto.MemberDTO;
 import kr.co.intrip.tourist.dto.ApiDTO;
@@ -106,7 +105,6 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.insertNewImage1(boardMap); // 이미지 정보를 저장함
 
 		return post_num;
-
 	}
 
 	// 글수정
@@ -132,7 +130,6 @@ public class BoardServiceImpl implements BoardService {
 		else if (modAddImageFileList != null && modAddImageFileList.size() != 0) {
 			boardDAO.insertModNewImage(boardMap);
 		}
-
 	}
 
 	// 글수정1
@@ -165,42 +162,36 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void removeModImage(ImageDTO imageDTO) {
 		boardDAO.deleteModImage(imageDTO);
-
 	}
 
 	// 글이미지삭제
 	@Override
 	public void removeModImage1(ImageDTO imageDTO) {
 		boardDAO.deleteModImage1(imageDTO);
-
 	}
 
 	// 글삭제
 	@Override
 	public void removeBoard(int post_num) throws Exception {
 		boardDAO.deleteBoard(post_num);
-
 	}
 
 	// 글삭제1
 	@Override
 	public void removeBoard1(int post_num) throws Exception {
 		boardDAO.deleteBoard1(post_num);
-
 	}
 
 	// 조회수
 	@Override
 	public void visitcount(int post_num) throws Exception {
 		boardDAO.visitcount(post_num);
-
 	}
 
 	// 조회수1
 	@Override
 	public void visitcount1(int post_num) throws Exception {
 		boardDAO.visitcount1(post_num);
-
 	}
 
 	// 추천
@@ -469,7 +460,5 @@ public class BoardServiceImpl implements BoardService {
 	public int findlistCountmaster1(SearchCriteria scri) throws Exception {
 		return boardDAO.findlistCountmaster1(scri);
 	}
-
-	
 
 }

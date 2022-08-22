@@ -17,7 +17,7 @@
 <title>제주도 축제 리스트</title>
 </head>
 <body>
-	<jsp:include page="/header_lhj/header.jsp" flush="false" />
+	<jsp:include page="/header/header.jsp" flush="false" />
 	
 	<header>
 		<div class="title">

@@ -38,12 +38,16 @@ public interface MemberService {
 	// 네이버 회원가입
 	public void joinMemberByNaver(MemberDTO memberDTO) throws Exception;
 	
+	// 아이디 중복체크
 	public String duplicateCheckId(String id) throws Exception;
 	
+	// 닉네임 중복체크
 	public String duplicateCheckNick(String nick_nm) throws Exception;
 	
+	// 멤버 추가
 	public int addMember(MemberDTO _memberDTO) throws Exception;
 	
+	// 이메일 중복체크
 	public String duplicateCheckEmail(String email) throws Exception;
 
 }

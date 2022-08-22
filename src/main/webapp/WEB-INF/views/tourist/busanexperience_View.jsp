@@ -23,7 +23,7 @@
   font-weight:normal;overflow:hidden;padding:17px 20px;word-break:normal; white-space: nowrap;}
 </style>
 <body>
-	<jsp:include page="/header_lhj/header.jsp" flush="false" />
+	<jsp:include page="/header/header.jsp" flush="false" />
 	
 	<!-- 헤더 -->
 	<header>

@@ -248,7 +248,7 @@
 	<div id="page">
 		<div id="header-jeh">
 			<header>
-				<jsp:include page="/header_lhj/header.jsp" flush="false" />
+				<jsp:include page="/header/header.jsp" flush="false" />
 				<input type="hidden" name="post_num" value="${board.post_num }">
 			</header>
 		</div>

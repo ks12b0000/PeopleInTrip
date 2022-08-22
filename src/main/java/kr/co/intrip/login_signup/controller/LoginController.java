@@ -31,8 +31,10 @@ public class LoginController {
 
 	@Autowired
 	private MailSendService mailService;
+	
 	@Autowired
 	private MemberService memberService;  
+	
 	@Autowired
 	private MailSendService_Add mailService1; 
 

@@ -3,13 +3,9 @@ package kr.co.intrip.tourist.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.ui.Model;
-
 import kr.co.intrip.board.dto.SearchCriteria;
-import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.BusanCommentDTO;
@@ -404,20 +400,20 @@ public interface TouristService {
 	public List<BusanApiDTO> busanexperiencemain(BusanApiDTO busanApiDTO) throws Exception;
 
 	// 제주 페이징 검색
-	public List<ApiDTO> listPage(SearchCriteria2 scri2) throws Exception;
+	public List<ApiDTO> listPage(SearchCriteria scri) throws Exception;
 
 	// 제주 총 갯수
-	public int countSearch(SearchCriteria2 scri2) throws Exception;
+	public int countSearch(SearchCriteria scri) throws Exception;
 
 	// 부산 페이징 검색 1
-	public List<BusanApiDTO> listPage1(SearchCriteria2 scri2) throws Exception;
+	public List<BusanApiDTO> listPage1(SearchCriteria scri) throws Exception;
 
 	// 부산 페이징 검색 2
-	public List<BusanApiDTO> listPage12(SearchCriteria2 scri2) throws Exception;
+	public List<BusanApiDTO> listPage12(SearchCriteria scri) throws Exception;
 
 	// 부산 페이징 검색 3
-	public List<BusanApiDTO> listPage13(SearchCriteria2 scri2) throws Exception;
+	public List<BusanApiDTO> listPage13(SearchCriteria scri) throws Exception;
 
 	// 제주 총 갯수
-	public int countSearch1(SearchCriteria2 scri2) throws Exception;
+	public int countSearch1(SearchCriteria scri) throws Exception;
 }

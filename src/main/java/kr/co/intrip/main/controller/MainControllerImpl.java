@@ -31,6 +31,7 @@ public class MainControllerImpl implements MainController {
 	@Autowired
 	private TouristService tourservice;
 	
+	// 메인 페이지
 	@Override
 	@RequestMapping(value = "/mainpage/main" )
 	public ModelAndView listMain(HttpServletRequest request,Model model,ApiDTO apiDTO, BusanApiDTO busanApiDTO, HttpServletResponse response) throws Exception {
@@ -53,9 +54,6 @@ public class MainControllerImpl implements MainController {
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("mainsList", mainsList);
 		mav.addObject("mainsList1", mainsList1);
-		return mav;
-		
+		return mav;		
 	}
-	
-
 }

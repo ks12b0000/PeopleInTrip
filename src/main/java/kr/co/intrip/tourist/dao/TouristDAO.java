@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.intrip.board.dto.SearchCriteria;
-import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
 import kr.co.intrip.tourist.dto.BusanCommentDTO;
@@ -855,32 +854,32 @@ public class TouristDAO {
 	}
 
 	// 제주 페이징 검색
-	public List<ApiDTO> listPage(SearchCriteria2 scri2) throws Exception {
-		return sqlSession.selectList("mapper.tourist.jejutourist11", scri2);
+	public List<ApiDTO> listPage(SearchCriteria scri) throws Exception {
+		return sqlSession.selectList("mapper.tourist.jejutourist11", scri);
 	}
 
 	// 제주 총 갯수
-	public int countsearch(SearchCriteria2 scri2) throws Exception {
-		return sqlSession.selectOne("mapper.tourist.getTotalRowCount11", scri2);
+	public int countsearch(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.getTotalRowCount11", scri);
 	}
 
 	// 부산 페이징1
-	public List<BusanApiDTO> listPage1(SearchCriteria2 scri2) throws Exception {
-		return sqlSession.selectList("mapper.tourist.busantourist11", scri2);
+	public List<BusanApiDTO> listPage1(SearchCriteria scri) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist11", scri);
 	}
 
 	// 부산 페이징2
-	public List<BusanApiDTO> listPage12(SearchCriteria2 scri2) throws Exception {
-		return sqlSession.selectList("mapper.tourist.busantourist12", scri2);
+	public List<BusanApiDTO> listPage12(SearchCriteria scri) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist12", scri);
 	}
 
 	// 부산 페이징3
-	public List<BusanApiDTO> listPage13(SearchCriteria2 scri2) throws Exception {
-		return sqlSession.selectList("mapper.tourist.busantourist13", scri2);
+	public List<BusanApiDTO> listPage13(SearchCriteria scri) throws Exception {
+		return sqlSession.selectList("mapper.tourist.busantourist13", scri);
 	}
 
 	// 부산 총 갯수
-	public int countsearch12(SearchCriteria2 scri2) throws Exception {
-		return sqlSession.selectOne("mapper.tourist.busangetTotalRowCount12", scri2);
+	public int countsearch12(SearchCriteria scri) throws Exception {
+		return sqlSession.selectOne("mapper.tourist.busangetTotalRowCount12", scri);
 	}
 }

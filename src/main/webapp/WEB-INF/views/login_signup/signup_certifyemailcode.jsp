@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="../resources/css/login_signup/signup_certifyemailcode.css">
-<script type="text/javascript" src="../resources/js/signup_lst/signup_certifyemailcode.js"></script>
+<script type="text/javascript" src="../resources/js/signup/signup_certifyemailcode.js"></script>
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

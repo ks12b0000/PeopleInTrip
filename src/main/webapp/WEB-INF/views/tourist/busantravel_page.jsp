@@ -71,7 +71,7 @@
 </head>
 <body>
 
-	<jsp:include page="/header_lhj/header.jsp" flush="false" />
+	<jsp:include page="/header/header.jsp" flush="false" />
 	
 	<!-- 헤더 -->
 	<header>

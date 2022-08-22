@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.intrip.board.dto.SearchCriteria;
-import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.tourist.controller.TouristController;
 import kr.co.intrip.tourist.dao.TouristDAO;
 import kr.co.intrip.tourist.dto.ApiDTO;
@@ -1492,38 +1491,38 @@ public class TouristServiceImpl implements TouristService {
 
 	// 제주 페이징 검색
 	@Override
-	public List<ApiDTO> listPage(SearchCriteria2 scri2) throws Exception {
-		return touristDAO.listPage(scri2);
+	public List<ApiDTO> listPage(SearchCriteria scri) throws Exception {
+		return touristDAO.listPage(scri);
 	}
 
 	// 제주 총 갯수
 	@Override
-	public int countSearch(SearchCriteria2 scri2) throws Exception {
-		return touristDAO.countsearch(scri2);
+	public int countSearch(SearchCriteria scri) throws Exception {
+		return touristDAO.countsearch(scri);
 	}
 
 	// 부산 페이징 검색 1
 	@Override
-	public List<BusanApiDTO> listPage1(SearchCriteria2 scri2) throws Exception {
-		return touristDAO.listPage1(scri2);
+	public List<BusanApiDTO> listPage1(SearchCriteria scri) throws Exception {
+		return touristDAO.listPage1(scri);
 	}
 
 	// 부산 페이징 검색 2
 	@Override
-	public List<BusanApiDTO> listPage12(SearchCriteria2 scri2) throws Exception {
-		return touristDAO.listPage12(scri2);
+	public List<BusanApiDTO> listPage12(SearchCriteria scri) throws Exception {
+		return touristDAO.listPage12(scri);
 	}
 
 	// 부산 페이징 검색 3
 	@Override
-	public List<BusanApiDTO> listPage13(SearchCriteria2 scri2) throws Exception {
-		return touristDAO.listPage13(scri2);
+	public List<BusanApiDTO> listPage13(SearchCriteria scri) throws Exception {
+		return touristDAO.listPage13(scri);
 	}
 
 	// 부산 총 갯수
 	@Override
-	public int countSearch1(SearchCriteria2 scri2) throws Exception {
-		return touristDAO.countsearch12(scri2);
+	public int countSearch1(SearchCriteria scri) throws Exception {
+		return touristDAO.countsearch12(scri);
 	}
 
 }

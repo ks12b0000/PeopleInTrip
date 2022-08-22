@@ -205,24 +205,28 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.joinMemberByNaver(memberDTO);		
 	}
 
+	// 아이디 중복체크
 	@Override
 	public String duplicateCheckId(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return memberDAO.selectDuplicateCheckId(id);
 	}
 
+	// 닉네임 중복 체크
 	@Override
 	public String duplicateCheckNick(String nick_nm) throws Exception {
 		// TODO Auto-generated method stub
 		return memberDAO.selectDuplicateCheckNick(nick_nm);
 	}
 
+	// 멤버 추가
 	@Override
 	public int addMember(MemberDTO _memberDTO) throws Exception {
 		// TODO Auto-generated method stub
 		return memberDAO.addMember(_memberDTO);
 	}
 
+	// 이메일 중복체크
 	@Override
 	public String duplicateCheckEmail(String email) throws Exception {
 		// TODO Auto-generated method stub

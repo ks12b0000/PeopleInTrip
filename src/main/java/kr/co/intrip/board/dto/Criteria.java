@@ -1,12 +1,13 @@
 package kr.co.intrip.board.dto;
 
 public class Criteria
+
 {
- private int page;
- private int perPageNum;
- private int rowStart;
- private int rowEnd;
- private String id;
+	 private int page;
+	 private int perPageNum;
+	 private int rowStart;
+	 private int rowEnd;
+	 private String id;
  
 
 public String getId() {

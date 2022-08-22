@@ -242,7 +242,7 @@ request.setCharacterEncoding("UTF-8");
 	<div id="page">
 		<div id="header-jeh">
 			<header>
-				<jsp:include page="/header_lhj/header.jsp" flush="false" />
+				<jsp:include page="/header/header.jsp" flush="false" />
 				<input type="hidden" name="articleNO" value="${board.post_num }">
 			</header>
 		</div>

@@ -8,7 +8,9 @@ import kr.co.intrip.main.dto.MainDTO;
 
 public interface MainDAO {
 
+	// 동행구해요 게시판 리스트
 	public List<MainDTO> selectBoardList() throws DataAccessException;
 
+	// 정보게시판 리스트
 	public List<MainDTO> selectBoardList1() throws DataAccessException;
 }

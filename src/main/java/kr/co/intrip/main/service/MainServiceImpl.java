@@ -15,12 +15,14 @@ public class MainServiceImpl implements MainService {
 	@Autowired
 	private MainDAO mainDAO;
 
+	// 동행구해요 게시판 리스트
 	@Override
 	public List<MainDTO> listMain() throws Exception {
 		List<MainDTO> mainsList = mainDAO.selectBoardList();
 		return mainsList;
 	}
 	
+	// 정보게시판 리스트
 	@Override
 	public List<MainDTO> listMain1() throws Exception {
 		List<MainDTO> mainsList = mainDAO.selectBoardList1();

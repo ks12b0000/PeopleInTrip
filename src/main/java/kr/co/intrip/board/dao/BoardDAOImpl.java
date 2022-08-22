@@ -14,7 +14,6 @@ import kr.co.intrip.board.dto.CommentPagingDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.SearchCriteria;
-import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.board.dto.boardCommentDTO;
 import kr.co.intrip.tourist.dto.ApiDTO;
 
@@ -41,14 +40,12 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public void visitcount(int post_num) {
 		sqlSession.update("mapper.board.visitcount", post_num);
-
 	}
 
 	// 조회수
 	@Override
 	public void visitcount1(int post_num) {
 		sqlSession.update("mapper.board.visitcount1", post_num);
-
 	}
 
 	// 게시물 갯수 검색
@@ -67,14 +64,12 @@ public class BoardDAOImpl implements BoardDAO {
 	// 상세보기1
 	@Override
 	public BoardDTO selectBoard1(int post_num) throws DataAccessException {
-
 		return sqlSession.selectOne("mapper.board.selectBoard1", post_num);
 	}
 
 	// 상세보기
 	@Override
 	public BoardDTO selectBoard(int post_num) throws DataAccessException {
-
 		return sqlSession.selectOne("mapper.board.selectBoard", post_num);
 	}
 
@@ -158,34 +153,35 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlSession.selectOne("mapper.board.selectNewImageFileNO1");
 	}
 
+	// 게시글 번호 찾기
 	@Override
 	public BoardDTO selectpost_num(int post_num) throws DataAccessException {
-
 		return sqlSession.selectOne("mapper.board.selectpost_num", post_num);
 	}
 
+	// 게시글 번호 찾기1
 	@Override
 	public BoardDTO selectpost_num1(int post_num) throws DataAccessException {
-
 		return sqlSession.selectOne("mapper.board.selectpost_num1", post_num);
 	}
 
+	// 이미지 파일 찾기
 	@Override
 	public List<ImageDTO> selectImageFileList(int post_num) throws DataAccessException {
-
 		List<ImageDTO> imageFileList = sqlSession.selectList("mapper.board.selectImageFileList", post_num);
-
+		
 		return imageFileList;
 	}
 
+	// 이미지 파일 찾기1
 	@Override
 	public List<ImageDTO> selectImageFileList1(int post_num) throws DataAccessException {
-
 		List<ImageDTO> imageFileList = sqlSession.selectList("mapper.board.selectImageFileList1", post_num);
 
 		return imageFileList;
 	}
 
+	// 이미지 파일 수정
 	@Override
 	public void updateImageFile(Map<String, Object> boardMap) throws DataAccessException {
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
@@ -207,6 +203,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	}
 
+	// 이미지 파일 수정1
 	@Override
 	public void updateImageFile1(Map<String, Object> boardMap) throws DataAccessException {
 		List<ImageDTO> imageFileList = (List<ImageDTO>) boardMap.get("imageFileList");
@@ -243,7 +240,6 @@ public class BoardDAOImpl implements BoardDAO {
 		}
 
 		sqlSession.insert("mapper.board.insertModNewImage", modAddImageFileList);
-
 	}
 
 	// 새 이미지 추가
@@ -261,64 +257,57 @@ public class BoardDAOImpl implements BoardDAO {
 		}
 
 		sqlSession.insert("mapper.board.insertModNewImage1", modAddImageFileList);
-
 	}
 
 	// 글 수정
 	@Override
 	public void updateBoard(Map<String, Object> boardMap) throws DataAccessException {
 		sqlSession.update("mapper.board.updateBoard", boardMap);
-
 	}
 
 	// 글 수정1
 	@Override
 	public void updateBoard1(Map<String, Object> boardMap) throws DataAccessException {
 		sqlSession.update("mapper.board.updateBoard1", boardMap);
-
 	}
 
 	// 글 이미지 삭제
 	@Override
 	public void deleteModImage(ImageDTO imageDTO) {
 		sqlSession.delete("mapper.board.deleteModImage", imageDTO);
-
 	}
 
 	// 글 이미지 삭제
 	@Override
 	public void deleteModImage1(ImageDTO imageDTO) {
 		sqlSession.delete("mapper.board.deleteModImage1", imageDTO);
-
 	}
 
 	// 글삭제
 	@Override
 	public void deleteBoard(int post_num) {
 		sqlSession.delete("mapper.board.deleteBoard", post_num);
-
 	}
 
 	// 글삭제1
 	@Override
 	public void deleteBoard1(int post_num) {
 		sqlSession.delete("mapper.board.deleteBoard1", post_num);
-
 	}
 
 	// 추천
-
 	@Override
 	public void updateLike(int post_num) throws Exception {
 		sqlSession.update("mapper.board.updateLike", post_num);
 	}
 
+	// 추천 취소
 	@Override
 	public void updateLikeCancel(int post_num) throws Exception {
 		sqlSession.update("mapper.board.updateLikeCancel", post_num);
-
 	}
 
+	// 추천 테이블에 insert
 	@Override
 	public void insertLike(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -327,6 +316,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("mapper.board.insertLike", map);
 	}
 
+	// 추천 테이블에 삭제
 	@Override
 	public void deleteLike(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -335,6 +325,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.delete("mapper.board.deleteLike", map);
 	}
 
+	// 추천 수 체크
 	@Override
 	public int likeCheck(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -343,6 +334,7 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlSession.selectOne("mapper.board.likeCheck", map);
 	}
 
+	// 추천수 업데이트 체크
 	@Override
 	public void updateLikeCheck(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -352,6 +344,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	}
 
+	// 추천수 업데이트 취소체크
 	@Override
 	public void updateLikeCheckCancel(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -366,12 +359,13 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.update("mapper.board.updateLike1", post_num);
 	}
 
+	// 게시글 추천취소 시 다시 0
 	@Override
 	public void updateLikeCancel1(int post_num) throws Exception {
 		sqlSession.update("mapper.board.updateLikeCancel1", post_num);
-
 	}
 
+	// 추천 insert
 	@Override
 	public void insertLike1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -380,6 +374,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("mapper.board.insertLike1", map);
 	}
 
+	// 추천 취소
 	@Override
 	public void deleteLike1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -388,6 +383,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.delete("mapper.board.deleteLike1", map);
 	}
 
+	// 추천 체크
 	@Override
 	public int likeCheck1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -396,6 +392,7 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlSession.selectOne("mapper.board.likeCheck1", map);
 	}
 
+	//게시글 추천 시 Check를 1로 만들어서 중복방지
 	@Override
 	public void updateLikeCheck1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -405,6 +402,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	}
 
+	// 추천 업데이트 취소 체크
 	@Override
 	public void updateLikeCheckCancel1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -419,12 +417,14 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.update("mapper.board.updatesin", post_num);
 	}
 
+	// 신고 취소시 다시 0
 	@Override
 	public void updatesinCancel(int post_num) throws Exception {
 		sqlSession.update("mapper.board.updatesinCancel", post_num);
 
 	}
 
+	// 신고 insert
 	@Override
 	public void insertsin(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -433,6 +433,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("mapper.board.insertsin", map);
 	}
 
+	// 신고 삭제
 	@Override
 	public void deletesin(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -441,6 +442,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.delete("mapper.board.deletesin", map);
 	}
 
+	// 신고 체크
 	@Override
 	public int sinCheck(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -449,6 +451,7 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlSession.selectOne("mapper.board.sinCheck", map);
 	}
 
+	// 신고 업데이트 체크
 	@Override
 	public void updatesinCheck(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -458,6 +461,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	}
 
+	// 신고 업데이트 취소 체크
 	@Override
 	public void updatesinCheckCancel(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -472,12 +476,14 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.update("mapper.board.updatesin1", post_num);
 	}
 
+	// 신고 취소시 다시 0
 	@Override
 	public void updatesinCancel1(int post_num) throws Exception {
 		sqlSession.update("mapper.board.updatesinCancel1", post_num);
 
 	}
 
+	// 신고 insert
 	@Override
 	public void insertsin1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -486,6 +492,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("mapper.board.insertsin1", map);
 	}
 
+	// 신고 삭제
 	@Override
 	public void deletesin1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -494,6 +501,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.delete("mapper.board.deletesin1", map);
 	}
 
+	// 신고 체크
 	@Override
 	public int sinCheck1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -502,15 +510,16 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlSession.selectOne("mapper.board.sinCheck1", map);
 	}
 
+	// 신고 업데이트 체크
 	@Override
 	public void updatesinCheck1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("post_num", post_num);
 		sqlSession.update("mapper.board.updatesinCheck1", map);
-
 	}
 
+	// 신고 업데이트 취소 체크
 	@Override
 	public void updatesinCheckCancel1(int post_num, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();

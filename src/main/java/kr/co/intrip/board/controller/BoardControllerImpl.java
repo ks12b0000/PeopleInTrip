@@ -3,20 +3,16 @@ package kr.co.intrip.board.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.catalina.User;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -36,14 +32,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
-
 import kr.co.intrip.board.dto.BoardDTO;
 import kr.co.intrip.board.dto.CommentPagingDTO;
 import kr.co.intrip.board.dto.Criteria;
 import kr.co.intrip.board.dto.ImageDTO;
 import kr.co.intrip.board.dto.PageMaker;
 import kr.co.intrip.board.dto.SearchCriteria;
-import kr.co.intrip.board.dto.SearchCriteria2;
 import kr.co.intrip.board.dto.boardCommentDTO;
 import kr.co.intrip.board.service.BoardService;
 import kr.co.intrip.login_signup.dto.MemberDTO;
@@ -57,8 +51,10 @@ public class BoardControllerImpl implements BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	
 	@Autowired
 	private BoardDTO boardDTO;
+	
 	private static String ARTICLE_IMAGE_REPO = "C:\\workspace-spring\\imageRepo";
 	private static String ARTICLE_IMAGE_REPO1 = "C:\\workspace-spring\\imageRepo1";
 
@@ -85,7 +81,6 @@ public class BoardControllerImpl implements BoardController {
 		model.addAttribute("replyList", replyList);
 
 		return mav;
-
 	}
 
 	// 상세보기1
@@ -310,6 +305,7 @@ public class BoardControllerImpl implements BoardController {
 		return resEnt;
 	}
 
+	// 이미지 업로드
 	private List<String> upload(MultipartHttpServletRequest multipartRequest) throws ServletException, IOException {
 		List<String> fileList = new ArrayList<>();
 		Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -334,6 +330,7 @@ public class BoardControllerImpl implements BoardController {
 		return fileList;
 	}
 
+	// 이미지 업로드1
 	private List<String> upload1(MultipartHttpServletRequest multipartRequest) throws ServletException, IOException {
 		List<String> fileList = new ArrayList<>();
 		Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -768,12 +765,13 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
+	
 	// 글삭제 마스터
-		@Override
-		@RequestMapping(value = "/board/removeBoard2.do", method = RequestMethod.GET)
-		@ResponseBody
-		public ResponseEntity removeBoard2(@RequestParam("post_num") int post_num, // 삭제할 글번호 가져옴
-				HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@Override
+	@RequestMapping(value = "/board/removeBoard2.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity removeBoard2(@RequestParam("post_num") int post_num, // 삭제할 글번호 가져옴
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 			response.setContentType("text/html; charset=utf-8");
 
@@ -849,12 +847,13 @@ public class BoardControllerImpl implements BoardController {
 
 		return resEnt;
 	}
+	
 	// 글삭제2
-		@Override
-		@RequestMapping(value = "/board/removeBoard3.do", method = RequestMethod.GET)
-		@ResponseBody
-		public ResponseEntity removeBoard3(@RequestParam("post_num") int post_num, // 삭제할 글번호 가져옴
-				HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@Override
+	@RequestMapping(value = "/board/removeBoard3.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity removeBoard3(@RequestParam("post_num") int post_num, // 삭제할 글번호 가져옴
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 			response.setContentType("text/html; charset=utf-8");
 
@@ -1144,7 +1143,7 @@ public class BoardControllerImpl implements BoardController {
 		model.addAttribute("pageMaker", pageMaker);
 	}
 
-	// 페이징 검색1
+	// 페이징 검색 관리자 신고수 체크
 	@RequestMapping(value = "/board/community-infomaster", method = RequestMethod.GET)
 	public void listPage1master(@ModelAttribute("scri") SearchCriteria scri, Model model) throws Exception {
 
@@ -1155,8 +1154,5 @@ public class BoardControllerImpl implements BoardController {
 		pageMaker.setCri(scri);
 		pageMaker.setTotalCount(boardService.findlistCountmaster1(scri));
 		model.addAttribute("pageMaker", pageMaker);
-	}
-
-	
-	
+	}	
 }

@@ -15,6 +15,7 @@
 		<result property="grade" column="grade" />
 	</resultMap>
 	
+	<!-- 로그인 -->
 	<select id="Login" resultType="memberDTO" parameterType="memberDTO">
 		<![CDATA[
 			SELECT * 
@@ -22,8 +23,7 @@
 			WHERE ID = #{id} AND PWD = #{pwd}
 		]]>	
 	</select>
-	
-	
+		
 	<!-- 아이디 찾기 -->
 	<select id="find_id" resultType="memberDTO" parameterType="memberDTO">
 		<![CDATA[

@@ -118,7 +118,7 @@ input[type=file]::file-selector-button {
 		<!-- 헤더 -->
 		<div id="header-jeh">
 			<header>
-				<jsp:include page="/header_lhj/header.jsp" flush="false" />
+				<jsp:include page="/header/header.jsp" flush="false" />
 			</header>
 		</div>
 

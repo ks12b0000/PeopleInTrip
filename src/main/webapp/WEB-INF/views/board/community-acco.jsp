@@ -87,7 +87,7 @@ request.setCharacterEncoding("UTF-8");
 </style>
 </head>
 <header>
-		<jsp:include page="/header_lhj/header2.jsp" flush="false" />
+		<jsp:include page="/header/header2.jsp" flush="false" />
 	</header>
 <body>
 	

@@ -141,6 +141,7 @@
       VALUES(#{post_num}, #{id}, #{post_title}, #{post_content})
    ]]>
 	</insert>
+	
 	<!-- 게시물 등록1 -->
 	<insert id="insertBoard1" parameterType="java.util.Map">
    <![CDATA[
@@ -231,7 +232,6 @@
          WHERE POST_NUM = #{post_num}   
       ]]>
 	</select>
-
 
 	<!-- 게시글 수정 -->
 	<update id="updateBoard" parameterType="java.util.Map">
@@ -728,7 +728,7 @@
 		as rNum
 		from
 		P_BOARD
-		where sinhit>=1
+		where sinhit>=3
 		) mb
 		where rNum between #{rowStart} and #{rowEnd}
 		order by POST_NUM desc
@@ -751,26 +751,26 @@
 		as rNum
 		from
 		P_BOARD1
-		where sinhit>=1
+		where sinhit>=3
 		) mb
 		where rNum between #{rowStart} and #{rowEnd}
 		order by POST_NUM desc
 	</select>
 
-	<!--관리자 검색어 갯수 -->
+	<!--관리자 신고 갯수 -->
 	<select id="findlistCountmaster" resultType="int"
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select count(post_num)
 		from p_board	
-		where post_num > 0 AND SINHIT >=1
+		where post_num > 0 AND SINHIT >=3
 	</select>
 
-	<!--관리자 검색어 갯수 -->
+	<!--관리자 신고 갯수 -->
 	<select id="findlistCountmaster1" resultType="int"
 		parameterType="kr.co.intrip.board.dto.Criteria">
 		select count(post_num)
 		from p_board1	
-		where post_num > 0 AND SINHIT >=1
+		where post_num > 0 AND SINHIT >=3
 	</select>
 	
 	

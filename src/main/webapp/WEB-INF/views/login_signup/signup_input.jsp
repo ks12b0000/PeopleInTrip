@@ -9,7 +9,7 @@
 </script>
 <head>
 	<link rel="stylesheet" href="../resources/css/login_signup/signup_input.css">
-	<script type="text/javascript" src="../resources/js/signup_lst/signup_input.js"></script>
+	<script type="text/javascript" src="../resources/js/signup/signup_input.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
 	<!-- <header>
 	    <div><h1>People in trip</h1></div>
 	</header> -->
-	<jsp:include page="/header_lhj/header.jsp" flush="false" />
+	<jsp:include page="/header/header.jsp" flush="false" />
 	<div class="signup_box">
 	    <aside class="signup_leftside">
 	        <div id="aside_box1">정보<br/>입력</div>

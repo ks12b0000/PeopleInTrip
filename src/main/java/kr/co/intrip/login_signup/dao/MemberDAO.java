@@ -86,6 +86,7 @@ public class MemberDAO {
 		return result;
 	}
 
+	// 이메일 중복체크
 	public String selectDuplicateCheckEmail(String email) {
 		String result = sqlSession.selectOne("mapper.member.duplicatecheckEmail", email);
 		return result;
