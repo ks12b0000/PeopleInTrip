@@ -131,19 +131,6 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
-	
-	
-	function btnbtn() {
-		if ($("#comment_input").val() == "") {
-			alert("내용을 입력해 주세요");
-			$("#comment_input").focus();
-			return false;
-		}
-		else{
-			alert("댓글이 등록되었습니다");
-		}
-	}
-		
 	function updateLike(){ 
 	     $.ajax({
 	            type : 'post',  
@@ -197,8 +184,15 @@
 		function createReply() {
 		   $(".submit").on("click", function() {
 		      var formObj = $("form[name='boardreplyForm']");
+		      if(document.getElementById("comment_input").value.length == 0) {
+					alert("댓글을 입력해주세요.")
+					return false;
+				}
+		      else {
 		      formObj.attr("action", "${contextPath}/board/boardreplyWrite");
 		      formObj.submit();
+		      alert("댓글이 작성되었습니다.")
+		      }
 		   });
 		}
 	

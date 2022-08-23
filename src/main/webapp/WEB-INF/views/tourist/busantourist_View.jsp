@@ -208,9 +208,15 @@ $(function () {
 function createReply() {
 	$(".submit").on("click", function() {
 		var formObj = $("form[name='busanreplyForm']");
+		if(document.getElementById("comment_input").value.length == 0) {
+			alert("댓글을 입력해주세요.")
+			return false;
+		}
+		else {
 		formObj.attr("action", "${contextPath}/tourist/busanreplyWrite");
 		formObj.submit();
 		alert("댓글이 작성되었습니다.")
+		}
 	});
 }
 </script>

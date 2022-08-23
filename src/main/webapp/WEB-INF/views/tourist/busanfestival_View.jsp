@@ -126,7 +126,7 @@
 				</c:if>	        		
 		</c:forEach>
     	</div>        		
-    	<form action="${contextPath}/tourist/busanreplyWrite2" method="post">
+    	<form action="${contextPath}/tourist/busanreplyWrite2" method="post" id="Frm">
 			<input type="hidden" name="UC_SEQ" value="${plist.UC_SEQ }"/>
 			<input type="hidden" name="id" value="${user.id}"/>
 			<c:choose>
@@ -136,26 +136,26 @@
 			        <div id="textarea-cnt">(0 / 200)</div>
 		        </c:when>
 		        <c:otherwise>
-			        <textarea rows="content" name="com_content" id="comment_input" placeholder="로그인을 해주세요." disabled style="outline: none; text-align: left; padding-left:10px;"></textarea>			
-			        <button type="submit" onClick="btnbtn()" class="submit" disabled>등록</button>
+			        <textarea rows="content" name="com_content" id="comment_input" placeholder="로그인을 해주세요." disabled style="outline: none; text-align: left; padding-left:10px;"></textarea>					   
+			        	<button type="submit" onClick="btnbtn()" class="submit" disabled>등록</button>			        
 			        <div id="textarea-cnt">(0 / 200)</div>
 		        </c:otherwise>
 	        </c:choose>
 		</form>	
 		<div name="tour_div3" id="tour_div3" style="text-align: center;">
 				<c:if test="${commentpagingDTO.curPage > 1 }">
-					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
-					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
+					<a href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${plist.UC_SEQ}&curPage=1" style="color: #9966ff; font-size: 25px;">&laquo;</a>
+					<a href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.curPage-1 }" style="color: #9966ff; font-size: 25px;">&lt;</a>
 				</c:if>
 					<c:forEach begin="${commentpagingDTO.firstPage }"  end="${commentpagingDTO.lastPage }" var="i"> &nbsp;
-	   					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=${i }" style="font-size: 18px; color:black;"  >  
+	   					<a href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${plist.UC_SEQ}&curPage=${i }" style="font-size: 18px; color:black;"  >  
 	   						<c:if test="${i eq commentpagingDTO.curPage }">  <span style="color: red">  ${i } </span> </c:if>
 	   						<c:if test="${i ne commentpagingDTO.curPage }">  ${i } </c:if> 
 	   					</a>
 					</c:forEach>&nbsp;
 				<c:if test="${commentpagingDTO.curPage < commentpagingDTO.totalPageCount }">
-					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
-					<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
+					<a href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.curPage+1 }" style="color: #9966ff; font-size: 25px;">&gt;</a>
+					<a href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${plist.UC_SEQ}&curPage=${commentpagingDTO.totalPageCount }" style="color: #9966ff; font-size: 25px;">&raquo;</a>
 				</c:if>
 		</div>
 		<br><hr align="left" style="border: solid 3px #D8D8D8; width: 100%;"><br><br> 
@@ -208,9 +208,14 @@ $(function () {
 function createReply() {
 	$(".submit").on("click", function() {
 		var formObj = $("form[name='busanreplyForm']");
-		formObj.attr("action", "${contextPath}/tourist/busanreplyWrite2");
+		if(document.getElementById("comment_input").value.length == 0) {
+			alert("댓글을 입력해주세요.")
+			return false;
+		}
+		else {formObj.attr("action", "${contextPath}/tourist/busanreplyWrite2");
 		formObj.submit();
-		alert("댓글이 작성되었습니다.")
+		alert("댓글이 작성되었습니다.")}
+		
 	});
 }
 </script>
