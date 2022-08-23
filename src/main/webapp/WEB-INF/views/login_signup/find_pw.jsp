@@ -66,6 +66,17 @@ request.setCharacterEncoding("UTF-8");
 	}
 
 	function btnchange() {
+		if (document.find_pw.id.value == "") {
+			alert("이름을 입력해 주세요");
+			document.find_id.name.focus();
+			return false;
+		}
+
+		if (document.find_pw.email.value == "") {
+			alert("이메일 주소를 입력해 주세요");
+			document.find_id.email.focus();
+			return false;
+		}
 		alert("인증번호를 발송했습니다 인증번호가 오지 않으면 입력하신 정보가 회원정보와 일치하는지 확인해 주세요");
 		const btnElement = document.getElementById('btn123');
 		btnElement.innerText = '인증번호재전송';
