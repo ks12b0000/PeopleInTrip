@@ -12,25 +12,21 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script type="text/javascript">
 		function delete_Btn() {
-			let id = document.getElementById('delete_id').value;
-			let pass = document.getElementById('delete_pw').value;
-			let _pass = document.getElementById('hedden_pw').value;
-			if(id == "") {
+			var form = document.deleteMember;
+			if(!form.delete_id.value) {
 				alert("아이디를 입력해주세요");
-				document.deleteMember.pwd.focus();
-				return false;
-			} else if (pass == "") {
+				form.delete_id.focus();
+				
+			} else if (!form.delete_pw.value) {
 				alert("비밀번호를 입력해주세요");
-				document.deleteMember.pwd.focus();
-				return false;
-			} 
-			
+				form.delete_pw.focus();			
+			} 		
 		}
 	</script>
 </head>
 <body>
 	<div class="delete_form">
-		<h1>People in Trip</h1>
+		<h1><a href="${contextPath}/mainpage/main" style="text-decoration: none; color:#9966ff">People in Trip</a></h1>
 		<form action="${contextPath}/mypage/delteMember" name="deleteMember" method="post">
 			<div>
 				<input type="text" placeholder="아이디" id="delete_id" name="id" onfocus="this.placeholder='';" onblur="this.placeholder='아이디'" /><br>
@@ -43,7 +39,7 @@
 		</form>
 		<div>
 			<c:if test="${msg == false }">
-				비밀번호가 맞지 않습니다.
+				<span style="color:red">아이디 또는 비밀번호가 맞지 않습니다.</span>
 			</c:if>
 		</div>
 	</div>

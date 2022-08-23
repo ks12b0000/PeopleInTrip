@@ -53,8 +53,7 @@
 							src="${plist.MAIN_IMG_NORMAL}" /></a></td>
 					<td class="tb_td2"><span class="tourpost_title"><a
 							href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}">${plist.PLACE}</a></span>
-						<br> <strong>🧡 ${plist.steamedhit}개 💬
-							${plist.commentcount}개 👍️ ${plist.suggestionhit}개 👀
+						<br> <strong>🧡 ${plist.steamedhit}개  👍️ ${plist.suggestionhit}개 👀
 							${plist.viewcount}회</strong> <br /> <span class="tourpost_place">${plist.ADDR1}</span>
 					</td>
 				</tr>

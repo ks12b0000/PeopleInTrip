@@ -775,8 +775,6 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejutourist(pagingDTO);
 		} else if (value.equals("lookup")) {
 			return touristDAO.jejutourist_lookupSort(pagingDTO);
-		} else if (value.equals("comment")) {
-			return touristDAO.jejutourist_commentSort(pagingDTO);
 		} else if (value.equals("steamed")) {
 			return touristDAO.jejutourist_steamedSort(pagingDTO);
 		} else {
@@ -832,8 +830,6 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.busantourist(pagingDTO);
 		} else if (value.equals("lookup")) {
 			return touristDAO.busantourist_lookupSort(pagingDTO);
-		} else if (value.equals("comment")) {
-			return touristDAO.busantourist_commentSort(pagingDTO);
 		} else if (value.equals("steamed")) {
 			return touristDAO.busantourist_steamedSort(pagingDTO);
 		} else {
@@ -853,8 +849,6 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejufestival(pagingDTO);
 		} else if (value.equals("lookup")) {
 			return touristDAO.jejufestival_lookupSort(pagingDTO);
-		} else if (value.equals("comment")) {
-			return touristDAO.jejufestival_commentSort(pagingDTO);
 		} else if (value.equals("steamed")) {
 			return touristDAO.jejufestival_steamedSort(pagingDTO);
 		} else {
@@ -874,8 +868,6 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.busanfestival(pagingDTO);
 		} else if (value.equals("lookup")) {
 			return touristDAO.busantourist_lookupSort2(pagingDTO);
-		} else if (value.equals("comment")) {
-			return touristDAO.busantourist_commentSort2(pagingDTO);
 		} else if (value.equals("steamed")) {
 			return touristDAO.busantourist_steamedSort2(pagingDTO);
 		} else {
@@ -895,8 +887,6 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.jejuexhibition(pagingDTO);
 		} else if (value.equals("lookup")) {
 			return touristDAO.jejuexhibition_lookupSort(pagingDTO);
-		} else if (value.equals("comment")) {
-			return touristDAO.jejuexhibition_commentSort(pagingDTO);
 		} else if (value.equals("steamed")) {
 			return touristDAO.jejuexhibition_steamedSort(pagingDTO);
 		} else {
@@ -916,8 +906,6 @@ public class TouristServiceImpl implements TouristService {
 			return touristDAO.busanexperience(pagingDTO);
 		} else if (value.equals("lookup")) {
 			return touristDAO.busantourist_lookupSort3(pagingDTO);
-		} else if (value.equals("comment")) {
-			return touristDAO.busantourist_commentSort3(pagingDTO);
 		} else if (value.equals("steamed")) {
 			return touristDAO.busantourist_steamedSort3(pagingDTO);
 		} else {

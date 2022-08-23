@@ -213,7 +213,8 @@ request.setCharacterEncoding("UTF-8");
 		function deleteReply() {   
 		   $(".SBTN3").on("click", function() {
 		      var formObj = $("form[name='deleteForm']");
-		      if(!confirm("댓글을 삭제하시겠습니까?")){      
+		      if(!confirm("댓글을 삭제하시겠습니까?")){ 
+		    	  return false;
 		      }
 		      else {
 		         formObj.attr("action", "${contextPath}/board/boardreplyDelete2");
@@ -300,7 +301,7 @@ request.setCharacterEncoding("UTF-8");
 				<div id="form-commentInfo">
 					<div id="comment-count" style="margin-left: 250px;">
 						<strong style="font-size: 20px;">작성된 댓글<span id="count">
-								[${board.commentcount}]개</span></strong>
+								[${commentpagingDTO.totalRowCount}]개</span></strong>
 					</div>
 					<div id="css1">
 						<hr align="left" style="border: solid 3px #D8D8D8; width: 100%;">
@@ -326,7 +327,7 @@ request.setCharacterEncoding("UTF-8");
 							style="font-size: 15px; margin-top: 10px; word-break: break-all; width: 500px; text-align: left;">${replyList.com_content }</p>
 						<br>
 
-						<c:if test="${replyList.id eq user.id}">
+						<c:if test="${replyList.id eq user.id || user.grade == '관리자'}">
 							<button type="button" class="SBTN2"
 								data-com_num="${replyList.com_num}">
 								<strong>수정</strong>
@@ -336,7 +337,7 @@ request.setCharacterEncoding("UTF-8");
 								<input type="hidden" name="post_num" value="${board.post_num }" />
 								<input type="hidden" name="com_num"
 									value="${replyList.com_num }" />
-								<button type="button" class="SBTN3" name="com_num"
+								<button type="submit" class="SBTN3" name="com_num"
 									data-com_num="${replyList.com_num}">
 									<strong>삭제</strong>
 								</button>

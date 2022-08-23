@@ -54,8 +54,7 @@
 								src="${plist.imgpath}" /></a></td>
 						<td class="tb_td2"><span class="tourpost_title"><a
 								href="${contextPath}/tourist/tourist_View?contentsid=${plist.contentsid}">${plist.title}</a></span>
-							<br> <strong>🧡 ${plist.steamedhit}개 💬
-								${plist.commentcount}개 👍️ ${plist.suggestionhit}개 👀
+							<br> <strong>🧡 ${plist.steamedhit}개  👍️ ${plist.suggestionhit}개 👀
 								${plist.viewcount}회</strong> <br /> <span class="tourpost_place">${plist.address }</span>
 						</td>
 					</tr>

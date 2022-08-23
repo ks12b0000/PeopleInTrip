@@ -35,7 +35,6 @@ import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.dto.weatherDTO;
 import kr.co.intrip.tourist.service.TouristService;
 import lombok.extern.slf4j.Slf4j;
-import oracle.jdbc.proxy.annotation.Post;
 
 @Slf4j
 @Controller
@@ -107,7 +106,7 @@ public class TouristController {
 		pagingDTO.pageSetting();		
 		List<ApiDTO> plist = tourservice.jejutourist_list(pagingDTO);
 		model.addAttribute("plist", plist);
-
+		
 		return plist;
 	}
 	
@@ -119,7 +118,7 @@ public class TouristController {
 		pagingDTO.pageSetting();		
 		List<BusanApiDTO> plist = tourservice.busantourist_list(pagingDTO);
 		model.addAttribute("plist", plist);
-
+		
 		return plist;
 	}
 	
@@ -317,7 +316,6 @@ public class TouristController {
 	public String jejureplyWrite(JejuCommentDTO jejuDTO,ApiDTO apiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply write");
 		tourservice.jejuregister(jejuDTO);
-		tourservice.jejucommentcount(apiDTO);
 		rttr.addAttribute("contentsid", jejuDTO.getContentsid());
 		
 		return "redirect:/tourist/tourist_View";
@@ -351,11 +349,10 @@ public class TouristController {
 	@PostMapping("tourist/jejureplyDelete")
 	public String jejureplyDelete(JejuCommentDTO jejuDTO,ApiDTO apiDTO, PagingDTO pagingDTO,Model model, RedirectAttributes rttr) throws Exception {
 		log.info("reply delete");
-
+		
 		tourservice.jejuremove(jejuDTO);
-		tourservice.jejucommentcountminus(apiDTO);
 		rttr.addAttribute("contentsid", jejuDTO.getContentsid());
-			
+
 		return "redirect:/tourist/tourist_View";
 	}
 	
@@ -405,7 +402,6 @@ public class TouristController {
 	public String busanreplyWrite(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply write");
 		tourservice.busanregister(busanCommentDTO);
-		tourservice.busancommentcount(busanApiDTO);
 		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
 		
 		return "redirect:/tourist/busantourist_View";
@@ -441,7 +437,6 @@ public class TouristController {
 		log.info("reply delete");
 
 		tourservice.busanremove(busanCommentDTO);
-		tourservice.busancommentcountminus(busanApiDTO);
 		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
 			
 		return "redirect:/tourist/busantourist_View";
@@ -493,7 +488,6 @@ public class TouristController {
 	public String busanreplyWrite2(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply write");
 		tourservice.busanregister2(busanCommentDTO);
-		tourservice.busancommentcount2(busanApiDTO);
 		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
 		
 		return "redirect:/tourist/busanfestival_View";
@@ -529,7 +523,6 @@ public class TouristController {
 		log.info("reply delete");
 
 		tourservice.busanremove2(busanCommentDTO);
-		tourservice.busancommentcountminus2(busanApiDTO);
 		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
 			
 		return "redirect:/tourist/busanfestival_View";
@@ -581,7 +574,6 @@ public class TouristController {
 	public String busanreplyWrite3(BusanCommentDTO busanCommentDTO, BusanApiDTO busanApiDTO, PagingDTO pagingDTO, RedirectAttributes rttr) throws Exception {
 		log.info("reply write");
 		tourservice.busanregister3(busanCommentDTO);
-		tourservice.busancommentcount3(busanApiDTO);
 		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
 		
 		return "redirect:/tourist/busanexperience_View";
@@ -617,7 +609,6 @@ public class TouristController {
 		log.info("reply delete");
 
 		tourservice.busanremove3(busanCommentDTO);
-		tourservice.busancommentcountminus3(busanApiDTO);
 		rttr.addAttribute("UC_SEQ", busanCommentDTO.getUC_SEQ());
 			
 		return "redirect:/tourist/busanexperience_View";

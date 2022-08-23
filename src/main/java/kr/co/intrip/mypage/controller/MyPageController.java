@@ -36,8 +36,10 @@ import kr.co.intrip.mypage.dto.MyPageDTO;
 import kr.co.intrip.mypage.service.MyPageService;
 import kr.co.intrip.tourist.dto.ApiDTO;
 import kr.co.intrip.tourist.dto.BusanApiDTO;
+import kr.co.intrip.tourist.dto.BusanCommentDTO;
 import kr.co.intrip.tourist.dto.PagingDTO;
 import kr.co.intrip.tourist.dto.Tourlist_SteamedDTO;
+import kr.co.intrip.tourist.service.TouristService;
 import lombok.extern.java.Log;
 
 @Controller
@@ -54,6 +56,9 @@ public class MyPageController {
 	
 	@Autowired
 	BoardService boardService;
+	
+	@Autowired
+	TouristService tourservice;
 	
 	// 회원정보 수정
 	@RequestMapping(value = "mypage/modify_info")
@@ -115,7 +120,7 @@ public class MyPageController {
 	
 	// 회원 탈퇴
 	@RequestMapping(value = "mypage/delteMember", method = RequestMethod.POST)
-	public String deleteMember(MemberDTO dto, HttpSession session, RedirectAttributes rttr) throws Exception {
+	public String deleteMember(MemberDTO dto, HttpSession session, RedirectAttributes rttr, BusanCommentDTO busanCommentDTO) throws Exception {
 		
 		// 세션에 있는 user를 가져와 user 변수에 넣어준다.
 		MemberDTO user = (MemberDTO) session.getAttribute("user");

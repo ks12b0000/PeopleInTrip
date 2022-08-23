@@ -40,7 +40,6 @@
 					<select id="tour_allign" name="value" onchange="Change(1)">
 						<option value="basic" selected>기본순↓</option>
 						<option value="lookup" <c:if test="${value.equals('lookup')}">selected="selected"</c:if>>조회순↓</option>
-						<option value="comment" <c:if test="${value.equals('comment')}">selected="selected"</c:if>>댓글순↓</option>
 						<option value="steamed" <c:if test="${value.equals('steamed')}">selected="selected"</c:if>>찜순↓</option>
 						<option value="suggestion" <c:if test="${value.equals('suggestion')}">selected="selected"</c:if>>추천순↓</option>
 					</select>
@@ -53,7 +52,7 @@
 					<tr>
 						<td class="tb_td1"><a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}"><img src="${plist.MAIN_IMG_NORMAL}"/></a></td>
 						<td class="tb_td2">
-							<span class="tourpost_title"><a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}">${plist.PLACE}</a></span> <br> <strong>🧡 ${plist.steamedhit}개 💬 ${plist.commentcount}개 👍️ ${plist.suggestionhit}개 👀 ${plist.viewcount}회</strong> <br/>
+							<span class="tourpost_title"><a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${plist.UC_SEQ}">${plist.PLACE}</a></span> <br> <strong>🧡 ${plist.steamedhit}개 👍️ ${plist.suggestionhit}개 👀 ${plist.viewcount}회</strong> <br/>
 							<span class="tourpost_place">${plist.ADDR1 }</span>
 						</td>
 					</tr>					

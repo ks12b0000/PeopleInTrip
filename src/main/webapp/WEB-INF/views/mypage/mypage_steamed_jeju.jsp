@@ -201,9 +201,9 @@
     <hr/>
     <form action="${contextPath}/mypage/mypage_steamed_jeju?id=${user.id}" method="post" name="show_MyTour_Steamed">
         <div class="category">
-            <a href="${contextPath}/mypage/mypage_steamed_jeju?id=${user.id}">여행지</a>
-           	<a href="${contextPath}/mypage/mypage_steamed_jeju_festival?id=${user.id}">축제</a>
-           	<a href="${contextPath}/mypage/mypage_steamed_jeju_Exhibition?id=${user.id}">전시관</a>
+            <a>여행지</a>
+           	<a href="${contextPath}/mypage/mypage_steamed_jeju_festival?id=${user.id}" style="color:#551A8B">축제</a>
+           	<a href="${contextPath}/mypage/mypage_steamed_jeju_Exhibition?id=${user.id}" style="color:#551A8B">전시관</a>
         </div>
 	    <div>
 	        <div align="center">

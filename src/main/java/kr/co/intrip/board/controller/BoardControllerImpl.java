@@ -1033,7 +1033,6 @@ public class BoardControllerImpl implements BoardController {
 			RedirectAttributes rttr) throws Exception {
 		log.info("reply write");
 		boardService.boardregister(boardCommentDTO);
-		boardService.boardcommentcount(boardDTO);
 		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
 
 		return "redirect:/board/community_detail.do";
@@ -1072,7 +1071,6 @@ public class BoardControllerImpl implements BoardController {
 		log.info("reply delete");
 
 		boardService.boardremove(boardCommentDTO);
-		boardService.boardcommentcountminus(boardDTO);
 		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
 
 		return "redirect:/board/community_detail.do";
@@ -1085,7 +1083,6 @@ public class BoardControllerImpl implements BoardController {
 			RedirectAttributes rttr) throws Exception {
 		log.info("reply write2");
 		boardService.boardregister2(boardCommentDTO);
-		boardService.boardcommentcount2(boardDTO);
 		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
 
 		return "redirect:/board/community_detail2.do";
@@ -1124,7 +1121,6 @@ public class BoardControllerImpl implements BoardController {
 		log.info("reply delete");
 
 		boardService.boardremove2(boardCommentDTO);
-		boardService.boardcommentcountminus2(boardDTO);
 		rttr.addAttribute("post_num", boardCommentDTO.getPost_num());
 
 		return "redirect:/board/community_detail2.do";

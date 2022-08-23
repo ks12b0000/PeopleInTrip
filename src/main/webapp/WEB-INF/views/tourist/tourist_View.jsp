@@ -105,7 +105,7 @@
     <!-- 댓글창 -->
     <div id="outter">	 
 		<div id="form-commentInfo">		 
-	      	<div id="comment-count" style="margin-left:17px;"><strong>작성된 댓글<span id="count"> [${plist.commentcount}]개</span></strong></div>
+	      	<div id="comment-count" style="margin-left:17px;"><strong>작성된 댓글<span id="count"> [${commentpagingDTO.totalRowCount}]개</span></strong></div>
 	        <div id="css1">
 	        <hr align="left" style="border: solid 3px #D8D8D8;  width: 100%;"></div>		
 	    </div><br><br>
@@ -116,12 +116,12 @@
 	   		<br><hr align="left" style="border: solid 1px #D8D8D8; width: 100%; margin-top: -15px; ">		   			
 	   		<p style="font-size: 15px; margin-top: 10px; word-break:break-all; width: 800px; " >${replyList.com_content }</p><br>   															 			  
 	   		
-		   		<c:if test="${replyList.id eq user.id}">
+		   		<c:if test="${replyList.id eq user.id || user.grade == '관리자'}">
 			   		<button type="button" class="SBTN2" data-com_num="${replyList.com_num}"><strong>수정</strong></button>
 			   	<form action="${contextPath}/tourist/jejureplyDelete" method="post" name="deleteForm" id="deleteForm">
 			  	 	<input type="hidden" name="contentsid" value="${plist.contentsid }"/>
 			  	 	<input type="hidden" name="com_num" value="${replyList.com_num }"/>
-					<button type="button" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>	
+					<button type="submit" class="SBTN3" name="com_num" data-com_num="${replyList.com_num}"><strong>삭제</strong></button>	
 				</form>	
 				</c:if>	        		
 		</c:forEach>
@@ -231,7 +231,8 @@ function updateReply() {
 function deleteReply() {	
 	$(".SBTN3").on("click", function() {
 		var formObj = $("form[name='deleteForm']");
-		if(!confirm("댓글을 삭제하시겠습니까?")){		
+		if(!confirm("댓글을 삭제하시겠습니까?")){	
+			return false;
 		}
 		else {
 			formObj.attr("action", "${contextPath}/tourist/jejureplyDelete");

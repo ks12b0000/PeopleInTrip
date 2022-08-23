@@ -204,9 +204,9 @@
     <form action="${contextPath}/mypage/mypage_steamed_BusanTravel?id=${user.id}" method="post" name="show_MyTour_Steamed">
 	    <div>
 	        <div class="category">
-	            <a href="${contextPath}/mypage/mypage_steamed_BusanTravel?id=${user.id}">여행지</a>
-            	<a href="${contextPath}/mypage/mypage_steamed_BusanFestival?id=${user.id}">축제</a>
-            	<a href="${contextPath}/mypage/mypage_steamed_BusanExperience?id=${user.id}">체험</a>
+	            <a href="${contextPath}/mypage/mypage_steamed_BusanTravel?id=${user.id}" style="color:#551A8B">여행지</a>
+            	<a href="${contextPath}/mypage/mypage_steamed_BusanFestival?id=${user.id}" style="color:#551A8B">축제</a>
+            	<a >체험</a>
 	        </div>
 	        <div align="center">
 	            <table align="center" class="like">
