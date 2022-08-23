@@ -76,14 +76,6 @@
 				</c:if>
 			</div>
 		</div>
-				<div class="search">
- <select name="searchType">
-  <option value="t"<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
- </select>
- 
- <input type="text" name="keyword" id="keywordInput" value="${scri.keyword}"/>
-
- <button type="button" id="searchBtn">검색</button>
  
  <script>
  $(function(){
