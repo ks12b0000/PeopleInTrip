@@ -214,12 +214,12 @@
 	                	<c:forEach var="boardsTour" items="${boardsTour}" begin="0" end="4">
 		                    <td>
 		                        <div>
-		                        	<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${boardsTour.UC_SEQ}">
+		                        	<a href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${boardsTour.UC_SEQ}">
 		                        		<img src="${boardsTour.MAIN_IMG_NORMAL }" width="200px" height="120px">
 		                        	</a>
 		                        </div>
 		                        <div class="title">
-		                        	<a class="link" href="${contextPath}/tourist/busantourist_View?UC_SEQ=${boardsTour.UC_SEQ}">
+		                        	<a class="link" href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${boardsTour.UC_SEQ}">
 		                        		${boardsTour.PLACE }
 		                        	</a>
 		                        </div>
@@ -230,12 +230,12 @@
     	                <c:forEach var="boardsTour" items="${boardsTour}" begin="5" end="9">
 		                    <td>
 		                        <div>
-		                        	<a href="${contextPath}/tourist/busantourist_View?UC_SEQ=${boardsTour.UC_SEQ}">
+		                        	<a href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${boardsTour.UC_SEQ}">
 		                        		<img src="${boardsTour.MAIN_IMG_NORMAL }" width="200px" height="120px">
 		                        	</a>
 		                        </div>
 		                        <div class="title">
-		                        	<a class="link" href="${contextPath}/tourist/busantourist_View?UC_SEQ=${boardsTour.UC_SEQ}">
+		                        	<a class="link" href="${contextPath}/tourist/busanfestival_View?UC_SEQ=${boardsTour.UC_SEQ}">
 		                        		${boardsTour.PLACE }
 		                        	</a>
 		                        </div>
