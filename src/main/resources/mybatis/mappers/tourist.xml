@@ -7,33 +7,29 @@
   	
   	<!-- 제주 관광지 api db에 저장용 -->
   	<insert id="touristadd">
-		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo">		
 			insert into P_tourist (alltag, label, label2, title, address, tag, introduction, imgpath, contentsid, phoneno, latitude, longitude)
-			values (#{pvo.alltag, jdbcType=VARCHAR}, #{pvo.label, jdbcType=VARCHAR}, #{pvo.label2, jdbcType=VARCHAR}, #{pvo.title, jdbcType=VARCHAR}, #{pvo.address, jdbcType=VARCHAR}, #{pvo.tag, jdbcType=VARCHAR}, #{pvo.introduction, jdbcType=VARCHAR}, #{pvo.imgpath, jdbcType=VARCHAR}, #{pvo.contentsid, jdbcType=VARCHAR}, #{pvo.phoneno, jdbcType=VARCHAR}, #{pvo.latitude, jdbcType=VARCHAR}, #{pvo.longitude, jdbcType=VARCHAR})
+			values <foreach collection="list" separator="," item="pvo"> (#{pvo.alltag}, #{pvo.label}, #{pvo.label2}, #{pvo.title}, #{pvo.address}, #{pvo.tag}, #{pvo.introduction}, #{pvo.imgpath}, #{pvo.contentsid}, #{pvo.phoneno}, #{pvo.latitude}, #{pvo.longitude})
 		</foreach>
 	</insert>
 	
 	<!-- 부산 여행지 api db에 저장용 -->
-  	<insert id="busantouristadd">
-		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo1">		
+  	<insert id="busantouristadd">		
 			insert into P_busantourist (LAT, LNG, UC_SEQ, PLACE, ADDR1, CNTCT_TEL, ITEMCNTNTS, MAIN_IMG_NORMAL, SUBTITLE)
-			values (#{pvo1.LAT, jdbcType=VARCHAR}, #{pvo1.LNG, jdbcType=VARCHAR}, #{pvo1.UC_SEQ, jdbcType=VARCHAR}, #{pvo1.PLACE, jdbcType=VARCHAR}, #{pvo1.ADDR1, jdbcType=VARCHAR}, #{pvo1.CNTCT_TEL, jdbcType=VARCHAR}, #{pvo1.ITEMCNTNTS, jdbcType=VARCHAR}, #{pvo1.MAIN_IMG_NORMAL, jdbcType=VARCHAR}, #{pvo1.SUBTITLE, jdbcType=VARCHAR})
+			values <foreach collection="list" separator="," item="pvo1"> (#{pvo1.LAT }, #{pvo1.LNG }, #{pvo1.UC_SEQ }, #{pvo1.PLACE }, #{pvo1.ADDR1 }, #{pvo1.CNTCT_TEL }, #{pvo1.ITEMCNTNTS }, #{pvo1.MAIN_IMG_NORMAL }, #{pvo1.SUBTITLE })
 		</foreach>
 	</insert>
 	
 	<!-- 부산 축제 api db에 저장용 -->
   	<insert id="busantouristadd2">
-		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo1">		
 			insert into P_busanfestival (LAT, LNG, UC_SEQ, PLACE, ADDR1, CNTCT_TEL, ITEMCNTNTS, MAIN_IMG_NORMAL, SUBTITLE)
-			values (#{pvo1.LAT, jdbcType=VARCHAR}, #{pvo1.LNG, jdbcType=VARCHAR}, #{pvo1.UC_SEQ, jdbcType=VARCHAR}, #{pvo1.PLACE, jdbcType=VARCHAR}, #{pvo1.ADDR1, jdbcType=VARCHAR}, #{pvo1.CNTCT_TEL, jdbcType=VARCHAR}, #{pvo1.ITEMCNTNTS, jdbcType=VARCHAR}, #{pvo1.MAIN_IMG_NORMAL, jdbcType=VARCHAR}, #{pvo1.SUBTITLE, jdbcType=VARCHAR})
+			values <foreach collection="list" separator="," item="pvo1"> (#{pvo1.LAT }, #{pvo1.LNG }, #{pvo1.UC_SEQ }, #{pvo1.PLACE }, #{pvo1.ADDR1 }, #{pvo1.CNTCT_TEL }, #{pvo1.ITEMCNTNTS }, #{pvo1.MAIN_IMG_NORMAL }, #{pvo1.SUBTITLE })
 		</foreach>
 	</insert>
 	
 	<!-- 부산 체험 api db에 저장용 -->
   	<insert id="busantouristadd3">
-		<foreach collection="list" open="DECLARE BEGIN" close="; END;" separator=";" item="pvo1">		
 			insert into P_busanexperience (LAT, LNG, UC_SEQ, PLACE, ADDR1, CNTCT_TEL, ITEMCNTNTS, MAIN_IMG_NORMAL, SUBTITLE)
-			values (#{pvo1.LAT, jdbcType=VARCHAR}, #{pvo1.LNG, jdbcType=VARCHAR}, #{pvo1.UC_SEQ, jdbcType=VARCHAR}, #{pvo1.PLACE, jdbcType=VARCHAR}, #{pvo1.ADDR1, jdbcType=VARCHAR}, #{pvo1.CNTCT_TEL, jdbcType=VARCHAR}, #{pvo1.ITEMCNTNTS, jdbcType=VARCHAR}, #{pvo1.MAIN_IMG_NORMAL, jdbcType=VARCHAR}, #{pvo1.SUBTITLE, jdbcType=VARCHAR})
+			values  <foreach collection="list" separator="," item="pvo1"> (#{pvo1.LAT }, #{pvo1.LNG }, #{pvo1.UC_SEQ }, #{pvo1.PLACE }, #{pvo1.ADDR1 }, #{pvo1.CNTCT_TEL }, #{pvo1.ITEMCNTNTS }, #{pvo1.MAIN_IMG_NORMAL }, #{pvo1.SUBTITLE })
 		</foreach>
 	</insert>
 
@@ -604,9 +600,6 @@
    	
    	<!-- 제주도 댓글 작성 -->
 	<insert id="jejuWriteReply">
-			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
-				select com_num1.nextval from dual
-			</selectKey>
 			<![CDATA[
 			   	insert into P_JEJU_COMMENT(COM_NUM, ID, contentsid, COM_CONTENT)
 			  	values( #{com_num}, #{id}, #{contentsid}, #{com_content})
@@ -680,7 +673,7 @@
 	<insert id="insertSteamed" parameterType="java.util.Map">
 		<![CDATA[
 			insert into tourist_steamed(steamedno , contentsid , id) 
-			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM tourist_steamed) ,#{contentsid} ,#{id})
+			values((SELECT ifnull(MAX(steamedno), 0) + 1 FROM tourist_steamed b) ,#{contentsid} ,#{id})
 		]]>
 	</insert>
 
@@ -742,7 +735,7 @@
 	<insert id="insertSuggestion" parameterType="java.util.Map">
 		<![CDATA[
 			insert into tourist_suggestion(suggestionno , contentsid , id) 
-			values((SELECT NVL(MAX(suggestionno), 0) + 1 FROM tourist_suggestion) ,#{contentsid} ,#{id})
+			values((SELECT ifnull(MAX(suggestionno), 0) + 1 FROM tourist_suggestion b) ,#{contentsid} ,#{id})
 		]]>
 	</insert>
 
@@ -845,9 +838,6 @@
    	
    	<!-- 부산 댓글 작성 -->
 	<insert id="busanWriteReply">
-			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
-				select busancom_num1.nextval from dual
-			</selectKey>
 			<![CDATA[
 			   	insert into P_BUSAN_COMMENT(COM_NUM, ID, UC_SEQ, COM_CONTENT)
 			  	values( #{com_num}, #{id}, #{UC_SEQ}, #{com_content})
@@ -921,7 +911,7 @@
 	<insert id="busaninsertSteamed" parameterType="java.util.Map">
 		<![CDATA[
 			insert into busantourist_steamed(steamedno , UC_SEQ , id) 
-			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM busantourist_steamed) ,#{UC_SEQ} ,#{id})
+			values((SELECT ifnull(MAX(steamedno), 0) + 1 FROM busantourist_steamed b) ,#{UC_SEQ} ,#{id})
 		]]>
 	</insert>
 
@@ -983,7 +973,7 @@
 	<insert id="busaninsertSuggestion" parameterType="java.util.Map">
 		<![CDATA[
 			insert into busantourist_suggestion(suggestionno , UC_SEQ , id) 
-			values((SELECT NVL(MAX(suggestionno), 0) + 1 FROM busantourist_suggestion) ,#{UC_SEQ} ,#{id})
+			values((SELECT ifnull(MAX(suggestionno), 0) + 1 FROM busantourist_suggestion b) ,#{UC_SEQ} ,#{id})
 		]]>
 	</insert>
 
@@ -1047,9 +1037,6 @@
    	
    	<!-- 부산 축제 댓글 작성 -->
 	<insert id="busanWriteReply2">
-			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
-				select BusanfestivalCOM_NUM1.nextval from dual
-			</selectKey>
 			<![CDATA[
 			   	insert into P_BUSANfestival_COMMENT(COM_NUM, ID, UC_SEQ, COM_CONTENT)
 			  	values( #{com_num}, #{id}, #{UC_SEQ}, #{com_content})
@@ -1123,7 +1110,7 @@
 	<insert id="busaninsertSteamed2" parameterType="java.util.Map">
 		<![CDATA[
 			insert into busanfestival_steamed(steamedno , UC_SEQ , id) 
-			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM busanfestival_steamed) ,#{UC_SEQ} ,#{id})
+			values((SELECT ifnull(MAX(steamedno), 0) + 1 FROM busanfestival_steamed b) ,#{UC_SEQ} ,#{id})
 		]]>
 	</insert>
 
@@ -1185,7 +1172,7 @@
 	<insert id="busaninsertSuggestion2" parameterType="java.util.Map">
 		<![CDATA[
 			insert into busanfestival_suggestion(suggestionno , UC_SEQ , id) 
-			values((SELECT NVL(MAX(suggestionno), 0) + 1 FROM busanfestival_suggestion) ,#{UC_SEQ} ,#{id})
+			values((SELECT ifnull(MAX(suggestionno), 0) + 1 FROM busanfestival_suggestion b) ,#{UC_SEQ} ,#{id})
 		]]>
 	</insert>
 
@@ -1249,9 +1236,6 @@
    	
    	<!-- 부산 체험 댓글 작성 -->
 	<insert id="busanWriteReply3">
-			<selectKey keyProperty="com_num" order="BEFORE" resultType="int">
-				select BusanexperienceCOM_NUM1.nextval from dual
-			</selectKey>
 			<![CDATA[
 			   	insert into P_BUSANexperience_COMMENT(COM_NUM, ID, UC_SEQ, COM_CONTENT)
 			  	values( #{com_num}, #{id}, #{UC_SEQ}, #{com_content})
@@ -1325,7 +1309,7 @@
 	<insert id="busaninsertSteamed3" parameterType="java.util.Map">
 		<![CDATA[
 			insert into busanexperience_steamed(steamedno , UC_SEQ , id) 
-			values((SELECT NVL(MAX(steamedno), 0) + 1 FROM busanexperience_steamed) ,#{UC_SEQ} ,#{id})
+			values((SELECT ifnull(MAX(steamedno), 0) + 1 FROM busanexperience_steamed b) ,#{UC_SEQ} ,#{id})
 		]]>
 	</insert>
 
@@ -1387,7 +1371,7 @@
 	<insert id="busaninsertSuggestion3" parameterType="java.util.Map">
 		<![CDATA[
 			insert into busanexperience_suggestion(suggestionno , UC_SEQ , id) 
-			values((SELECT NVL(MAX(suggestionno), 0) + 1 FROM busanexperience_suggestion) ,#{UC_SEQ} ,#{id})
+			values((SELECT ifnull(MAX(suggestionno), 0) + 1 FROM busanexperience_suggestion b) ,#{UC_SEQ} ,#{id})
 		]]>
 	</insert>
 
@@ -1467,7 +1451,7 @@
 	<select id="jejutourist11" resultType="kr.co.intrip.tourist.dto.ApiDTO" parameterType="kr.co.intrip.board.dto.Criteria">
    		select *
 		from (
-		select pt.*,row_number() over(order by contentsid desc) as rNum
+		select pt.*,row_number() over(order by CONTENTSID desc) as rNum
 		from P_TOURIST pt 
 		<include refid="search"></include>
 		) mb
@@ -1518,29 +1502,28 @@
 	<select id="busangetTotalRowCount12" parameterType="kr.co.intrip.board.dto.Criteria" resultType="int">
 			SELECT sum(total)
 			FROM (
-			   SELECT count(*) total
+			   SELECT count(*) as total
 			   FROM P_BUSANEXPERIENCE
-			   <include refid="search1"></include>
+				<include refid="search1"></include>
 			   UNION
-			   SELECT count(*) total
+			   SELECT count(*) as total
 			   FROM P_BUSANFESTIVAL
 			   <include refid="search1"></include>
 			   UNION
-			   SELECT count(*) total
+			   SELECT count(*) as total
 			   FROM P_BUSANTOURIST
-			  <include refid="search1"></include>
-			)
+			   <include refid="search1"></include>)mb
 	</select>
 	
 	<sql id="search">
  <if test="searchType != null">
-  <if test="searchType == 'j'.toString()">where title like '%' || #{keyword} || '%'</if>
+  <if test="searchType == 'j'.toString()">where title like CONCAT('%',#{keyword},'%')</if>
  </if>
 </sql>
 
 <sql id="search1">
  <if test="searchType != null">
-  <if test="searchType == 'b'.toString()">where place like '%' || #{keyword} || '%'</if>
+  <if test="searchType == 'b'.toString()">where place like CONCAT('%',#{keyword},'%')</if>
  </if>
 </sql>
  </mapper>

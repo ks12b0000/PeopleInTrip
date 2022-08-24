@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class FileDownloadController {
 	
 	//파일 저장 위치 지정
-	private static final String CURR_IMAGE_PEPO_PATH = "C:\\workspace-spring\\imageRepo";
-	private static final String CURR_IMAGE_PEPO_PATH1 = "C:\\workspace-spring\\imageRepo1";
+	private static final String CURR_IMAGE_PEPO_PATH = "/Users/parkhyunjoon/Desktop/test/imageRepo/";
+	private static final String CURR_IMAGE_PEPO_PATH1 = "/Users/parkhyunjoon/Desktop/test/imageRepo1/";
 	
 	@RequestMapping("/download.do")		//다운로드할 이미지 파일 이름을 전달함
 	public void download(@RequestParam("imageFileName") String imageFileName,
@@ -26,7 +26,7 @@ public class FileDownloadController {
 		OutputStream out = response.getOutputStream();
 		
 		//글번호와 파일 이름으로 다운로드할 파일 경로를 설정함
-		String downFile = CURR_IMAGE_PEPO_PATH + "\\" +  post_num + "\\" + imageFileName;
+		String downFile = CURR_IMAGE_PEPO_PATH + "//" +  post_num + "//" + imageFileName;
 		
 		//다운로드될 파일 객체 생성
 		File file = new File(downFile);
@@ -55,7 +55,7 @@ public class FileDownloadController {
 		OutputStream out = response.getOutputStream();
 		
 		//글번호와 파일 이름으로 다운로드할 파일 경로를 설정함
-		String downFile = CURR_IMAGE_PEPO_PATH1 + "\\" +  post_num + "\\" + imageFileName;
+		String downFile = CURR_IMAGE_PEPO_PATH1 + "//" +  post_num + "//" + imageFileName;
 		
 		//다운로드될 파일 객체 생성
 		File file = new File(downFile);
@@ -75,27 +75,3 @@ public class FileDownloadController {
 		out.close();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

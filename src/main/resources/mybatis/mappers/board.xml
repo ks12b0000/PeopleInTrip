@@ -100,18 +100,18 @@
 	<!-- 검색 -->
 	<sql id="search">
 		<if test="searchType != null">
-			<if test="searchType == 't'.toString()">where post_title like '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'c'.toString()">where POST_CONTENT LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'w'.toString()">where ID LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 't'.toString()">where post_title like CONCAT('%',#{keyword},'%')</if>
+			<if test="searchType == 'c'.toString()">where POST_CONTENT LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="searchType == 'w'.toString()">where ID LIKE CONCAT('%',#{keyword},'%')</if>
 		</if>
 	</sql>
 	
 	<!-- 검색 -->
 	<sql id="search1">
 		<if test="searchType != null">
-			<if test="searchType == 't'.toString()">where post_title like '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'c'.toString()">where POST_CONTENT LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'w'.toString()">where ID LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 't'.toString()">where post_title like CONCAT('%',#{keyword},'%')</if>
+			<if test="searchType == 'c'.toString()">where POST_CONTENT LIKE CONCAT('%',#{keyword},'%')</if>
+			<if test="searchType == 'w'.toString()">where ID LIKE CONCAT('%',#{keyword},'%')</if>
 		</if>
 	</sql>
 
@@ -154,26 +154,26 @@
 	<!-- 추가하는 새글에 대한 글번호 가져옴 -->
 	<select id="selectNewpost_num" resultType="int">   
       <![CDATA[    
-         SELECT nvl(MAX(post_num),0) + 1 FROM P_BOARD
+         SELECT IFNULL(MAX(post_num),0) + 1 FROM P_BOARD
       ]]>
 	</select>
 
 	<!-- 추가하는 새글에 대한 글번호 가져옴 -->
 	<select id="selectNewpost_num1" resultType="int">   
       <![CDATA[    
-         SELECT nvl(MAX(post_num),0) + 1 FROM P_BOARD1
+         SELECT IFNULL(MAX(post_num),0) + 1 FROM P_BOARD1
       ]]>
 	</select>
 
 	<select id="selectNewImageFileNO" resultType="int">
       <![CDATA[   
-         SELECT nvl(MAX(imageFileNO),0) FROM P_imageFile
+         SELECT IFNULL(MAX(imageFileNO),0) FROM P_imageFile
       ]]>
 	</select>
 
 	<select id="selectNewImageFileNO1" resultType="int">
       <![CDATA[   
-         SELECT nvl(MAX(imageFileNO),0) FROM P_imageFile1
+         SELECT IFNULL(MAX(imageFileNO),0) FROM P_imageFile1
       ]]>
 	</select>
 
@@ -197,23 +197,19 @@
 
 	<!-- 한꺼번에 여러 개의 레코드 추가 -->
 	<insert id="insertNewImage" parameterType="java.util.Map">
-		<foreach collection="list" item="item" open="INSERT ALL"
-			separator=" " close="SELECT * FROM DUAL">
-			INTO P_imageFile(imageFileNO, imageFileName,
-			post_num, regDate)
+			INSERT INTO P_imageFile(imageFileNO, imageFileName,post_num)
 			VALUES
-			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		<foreach item="item" index="index" collection="list" separator=",">
+			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num})
 		</foreach>
 	</insert>
 
 	<!-- 한꺼번에 여러 개의 레코드 추가 -->
 	<insert id="insertNewImage1" parameterType="java.util.Map">
-		<foreach collection="list" item="item" open="INSERT ALL"
-			separator=" " close="SELECT * FROM DUAL">
-			INTO P_imageFile1(imageFileNO, imageFileName,
-			post_num, regDate)
+			INSERT INTO P_imageFile1(imageFileNO, imageFileName,post_num)
 			VALUES
-			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		<foreach item="item" index="index" collection="list" separator=",">
+			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num})
 		</foreach>
 	</insert>
 
@@ -254,8 +250,7 @@
 	</update>
 
 	<update id="updateImageFile" parameterType="java.util.List">
-		<foreach collection="list" item="item" separator=";"
-			open="DECLARE BEGIN" close="; END;">
+		<foreach collection="list" separator="," item="item"> 
 			<choose>
 				<when test="item.imageFileName != null">
 					UPDATE P_imageFile
@@ -272,8 +267,7 @@
 	</update>
 
 	<update id="updateImageFile1" parameterType="java.util.List">
-		<foreach collection="list" item="item" separator=";"
-			open="DECLARE BEGIN" close="; END;">
+		<foreach collection="list" separator="," item="item"> 
 			<choose>
 				<when test="item.imageFileName != null">
 					UPDATE P_imageFile1
@@ -291,23 +285,21 @@
 
 	<!-- 이미지 추가 -->
 	<insert id="insertModNewImage" parameterType="java.util.Map">
-		<foreach collection="list" item="item" open="INSERT ALL"
-			separator=" " close="SELECT * FROM DUAL">
-			INTO P_imageFile (imageFileNO, imageFileName,
-			post_num, regDate)
+			INSERT INTO P_imageFile(imageFileNO, imageFileName,
+			post_num)
 			VALUES
-			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		<foreach item="item" index="index" collection="list" separator=",">
+			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num})
 		</foreach>
 	</insert>
 
 	<!-- 이미지 추가 -->
 	<insert id="insertModNewImage1" parameterType="java.util.Map">
-		<foreach collection="list" item="item" open="INSERT ALL"
-			separator=" " close="SELECT * FROM DUAL">
-			INTO P_imageFile1 (imageFileNO, imageFileName,
-			post_num, regDate)
+			INSERT INTO P_imageFile1(imageFileNO, imageFileName,
+			post_num)
 			VALUES
-			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num},sysdate)
+		<foreach item="item" index="index" collection="list" separator=",">
+			(#{item.imageFileNO},#{item.imageFileName},#{item.post_num})
 		</foreach>
 	</insert>
 
@@ -364,7 +356,7 @@
 	<insert id="insertLike" parameterType="java.util.Map">
 		insert into l_board(LIKENO
 		, POST_NUM , id)
-		values((SELECT NVL(MAX(likeno), 0) + 1 FROM l_board)
+		values((SELECT IFNULL(MAX(likeno), 0) + 1 FROM l_board b)
 		,#{post_num} ,#{id})
 	</insert>
 
@@ -413,8 +405,8 @@
 	<insert id="insertLike1" parameterType="java.util.Map">
 		insert into
 		l_board1(LIKENO1 , POST_NUM , id)
-		values((SELECT NVL(MAX(likeno1), 0) +
-		1 FROM l_board1) ,#{post_num} ,#{id})
+		values((SELECT IFNULL(MAX(likeno1), 0) +
+		1 FROM l_board1 b) ,#{post_num} ,#{id})
 	</insert>
 
 	<!-- 게시글 추천취소 시 delete -->
@@ -463,7 +455,7 @@
 	<insert id="insertsin" parameterType="java.util.Map">
 		insert into s_board(SNO ,
 		POST_NUM , id)
-		values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board)
+		values((SELECT IFNULL(MAX(SNO), 0) + 1 FROM s_board b)
 		,#{post_num} ,#{id})
 	</insert>
 
@@ -512,7 +504,7 @@
 	<insert id="insertsin1" parameterType="java.util.Map">
 		insert into s_board1(SNO ,
 		POST_NUM , id)
-		values((SELECT NVL(MAX(SNO), 0) + 1 FROM s_board1)
+		values((SELECT IFNULL(MAX(SNO), 0) + 1 FROM s_board1 b)
 		,#{post_num} ,#{id})
 	</insert>
 
@@ -570,10 +562,6 @@
 
 	<!-- 댓글 작성 -->
 	<insert id="boardWriteReply">
-		<selectKey keyProperty="com_num" order="BEFORE"
-			resultType="int">
-			select com_num.nextval from dual
-		</selectKey>
 		insert into P_BOARD_COMMENT(COM_NUM, ID, post_num, COM_CONTENT)
 		values( #{com_num}, #{id}, #{post_num}, #{com_content})
 	</insert>
@@ -655,10 +643,6 @@
 
 	<!-- 댓글 작성 -->
 	<insert id="boardWriteReply2">
-		<selectKey keyProperty="com_num" order="BEFORE"
-			resultType="int">
-			select com_num2.nextval from dual
-		</selectKey>
 		insert into P_BOARD_COMMENT2(COM_NUM, ID, post_num, COM_CONTENT)
 		values( #{com_num}, #{id}, #{post_num}, #{com_content})
 	</insert>

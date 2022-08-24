@@ -15,12 +15,18 @@
 		</property> 
 	</bean>
 	
-	<!-- PooledDataSource 이용해서 dataSource 빈 생성 -->
-	<bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
-		<property name="driver" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}"/>
-		<property name="username" value="${jdbc.username}"/>
-		<property name="password" value="${jdbc.password}"/>
+	<!-- 커넥션풀 DataSource 객체 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8" />
+		<property name="username" value="root" />
+		<property name="password" value="12341234" />
+		<property name="initialSize" value="0"/>
+		<property name="minIdle" value="0"/>
+		<property name="maxIdle" value="10"/>
+		<property name="maxTotal" value="10"/>
+		<property name="maxWaitMillis" value="1000"/>
 	</bean>
 	
 	<!-- SqlSessionFactoryBean 클래스 이용해  dataSource 속성에 dataSource 빈을 설정-->
