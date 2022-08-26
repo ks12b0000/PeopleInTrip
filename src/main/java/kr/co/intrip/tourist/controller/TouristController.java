@@ -450,7 +450,7 @@ public class TouristController {
 		int steamedCheck = tourservice.busansteamedCheck(UC_SEQ, id);
 
 		if(steamedCheck == 0) {
-			//좋아요 처음누름
+			// 찜하기 처음누름
 			tourservice.busaninsertSteamed(UC_SEQ, id); //like테이블 삽입
 			tourservice.busanupdateSteamed(UC_SEQ);	//게시판테이블 +1
 			tourservice.busanupdateSteamedCheck(UC_SEQ, id);//like테이블 구분자 1
@@ -470,7 +470,7 @@ public class TouristController {
 		int suggestionCheck = tourservice.busanSuggestionCheck(UC_SEQ, id);
 
 		if(suggestionCheck == 0) {
-			//추천 처음누름
+			// 추천 처음누름
 			tourservice.busaninsertSuggestion(UC_SEQ, id); 
 			tourservice.busanupdateSuggestion(UC_SEQ);	
 			tourservice.busanupdateSuggestionCheck(UC_SEQ, id);
@@ -622,7 +622,7 @@ public class TouristController {
 		int steamedCheck = tourservice.busansteamedCheck3(UC_SEQ, id);
 
 		if(steamedCheck == 0) {
-			//좋아요 처음누름
+			// 찜하기 처음누름
 			tourservice.busaninsertSteamed3(UC_SEQ, id); //like테이블 삽입
 			tourservice.busanupdateSteamed3(UC_SEQ);	//게시판테이블 +1
 			tourservice.busanupdateSteamedCheck3(UC_SEQ, id);//like테이블 구분자 1
@@ -642,7 +642,7 @@ public class TouristController {
 		int suggestionCheck = tourservice.busanSuggestionCheck3(UC_SEQ, id);
 
 		if(suggestionCheck == 0) {
-			//추천 처음누름
+			// 추천 처음누름
 			tourservice.busaninsertSuggestion3(UC_SEQ, id); 
 			tourservice.busanupdateSuggestion3(UC_SEQ);	
 			tourservice.busanupdateSuggestionCheck3(UC_SEQ, id);
