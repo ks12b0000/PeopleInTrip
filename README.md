@@ -24,11 +24,6 @@
  <img alt="Spring" src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white"/>
  </div>
 
-## DB 
- <div>
- <img alt="MySQL" src ="https://img.shields.io/badge/MySQL-4479A1.svg?&style=for-the-badge&logo=MySQL&logoColor=white"/>
- </div>
-
 
 ## Communication Tools
 <div>
