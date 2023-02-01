@@ -81,21 +81,21 @@
 <img width="836" alt="부산 상세페이지2" src="https://user-images.githubusercontent.com/102012155/215999526-dbc35bfa-8462-403a-a29b-2f751178a0e9.png">
 
 
-## 4. 로그인
+## 5. 로그인
   * (1). 일반, 소셜 로그인 가능
   * (2). 아이디 찾기, 비밀번호 찾기, 회원가입 페이지로 이동 버튼
 <img width="309" alt="로그인" src="https://user-images.githubusercontent.com/102012155/216000046-0157de3b-8e2c-4198-b989-4735141ec6bd.png">
 
 
 
-## 5. 아이디, 비밀번호 찾기
+## 6. 아이디, 비밀번호 찾기
   * (1). 아이디 찾기는 이름, 이메일 입력 후 인증번호 확인 시 아이디 출력
   * (2). 비밀번호 찾기는 아이디, 이메일 입력 후 인증번호 확인 시 새로운 비밀번호로 변경 가능
 <img width="316" alt="아이디 찾기" src="https://user-images.githubusercontent.com/102012155/216000551-b0a1c27f-6d7c-4347-9261-28d8d0a9a685.png">
 <img width="327" alt="비밀번호 찾기" src="https://user-images.githubusercontent.com/102012155/216000545-6db18111-ce08-4e6a-9fb8-7865d4ceb2f9.png">
 
 
-## 6. 회원가입
+## 7. 회원가입
   * (1). 아이디, 이름, 비밀번호, 비밀번호 확인, 닉네임, 이메일 입력
   * (2). 아이디, 닉네임은 중복확인 해야 함
   * (3). 이메일은 인증 성공 해야 함
@@ -103,30 +103,30 @@
   <img width="818" alt="회원가입" src="https://user-images.githubusercontent.com/102012155/216001682-f1d11b36-867e-4570-bb00-33d848a48282.png">
 
   
-## 7. 게시판
+## 8. 게시판
   * (1). 게시판 내에 제목, 제목 + 작성자로 검색 가능
   * (2). 제목 클릭 시 상세페이지로 이동
   <img width="1044" alt="게시판 1" src="https://user-images.githubusercontent.com/102012155/216002229-c872c105-5b52-464c-8c1f-b09d5ab52996.png">
 
- ## 8. 게시판 상세페이지 
+ ## 9. 게시판 상세페이지 
   * (1). 찜, 추천 기능
   * (2). 본문 출력
   * (3). 댓글 기능(등록, 수정,삭제 가능)
   <img width="1186" alt="게시글 상세페이지" src="https://user-images.githubusercontent.com/102012155/216002479-fe3fae68-0e9d-4c2a-8372-e77fc8d28a01.png">
 
- ## 9. 게시판 글 쓰기
+ ## 10. 게시판 글 쓰기
   * (1). 제목, 본문, 이미지 작성 가능
   <img width="836" alt="글쓰기" src="https://user-images.githubusercontent.com/102012155/216002703-a9739440-2064-409b-9b61-082867a9dddb.png">
 
   
- ## 10. 마이페이지
+ ## 11. 마이페이지
   * (1). 내가 쓴 글, 찜 누른 글 출력
   * (2). 정보수정, 회원탈퇴 가능
 <img width="880" alt="마이페이지 내가쓴글" src="https://user-images.githubusercontent.com/102012155/216002978-23742c9c-026c-4ee8-8b9a-19e935bccd32.png">
 <img width="906" alt="마이페이지 좋아요 누른 글" src="https://user-images.githubusercontent.com/102012155/216002987-b1800d86-d97f-44ab-aaa9-b698b1e01629.png">
 
   
- ## 11. 정보수정
+ ## 12. 정보수정
   * (1). 비밀번호, 닉네임 변경 가능
   <img width="850" alt="정보 수정" src="https://user-images.githubusercontent.com/102012155/216003308-600e0365-238d-4907-b160-f8cc72784845.png">
 
